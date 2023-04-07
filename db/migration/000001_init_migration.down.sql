@@ -1,4 +1,15 @@
 DROP TABLE IF EXISTS "chat";
 DROP TABLE IF EXISTS "user_roles";
-DROP TABLE IF EXISTS "users";
+DROP TABLE IF EXISTS "world_admins";
 DROP TABLE IF EXISTS "roles";
+DROP TABLE IF EXISTS "skill_requirement_skills";
+DROP TABLE IF EXISTS "skill_requirement_properties";
+DROP TABLE IF EXISTS "skill_requirements";
+DROP TABLE IF EXISTS "character_properties";
+DROP TABLE IF EXISTS "characters";
+DROP TABLE IF EXISTS "race_properties";
+DROP TABLE IF EXISTS "races";
+DROP TABLE IF EXISTS "properties";
+DROP TABLE IF EXISTS "skills";
+DROP TABLE IF EXISTS "worlds";
+DROP TABLE IF EXISTS "users";
