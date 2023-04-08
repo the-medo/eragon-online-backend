@@ -1,4 +1,4 @@
-DB_URL=postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable
+DB_URL=postgresql://root:secret@localhost:5432/text_rpg?sslmode=disable
 
 rm-postgres:
 	docker stop postgres15
@@ -9,16 +9,16 @@ rm-redis:
 	docker rm redis
 
 postgres:
-	docker run --name postgres15 --network go-backend-network -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:15-alpine
+	docker run --name postgres15 --network eragon-online-backend -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:15-alpine
 
 createdb:
-	docker exec -it postgres15 createdb --username=root --owner=root simple_bank
+	docker exec -it postgres15 createdb --username=root --owner=root text_rpg
 
 wait-for-createdb:
 	timeout 4
 
 dropdb:
-	docker exec -it postgres15 dropdb simple_bank
+	docker exec -it postgres15 dropdb text_rpg
 
 migrateup:
 	migrate -path db/migration -database "$(DB_URL)" -verbose up
@@ -33,7 +33,7 @@ migratedown1:
 	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
 
 sqlc-generate:
-	docker run --rm -v "C:\Users\Medo\OneDrive\Desktop\Projects\go-backend:/src" -w /src kjconroy/sqlc generate
+	docker run --rm -v "C:\Users\Medo\OneDrive\Desktop\Projects\eragon-online-backend:/src" -w /src kjconroy/sqlc generate
 
 test:
 	go test -v -cover -short ./...
@@ -42,10 +42,10 @@ server:
 	go run main.go
 
 mock:
-	mockgen -package mockdb -destination db/mock/store.go github.com/the-medo/go-backend/db/sqlc Store
+	mockgen -package mockdb -destination db/mock/store.go github.com/the-medo/eragon-online-backend/db/sqlc Store
 
 db_docs:
-	dbdocs password --set secret --project simple_bank
+	dbdocs password --set secret --project text_rpg
 
 db_schema:
 	dbml2sql --postgres -o doc/schema.sql doc/db.dbml
@@ -59,7 +59,7 @@ proto_delete_linux:
 	rm -f doc/swagger/*.swagger.json
 
 proto_without_clean: # add --openapiv2_opt= json_names_for_fields=false ???
-	protoc --proto_path=proto --go_out=pb --go_opt=paths=source_relative --go-grpc_out=pb --go-grpc_opt=paths=source_relative --grpc-gateway_out=pb --grpc-gateway_opt paths=source_relative --openapiv2_out=doc/swagger --openapiv2_opt=allow_merge=true,merge_file_name=simple_bank proto/*.proto
+	protoc --proto_path=proto --go_out=pb --go_opt=paths=source_relative --go-grpc_out=pb --go-grpc_opt=paths=source_relative --grpc-gateway_out=pb --grpc-gateway_opt paths=source_relative --openapiv2_out=doc/swagger --openapiv2_opt=allow_merge=true,merge_file_name=text_rpg proto/*.proto
 	statik -src=./doc/swagger -dest=./doc
 
 proto_win: proto_delete_win	proto_without_clean
