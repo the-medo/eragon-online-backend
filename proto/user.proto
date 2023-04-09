@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message User {
+  int32 id = 1;
+  string username = 2;
+  string email = 3;
+  optional int32 img_id = 4;
+  google.protobuf.Timestamp password_changed_at = 5;
+  google.protobuf.Timestamp created_at = 6;
+  bool is_email_verified = 7;
+}
+

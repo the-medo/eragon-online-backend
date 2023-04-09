@@ -1,0 +1,189 @@
+// Use DBML to define your database structure
+// Docs: https://www.dbml.org/docs
+
+Table image_types {
+  id int [pk, increment]
+  name varchar [unique, not null]
+  width int [null]
+  height int [null]
+}
+
+Table images {
+  id int [pk, increment]
+  image_type_id int [ref: > image_types.id]
+  name varchar [unique]
+  address varchar [not null]
+  width int [not null]
+  height int [not null]
+}
+
+Table users {
+  id int [pk, increment]
+  username varchar [not null, unique]
+  hashed_password varchar [not null]
+  email varchar [not null, unique]
+  img_id int [null, ref: > images.id]
+  password_changed_at timestamptz [not null, default: '0001-01-01 00:00:00Z']
+  created_at timestamptz [not null, default: `now()`]
+  is_email_verified bool [not null, default: false]
+}
+
+Table sessions {
+  id uuid [pk]
+  user_id int [not null, ref: > users.id]
+  username varchar [not null]
+  refresh_token varchar [not null]
+  user_agent varchar [not null]
+  client_ip varchar [not null]
+  is_blocked boolean [not null, default: false]
+  created_at timestamptz [not null, default: `now()`]
+  expired_at timestamptz [not null, default: `now() + INTERVAL '15 minutes'`]
+}
+
+Table verify_emails {
+  id bigserial [pk]
+  user_id int [not null, ref: > users.id]
+  email varchar [not null]
+  secret_code varchar [not null]
+  is_used boolean [not null, default: false]
+  created_at timestamptz [not null, default: `now()`]
+  expired_at timestamptz [not null, default: `now() + INTERVAL '15 minutes'`]
+}
+
+Table roles {
+  id int [pk, increment]
+  name varchar [not null, unique]
+}
+
+Table user_roles {
+  user_id int [not null, ref: > users.id]
+  role_id int [not null, ref: > roles.id]
+
+  indexes {
+    (role_id, user_id) [unique]
+  }
+}
+
+Table chat {
+  id bigserial [pk]
+  user_id int [not null, ref: > users.id]
+  text varchar [not null]
+  created_at timestamp [default: `now()`]
+}
+
+Table worlds {
+  id int [pk, increment]
+  name varchar [not null, unique]
+  img_id int [ref: > images.id]
+  public boolean [not null, default: false]
+  created_at timestamptz [default: `now()`]
+}
+
+Table world_admins {
+  world_id int [ref: > worlds.id]
+  user_id int [ref: > users.id]
+  created_at timestamptz [default: `now()`]
+
+  indexes {
+    (world_id, user_id) [unique]
+  }
+}
+
+Table races {
+  id int [pk, increment]
+  world_id int [not null, ref: > worlds.id]
+  name varchar [not null]
+  img_id int [ref: > images.id]
+  is_playable boolean [not null, default: true]
+
+  indexes {
+    (world_id, name) [unique]
+  }
+}
+
+Table properties {
+  id int [pk, increment]
+  world_id int [not null, ref: > worlds.id]
+  name varchar [not null]
+
+  indexes {
+    (world_id, name) [unique]
+  }
+}
+
+Table race_properties {
+  race_id int [not null, ref: > races.id]
+  property_id int [not null, ref: > properties.id]
+  min_value int [not null]
+  max_value int [not null]
+
+  indexes {
+    (race_id, property_id) [unique]
+  }
+}
+
+Table characters {
+  id int [pk, increment]
+  user_id int [not null, ref: > users.id]
+  world_id int [not null, ref: > worlds.id]
+  race_id int [not null, ref: > races.id]
+  img_id int [ref: > images.id]
+  name varchar [not null]
+  level int [not null]
+  experience int [not null]
+  skill_points int [not null]
+  property_points int [not null]
+  created_at timestamptz [default: `now()`]
+
+  indexes {
+    (world_id, name) [unique]
+  }
+}
+
+
+Table character_properties {
+  character_id int [not null, ref: > characters.id]
+  property_id int [not null, ref: > properties.id]
+  value int [not null]
+
+  indexes {
+    (character_id, property_id) [unique]
+  }
+}
+
+Table skills {
+  id int [pk, increment]
+  world_id int [not null, ref: > worlds.id]
+  img_id int [ref: > images.id]
+  name varchar [not null]
+  max_level int [not null]
+}
+
+Table skill_requirements {
+  id int [primary key]
+  skill_id int [not null, ref: > skills.id]
+  level int [null]
+  race_id int [null, ref: > races.id]
+}
+
+Table skill_requirement_skills {
+  skill_requirement_id int [not null, ref: > skill_requirements.id]
+  skill_id int [not null, ref: > skills.id]
+  level int [not null]
+}
+
+Table skill_requirement_properties {
+  skill_requirement_id int [not null, ref: > skill_requirements.id]
+  property_id int [not null, ref: > properties.id]
+  value int [not null]
+}
+
+Table character_skills {
+  character_id int [not null, ref: > characters.id]
+  skill_id int [not null, ref: > skills.id]
+  skill_level int [not null]
+}
+
+//Ref: users.id < follows.following_user_id
+
+//Ref: users.id < follows.followed_user_id

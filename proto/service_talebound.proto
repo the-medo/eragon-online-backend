@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "rpc_create_user.proto";
+import "rpc_update_user.proto";
+import "rpc_login_user.proto";
+import "rpc_verify_email.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Talebound API";
+    version: "1.0";
+    contact: {
+      name: "Medo";
+      url: "https://github.com/the-medo/talebound-backend";
+      email: "none@";
+    };
+  };
+};
+
+
+service Talebound {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post: "/create_user"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Use this API to create a new user";
+      summary: "Create new user";
+    };
+  };
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
+    option (google.api.http) = {
+      patch: "/update_user"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Use this API to update user";
+      summary: "Update user";
+    };
+  };
+  rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {
+    option (google.api.http) = {
+      post: "/login_user"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Use this API to login user and get access + refresh user";
+      summary: "Login user";
+    };
+  };
+  rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {
+    option (google.api.http) = {
+      get: "/verify_email"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Verify user email";
+      summary: "Verify email";
+    };
+  };
+}
