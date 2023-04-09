@@ -9,7 +9,7 @@ rm-redis:
 	docker rm redis
 
 postgres:
-	docker run --name postgres15 --network eragon-online-backend -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:15-alpine
+	docker run --name postgres15 --network talebound-backend -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:15-alpine
 
 createdb:
 	docker exec -it postgres15 createdb --username=root --owner=root talebound
@@ -33,7 +33,7 @@ migratedown1:
 	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
 
 sqlc-generate:
-	docker run --rm -v "C:\Users\Medo\OneDrive\Desktop\Projects\eragon-online-backend:/src" -w /src kjconroy/sqlc generate
+	docker run --rm -v "C:\Users\Medo\OneDrive\Desktop\Projects\talebound-backend:/src" -w /src kjconroy/sqlc generate
 
 test:
 	go test -v -cover -short ./...
@@ -42,7 +42,7 @@ server:
 	go run main.go
 
 mock:
-	mockgen -package mockdb -destination db/mock/store.go github.com/the-medo/eragon-online-backend/db/sqlc Store
+	mockgen -package mockdb -destination db/mock/store.go github.com/the-medo/talebound-backend/db/sqlc Store
 
 db_docs:
 	dbdocs password --set secret --project talebound
