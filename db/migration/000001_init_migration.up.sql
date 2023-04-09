@@ -34,17 +34,17 @@ CREATE TABLE "sessions" (
   "client_ip" varchar NOT NULL,
   "is_blocked" boolean NOT NULL DEFAULT false,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
-  "expired_at" timestamptz NOT NULL DEFAULT (now() + interval 15m)
+  "expired_at" timestamptz NOT NULL DEFAULT (now() + INTERVAL '15 minutes')
 );
 
 CREATE TABLE "verify_emails" (
   "id" bigserial PRIMARY KEY,
-  "user_id" varchar NOT NULL,
+  "user_id" int NOT NULL,
   "email" varchar NOT NULL,
   "secret_code" varchar NOT NULL,
   "is_used" boolean NOT NULL DEFAULT false,
-  "created_at" timestamptz DEFAULT (now()),
-  "expired_at" timestamptz DEFAULT (now() + interval 15m)
+  "created_at" timestamptz NOT NULL DEFAULT (now()),
+  "expired_at" timestamptz NOT NULL DEFAULT (now() + INTERVAL '15 minutes')
 );
 
 CREATE TABLE "roles" (

@@ -37,17 +37,17 @@ Table sessions {
   client_ip varchar [not null]
   is_blocked boolean [not null, default: false]
   created_at timestamptz [not null, default: `now()`]
-  expired_at timestamptz [not null, default: `now() + interval 15m`]
+  expired_at timestamptz [not null, default: `now() + INTERVAL '15 minutes'`]
 }
 
 Table verify_emails {
   id bigserial [pk]
-  user_id varchar [not null, ref: > users.id]
+  user_id int [not null, ref: > users.id]
   email varchar [not null]
   secret_code varchar [not null]
   is_used boolean [not null, default: false]
-  created_at timestamptz [default: `now()`]
-  expired_at timestamptz [default: `now() + interval 15m`]
+  created_at timestamptz [not null, default: `now()`]
+  expired_at timestamptz [not null, default: `now() + INTERVAL '15 minutes'`]
 }
 
 Table roles {
