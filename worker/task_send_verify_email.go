@@ -50,7 +50,7 @@ func (processor *RedisTaskProcessor) ProcessTaskSendVerifyEmail(ctx context.Cont
 		return fmt.Errorf("failed to unmarshal payload: %w", asynq.SkipRetry)
 	}
 
-	user, err := processor.store.GetUser(ctx, payload.UserId)
+	user, err := processor.store.GetUserById(ctx, payload.UserId)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return fmt.Errorf("user not found: %w", asynq.SkipRetry)

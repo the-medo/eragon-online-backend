@@ -7,6 +7,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/goccy/go-json v0.10.1
 	github.com/golang-migrate/migrate/v4 v4.15.2
+	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2
 	github.com/hibiken/asynq v0.24.0
