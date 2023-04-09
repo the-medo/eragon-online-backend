@@ -32,19 +32,19 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: Load secrets and save to app.env
-      run: aws secretsmanager get-secret-value --secret-id text_rpg --query SecretString --output text | jq 'to_entries|map("\(.key)=\(.value)")|.[]' -r > app.env
+      run: aws secretsmanager get-secret-value --secret-id talebound_secrets --query SecretString --output text | jq 'to_entries|map("\(.key)=\(.value)")|.[]' -r > app.env
 
     - name: Build, tag, and push docker image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: text-rpg
+        ECR_REPOSITORY: talebound-backend
         IMAGE_TAG: ${{ github.sha }}
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
         docker push -a $ECR_REGISTRY/$ECR_REPOSITORY
 
 #    - name: Update kube config
-#      run: aws eks update-kubeconfig --name text-rpg --region eu-central-1
+#      run: aws eks update-kubeconfig --name talebound --region eu-central-1
 
 #    - name: Deploy image to Amazon EKS
 #      run: |
