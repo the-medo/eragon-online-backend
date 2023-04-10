@@ -1,3 +1,13 @@
+# AWS EKS 
+`aws eks update-kubeconfig --name talebound --region eu-central-1`
+
+`kubectl config use-context arn:aws:eks:eu-central-1:871098816149:cluster/talebound`
+
+AWS EC2 pricing - https://aws.amazon.com/ec2/pricing/on-demand/
+
+AWS EKS pod count - https://github.com/awslabs/amazon-eks-ami/blob/master/files/eni-max-pods.txt
+
+
 
 ## Tool setup on windows
 ### Using make commands on windows
