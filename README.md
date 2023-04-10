@@ -11,6 +11,9 @@ AWS EKS pod count - https://github.com/awslabs/amazon-eks-ami/blob/master/files/
 https://cert-manager.io/docs/installation/kubectl/
 `kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml`
 
+## Install ingress
+`kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.0/deploy/static/provider/aws/deploy.yaml`
+
 ## Tool setup on windows
 ### Using make commands on windows
 
