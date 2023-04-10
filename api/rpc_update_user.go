@@ -90,11 +90,5 @@ func validateUpdateUserRequest(req *pb.UpdateUserRequest) (violations []*errdeta
 		}
 	}
 
-	if req.Username != nil {
-		if err := validator.ValidateFullName(req.GetUsername()); err != nil {
-			violations = append(violations, FieldViolation("full_name", err))
-		}
-	}
-
 	return violations
 }
