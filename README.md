@@ -7,7 +7,9 @@ AWS EC2 pricing - https://aws.amazon.com/ec2/pricing/on-demand/
 
 AWS EKS pod count - https://github.com/awslabs/amazon-eks-ami/blob/master/files/eni-max-pods.txt
 
-
+## Install cert-manager
+https://cert-manager.io/docs/installation/kubectl/
+`kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml`
 
 ## Tool setup on windows
 ### Using make commands on windows
