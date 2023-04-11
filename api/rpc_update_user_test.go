@@ -207,6 +207,12 @@ func randomUser(t *testing.T) (user db.User, password string) {
 	return
 }
 
+func requireMatchUser(t *testing.T, user1 pb.User, user2 db.User) {
+	require.Equal(t, user1.Username, user2.Username)
+	require.Equal(t, user1.Email, user2.Email)
+	//require.Empty(t, user1.HashedPassword)
+}
+
 func requireBodyMatchUser(t *testing.T, body *bytes.Buffer, user db.User) {
 	data, err := ioutil.ReadAll(body)
 	require.NoError(t, err)
