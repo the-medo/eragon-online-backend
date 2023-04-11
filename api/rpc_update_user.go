@@ -14,7 +14,6 @@ import (
 )
 
 func (server *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
-	//TODO: add authorization
 	authPayload, err := server.authorizeUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(err)
@@ -25,7 +24,7 @@ func (server *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest)
 		return nil, invalidArgumentError(violations)
 	}
 
-	if authPayload.Username != req.GetUsername() {
+	if authPayload.UserId != req.GetId() {
 		return nil, status.Errorf(codes.PermissionDenied, "you are not allowed to update this user")
 	}
 
@@ -74,8 +73,14 @@ func (server *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest)
 }
 
 func validateUpdateUserRequest(req *pb.UpdateUserRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateUsername(req.GetUsername()); err != nil {
-		violations = append(violations, FieldViolation("username", err))
+	if err := validator.ValidateUserId(req.GetId()); err != nil {
+		violations = append(violations, FieldViolation("id", err))
+	}
+
+	if req.Username != nil {
+		if err := validator.ValidateUsername(req.GetUsername()); err != nil {
+			violations = append(violations, FieldViolation("username", err))
+		}
 	}
 
 	if req.Password != nil {

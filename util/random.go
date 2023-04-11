@@ -18,6 +18,11 @@ func RandomInt(min, max int64) int64 {
 	return min + rand.Int63n(max-min+1)
 }
 
+// RandomInt32 generates a random integer between min and max
+func RandomInt32(min, max int32) int32 {
+	return min + rand.Int31n(max-min+1)
+}
+
 // RandomString generates a random string of length n
 func RandomString(n int) string {
 	var sb strings.Builder
@@ -33,7 +38,15 @@ func RandomString(n int) string {
 }
 
 func RandomOwner() string {
-	return RandomString(6)
+	return strings.ToLower(RandomString(6))
+}
+
+func RandomUserId() int32 {
+	return RandomInt32(1, 1024)
+}
+
+func RandomImgId() int32 {
+	return RandomInt32(1, 1024)
 }
 
 func RandomMoney() int64 {

@@ -26,5 +26,5 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - "api.talebound.net"
+      - api.talebound.net
       secretName: talebound-api-cert

@@ -75,6 +75,6 @@ redis:
 new_migration:
 	migrate create -ext sql -dir db/migration -seq $(name)
 
-prepare: rm-postgres rm-redis postgres redis wait-for-createdb createdb wait-for-createdb migrateup
+prepare: rm-postgres rm-redis postgres redis wait-for-createdb createdb wait-for-createdb migrateup server
 
 .PHONY: rm-postgres createdb dropdb postgres migrateup migratedown sqlc-generate test mock migrateup1 migratedown1 db_docs db_schema proto_win proto_linux evans proto_without_clean redis new_migration
