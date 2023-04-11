@@ -237,6 +237,10 @@
         },
         "password": {
           "type": "string"
+        },
+        "imgId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

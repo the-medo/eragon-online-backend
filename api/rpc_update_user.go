@@ -38,6 +38,10 @@ func (server *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest)
 			String: req.GetEmail(),
 			Valid:  req.Email != nil,
 		},
+		ImgID: sql.NullInt32{
+			Int32: req.GetImgId(),
+			Valid: req.ImgId != nil,
+		},
 	}
 
 	if req.Password != nil {
@@ -80,6 +84,12 @@ func validateUpdateUserRequest(req *pb.UpdateUserRequest) (violations []*errdeta
 	if req.Username != nil {
 		if err := validator.ValidateUsername(req.GetUsername()); err != nil {
 			violations = append(violations, FieldViolation("username", err))
+		}
+	}
+
+	if req.ImgId != nil {
+		if err := validator.ValidateImgId(req.GetImgId()); err != nil {
+			violations = append(violations, FieldViolation("img_id", err))
 		}
 	}
 
