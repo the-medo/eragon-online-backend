@@ -49,19 +49,6 @@ func RandomImgId() int32 {
 	return RandomInt32(1, 1024)
 }
 
-func RandomMoney() int64 {
-	return RandomInt(0, 1000)
-}
-
-func RandomEntryAmount() int64 {
-	return RandomInt(0, 100)
-}
-
-func RandomCurrency() string {
-	currencies := []string{"USD", "EUR", "GBP"}
-	return currencies[rand.Intn(len(currencies))]
-}
-
 func RandomEmail() string {
 	return fmt.Sprintf("%s@email.com", RandomString(6))
 }
