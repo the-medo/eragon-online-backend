@@ -18,7 +18,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     contact: {
       name: "Medo";
       url: "https://github.com/the-medo/talebound-backend";
-      email: "none@";
+      email: "martinmederly@gmail.com";
     };
   };
 };
@@ -27,7 +27,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 service Talebound {
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
     option (google.api.http) = {
-      post: "/create_user"
+      post: "/users"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -37,7 +37,7 @@ service Talebound {
   };
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
     option (google.api.http) = {
-      patch: "/update_user"
+      patch: "/users"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -47,7 +47,7 @@ service Talebound {
   };
   rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {
     option (google.api.http) = {
-      post: "/login_user"
+      post: "/login"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -57,7 +57,7 @@ service Talebound {
   };
   rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {
     option (google.api.http) = {
-      get: "/verify_email"
+      get: "/verify"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Verify user email";

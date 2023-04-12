@@ -6,7 +6,7 @@
     "contact": {
       "name": "Medo",
       "url": "https://github.com/the-medo/talebound-backend",
-      "email": "none@"
+      "email": "martinmederly@gmail.com"
     }
   },
   "tags": [
@@ -21,41 +21,7 @@
     "application/json"
   ],
   "paths": {
-    "/create_user": {
-      "post": {
-        "summary": "Create new user",
-        "description": "Use this API to create a new user",
-        "operationId": "Talebound_CreateUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCreateUserResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbCreateUserRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/login_user": {
+    "/login": {
       "post": {
         "summary": "Login user",
         "description": "Use this API to login user and get access + refresh user",
@@ -89,7 +55,39 @@
         ]
       }
     },
-    "/update_user": {
+    "/users": {
+      "post": {
+        "summary": "Create new user",
+        "description": "Use this API to create a new user",
+        "operationId": "Talebound_CreateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
       "patch": {
         "summary": "Update user",
         "description": "Use this API to update user",
@@ -123,7 +121,7 @@
         ]
       }
     },
-    "/verify_email": {
+    "/verify": {
       "get": {
         "summary": "Verify email",
         "description": "Verify user email",
