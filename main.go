@@ -131,8 +131,6 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	mux := http.NewServeMux()
 	mux.Handle("/", grpcMux)
 
-	//fs := http.FileServer(http.Dir("./doc/swagger"))
-
 	statikFS, err := fs.New()
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot create statik file system:")
