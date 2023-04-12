@@ -43,6 +43,7 @@ server:
 
 mock:
 	mockgen -package mockdb -destination db/mock/store.go github.com/the-medo/talebound-backend/db/sqlc Store
+	mockgen -package mockwk -destination worker/mock/distributor.go github.com/the-medo/talebound-backend/worker TaskDistributor
 
 db_docs:
 	dbdocs password --set secret --project talebound

@@ -200,7 +200,7 @@ func randomUser(t *testing.T) (user db.User, password string) {
 			Int32: util.RandomImgId(),
 			Valid: true,
 		},
-		IsEmailVerified:   true,
+		IsEmailVerified:   false,
 		PasswordChangedAt: time.Now(),
 		CreatedAt:         time.Now(),
 	}
