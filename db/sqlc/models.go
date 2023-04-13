@@ -51,13 +51,15 @@ type Image struct {
 	Address     string         `json:"address"`
 	Width       int32          `json:"width"`
 	Height      int32          `json:"height"`
+	CreatedAt   time.Time      `json:"created_at"`
 }
 
 type ImageType struct {
-	ID     int32         `json:"id"`
-	Name   string        `json:"name"`
-	Width  sql.NullInt32 `json:"width"`
-	Height sql.NullInt32 `json:"height"`
+	ID          int32         `json:"id"`
+	Name        string        `json:"name"`
+	Width       sql.NullInt32 `json:"width"`
+	Height      sql.NullInt32 `json:"height"`
+	Description string        `json:"description"`
 }
 
 type Property struct {
@@ -82,8 +84,9 @@ type RaceProperty struct {
 }
 
 type Role struct {
-	ID   int32  `json:"id"`
-	Name string `json:"name"`
+	ID          int32  `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
 
 type Session struct {
@@ -137,8 +140,9 @@ type User struct {
 }
 
 type UserRole struct {
-	UserID int32 `json:"user_id"`
-	RoleID int32 `json:"role_id"`
+	UserID    int32     `json:"user_id"`
+	RoleID    int32     `json:"role_id"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type VerifyEmail struct {

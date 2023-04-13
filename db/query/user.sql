@@ -30,3 +30,19 @@ SET
 WHERE
     id = sqlc.arg(id)
 RETURNING *;
+
+-- name: GetUserRoles :many
+SELECT
+    ur.*,
+    r.name AS role_name,
+    r.description AS role_description
+FROM
+    user_roles ur
+    JOIN roles r ON ur.role_id = r.id
+WHERE user_id = sqlc.arg(user_id);
+
+-- name: AddUserRole :one
+INSERT INTO user_roles (user_id, role_id) VALUES (sqlc.arg(user_id), sqlc.arg(role_id)) RETURNING *;
+
+-- name: RemoveUserRole :exec
+DELETE FROM user_roles WHERE user_id = sqlc.arg(user_id) AND role_id = sqlc.arg(role_id);

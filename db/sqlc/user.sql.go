@@ -8,7 +8,24 @@ package db
 import (
 	"context"
 	"database/sql"
+	"time"
 )
+
+const addUserRole = `-- name: AddUserRole :one
+INSERT INTO user_roles (user_id, role_id) VALUES ($1, $2) RETURNING user_id, role_id, created_at
+`
+
+type AddUserRoleParams struct {
+	UserID int32 `json:"user_id"`
+	RoleID int32 `json:"role_id"`
+}
+
+func (q *Queries) AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error) {
+	row := q.db.QueryRowContext(ctx, addUserRole, arg.UserID, arg.RoleID)
+	var i UserRole
+	err := row.Scan(&i.UserID, &i.RoleID, &i.CreatedAt)
+	return i, err
+}
 
 const createUser = `-- name: CreateUser :one
 INSERT INTO users
@@ -102,6 +119,68 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User,
 		&i.IsEmailVerified,
 	)
 	return i, err
+}
+
+const getUserRoles = `-- name: GetUserRoles :many
+SELECT
+    ur.user_id, ur.role_id, ur.created_at,
+    r.name AS role_name,
+    r.description AS role_description
+FROM
+    user_roles ur
+    JOIN roles r ON ur.role_id = r.id
+WHERE user_id = $1
+`
+
+type GetUserRolesRow struct {
+	UserID          int32     `json:"user_id"`
+	RoleID          int32     `json:"role_id"`
+	CreatedAt       time.Time `json:"created_at"`
+	RoleName        string    `json:"role_name"`
+	RoleDescription string    `json:"role_description"`
+}
+
+func (q *Queries) GetUserRoles(ctx context.Context, userID int32) ([]GetUserRolesRow, error) {
+	rows, err := q.db.QueryContext(ctx, getUserRoles, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetUserRolesRow{}
+	for rows.Next() {
+		var i GetUserRolesRow
+		if err := rows.Scan(
+			&i.UserID,
+			&i.RoleID,
+			&i.CreatedAt,
+			&i.RoleName,
+			&i.RoleDescription,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const removeUserRole = `-- name: RemoveUserRole :exec
+DELETE FROM user_roles WHERE user_id = $1 AND role_id = $2
+`
+
+type RemoveUserRoleParams struct {
+	UserID int32 `json:"user_id"`
+	RoleID int32 `json:"role_id"`
+}
+
+func (q *Queries) RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error {
+	_, err := q.db.ExecContext(ctx, removeUserRole, arg.UserID, arg.RoleID)
+	return err
 }
 
 const updateUser = `-- name: UpdateUser :one

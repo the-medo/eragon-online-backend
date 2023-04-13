@@ -36,6 +36,36 @@ func (m *MockStore) EXPECT() *MockStoreMockRecorder {
 	return m.recorder
 }
 
+// AddChatPost mocks base method.
+func (m *MockStore) AddChatPost(arg0 context.Context, arg1 db.AddChatPostParams) (db.Chat, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddChatPost", arg0, arg1)
+	ret0, _ := ret[0].(db.Chat)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// AddChatPost indicates an expected call of AddChatPost.
+func (mr *MockStoreMockRecorder) AddChatPost(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddChatPost", reflect.TypeOf((*MockStore)(nil).AddChatPost), arg0, arg1)
+}
+
+// AddUserRole mocks base method.
+func (m *MockStore) AddUserRole(arg0 context.Context, arg1 db.AddUserRoleParams) (db.UserRole, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddUserRole", arg0, arg1)
+	ret0, _ := ret[0].(db.UserRole)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// AddUserRole indicates an expected call of AddUserRole.
+func (mr *MockStoreMockRecorder) AddUserRole(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddUserRole", reflect.TypeOf((*MockStore)(nil).AddUserRole), arg0, arg1)
+}
+
 // CreateSession mocks base method.
 func (m *MockStore) CreateSession(arg0 context.Context, arg1 db.CreateSessionParams) (db.Session, error) {
 	m.ctrl.T.Helper()
@@ -96,6 +126,50 @@ func (mr *MockStoreMockRecorder) CreateVerifyEmail(arg0, arg1 interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVerifyEmail", reflect.TypeOf((*MockStore)(nil).CreateVerifyEmail), arg0, arg1)
 }
 
+// DeleteChatPost mocks base method.
+func (m *MockStore) DeleteChatPost(arg0 context.Context, arg1 int64) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteChatPost", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteChatPost indicates an expected call of DeleteChatPost.
+func (mr *MockStoreMockRecorder) DeleteChatPost(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteChatPost", reflect.TypeOf((*MockStore)(nil).DeleteChatPost), arg0, arg1)
+}
+
+// GetChatPost mocks base method.
+func (m *MockStore) GetChatPost(arg0 context.Context, arg1 int64) (db.GetChatPostRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetChatPost", arg0, arg1)
+	ret0, _ := ret[0].(db.GetChatPostRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetChatPost indicates an expected call of GetChatPost.
+func (mr *MockStoreMockRecorder) GetChatPost(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetChatPost", reflect.TypeOf((*MockStore)(nil).GetChatPost), arg0, arg1)
+}
+
+// GetChatPosts mocks base method.
+func (m *MockStore) GetChatPosts(arg0 context.Context, arg1 db.GetChatPostsParams) ([]db.GetChatPostsRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetChatPosts", arg0, arg1)
+	ret0, _ := ret[0].([]db.GetChatPostsRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetChatPosts indicates an expected call of GetChatPosts.
+func (mr *MockStoreMockRecorder) GetChatPosts(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetChatPosts", reflect.TypeOf((*MockStore)(nil).GetChatPosts), arg0, arg1)
+}
+
 // GetSession mocks base method.
 func (m *MockStore) GetSession(arg0 context.Context, arg1 uuid.UUID) (db.Session, error) {
 	m.ctrl.T.Helper()
@@ -154,6 +228,35 @@ func (m *MockStore) GetUserByUsername(arg0 context.Context, arg1 string) (db.Use
 func (mr *MockStoreMockRecorder) GetUserByUsername(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByUsername", reflect.TypeOf((*MockStore)(nil).GetUserByUsername), arg0, arg1)
+}
+
+// GetUserRoles mocks base method.
+func (m *MockStore) GetUserRoles(arg0 context.Context, arg1 int32) ([]db.GetUserRolesRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserRoles", arg0, arg1)
+	ret0, _ := ret[0].([]db.GetUserRolesRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserRoles indicates an expected call of GetUserRoles.
+func (mr *MockStoreMockRecorder) GetUserRoles(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserRoles", reflect.TypeOf((*MockStore)(nil).GetUserRoles), arg0, arg1)
+}
+
+// RemoveUserRole mocks base method.
+func (m *MockStore) RemoveUserRole(arg0 context.Context, arg1 db.RemoveUserRoleParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveUserRole", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RemoveUserRole indicates an expected call of RemoveUserRole.
+func (mr *MockStoreMockRecorder) RemoveUserRole(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveUserRole", reflect.TypeOf((*MockStore)(nil).RemoveUserRole), arg0, arg1)
 }
 
 // UpdateUser mocks base method.
