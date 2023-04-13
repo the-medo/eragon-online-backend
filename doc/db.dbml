@@ -6,6 +6,7 @@ Table image_types {
   name varchar [unique, not null]
   width int [null]
   height int [null]
+  description text [not null]
 }
 
 Table images {
@@ -15,6 +16,7 @@ Table images {
   address varchar [not null]
   width int [not null]
   height int [not null]
+  created_at timestamptz [not null, default: `now()`]
 }
 
 Table users {
@@ -53,11 +55,13 @@ Table verify_emails {
 Table roles {
   id int [pk, increment]
   name varchar [not null, unique]
+  description text [not null]
 }
 
 Table user_roles {
   user_id int [not null, ref: > users.id]
   role_id int [not null, ref: > roles.id]
+  created_at timestamptz [not null, default: `now()`]
 
   indexes {
     (role_id, user_id) [unique]
