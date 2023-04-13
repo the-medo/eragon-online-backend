@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message Role {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+}
+

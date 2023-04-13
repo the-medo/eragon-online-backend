@@ -8,6 +8,7 @@ import "rpc_update_user.proto";
 import "rpc_login_user.proto";
 import "rpc_verify_email.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "rpc_user_roles.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -25,6 +26,39 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 
 
 service Talebound {
+
+  rpc GetUserRoles(GetUserRolesRequest) returns (GetUserRolesResponse) {
+    option (google.api.http) = {
+      get: "/users/roles"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns full list of user roles";
+      summary: "Get user roles (admin, moderator, etc.)";
+    };
+  };
+
+  rpc AddRoleToUser(AddRoleToUserRequest) returns (AddRoleToUserResponse) {
+    option (google.api.http) = {
+      post: "/users/roles"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "adds new role to user";
+      summary: "Add role to user";
+    };
+  };
+
+  rpc RemoveRoleFromUser(RemoveRoleFromUserRequest) returns (RemoveRoleFromUserResponse) {
+    option (google.api.http) = {
+      delete: "/users/roles"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "removes role from user";
+      summary: "Remove role from user";
+    };
+  };
+
+
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
     option (google.api.http) = {
       post: "/users"

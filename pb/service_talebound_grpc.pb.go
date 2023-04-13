@@ -19,16 +19,22 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Talebound_CreateUser_FullMethodName  = "/pb.Talebound/CreateUser"
-	Talebound_UpdateUser_FullMethodName  = "/pb.Talebound/UpdateUser"
-	Talebound_LoginUser_FullMethodName   = "/pb.Talebound/LoginUser"
-	Talebound_VerifyEmail_FullMethodName = "/pb.Talebound/VerifyEmail"
+	Talebound_GetUserRoles_FullMethodName       = "/pb.Talebound/GetUserRoles"
+	Talebound_AddRoleToUser_FullMethodName      = "/pb.Talebound/AddRoleToUser"
+	Talebound_RemoveRoleFromUser_FullMethodName = "/pb.Talebound/RemoveRoleFromUser"
+	Talebound_CreateUser_FullMethodName         = "/pb.Talebound/CreateUser"
+	Talebound_UpdateUser_FullMethodName         = "/pb.Talebound/UpdateUser"
+	Talebound_LoginUser_FullMethodName          = "/pb.Talebound/LoginUser"
+	Talebound_VerifyEmail_FullMethodName        = "/pb.Talebound/VerifyEmail"
 )
 
 // TaleboundClient is the client API for Talebound service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TaleboundClient interface {
+	GetUserRoles(ctx context.Context, in *GetUserRolesRequest, opts ...grpc.CallOption) (*GetUserRolesResponse, error)
+	AddRoleToUser(ctx context.Context, in *AddRoleToUserRequest, opts ...grpc.CallOption) (*AddRoleToUserResponse, error)
+	RemoveRoleFromUser(ctx context.Context, in *RemoveRoleFromUserRequest, opts ...grpc.CallOption) (*RemoveRoleFromUserResponse, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
@@ -41,6 +47,33 @@ type taleboundClient struct {
 
 func NewTaleboundClient(cc grpc.ClientConnInterface) TaleboundClient {
 	return &taleboundClient{cc}
+}
+
+func (c *taleboundClient) GetUserRoles(ctx context.Context, in *GetUserRolesRequest, opts ...grpc.CallOption) (*GetUserRolesResponse, error) {
+	out := new(GetUserRolesResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetUserRoles_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) AddRoleToUser(ctx context.Context, in *AddRoleToUserRequest, opts ...grpc.CallOption) (*AddRoleToUserResponse, error) {
+	out := new(AddRoleToUserResponse)
+	err := c.cc.Invoke(ctx, Talebound_AddRoleToUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) RemoveRoleFromUser(ctx context.Context, in *RemoveRoleFromUserRequest, opts ...grpc.CallOption) (*RemoveRoleFromUserResponse, error) {
+	out := new(RemoveRoleFromUserResponse)
+	err := c.cc.Invoke(ctx, Talebound_RemoveRoleFromUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *taleboundClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
@@ -83,6 +116,9 @@ func (c *taleboundClient) VerifyEmail(ctx context.Context, in *VerifyEmailReques
 // All implementations must embed UnimplementedTaleboundServer
 // for forward compatibility
 type TaleboundServer interface {
+	GetUserRoles(context.Context, *GetUserRolesRequest) (*GetUserRolesResponse, error)
+	AddRoleToUser(context.Context, *AddRoleToUserRequest) (*AddRoleToUserResponse, error)
+	RemoveRoleFromUser(context.Context, *RemoveRoleFromUserRequest) (*RemoveRoleFromUserResponse, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
@@ -94,6 +130,15 @@ type TaleboundServer interface {
 type UnimplementedTaleboundServer struct {
 }
 
+func (UnimplementedTaleboundServer) GetUserRoles(context.Context, *GetUserRolesRequest) (*GetUserRolesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserRoles not implemented")
+}
+func (UnimplementedTaleboundServer) AddRoleToUser(context.Context, *AddRoleToUserRequest) (*AddRoleToUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddRoleToUser not implemented")
+}
+func (UnimplementedTaleboundServer) RemoveRoleFromUser(context.Context, *RemoveRoleFromUserRequest) (*RemoveRoleFromUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveRoleFromUser not implemented")
+}
 func (UnimplementedTaleboundServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
@@ -117,6 +162,60 @@ type UnsafeTaleboundServer interface {
 
 func RegisterTaleboundServer(s grpc.ServiceRegistrar, srv TaleboundServer) {
 	s.RegisterService(&Talebound_ServiceDesc, srv)
+}
+
+func _Talebound_GetUserRoles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserRolesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetUserRoles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetUserRoles_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetUserRoles(ctx, req.(*GetUserRolesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_AddRoleToUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddRoleToUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).AddRoleToUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_AddRoleToUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).AddRoleToUser(ctx, req.(*AddRoleToUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_RemoveRoleFromUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveRoleFromUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).RemoveRoleFromUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_RemoveRoleFromUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).RemoveRoleFromUser(ctx, req.(*RemoveRoleFromUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Talebound_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -198,6 +297,18 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.Talebound",
 	HandlerType: (*TaleboundServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetUserRoles",
+			Handler:    _Talebound_GetUserRoles_Handler,
+		},
+		{
+			MethodName: "AddRoleToUser",
+			Handler:    _Talebound_AddRoleToUser_Handler,
+		},
+		{
+			MethodName: "RemoveRoleFromUser",
+			Handler:    _Talebound_RemoveRoleFromUser_Handler,
+		},
 		{
 			MethodName: "CreateUser",
 			Handler:    _Talebound_CreateUser_Handler,

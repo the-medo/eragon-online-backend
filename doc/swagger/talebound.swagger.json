@@ -121,6 +121,109 @@
         ]
       }
     },
+    "/users/roles": {
+      "get": {
+        "summary": "Get user roles (admin, moderator, etc.)",
+        "description": "returns full list of user roles",
+        "operationId": "Talebound_GetUserRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetUserRolesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
+      "delete": {
+        "summary": "Remove role from user",
+        "description": "removes role from user",
+        "operationId": "Talebound_RemoveRoleFromUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbRemoveRoleFromUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "roleId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
+      "post": {
+        "summary": "Add role to user",
+        "description": "adds new role to user",
+        "operationId": "Talebound_AddRoleToUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbAddRoleToUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbAddRoleToUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/verify": {
       "get": {
         "summary": "Verify email",
@@ -162,6 +265,27 @@
     }
   },
   "definitions": {
+    "pbAddRoleToUserRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roleId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbAddRoleToUserResponse": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "$ref": "#/definitions/pbRole"
+        }
+      }
+    },
     "pbCreateUserRequest": {
       "type": "object",
       "properties": {
@@ -181,6 +305,18 @@
       "properties": {
         "user": {
           "$ref": "#/definitions/pbUser"
+        }
+      }
+    },
+    "pbGetUserRolesResponse": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbRole"
+          }
         }
       }
     },
@@ -217,6 +353,32 @@
         "refreshTokenExpiresAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbRemoveRoleFromUserResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "pbRole": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
         }
       }
     },
