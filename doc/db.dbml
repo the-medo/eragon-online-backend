@@ -53,7 +53,7 @@ Table verify_emails {
 }
 
 Table roles {
-  id int [pk, increment]
+  id int [not null, unique]
   name varchar [not null, unique]
   description text [not null]
 }

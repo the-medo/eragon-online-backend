@@ -1,12 +1,11 @@
-ALTER TABLE "roles" ADD COLUMN "description" text NOT NULL;
 ALTER TABLE "image_types" ADD COLUMN "description" text NOT NULL;
 ALTER TABLE "images" ADD COLUMN "created_at" timestamptz NOT NULL DEFAULT (now());
 ALTER TABLE "user_roles" ADD COLUMN "created_at" timestamptz NOT NULL DEFAULT (now());
 
-INSERT INTO "roles" ("name", "description")
+INSERT INTO "roles" ("id", "name", "description")
 VALUES
-    ('admin', 'Can do everything'),
-    ('moderator', 'Can moderate the site')
+    (1, 'admin', 'Can do everything'),
+    (2, 'moderator', 'Can moderate the site')
 ;
 
 INSERT INTO "image_types" ("name", "width", "height", "description")
