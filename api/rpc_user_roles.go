@@ -31,7 +31,7 @@ func (server *Server) GetUserRoles(ctx context.Context, req *pb.GetUserRolesRequ
 }
 
 func (server *Server) AddRoleToUser(ctx context.Context, req *pb.AddRoleToUserRequest) (*pb.AddRoleToUserResponse, error) {
-	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_ADMIN})
+	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed to add role to user: %v", err)
 	}
@@ -53,7 +53,7 @@ func (server *Server) AddRoleToUser(ctx context.Context, req *pb.AddRoleToUserRe
 }
 
 func (server *Server) RemoveRoleFromUser(ctx context.Context, req *pb.RemoveRoleFromUserRequest) (*pb.RemoveRoleFromUserResponse, error) {
-	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_ADMIN})
+	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed to remove role from user: %v", err)
 	}

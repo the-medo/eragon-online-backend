@@ -11,7 +11,7 @@ message Role {
 }
 
 enum RoleType {
-  UNKNOWN = 0;
-  ADMIN = 1;
-  MODERATOR = 2;
+  unknown = 0;
+  admin = 1;
+  moderator = 2;
 }
