@@ -31,6 +31,14 @@ WHERE
     id = sqlc.arg(id)
 RETURNING *;
 
+-- name: HasUserRole :one
+SELECT
+    *
+FROM
+    user_roles ur
+    JOIN roles r on ur.role_id = r.id
+WHERE user_id = sqlc.arg(user_id) AND r.name = sqlc.arg(role) LIMIT 1;
+
 -- name: GetUserRoles :many
 SELECT
     ur.*,

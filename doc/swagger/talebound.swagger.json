@@ -281,8 +281,11 @@
     "pbAddRoleToUserResponse": {
       "type": "object",
       "properties": {
-        "role": {
-          "$ref": "#/definitions/pbRole"
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
         }
       }
     },

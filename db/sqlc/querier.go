@@ -24,6 +24,7 @@ type Querier interface {
 	GetUserById(ctx context.Context, id int32) (User, error)
 	GetUserByUsername(ctx context.Context, username string) (User, error)
 	GetUserRoles(ctx context.Context, userID int32) ([]GetUserRolesRow, error)
+	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)

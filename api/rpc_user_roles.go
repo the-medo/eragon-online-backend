@@ -1,0 +1,75 @@
+package api
+
+import (
+	"context"
+	"fmt"
+	db "github.com/the-medo/talebound-backend/db/sqlc"
+	"github.com/the-medo/talebound-backend/pb"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+)
+
+func (server *Server) GetUserRoles(ctx context.Context, req *pb.GetUserRolesRequest) (*pb.GetUserRolesResponse, error) {
+	roles, err := server.store.GetUserRoles(ctx, req.GetUserId())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get user roles: %v", err)
+	}
+
+	rsp := &pb.GetUserRolesResponse{
+		Role: make([]*pb.Role, len(roles)),
+	}
+
+	for i, role := range roles {
+		rsp.Role[i] = &pb.Role{
+			Id:          role.RoleID,
+			Name:        role.RoleName,
+			Description: role.RoleDescription,
+		}
+	}
+
+	return rsp, nil
+}
+
+func (server *Server) AddRoleToUser(ctx context.Context, req *pb.AddRoleToUserRequest) (*pb.AddRoleToUserResponse, error) {
+	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_ADMIN})
+	if err != nil {
+		return nil, status.Errorf(codes.PermissionDenied, "failed to add role to user: %v", err)
+	}
+
+	newRole, err := server.store.AddUserRole(ctx, db.AddUserRoleParams{
+		UserID: req.GetUserId(),
+		RoleID: req.GetRoleId(),
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to add role to user: %v", err)
+	}
+
+	rsp := &pb.AddRoleToUserResponse{
+		Success: true,
+		Message: fmt.Sprintf("Role %s added to user successfully.", pb.RoleType_name[newRole.RoleID]),
+	}
+
+	return rsp, nil
+}
+
+func (server *Server) RemoveRoleFromUser(ctx context.Context, req *pb.RemoveRoleFromUserRequest) (*pb.RemoveRoleFromUserResponse, error) {
+	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_ADMIN})
+	if err != nil {
+		return nil, status.Errorf(codes.PermissionDenied, "failed to remove role from user: %v", err)
+	}
+
+	err = server.store.RemoveUserRole(ctx, db.RemoveUserRoleParams{
+		UserID: req.GetUserId(),
+		RoleID: req.GetRoleId(),
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to remove role from user: %v", err)
+	}
+
+	rsp := &pb.RemoveRoleFromUserResponse{
+		Success: true,
+		Message: fmt.Sprintf("Role %s removed from user successfully.", pb.RoleType_name[req.GetRoleId()]),
+	}
+
+	return rsp, nil
+}

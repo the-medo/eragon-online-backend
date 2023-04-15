@@ -169,6 +169,43 @@ func (q *Queries) GetUserRoles(ctx context.Context, userID int32) ([]GetUserRole
 	return items, nil
 }
 
+const hasUserRole = `-- name: HasUserRole :one
+SELECT
+    user_id, role_id, created_at, id, name, description
+FROM
+    user_roles ur
+    JOIN roles r on ur.role_id = r.id
+WHERE user_id = $1 AND r.name = $2 LIMIT 1
+`
+
+type HasUserRoleParams struct {
+	UserID int32  `json:"user_id"`
+	Role   string `json:"role"`
+}
+
+type HasUserRoleRow struct {
+	UserID      int32     `json:"user_id"`
+	RoleID      int32     `json:"role_id"`
+	CreatedAt   time.Time `json:"created_at"`
+	ID          int32     `json:"id"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+}
+
+func (q *Queries) HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error) {
+	row := q.db.QueryRowContext(ctx, hasUserRole, arg.UserID, arg.Role)
+	var i HasUserRoleRow
+	err := row.Scan(
+		&i.UserID,
+		&i.RoleID,
+		&i.CreatedAt,
+		&i.ID,
+		&i.Name,
+		&i.Description,
+	)
+	return i, err
+}
+
 const removeUserRole = `-- name: RemoveUserRole :exec
 DELETE FROM user_roles WHERE user_id = $1 AND role_id = $2
 `

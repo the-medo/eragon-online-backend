@@ -10,3 +10,8 @@ message Role {
   string description = 3;
 }
 
+enum RoleType {
+  UNKNOWN = 0;
+  ADMIN = 1;
+  MODERATOR = 2;
+}
