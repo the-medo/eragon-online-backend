@@ -1,0 +1,15 @@
+syntax = "proto3";
+import "chat.proto";
+
+package pb;
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message AddChatPostRequest {
+  int32 user_id = 1;
+  string text = 2;
+}
+
+message AddChatPostResponse {
+  ChatMessage message = 1;
+}

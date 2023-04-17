@@ -21,6 +21,40 @@
     "application/json"
   ],
   "paths": {
+    "/chat": {
+      "post": {
+        "summary": "Add new chat message",
+        "description": "adds new chat message",
+        "operationId": "Talebound_AddChatPost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbAddChatPostResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbAddChatPostRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/login": {
       "post": {
         "summary": "Login user",
@@ -267,6 +301,26 @@
     }
   },
   "definitions": {
+    "pbAddChatPostRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "pbAddChatPostResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "$ref": "#/definitions/pbChatMessage"
+        }
+      }
+    },
     "pbAddRoleToUserRequest": {
       "type": "object",
       "properties": {
@@ -288,6 +342,26 @@
         },
         "message": {
           "type": "string"
+        }
+      }
+    },
+    "pbChatMessage": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "text": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },

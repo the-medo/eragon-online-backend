@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message ChatMessage {
+  int64 id = 1;
+  int32 user_id = 2;
+  string text = 3;
+  google.protobuf.Timestamp created_at = 4;
+}
+
