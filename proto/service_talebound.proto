@@ -50,7 +50,7 @@ service Talebound {
 
   rpc RemoveRoleFromUser(RemoveRoleFromUserRequest) returns (RemoveRoleFromUserResponse) {
     option (google.api.http) = {
-      delete: "/users/roles"
+      delete: "/users/{user_id}/roles/{role_id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "removes role from user";

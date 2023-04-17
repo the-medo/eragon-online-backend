@@ -153,44 +153,6 @@
           "Talebound"
         ]
       },
-      "delete": {
-        "summary": "Remove role from user",
-        "description": "removes role from user",
-        "operationId": "Talebound_RemoveRoleFromUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbRemoveRoleFromUserResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "roleId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      },
       "post": {
         "summary": "Add role to user",
         "description": "adds new role to user",
@@ -217,6 +179,46 @@
             "schema": {
               "$ref": "#/definitions/pbAddRoleToUserRequest"
             }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/users/{userId}/roles/{roleId}": {
+      "delete": {
+        "summary": "Remove role from user",
+        "description": "removes role from user",
+        "operationId": "Talebound_RemoveRoleFromUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbRemoveRoleFromUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "tags": [

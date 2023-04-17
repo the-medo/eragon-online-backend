@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -36,6 +37,7 @@ func (server *Server) AddRoleToUser(ctx context.Context, req *pb.AddRoleToUserRe
 		return nil, status.Errorf(codes.PermissionDenied, "failed to add role to user: %v", err)
 	}
 
+	println(req.GetUserId(), req.GetRoleId())
 	newRole, err := server.store.AddUserRole(ctx, db.AddUserRoleParams{
 		UserID: req.GetUserId(),
 		RoleID: req.GetRoleId(),
@@ -56,6 +58,18 @@ func (server *Server) RemoveRoleFromUser(ctx context.Context, req *pb.RemoveRole
 	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed to remove role from user: %v", err)
+	}
+
+	_, err = server.store.HasUserRole(ctx, db.HasUserRoleParams{
+		UserID: req.GetUserId(),
+		Role:   pb.RoleType_name[req.GetRoleId()],
+	})
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, status.Errorf(codes.NotFound, "user doesn't have that role: %v", err)
+		}
+		return nil, status.Errorf(codes.Internal, "failed to remove role from user: %v", err)
 	}
 
 	err = server.store.RemoveUserRole(ctx, db.RemoveUserRoleParams{
