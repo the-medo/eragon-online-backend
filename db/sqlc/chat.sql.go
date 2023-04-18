@@ -7,7 +7,7 @@ package db
 
 import (
 	"context"
-	"database/sql"
+	"time"
 )
 
 const addChatMessage = `-- name: AddChatMessage :one
@@ -60,11 +60,11 @@ WHERE c.id = $1
 `
 
 type GetChatMessageRow struct {
-	ChatID    int64        `json:"chat_id"`
-	Text      string       `json:"text"`
-	CreatedAt sql.NullTime `json:"created_at"`
-	UserID    int32        `json:"user_id"`
-	Username  string       `json:"username"`
+	ChatID    int64     `json:"chat_id"`
+	Text      string    `json:"text"`
+	CreatedAt time.Time `json:"created_at"`
+	UserID    int32     `json:"user_id"`
+	Username  string    `json:"username"`
 }
 
 func (q *Queries) GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error) {
@@ -101,11 +101,11 @@ type GetChatMessagesParams struct {
 }
 
 type GetChatMessagesRow struct {
-	ChatID    int64        `json:"chat_id"`
-	Text      string       `json:"text"`
-	CreatedAt sql.NullTime `json:"created_at"`
-	UserID    int32        `json:"user_id"`
-	Username  string       `json:"username"`
+	ChatID    int64     `json:"chat_id"`
+	Text      string    `json:"text"`
+	CreatedAt time.Time `json:"created_at"`
+	UserID    int32     `json:"user_id"`
+	Username  string    `json:"username"`
 }
 
 func (q *Queries) GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error) {

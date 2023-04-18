@@ -22,3 +22,15 @@ func convertUser(user db.User) *pb.User {
 
 	return pbUser
 }
+
+func convertChatMessage(msg db.GetChatMessagesRow) *pb.ChatMessage {
+	pbMessage := &pb.ChatMessage{
+		Id:        msg.ChatID,
+		UserId:    msg.UserID,
+		Username:  msg.Username,
+		Text:      msg.Text,
+		CreatedAt: timestamppb.New(msg.CreatedAt),
+	}
+
+	return pbMessage
+}

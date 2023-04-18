@@ -22,7 +22,7 @@ type Character struct {
 	Experience     int32         `json:"experience"`
 	SkillPoints    int32         `json:"skill_points"`
 	PropertyPoints int32         `json:"property_points"`
-	CreatedAt      sql.NullTime  `json:"created_at"`
+	CreatedAt      time.Time     `json:"created_at"`
 }
 
 type CharacterProperty struct {
@@ -38,10 +38,10 @@ type CharacterSkill struct {
 }
 
 type Chat struct {
-	ID        int64        `json:"id"`
-	UserID    int32        `json:"user_id"`
-	Text      string       `json:"text"`
-	CreatedAt sql.NullTime `json:"created_at"`
+	ID        int64     `json:"id"`
+	UserID    int32     `json:"user_id"`
+	Text      string    `json:"text"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type Image struct {
@@ -160,11 +160,11 @@ type World struct {
 	Name      string        `json:"name"`
 	ImgID     sql.NullInt32 `json:"img_id"`
 	Public    bool          `json:"public"`
-	CreatedAt sql.NullTime  `json:"created_at"`
+	CreatedAt time.Time     `json:"created_at"`
 }
 
 type WorldAdmin struct {
 	WorldID   sql.NullInt32 `json:"world_id"`
 	UserID    sql.NullInt32 `json:"user_id"`
-	CreatedAt sql.NullTime  `json:"created_at"`
+	CreatedAt time.Time     `json:"created_at"`
 }
