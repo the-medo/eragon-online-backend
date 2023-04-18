@@ -10,6 +10,7 @@ import "rpc_verify_email.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "rpc_user_roles.proto";
 import "rpc_chat.proto";
+import "rpc_get_user.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -28,6 +29,8 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 
 service Talebound {
 
+
+  // ============= USER ROLES =================
   rpc GetUserRoles(GetUserRolesRequest) returns (GetUserRolesResponse) {
     option (google.api.http) = {
       get: "/users/roles"
@@ -59,6 +62,19 @@ service Talebound {
     };
   };
 
+
+  // ============= CHAT MESSAGES =================
+
+  rpc GetChatMessages(GetChatMessagesRequest) returns (GetChatMessagesResponse) {
+    option (google.api.http) = {
+      get: "/chat"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns list of chat messages";
+      summary: "Get list of chat messages";
+    };
+  };
+
   rpc AddChatMessage(AddChatMessageRequest) returns (AddChatMessageResponse) {
     option (google.api.http) = {
       post: "/chat"
@@ -80,6 +96,17 @@ service Talebound {
     };
   };
 
+  // ============= USERS =================
+
+  rpc GetUsers(GetUsersRequest) returns (GetUsersResponse) {
+    option (google.api.http) = {
+      get: "/users"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns list of users";
+      summary: "Get list of users";
+    };
+  };
 
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
     option (google.api.http) = {
@@ -91,6 +118,7 @@ service Talebound {
       summary: "Create new user";
     };
   };
+
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
     option (google.api.http) = {
       patch: "/users"
@@ -101,6 +129,8 @@ service Talebound {
       summary: "Update user";
     };
   };
+
+  // ============= LOGIN =================
   rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {
     option (google.api.http) = {
       post: "/login"
@@ -111,6 +141,8 @@ service Talebound {
       summary: "Login user";
     };
   };
+
+  // ============= VERIFY =================
   rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {
     option (google.api.http) = {
       get: "/verify"

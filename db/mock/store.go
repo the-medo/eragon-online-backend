@@ -245,6 +245,21 @@ func (mr *MockStoreMockRecorder) GetUserRoles(arg0, arg1 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserRoles", reflect.TypeOf((*MockStore)(nil).GetUserRoles), arg0, arg1)
 }
 
+// GetUsers mocks base method.
+func (m *MockStore) GetUsers(arg0 context.Context, arg1 db.GetUsersParams) ([]db.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUsers", arg0, arg1)
+	ret0, _ := ret[0].([]db.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUsers indicates an expected call of GetUsers.
+func (mr *MockStoreMockRecorder) GetUsers(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUsers", reflect.TypeOf((*MockStore)(nil).GetUsers), arg0, arg1)
+}
+
 // HasUserRole mocks base method.
 func (m *MockStore) HasUserRole(arg0 context.Context, arg1 db.HasUserRoleParams) (db.HasUserRoleRow, error) {
 	m.ctrl.T.Helper()

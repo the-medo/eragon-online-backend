@@ -37,7 +37,7 @@ SELECT
 FROM
     user_roles ur
     JOIN roles r on ur.role_id = r.id
-WHERE user_id = sqlc.arg(user_id) AND r.name = sqlc.arg(role) LIMIT 1;
+WHERE user_id = @user_id AND r.name = @role LIMIT 1;
 
 -- name: GetUserRoles :many
 SELECT
@@ -47,10 +47,20 @@ SELECT
 FROM
     user_roles ur
     JOIN roles r ON ur.role_id = r.id
-WHERE user_id = sqlc.arg(user_id);
+WHERE user_id = @user_id;
 
 -- name: AddUserRole :one
-INSERT INTO user_roles (user_id, role_id) VALUES (sqlc.arg(user_id), sqlc.arg(role_id)) RETURNING *;
+INSERT INTO user_roles (user_id, role_id) VALUES (@user_id, @role_id) RETURNING *;
 
 -- name: RemoveUserRole :exec
-DELETE FROM user_roles WHERE user_id = sqlc.arg(user_id) AND role_id = sqlc.arg(role_id);
+DELETE FROM user_roles WHERE user_id = @user_id AND role_id = @role_id;
+
+-- name: GetUsers :many
+SELECT
+    *
+FROM
+    users
+ORDER BY username
+LIMIT @page_limit
+OFFSET @page_offset
+;

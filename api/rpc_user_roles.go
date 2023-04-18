@@ -10,6 +10,36 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+func (server *Server) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
+	limit := req.GetLimit()
+	if limit == 0 {
+		limit = 100
+	}
+
+	offset := req.GetOffset()
+	if offset < 0 {
+		offset = 0
+	}
+
+	users, err := server.store.GetUsers(ctx, db.GetUsersParams{
+		PageLimit:  limit,
+		PageOffset: offset,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get users: %v", err)
+	}
+
+	rsp := &pb.GetUsersResponse{
+		Users: make([]*pb.User, len(users)),
+	}
+
+	for i, user := range users {
+		rsp.Users[i] = convertUser(user)
+	}
+
+	return rsp, nil
+}
+
 func (server *Server) GetUserRoles(ctx context.Context, req *pb.GetUserRolesRequest) (*pb.GetUserRolesResponse, error) {
 	roles, err := server.store.GetUserRoles(ctx, req.GetUserId())
 	if err != nil {

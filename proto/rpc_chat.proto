@@ -22,3 +22,12 @@ message DeleteChatMessageResponse {
   bool success = 1;
   string message = 2;
 }
+
+message GetChatMessagesRequest {
+  optional int32 limit = 1;
+  optional int32 offset = 2;
+}
+
+message GetChatMessagesResponse {
+  repeated ChatMessage messages = 1;
+}

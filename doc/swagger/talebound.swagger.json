@@ -22,6 +22,44 @@
   ],
   "paths": {
     "/chat": {
+      "get": {
+        "summary": "Get list of chat messages",
+        "description": "returns list of chat messages",
+        "operationId": "Talebound_GetChatMessages",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetChatMessagesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
       "post": {
         "summary": "Add new chat message",
         "description": "adds new chat message",
@@ -123,6 +161,44 @@
       }
     },
     "/users": {
+      "get": {
+        "summary": "Get list of users",
+        "description": "returns list of users",
+        "operationId": "Talebound_GetUsers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetUsersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
       "post": {
         "summary": "Create new user",
         "description": "Use this API to create a new user",
@@ -431,6 +507,18 @@
         }
       }
     },
+    "pbGetChatMessagesResponse": {
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbChatMessage"
+          }
+        }
+      }
+    },
     "pbGetUserRolesResponse": {
       "type": "object",
       "properties": {
@@ -439,6 +527,18 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbRole"
+          }
+        }
+      }
+    },
+    "pbGetUsersResponse": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbUser"
           }
         }
       }

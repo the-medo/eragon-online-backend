@@ -169,6 +169,53 @@ func (q *Queries) GetUserRoles(ctx context.Context, userID int32) ([]GetUserRole
 	return items, nil
 }
 
+const getUsers = `-- name: GetUsers :many
+SELECT
+    id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified
+FROM
+    users
+ORDER BY username
+LIMIT $2
+OFFSET $1
+`
+
+type GetUsersParams struct {
+	PageOffset int32 `json:"page_offset"`
+	PageLimit  int32 `json:"page_limit"`
+}
+
+func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, getUsers, arg.PageOffset, arg.PageLimit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []User{}
+	for rows.Next() {
+		var i User
+		if err := rows.Scan(
+			&i.ID,
+			&i.Username,
+			&i.HashedPassword,
+			&i.Email,
+			&i.ImgID,
+			&i.PasswordChangedAt,
+			&i.CreatedAt,
+			&i.IsEmailVerified,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const hasUserRole = `-- name: HasUserRole :one
 SELECT
     user_id, role_id, created_at, id, name, description

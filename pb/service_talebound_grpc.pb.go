@@ -22,8 +22,10 @@ const (
 	Talebound_GetUserRoles_FullMethodName       = "/pb.Talebound/GetUserRoles"
 	Talebound_AddRoleToUser_FullMethodName      = "/pb.Talebound/AddRoleToUser"
 	Talebound_RemoveRoleFromUser_FullMethodName = "/pb.Talebound/RemoveRoleFromUser"
+	Talebound_GetChatMessages_FullMethodName    = "/pb.Talebound/GetChatMessages"
 	Talebound_AddChatMessage_FullMethodName     = "/pb.Talebound/AddChatMessage"
 	Talebound_DeleteChatMessage_FullMethodName  = "/pb.Talebound/DeleteChatMessage"
+	Talebound_GetUsers_FullMethodName           = "/pb.Talebound/GetUsers"
 	Talebound_CreateUser_FullMethodName         = "/pb.Talebound/CreateUser"
 	Talebound_UpdateUser_FullMethodName         = "/pb.Talebound/UpdateUser"
 	Talebound_LoginUser_FullMethodName          = "/pb.Talebound/LoginUser"
@@ -34,14 +36,19 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TaleboundClient interface {
+	// ============= USER ROLES =================
 	GetUserRoles(ctx context.Context, in *GetUserRolesRequest, opts ...grpc.CallOption) (*GetUserRolesResponse, error)
 	AddRoleToUser(ctx context.Context, in *AddRoleToUserRequest, opts ...grpc.CallOption) (*AddRoleToUserResponse, error)
 	RemoveRoleFromUser(ctx context.Context, in *RemoveRoleFromUserRequest, opts ...grpc.CallOption) (*RemoveRoleFromUserResponse, error)
+	GetChatMessages(ctx context.Context, in *GetChatMessagesRequest, opts ...grpc.CallOption) (*GetChatMessagesResponse, error)
 	AddChatMessage(ctx context.Context, in *AddChatMessageRequest, opts ...grpc.CallOption) (*AddChatMessageResponse, error)
 	DeleteChatMessage(ctx context.Context, in *DeleteChatMessageRequest, opts ...grpc.CallOption) (*DeleteChatMessageResponse, error)
+	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
+	// ============= LOGIN =================
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
+	// ============= VERIFY =================
 	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error)
 }
 
@@ -80,6 +87,15 @@ func (c *taleboundClient) RemoveRoleFromUser(ctx context.Context, in *RemoveRole
 	return out, nil
 }
 
+func (c *taleboundClient) GetChatMessages(ctx context.Context, in *GetChatMessagesRequest, opts ...grpc.CallOption) (*GetChatMessagesResponse, error) {
+	out := new(GetChatMessagesResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetChatMessages_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *taleboundClient) AddChatMessage(ctx context.Context, in *AddChatMessageRequest, opts ...grpc.CallOption) (*AddChatMessageResponse, error) {
 	out := new(AddChatMessageResponse)
 	err := c.cc.Invoke(ctx, Talebound_AddChatMessage_FullMethodName, in, out, opts...)
@@ -92,6 +108,15 @@ func (c *taleboundClient) AddChatMessage(ctx context.Context, in *AddChatMessage
 func (c *taleboundClient) DeleteChatMessage(ctx context.Context, in *DeleteChatMessageRequest, opts ...grpc.CallOption) (*DeleteChatMessageResponse, error) {
 	out := new(DeleteChatMessageResponse)
 	err := c.cc.Invoke(ctx, Talebound_DeleteChatMessage_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error) {
+	out := new(GetUsersResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetUsers_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -138,14 +163,19 @@ func (c *taleboundClient) VerifyEmail(ctx context.Context, in *VerifyEmailReques
 // All implementations must embed UnimplementedTaleboundServer
 // for forward compatibility
 type TaleboundServer interface {
+	// ============= USER ROLES =================
 	GetUserRoles(context.Context, *GetUserRolesRequest) (*GetUserRolesResponse, error)
 	AddRoleToUser(context.Context, *AddRoleToUserRequest) (*AddRoleToUserResponse, error)
 	RemoveRoleFromUser(context.Context, *RemoveRoleFromUserRequest) (*RemoveRoleFromUserResponse, error)
+	GetChatMessages(context.Context, *GetChatMessagesRequest) (*GetChatMessagesResponse, error)
 	AddChatMessage(context.Context, *AddChatMessageRequest) (*AddChatMessageResponse, error)
 	DeleteChatMessage(context.Context, *DeleteChatMessageRequest) (*DeleteChatMessageResponse, error)
+	GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
+	// ============= LOGIN =================
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
+	// ============= VERIFY =================
 	VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error)
 	mustEmbedUnimplementedTaleboundServer()
 }
@@ -163,11 +193,17 @@ func (UnimplementedTaleboundServer) AddRoleToUser(context.Context, *AddRoleToUse
 func (UnimplementedTaleboundServer) RemoveRoleFromUser(context.Context, *RemoveRoleFromUserRequest) (*RemoveRoleFromUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveRoleFromUser not implemented")
 }
+func (UnimplementedTaleboundServer) GetChatMessages(context.Context, *GetChatMessagesRequest) (*GetChatMessagesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetChatMessages not implemented")
+}
 func (UnimplementedTaleboundServer) AddChatMessage(context.Context, *AddChatMessageRequest) (*AddChatMessageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddChatMessage not implemented")
 }
 func (UnimplementedTaleboundServer) DeleteChatMessage(context.Context, *DeleteChatMessageRequest) (*DeleteChatMessageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteChatMessage not implemented")
+}
+func (UnimplementedTaleboundServer) GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
 }
 func (UnimplementedTaleboundServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
@@ -248,6 +284,24 @@ func _Talebound_RemoveRoleFromUser_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_GetChatMessages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetChatMessagesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetChatMessages(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetChatMessages_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetChatMessages(ctx, req.(*GetChatMessagesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Talebound_AddChatMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AddChatMessageRequest)
 	if err := dec(in); err != nil {
@@ -280,6 +334,24 @@ func _Talebound_DeleteChatMessage_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TaleboundServer).DeleteChatMessage(ctx, req.(*DeleteChatMessageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUsersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetUsers_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetUsers(ctx, req.(*GetUsersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -376,12 +448,20 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Talebound_RemoveRoleFromUser_Handler,
 		},
 		{
+			MethodName: "GetChatMessages",
+			Handler:    _Talebound_GetChatMessages_Handler,
+		},
+		{
 			MethodName: "AddChatMessage",
 			Handler:    _Talebound_AddChatMessage_Handler,
 		},
 		{
 			MethodName: "DeleteChatMessage",
 			Handler:    _Talebound_DeleteChatMessage_Handler,
+		},
+		{
+			MethodName: "GetUsers",
+			Handler:    _Talebound_GetUsers_Handler,
 		},
 		{
 			MethodName: "CreateUser",
