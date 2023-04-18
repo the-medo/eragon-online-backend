@@ -10,7 +10,7 @@ import (
 	"database/sql"
 )
 
-const addChatPost = `-- name: AddChatPost :one
+const addChatMessage = `-- name: AddChatMessage :one
 INSERT INTO chat
 (
     user_id,
@@ -20,13 +20,13 @@ VALUES ($1, $2)
 RETURNING id, user_id, text, created_at
 `
 
-type AddChatPostParams struct {
+type AddChatMessageParams struct {
 	UserID int32  `json:"user_id"`
 	Text   string `json:"text"`
 }
 
-func (q *Queries) AddChatPost(ctx context.Context, arg AddChatPostParams) (Chat, error) {
-	row := q.db.QueryRowContext(ctx, addChatPost, arg.UserID, arg.Text)
+func (q *Queries) AddChatMessage(ctx context.Context, arg AddChatMessageParams) (Chat, error) {
+	row := q.db.QueryRowContext(ctx, addChatMessage, arg.UserID, arg.Text)
 	var i Chat
 	err := row.Scan(
 		&i.ID,
@@ -37,16 +37,16 @@ func (q *Queries) AddChatPost(ctx context.Context, arg AddChatPostParams) (Chat,
 	return i, err
 }
 
-const deleteChatPost = `-- name: DeleteChatPost :exec
+const deleteChatMessage = `-- name: DeleteChatMessage :exec
 DELETE FROM chat WHERE id = $1
 `
 
-func (q *Queries) DeleteChatPost(ctx context.Context, id int64) error {
-	_, err := q.db.ExecContext(ctx, deleteChatPost, id)
+func (q *Queries) DeleteChatMessage(ctx context.Context, id int64) error {
+	_, err := q.db.ExecContext(ctx, deleteChatMessage, id)
 	return err
 }
 
-const getChatPost = `-- name: GetChatPost :one
+const getChatMessage = `-- name: GetChatMessage :one
 SELECT
     c.id as chat_id,
     c.text as text,
@@ -59,7 +59,7 @@ FROM
 WHERE c.id = $1
 `
 
-type GetChatPostRow struct {
+type GetChatMessageRow struct {
 	ChatID    int64        `json:"chat_id"`
 	Text      string       `json:"text"`
 	CreatedAt sql.NullTime `json:"created_at"`
@@ -67,9 +67,9 @@ type GetChatPostRow struct {
 	Username  string       `json:"username"`
 }
 
-func (q *Queries) GetChatPost(ctx context.Context, id int64) (GetChatPostRow, error) {
-	row := q.db.QueryRowContext(ctx, getChatPost, id)
-	var i GetChatPostRow
+func (q *Queries) GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error) {
+	row := q.db.QueryRowContext(ctx, getChatMessage, id)
+	var i GetChatMessageRow
 	err := row.Scan(
 		&i.ChatID,
 		&i.Text,
@@ -80,7 +80,7 @@ func (q *Queries) GetChatPost(ctx context.Context, id int64) (GetChatPostRow, er
 	return i, err
 }
 
-const getChatPosts = `-- name: GetChatPosts :many
+const getChatMessages = `-- name: GetChatMessages :many
 SELECT
     c.id as chat_id,
     c.text as text,
@@ -95,12 +95,12 @@ LIMIT $2
 OFFSET $1
 `
 
-type GetChatPostsParams struct {
+type GetChatMessagesParams struct {
 	PageOffset int32 `json:"page_offset"`
 	PageLimit  int32 `json:"page_limit"`
 }
 
-type GetChatPostsRow struct {
+type GetChatMessagesRow struct {
 	ChatID    int64        `json:"chat_id"`
 	Text      string       `json:"text"`
 	CreatedAt sql.NullTime `json:"created_at"`
@@ -108,15 +108,15 @@ type GetChatPostsRow struct {
 	Username  string       `json:"username"`
 }
 
-func (q *Queries) GetChatPosts(ctx context.Context, arg GetChatPostsParams) ([]GetChatPostsRow, error) {
-	rows, err := q.db.QueryContext(ctx, getChatPosts, arg.PageOffset, arg.PageLimit)
+func (q *Queries) GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error) {
+	rows, err := q.db.QueryContext(ctx, getChatMessages, arg.PageOffset, arg.PageLimit)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []GetChatPostsRow{}
+	items := []GetChatMessagesRow{}
 	for rows.Next() {
-		var i GetChatPostsRow
+		var i GetChatMessagesRow
 		if err := rows.Scan(
 			&i.ChatID,
 			&i.Text,

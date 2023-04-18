@@ -59,7 +59,7 @@ service Talebound {
     };
   };
 
-  rpc AddChatPost(AddChatPostRequest) returns (AddChatPostResponse) {
+  rpc AddChatMessage(AddChatMessageRequest) returns (AddChatMessageResponse) {
     option (google.api.http) = {
       post: "/chat"
       body: "*"
@@ -67,6 +67,16 @@ service Talebound {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "adds new chat message";
       summary: "Add new chat message";
+    };
+  };
+
+  rpc DeleteChatMessage(DeleteChatMessageRequest) returns (DeleteChatMessageResponse) {
+    option (google.api.http) = {
+      delete: "/chat/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "removes role from user";
+      summary: "Delete chat message";
     };
   };
 

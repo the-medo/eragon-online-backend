@@ -11,14 +11,14 @@ import (
 )
 
 type Querier interface {
-	AddChatPost(ctx context.Context, arg AddChatPostParams) (Chat, error)
+	AddChatMessage(ctx context.Context, arg AddChatMessageParams) (Chat, error)
 	AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
-	DeleteChatPost(ctx context.Context, id int64) error
-	GetChatPost(ctx context.Context, id int64) (GetChatPostRow, error)
-	GetChatPosts(ctx context.Context, arg GetChatPostsParams) ([]GetChatPostsRow, error)
+	DeleteChatMessage(ctx context.Context, id int64) error
+	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
+	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserById(ctx context.Context, id int32) (User, error)

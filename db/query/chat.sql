@@ -1,4 +1,4 @@
--- name: AddChatPost :one
+-- name: AddChatMessage :one
 INSERT INTO chat
 (
     user_id,
@@ -7,7 +7,7 @@ INSERT INTO chat
 VALUES (sqlc.arg(user_id), sqlc.arg(text))
 RETURNING *;
 
--- name: GetChatPosts :many
+-- name: GetChatMessages :many
 SELECT
     c.id as chat_id,
     c.text as text,
@@ -21,7 +21,7 @@ ORDER BY c.id DESC
 LIMIT sqlc.arg(page_limit)
 OFFSET sqlc.arg(page_offset);
 
--- name: GetChatPost :one
+-- name: GetChatMessage :one
 SELECT
     c.id as chat_id,
     c.text as text,
@@ -33,5 +33,5 @@ FROM
     JOIN users u ON c.user_id = u.id
 WHERE c.id = sqlc.arg(id);
 
--- name: DeleteChatPost :exec
+-- name: DeleteChatMessage :exec
 DELETE FROM chat WHERE id = sqlc.arg(id);
