@@ -413,10 +413,6 @@
     "pbAddChatMessageRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "integer",
-          "format": "int32"
-        },
         "text": {
           "type": "string"
         }

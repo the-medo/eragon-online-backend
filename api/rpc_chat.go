@@ -41,22 +41,22 @@ func (server *Server) GetChatMessages(ctx context.Context, req *pb.GetChatMessag
 }
 
 func (server *Server) AddChatMessage(ctx context.Context, req *pb.AddChatMessageRequest) (*pb.AddChatMessageResponse, error) {
-	_, err := server.authorizeUser(ctx)
+	authPayload, err := server.authorizeUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(err)
 	}
 
+	user, err := server.store.GetUserById(ctx, authPayload.UserId)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
+	}
+
 	message, err := server.store.AddChatMessage(ctx, db.AddChatMessageParams{
 		Text:   req.GetText(),
-		UserID: req.GetUserId(),
+		UserID: user.ID,
 	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to Add message: %v", err)
-	}
-
-	user, err := server.store.GetUserById(ctx, message.UserID)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
 	}
 
 	return &pb.AddChatMessageResponse{

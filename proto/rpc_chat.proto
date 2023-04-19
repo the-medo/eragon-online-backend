@@ -6,8 +6,7 @@ package pb;
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 message AddChatMessageRequest {
-  int32 user_id = 1;
-  string text = 2;
+  string text = 1;
 }
 
 message AddChatMessageResponse {
