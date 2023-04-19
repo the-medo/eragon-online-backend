@@ -2,6 +2,8 @@ package api
 
 import (
 	"context"
+	"database/sql"
+	"fmt"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -82,12 +84,42 @@ func (server *Server) AddChatMessage(ctx context.Context, req *pb.AddChatMessage
 	}, nil
 }
 
+func (server *Server) DeleteChatMessage(ctx context.Context, req *pb.DeleteChatMessageRequest) (*pb.DeleteChatMessageResponse, error) {
+	violations := validateDeleteChatMessages(req)
+	if violations != nil {
+		return nil, invalidArgumentError(violations)
+	}
+
+	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin, pb.RoleType_moderator})
+	if err != nil {
+		return nil, status.Errorf(codes.PermissionDenied, "failed to delete chat message: %v", err)
+	}
+
+	_, err = server.store.GetChatMessage(ctx, req.GetId())
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, status.Errorf(codes.NotFound, "message not found: %v", err)
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get chat message: %v", err)
+	}
+
+	err = server.store.DeleteChatMessage(ctx, req.GetId())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to delete chat message: %v", err)
+	}
+
+	return &pb.DeleteChatMessageResponse{
+		Success: true,
+		Message: fmt.Sprintf("Chat message %v deleted successfully.", req.GetId()),
+	}, nil
+}
+
 func validateGetChatMessages(req *pb.GetChatMessagesRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateLimitOrOffset(req.GetLimit(), 1000); err != nil {
 		violations = append(violations, FieldViolation("limit", err))
 	}
 	if err := validator.ValidateLimitOrOffset(req.GetOffset()); err != nil {
-		violations = append(violations, FieldViolation("limit", err))
+		violations = append(violations, FieldViolation("offset", err))
 	}
 
 	return violations
@@ -96,6 +128,14 @@ func validateGetChatMessages(req *pb.GetChatMessagesRequest) (violations []*errd
 func validateAddChatMessage(req *pb.AddChatMessageRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateString(req.GetText(), 1, 1024); err != nil {
 		violations = append(violations, FieldViolation("text", err))
+	}
+
+	return violations
+}
+
+func validateDeleteChatMessages(req *pb.DeleteChatMessageRequest) (violations []*errdetails.BadRequest_FieldViolation) {
+	if err := validator.ValidateInt64(req.GetId(), 1); err != nil {
+		violations = append(violations, FieldViolation("id", err))
 	}
 
 	return violations

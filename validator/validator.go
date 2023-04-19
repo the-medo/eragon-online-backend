@@ -65,13 +65,31 @@ func ValidateLimitOrOffset(value int32, maxValueArgs ...int32) error {
 	return nil
 }
 
-func ValidateNumber(value int32, minValue int32, maxValue int32) error {
+func ValidateInt(value int32, minValue int32, maxValue int32) error {
 	if value < minValue {
 		return fmt.Errorf("must be higher than %d", minValue)
 	}
 
 	if value > maxValue {
-		return fmt.Errorf("must be lower than %d", maxValue)
+		return fmt.Errorf("must be lower or equal than %d", maxValue)
+	}
+
+	return nil
+}
+
+func ValidateInt64(value int64, minValue int64, maxValueArgs ...int64) error {
+	maxValue := int64(0)
+
+	if len(maxValueArgs) > 0 {
+		maxValue = maxValueArgs[0]
+	}
+
+	if value < minValue {
+		return fmt.Errorf("must be higher than %d", minValue)
+	}
+
+	if value > maxValue && len(maxValueArgs) > 0 {
+		return fmt.Errorf("must be lower or equal than %d", maxValue)
 	}
 
 	return nil
