@@ -4,12 +4,19 @@ import (
 	"context"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
+	"github.com/the-medo/talebound-backend/validator"
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func (server *Server) GetChatMessages(ctx context.Context, req *pb.GetChatMessagesRequest) (*pb.GetChatMessagesResponse, error) {
+	violations := validateGetChatMessages(req)
+	if violations != nil {
+		return nil, invalidArgumentError(violations)
+	}
+
 	limit := req.GetLimit()
 	if limit == 0 {
 		limit = 100
@@ -41,6 +48,11 @@ func (server *Server) GetChatMessages(ctx context.Context, req *pb.GetChatMessag
 }
 
 func (server *Server) AddChatMessage(ctx context.Context, req *pb.AddChatMessageRequest) (*pb.AddChatMessageResponse, error) {
+	violations := validateAddChatMessage(req)
+	if violations != nil {
+		return nil, invalidArgumentError(violations)
+	}
+
 	authPayload, err := server.authorizeUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(err)
@@ -68,4 +80,23 @@ func (server *Server) AddChatMessage(ctx context.Context, req *pb.AddChatMessage
 			CreatedAt: timestamppb.New(message.CreatedAt),
 		},
 	}, nil
+}
+
+func validateGetChatMessages(req *pb.GetChatMessagesRequest) (violations []*errdetails.BadRequest_FieldViolation) {
+	if err := validator.ValidateLimitOrOffset(req.GetLimit(), 1000); err != nil {
+		violations = append(violations, FieldViolation("limit", err))
+	}
+	if err := validator.ValidateLimitOrOffset(req.GetOffset()); err != nil {
+		violations = append(violations, FieldViolation("limit", err))
+	}
+
+	return violations
+}
+
+func validateAddChatMessage(req *pb.AddChatMessageRequest) (violations []*errdetails.BadRequest_FieldViolation) {
+	if err := validator.ValidateString(req.GetText(), 1, 1024); err != nil {
+		violations = append(violations, FieldViolation("text", err))
+	}
+
+	return violations
 }
