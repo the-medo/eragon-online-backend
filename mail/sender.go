@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	smtpAuthAddress   = "smtp.gmail.com"
-	smtpServerAddress = "smtp.gmail.com:587"
+	smtpAuthAddress   = "email-smtp.eu-central-1.amazonaws.com"
+	smtpServerAddress = "email-smtp.eu-central-1.amazonaws.com:587"
 )
 
 type EmailSender interface {
@@ -22,21 +22,23 @@ type EmailSender interface {
 	) error
 }
 
-type GmailSender struct {
-	name              string
-	fromEmailAddress  string
-	fromEmailPassword string
+type AwsSesSender struct {
+	name             string
+	fromEmailAddress string
+	smtpUsername     string
+	smtpPassword     string
 }
 
-func NewGmailSender(name string, fromEmailAddress string, fromEmailPassword string) EmailSender {
-	return &GmailSender{
-		name:              name,
-		fromEmailAddress:  fromEmailAddress,
-		fromEmailPassword: fromEmailPassword,
+func NewAwsSesSender(name string, fromEmailAddress string, smtpUsername string, smtpPassword string) EmailSender {
+	return &AwsSesSender{
+		name:             name,
+		fromEmailAddress: fromEmailAddress,
+		smtpUsername:     smtpUsername,
+		smtpPassword:     smtpPassword,
 	}
 }
 
-func (sender *GmailSender) SendEmail(
+func (sender *AwsSesSender) SendEmail(
 	subject string,
 	content string,
 	to []string,
@@ -59,6 +61,6 @@ func (sender *GmailSender) SendEmail(
 		}
 	}
 
-	smtpAuth := smtp.PlainAuth("", sender.fromEmailAddress, sender.fromEmailPassword, smtpAuthAddress)
+	smtpAuth := smtp.PlainAuth("", sender.smtpUsername, sender.smtpPassword, smtpAuthAddress)
 	return e.Send(smtpServerAddress, smtpAuth)
 }

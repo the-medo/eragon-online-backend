@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestSendEmailWithGmail(t *testing.T) {
+func TestSendEmailWithAWS(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping test in short mode.")
 	}
@@ -14,7 +14,7 @@ func TestSendEmailWithGmail(t *testing.T) {
 	config, err := util.LoadConfig("../")
 	require.NoError(t, err)
 
-	sender := NewGmailSender(config.EmailSenderName, config.EmailSenderAddress, config.EmailSenderPassword)
+	sender := NewAwsSesSender(config.EmailSenderName, config.EmailSenderAddress, config.SmtpUsername, config.SmtpPassword)
 
 	subject := "A test email"
 	content := `
