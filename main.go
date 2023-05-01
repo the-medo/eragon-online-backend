@@ -10,6 +10,7 @@ import (
 	"github.com/hibiken/asynq"
 	_ "github.com/lib/pq"
 	"github.com/rakyll/statik/fs"
+	"github.com/rs/cors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/the-medo/talebound-backend/api"
@@ -131,6 +132,20 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	mux := http.NewServeMux()
 	mux.Handle("/", grpcMux)
 
+	var muxWithCORS http.Handler = mux
+
+	if config.Environment == "development" {
+		corsMiddleware := cors.New(cors.Options{
+			AllowedOrigins:   []string{"http://localhost:4000"},
+			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+			AllowedHeaders:   []string{"Content-Type", "Authorization"},
+			AllowCredentials: true,
+		})
+		muxWithCORS = corsMiddleware.Handler(mux)
+	} else {
+		muxWithCORS = cors.Default().Handler(mux)
+	}
+
 	statikFS, err := fs.New()
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot create statik file system:")
@@ -145,7 +160,7 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	}
 
 	log.Info().Msgf("Starting HTTP gateway server at %s", listener.Addr().String())
-	handler := api.HttpLogger(mux)
+	handler := api.HttpLogger(muxWithCORS)
 	err = http.Serve(listener, handler)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot start HTTP gateway server:")
