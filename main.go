@@ -23,10 +23,11 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 	"net"
 	"net/http"
 	"os"
-	"strings"
+	"time"
 )
 
 func main() {
@@ -107,81 +108,60 @@ func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.Ta
 	}
 }
 
-type responseWriterWithInterceptedHeaders struct {
-	http.ResponseWriter
-	interceptedHeaders http.Header
-}
+func myFilter(ctx context.Context, w http.ResponseWriter, resp proto.Message) error {
 
-func (rw *responseWriterWithInterceptedHeaders) WriteHeader(statusCode int) {
-	rw.ResponseWriter.WriteHeader(statusCode)
-}
+	headers := w.Header()
+	log.Info().Msgf("HEADERS: %v", headers)
 
-func (rw *responseWriterWithInterceptedHeaders) Write(b []byte) (int, error) {
-	for key, values := range rw.Header() {
-		if strings.HasPrefix(key, "Grpc-Metadata-X-") {
-			rw.interceptedHeaders[key] = values
+	accessToken := w.Header().Get("Access-Token")
+	accessTokenExpiresAt := w.Header().Get("Access-Token-Expires-At")
+
+	layout := "2006-01-02 15:04:05.9999999 -0700"
+
+	if accessToken != "" && accessTokenExpiresAt != "" {
+		expiresAt, err := time.Parse(layout, accessTokenExpiresAt[:33])
+		if err != nil {
+			http.Error(w, "Failed to parse access token expiry", http.StatusInternalServerError)
+			return err
 		}
+		cookie := http.Cookie{
+			Name:     "access_token",
+			Value:    accessToken,
+			Path:     "/",
+			Domain:   "dev.talebound.net",
+			Expires:  expiresAt,
+			HttpOnly: true,
+			//Secure:   false,
+			//SameSite: http.SameSiteNoneMode,
+		}
+		w.Header().Add("Set-Cookie", cookie.String())
 	}
-	return rw.ResponseWriter.Write(b)
-}
 
-func (rw *responseWriterWithInterceptedHeaders) Header() http.Header {
-	return rw.ResponseWriter.Header()
-}
+	refreshToken := w.Header().Get("Refresh-Token")
+	refreshTokenExpiresAt := w.Header().Get("Refresh-Token-Expires-At")
 
-func setTokensAsCookies(next http.Handler, config util.Config) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		interceptedHeaders := make(http.Header)
-		rw := &responseWriterWithInterceptedHeaders{
-			ResponseWriter:     w,
-			interceptedHeaders: interceptedHeaders,
+	if refreshToken != "" && refreshTokenExpiresAt != "" {
+		expiresAt, err := time.Parse(layout, refreshTokenExpiresAt[:33])
+		if err != nil {
+			http.Error(w, "Failed to parse refresh token expiry", http.StatusInternalServerError)
+			return err
 		}
-
-		next.ServeHTTP(rw, r)
-
-		accessToken := interceptedHeaders.Get("Grpc-Metadata-X-Access-Token")
-		refreshToken := interceptedHeaders.Get("Grpc-Metadata-X-Refresh-Token")
-
-		secure := true
-		if config.Environment == "development" {
-			secure = true
+		cookie := http.Cookie{
+			Name:     "refresh_token",
+			Value:    refreshToken,
+			Path:     "/",
+			Domain:   "dev.talebound.net",
+			Expires:  expiresAt,
+			HttpOnly: true,
+			//Secure:   false,
+			//SameSite: http.SameSiteNoneMode,
 		}
+		w.Header().Add("Set-Cookie", cookie.String())
+	}
 
-		if accessToken != "" {
-			log.Info().Msgf("Setting cookie access_token")
-			cookie := &http.Cookie{
-				Name:     "accesstoken",
-				Value:    accessToken,
-				Path:     "/",
-				HttpOnly: true,
-				Secure:   false,
-				Domain:   "localhost",
-				SameSite: http.SameSiteLaxMode, // Add this line
-			}
-			rw.ResponseWriter.Header().Add("Set-Cookie", cookie.String())
-			interceptedHeaders.Del("Grpc-Metadata-X-Access-Token")
+	log.Info().Msgf("my filter: %v", resp)
 
-			log.Info().Msgf("Set-Cookie header: %v", w.Header().Get("Set-Cookie"))
-
-		}
-
-		if refreshToken != "" {
-			log.Info().Msgf("Setting cookie refresh_token")
-			http.SetCookie(w, &http.Cookie{
-				Name:  "refreshtoken",
-				Value: "justtext",
-				//Value:    refreshToken,
-				Path:     "/",
-				HttpOnly: true,
-				Secure:   secure,
-				Domain:   "localhost",
-				SameSite: http.SameSiteNoneMode, // Add this line
-			})
-			interceptedHeaders.Del("Grpc-Metadata-X-Refresh-Token")
-			log.Info().Msgf("Set-Cookie header: %v", w.Header().Get("Set-Cookie"))
-		}
-
-	})
+	return nil
 }
 
 func runGatewayServer(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) {
@@ -190,15 +170,20 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 		log.Fatal().Err(err).Msg("Cannot create server:")
 	}
 
-	jsonOption := runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
-		MarshalOptions: protojson.MarshalOptions{
-			UseProtoNames: true,
-		},
-		UnmarshalOptions: protojson.UnmarshalOptions{
-			DiscardUnknown: true,
-		},
-	})
-	grpcMux := runtime.NewServeMux(jsonOption)
+	grpcMux := runtime.NewServeMux(
+		runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
+			MarshalOptions: protojson.MarshalOptions{
+				UseProtoNames: true,
+			},
+			UnmarshalOptions: protojson.UnmarshalOptions{
+				DiscardUnknown: true,
+			},
+		}),
+		runtime.WithOutgoingHeaderMatcher(func(s string) (string, bool) {
+			return s[2:], true
+		}),
+		runtime.WithForwardResponseOption(myFilter),
+	)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -208,16 +193,15 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	}
 
 	mux := http.NewServeMux()
-	mux.Handle("/", setTokensAsCookies(grpcMux, config))
+	mux.Handle("/", grpcMux)
 
-	var muxWithCORS http.Handler = mux
+	var muxWithCORS http.Handler
 
 	if config.Environment == "development" {
 		corsMiddleware := cors.New(cors.Options{
-			AllowedOrigins:   []string{"http://localhost:4000"},
+			AllowedOrigins:   []string{"http://dev.talebound.net:4000"},
 			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
-			AllowedHeaders:   []string{"Content-Type", "Authorization", "Set-Cookie"},
-			ExposedHeaders:   []string{"Set-Cookie"}, // Add this line
+			AllowedHeaders:   []string{"Content-Type", "Set-Cookie"},
 			AllowCredentials: true,
 		})
 		muxWithCORS = corsMiddleware.Handler(mux)
