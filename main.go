@@ -26,6 +26,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -106,6 +107,83 @@ func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.Ta
 	}
 }
 
+type responseWriterWithInterceptedHeaders struct {
+	http.ResponseWriter
+	interceptedHeaders http.Header
+}
+
+func (rw *responseWriterWithInterceptedHeaders) WriteHeader(statusCode int) {
+	rw.ResponseWriter.WriteHeader(statusCode)
+}
+
+func (rw *responseWriterWithInterceptedHeaders) Write(b []byte) (int, error) {
+	for key, values := range rw.Header() {
+		if strings.HasPrefix(key, "Grpc-Metadata-X-") {
+			rw.interceptedHeaders[key] = values
+		}
+	}
+	return rw.ResponseWriter.Write(b)
+}
+
+func (rw *responseWriterWithInterceptedHeaders) Header() http.Header {
+	return rw.ResponseWriter.Header()
+}
+
+func setTokensAsCookies(next http.Handler, config util.Config) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		interceptedHeaders := make(http.Header)
+		rw := &responseWriterWithInterceptedHeaders{
+			ResponseWriter:     w,
+			interceptedHeaders: interceptedHeaders,
+		}
+
+		next.ServeHTTP(rw, r)
+
+		accessToken := interceptedHeaders.Get("Grpc-Metadata-X-Access-Token")
+		refreshToken := interceptedHeaders.Get("Grpc-Metadata-X-Refresh-Token")
+
+		secure := true
+		if config.Environment == "development" {
+			secure = true
+		}
+
+		if accessToken != "" {
+			log.Info().Msgf("Setting cookie access_token")
+			cookie := &http.Cookie{
+				Name:     "accesstoken",
+				Value:    accessToken,
+				Path:     "/",
+				HttpOnly: true,
+				Secure:   false,
+				Domain:   "localhost",
+				SameSite: http.SameSiteLaxMode, // Add this line
+			}
+			rw.ResponseWriter.Header().Add("Set-Cookie", cookie.String())
+			interceptedHeaders.Del("Grpc-Metadata-X-Access-Token")
+
+			log.Info().Msgf("Set-Cookie header: %v", w.Header().Get("Set-Cookie"))
+
+		}
+
+		if refreshToken != "" {
+			log.Info().Msgf("Setting cookie refresh_token")
+			http.SetCookie(w, &http.Cookie{
+				Name:  "refreshtoken",
+				Value: "justtext",
+				//Value:    refreshToken,
+				Path:     "/",
+				HttpOnly: true,
+				Secure:   secure,
+				Domain:   "localhost",
+				SameSite: http.SameSiteNoneMode, // Add this line
+			})
+			interceptedHeaders.Del("Grpc-Metadata-X-Refresh-Token")
+			log.Info().Msgf("Set-Cookie header: %v", w.Header().Get("Set-Cookie"))
+		}
+
+	})
+}
+
 func runGatewayServer(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) {
 	server, err := api.NewServer(config, store, taskDistributor)
 	if err != nil {
@@ -130,7 +208,7 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	}
 
 	mux := http.NewServeMux()
-	mux.Handle("/", grpcMux)
+	mux.Handle("/", setTokensAsCookies(grpcMux, config))
 
 	var muxWithCORS http.Handler = mux
 
@@ -138,7 +216,8 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 		corsMiddleware := cors.New(cors.Options{
 			AllowedOrigins:   []string{"http://localhost:4000"},
 			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
-			AllowedHeaders:   []string{"Content-Type", "Authorization"},
+			AllowedHeaders:   []string{"Content-Type", "Authorization", "Set-Cookie"},
+			ExposedHeaders:   []string{"Set-Cookie"}, // Add this line
 			AllowCredentials: true,
 		})
 		muxWithCORS = corsMiddleware.Handler(mux)

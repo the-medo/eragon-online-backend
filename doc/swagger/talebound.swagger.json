@@ -562,12 +562,6 @@
         "sessionId": {
           "type": "string"
         },
-        "accessToken": {
-          "type": "string"
-        },
-        "refreshToken": {
-          "type": "string"
-        },
         "accessTokenExpiresAt": {
           "type": "string",
           "format": "date-time"

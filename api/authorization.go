@@ -44,3 +44,42 @@ func (server *Server) authorizeUser(ctx context.Context) (*token.Payload, error)
 
 	return payload, nil
 }
+
+const (
+	cookieName = "access_token"
+)
+
+func (server *Server) authorizeUserCookie(ctx context.Context) (*token.Payload, error) {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return nil, fmt.Errorf("missing metadata")
+	}
+
+	cookieHeaders := md.Get("cookie")
+	if len(cookieHeaders) == 0 {
+		return nil, fmt.Errorf("missing cookie header")
+	}
+
+	var accessToken string
+	for _, cookieHeader := range cookieHeaders {
+		cookies := strings.Split(cookieHeader, ";")
+		for _, cookie := range cookies {
+			trimmedCookie := strings.TrimSpace(cookie)
+			if strings.HasPrefix(trimmedCookie, fmt.Sprintf("%s=", cookieName)) {
+				accessToken = strings.TrimPrefix(trimmedCookie, fmt.Sprintf("%s=", cookieName))
+				break
+			}
+		}
+	}
+
+	if accessToken == "" {
+		return nil, fmt.Errorf("missing access token in cookies")
+	}
+
+	payload, err := server.tokenMaker.VerifyToken(accessToken)
+	if err != nil {
+		return nil, fmt.Errorf("invalid access token: %s", err)
+	}
+
+	return payload, nil
+}
