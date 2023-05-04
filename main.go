@@ -23,11 +23,9 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/proto"
 	"net"
 	"net/http"
 	"os"
-	"time"
 )
 
 func main() {
@@ -108,62 +106,6 @@ func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.Ta
 	}
 }
 
-func myFilter(ctx context.Context, w http.ResponseWriter, resp proto.Message) error {
-
-	headers := w.Header()
-	log.Info().Msgf("HEADERS: %v", headers)
-
-	accessToken := w.Header().Get("Access-Token")
-	accessTokenExpiresAt := w.Header().Get("Access-Token-Expires-At")
-
-	layout := "2006-01-02 15:04:05.9999999 -0700"
-
-	if accessToken != "" && accessTokenExpiresAt != "" {
-		expiresAt, err := time.Parse(layout, accessTokenExpiresAt[:33])
-		if err != nil {
-			http.Error(w, "Failed to parse access token expiry", http.StatusInternalServerError)
-			return err
-		}
-		cookie := http.Cookie{
-			Name:     "access_token",
-			Value:    accessToken,
-			Path:     "/",
-			Domain:   "dev.talebound.net",
-			Expires:  expiresAt,
-			HttpOnly: true,
-			//Secure:   false,
-			//SameSite: http.SameSiteNoneMode,
-		}
-		w.Header().Add("Set-Cookie", cookie.String())
-	}
-
-	refreshToken := w.Header().Get("Refresh-Token")
-	refreshTokenExpiresAt := w.Header().Get("Refresh-Token-Expires-At")
-
-	if refreshToken != "" && refreshTokenExpiresAt != "" {
-		expiresAt, err := time.Parse(layout, refreshTokenExpiresAt[:33])
-		if err != nil {
-			http.Error(w, "Failed to parse refresh token expiry", http.StatusInternalServerError)
-			return err
-		}
-		cookie := http.Cookie{
-			Name:     "refresh_token",
-			Value:    refreshToken,
-			Path:     "/",
-			Domain:   "dev.talebound.net",
-			Expires:  expiresAt,
-			HttpOnly: true,
-			//Secure:   false,
-			//SameSite: http.SameSiteNoneMode,
-		}
-		w.Header().Add("Set-Cookie", cookie.String())
-	}
-
-	log.Info().Msgf("my filter: %v", resp)
-
-	return nil
-}
-
 func runGatewayServer(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) {
 	server, err := api.NewServer(config, store, taskDistributor)
 	if err != nil {
@@ -182,7 +124,7 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 		runtime.WithOutgoingHeaderMatcher(func(s string) (string, bool) {
 			return s[2:], true
 		}),
-		runtime.WithForwardResponseOption(myFilter),
+		runtime.WithForwardResponseOption(util.CreateFilterTokensToCookies(config)),
 	)
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -199,8 +141,8 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 
 	if config.Environment == "development" {
 		corsMiddleware := cors.New(cors.Options{
-			AllowedOrigins:   []string{"http://dev.talebound.net:4000"},
-			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+			AllowedOrigins:   []string{config.CorsOrigin},
+			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
 			AllowedHeaders:   []string{"Content-Type", "Set-Cookie"},
 			AllowCredentials: true,
 		})

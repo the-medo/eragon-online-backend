@@ -21,6 +21,8 @@ type Config struct {
 	SmtpEndpoint         string        `mapstructure:"SMTP_ENDPOINT"`
 	SmtpUsername         string        `mapstructure:"SMTP_USERNAME"`
 	SmtpPassword         string        `mapstructure:"SMTP_PASSWORD"`
+	CookieDomain         string        `mapstructure:"COOKIE_DOMAIN"`
+	CorsOrigin           string        `mapstructure:"CORS_ORIGIN"`
 }
 
 func LoadConfig(path string) (config Config, err error) {
