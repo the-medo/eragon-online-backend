@@ -9,12 +9,14 @@ import (
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"testing"
 )
 
 func TestLoginUserAPI(t *testing.T) {
+	ctx := grpc.NewContextWithServerTransportStream(context.Background(), &mockServerTransportStream{})
 	user, password := randomUser(t)
 
 	testCases := []struct {
@@ -168,7 +170,7 @@ func TestLoginUserAPI(t *testing.T) {
 			tc.buildStubs(store)
 			server := newTestServer(t, store, nil)
 
-			res, err := server.LoginUser(context.Background(), tc.req)
+			res, err := server.LoginUser(ctx, tc.req)
 			tc.checkResponse(t, res, err)
 		})
 	}
