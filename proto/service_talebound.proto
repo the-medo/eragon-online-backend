@@ -11,6 +11,8 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "rpc_user_roles.proto";
 import "rpc_chat.proto";
 import "rpc_get_user.proto";
+import "google/protobuf/empty.proto";
+
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -130,15 +132,26 @@ service Talebound {
     };
   };
 
-  // ============= LOGIN =================
+  // ============= LOGIN & LOGOUT =================
   rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {
     option (google.api.http) = {
-      post: "/login"
+      post: "/users/login"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Use this API to login user and get access + refresh user";
+      description: "Login user - get user object and set HttpOnly cookies";
       summary: "Login user";
+    };
+  };
+
+  rpc LogoutUser(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/users/logout"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Logout user - it clears HttpOnly cookies - no request data required";
+      summary: "Logout user";
     };
   };
 
