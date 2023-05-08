@@ -11,6 +11,8 @@ type Store interface {
 	Querier
 	CreateUserTx(ctx context.Context, arg CreateUserTxParams) (CreateUserTxResult, error)
 	VerifyEmailTx(ctx context.Context, arg VerifyEmailTxParams) (VerifyEmailTxResult, error)
+	ResetPasswordRequestTx(ctx context.Context, arg ResetPasswordRequestTxParams) (ResetPasswordRequestTxResult, error)
+	ResetPasswordVerifyTx(ctx context.Context, arg ResetPasswordVerifyTxParams) (ResetPasswordVerifyTxResult, error)
 }
 
 // SQLStore provides all functions to execute SQL queries and transactions

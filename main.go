@@ -75,7 +75,7 @@ func runDBMigration(migrationURL string, dbSource string) {
 
 func runTaskProcessor(config util.Config, redisOpt asynq.RedisClientOpt, store db.Store) {
 	mailer := mail.NewAwsSesSender(config.EmailSenderName, config.EmailSenderAddress, config.SmtpUsername, config.SmtpPassword)
-	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store, mailer)
+	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store, mailer, config)
 	log.Info().Msg("starting task processor")
 	err := taskProcessor.Start()
 	if err != nil {
@@ -141,7 +141,7 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 
 	if config.Environment == "development" {
 		corsMiddleware := cors.New(cors.Options{
-			AllowedOrigins:   []string{config.CorsOrigin},
+			AllowedOrigins:   []string{config.FullDomain},
 			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
 			AllowedHeaders:   []string{"Content-Type", "Set-Cookie"},
 			AllowCredentials: true,

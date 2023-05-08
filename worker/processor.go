@@ -6,6 +6,7 @@ import (
 	"github.com/rs/zerolog/log"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/mail"
+	"github.com/the-medo/talebound-backend/util"
 )
 
 const (
@@ -16,15 +17,17 @@ const (
 type TaskProcessor interface {
 	Start() error
 	ProcessTaskSendVerifyEmail(ctx context.Context, task *asynq.Task) error
+	ProcessTaskSendResetPasswordEmail(ctx context.Context, task *asynq.Task) error
 }
 
 type RedisTaskProcessor struct {
 	server *asynq.Server
 	store  db.Store
 	mailer mail.EmailSender
+	config util.Config
 }
 
-func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store, mailer mail.EmailSender) TaskProcessor {
+func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store, mailer mail.EmailSender, config util.Config) TaskProcessor {
 	server := asynq.NewServer(
 		redisOpt,
 		asynq.Config{
@@ -47,11 +50,13 @@ func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store, mailer
 		server: server,
 		store:  store,
 		mailer: mailer,
+		config: config,
 	}
 }
 
 func (processor *RedisTaskProcessor) Start() error {
 	mux := asynq.NewServeMux()
 	mux.HandleFunc(TaskSendVerifyEmail, processor.ProcessTaskSendVerifyEmail)
+	mux.HandleFunc(TaskSendResetPasswordEmail, processor.ProcessTaskSendResetPasswordEmail)
 	return processor.server.Start(mux)
 }

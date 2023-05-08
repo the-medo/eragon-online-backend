@@ -300,6 +300,74 @@
         ]
       }
     },
+    "/users/reset/send-code": {
+      "post": {
+        "summary": "Request password reset",
+        "description": "In case a user forgot their password, they can request a password reset using this endpoint",
+        "operationId": "Talebound_ResetPasswordSendCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordSendCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordSendCodeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/users/reset/verify-code": {
+      "post": {
+        "summary": "Confirm password reset",
+        "description": "In case a user forgot their password, they can confirm the password reset using this endpoint",
+        "operationId": "Talebound_ResetPasswordVerifyCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordVerifyCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordVerifyCodeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/users/roles": {
       "get": {
         "summary": "Get user roles (admin, moderator, etc.)",
@@ -609,6 +677,51 @@
       }
     },
     "pbRemoveRoleFromUserResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "pbResetPasswordSendCodeRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "pbResetPasswordSendCodeResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "pbResetPasswordVerifyCodeRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "secretCode": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
+        }
+      }
+    },
+    "pbResetPasswordVerifyCodeResponse": {
       "type": "object",
       "properties": {
         "success": {

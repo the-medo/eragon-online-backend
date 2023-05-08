@@ -139,6 +139,12 @@ type User struct {
 	IsEmailVerified   bool          `json:"is_email_verified"`
 }
 
+type UserPasswordReset struct {
+	UserID    int32     `json:"user_id"`
+	Code      string    `json:"code"`
+	ExpiredAt time.Time `json:"expired_at"`
+}
+
 type UserRole struct {
 	UserID    int32     `json:"user_id"`
 	RoleID    int32     `json:"role_id"`

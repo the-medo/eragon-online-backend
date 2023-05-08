@@ -42,6 +42,12 @@ Table sessions {
   expired_at timestamptz [not null, default: `now() + INTERVAL '15 minutes'`]
 }
 
+Table user_password_reset {
+  user_id int [not null, ref: > users.id]
+  code varchar [not null]
+  expired_at timestamptz [not null, default: `now() + INTERVAL '15 minutes'`]
+}
+
 Table verify_emails {
   id bigserial [pk]
   user_id int [not null, ref: > users.id]

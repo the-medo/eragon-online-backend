@@ -12,17 +12,20 @@ import (
 
 type Querier interface {
 	AddChatMessage(ctx context.Context, arg AddChatMessageParams) (Chat, error)
+	AddUserPasswordReset(ctx context.Context, arg AddUserPasswordResetParams) (UserPasswordReset, error)
 	AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
 	DeleteChatMessage(ctx context.Context, id int64) error
+	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
 	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserById(ctx context.Context, id int32) (User, error)
 	GetUserByUsername(ctx context.Context, username string) (User, error)
+	GetUserPasswordReset(ctx context.Context, arg GetUserPasswordResetParams) (UserPasswordReset, error)
 	GetUserRoles(ctx context.Context, userID int32) ([]GetUserRolesRow, error)
 	GetUsers(ctx context.Context, arg GetUsersParams) ([]User, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)

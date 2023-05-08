@@ -2,6 +2,7 @@ package util
 
 import (
 	"github.com/spf13/viper"
+	"os"
 	"time"
 )
 
@@ -22,20 +23,32 @@ type Config struct {
 	SmtpUsername         string        `mapstructure:"SMTP_USERNAME"`
 	SmtpPassword         string        `mapstructure:"SMTP_PASSWORD"`
 	CookieDomain         string        `mapstructure:"COOKIE_DOMAIN"`
-	CorsOrigin           string        `mapstructure:"CORS_ORIGIN"`
+	FullDomain           string        `mapstructure:"FULL_DOMAIN"`
 }
 
 func LoadConfig(path string) (config Config, err error) {
 	viper.AddConfigPath(path)
-	viper.SetConfigName("app")
 	viper.SetConfigType("env")
+
+	viper.SetConfigName("app")
 
 	viper.AutomaticEnv()
 
-	err = viper.ReadInConfig()
+	err = viper.MergeInConfig()
 	if err != nil {
 		return
 	}
+
+	viper.SetConfigName("app.env.local")
+	err = viper.MergeInConfig()
+	if err != nil && !os.IsNotExist(err) {
+		return
+	}
+
+	//err = viper.ReadInConfig()
+	//if err != nil {
+	//	return
+	//}
 
 	err = viper.Unmarshal(&config)
 	return

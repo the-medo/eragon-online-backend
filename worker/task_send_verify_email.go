@@ -68,12 +68,39 @@ func (processor *RedisTaskProcessor) ProcessTaskSendVerifyEmail(ctx context.Cont
 	}
 
 	subject := "Welcome to Talebound!"
-	verifyUrl := fmt.Sprintf("https://talebound.net/verify?id=%d&secret_code=%s", verifyEmail.ID, verifyEmail.SecretCode)
-	verifyUrlLocalhost := fmt.Sprintf("http://localhost:8080/verify?email_id=%d&secret_code=%s", verifyEmail.ID, verifyEmail.SecretCode)
-	content := fmt.Sprintf(`Hello %s,<br/>
-Thank you for registering with us!<br/> Please <a href="%s">click here</a> or <a href="%s">here</a> to verify your email address.<br/>`, user.Username, verifyUrl, verifyUrlLocalhost)
+
+	verifyUrl := fmt.Sprintf("%s/verify?id=%d&secret_code=%s", processor.config.FullDomain, verifyEmail.ID, verifyEmail.SecretCode)
+
+	emailContent := fmt.Sprintf(EmailTemplate, fmt.Sprintf(`
+		Hello <b>%s</b>,<br/><br/>
+
+                Welcome to <b>Talebound</b>, the ultimate platform for text-based role-playing games and immersive storytelling experiences! We're thrilled to have you join our community of dreamers, creators, and adventurers.<br/><br/>
+
+                Before you can fully enjoy all the features that Talebound has to offer, we need you to verify your email address. By doing so, you help us ensure the security and authenticity of our community.<br/><br/>
+
+                Please click the button below to verify your email address:<br/>
+
+                <div class="button-wrapper">
+                    <a href="%s" target="_blank" class="button">Verify email</a>
+                </div>
+
+                If you are unable to click the button, copy and paste the following URL into your browser:<br/>
+
+                <a href="%s" target="_blank">%s</a>
+                <br/><br/>
+
+                Once your email address is verified, you'll be able to start creating characters, joining campaigns, and exploring the vast realms of imagination that Talebound has to offer.<br/><br/>
+
+                If you have any questions or need assistance, please don't hesitate to reach out to our support team at <a href="mailto:support@talebound.net">support@talebound.net</a><br/><br/>
+
+                Thank you for joining Talebound, and we look forward to seeing the incredible stories you'll create and adventures you'll embark upon.<br/><br/>
+
+                Happy storytelling!<br/>
+                The Talebound Team<br/>
+	`, user.Username, verifyUrl, verifyUrl, verifyUrl))
+
 	to := []string{user.Email}
-	err = processor.mailer.SendEmail(subject, content, to, nil, nil, nil)
+	err = processor.mailer.SendEmail(subject, emailContent, to, nil, nil, nil)
 	if err != nil {
 		return fmt.Errorf("failed to send email: %w", err)
 	}

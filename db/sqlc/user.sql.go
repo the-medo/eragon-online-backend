@@ -11,6 +11,22 @@ import (
 	"time"
 )
 
+const addUserPasswordReset = `-- name: AddUserPasswordReset :one
+INSERT INTO user_password_reset (user_id, code) VALUES ($1, $2) RETURNING user_id, code, expired_at
+`
+
+type AddUserPasswordResetParams struct {
+	UserID int32  `json:"user_id"`
+	Code   string `json:"code"`
+}
+
+func (q *Queries) AddUserPasswordReset(ctx context.Context, arg AddUserPasswordResetParams) (UserPasswordReset, error) {
+	row := q.db.QueryRowContext(ctx, addUserPasswordReset, arg.UserID, arg.Code)
+	var i UserPasswordReset
+	err := row.Scan(&i.UserID, &i.Code, &i.ExpiredAt)
+	return i, err
+}
+
 const addUserRole = `-- name: AddUserRole :one
 INSERT INTO user_roles (user_id, role_id) VALUES ($1, $2) RETURNING user_id, role_id, created_at
 `
@@ -59,6 +75,20 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.IsEmailVerified,
 	)
 	return i, err
+}
+
+const deleteUserPasswordReset = `-- name: DeleteUserPasswordReset :exec
+DELETE FROM user_password_reset WHERE user_id = $1 AND code = $2
+`
+
+type DeleteUserPasswordResetParams struct {
+	UserID int32  `json:"user_id"`
+	Code   string `json:"code"`
+}
+
+func (q *Queries) DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error {
+	_, err := q.db.ExecContext(ctx, deleteUserPasswordReset, arg.UserID, arg.Code)
+	return err
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
@@ -118,6 +148,22 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User,
 		&i.CreatedAt,
 		&i.IsEmailVerified,
 	)
+	return i, err
+}
+
+const getUserPasswordReset = `-- name: GetUserPasswordReset :one
+SELECT user_id, code, expired_at FROM user_password_reset WHERE user_id = $1 AND code = $2 LIMIT 1
+`
+
+type GetUserPasswordResetParams struct {
+	UserID int32  `json:"user_id"`
+	Code   string `json:"code"`
+}
+
+func (q *Queries) GetUserPasswordReset(ctx context.Context, arg GetUserPasswordResetParams) (UserPasswordReset, error) {
+	row := q.db.QueryRowContext(ctx, getUserPasswordReset, arg.UserID, arg.Code)
+	var i UserPasswordReset
+	err := row.Scan(&i.UserID, &i.Code, &i.ExpiredAt)
 	return i, err
 }
 

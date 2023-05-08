@@ -11,6 +11,7 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "rpc_user_roles.proto";
 import "rpc_chat.proto";
 import "rpc_get_user.proto";
+import "rpc_reset_password.proto";
 import "google/protobuf/empty.proto";
 
 
@@ -152,6 +153,28 @@ service Talebound {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Logout user - it clears HttpOnly cookies - no request data required";
       summary: "Logout user";
+    };
+  };
+
+  rpc ResetPasswordSendCode(ResetPasswordSendCodeRequest) returns (ResetPasswordSendCodeResponse) {
+    option (google.api.http) = {
+      post: "/users/reset/send-code"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "In case a user forgot their password, they can request a password reset using this endpoint";
+      summary: "Request password reset";
+    };
+  };
+
+  rpc ResetPasswordVerifyCode(ResetPasswordVerifyCodeRequest) returns (ResetPasswordVerifyCodeResponse) {
+    option (google.api.http) = {
+      post: "/users/reset/verify-code"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "In case a user forgot their password, they can confirm the password reset using this endpoint";
+      summary: "Confirm password reset";
     };
   };
 
