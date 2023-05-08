@@ -66,31 +66,23 @@ const EmailTemplate = `
         }
 
         .socials {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
             margin-left: auto;
-            gap: 1rem;
+            margin-right: 0;
         }
 
         .socials .icons {
-            display: flex;
-            flex-direction: row;
-            font-size: 1rem;
-            gap: .5rem;
-            align-items: center;
+            font-size: 12px;
+            line-height: 12px;
         }
 
-        .socials .icons a {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .socials .icons td {
+            vertical-align: center;
+            padding: 0 3px;
         }
 
         .socials .icons img{
-            width: 2rem;
-            height: 2rem;
+            width: 18px;
+            height: 18px;
         }
 
         .footer a {
@@ -122,15 +114,23 @@ const EmailTemplate = `
                 <div class="logo">
                     <img alt=""src="https://res.cloudinary.com/db8w4lhqr/image/upload/v1683557020/logo-v1-128_vdwqzr.png">
                 </div>
-                <div class="socials">
-                    <div class="icons">
-                        <a target="_blank" href="https://discord.gg/wWsXB5gVmY"><img src="https://img.icons8.com/?size=1x&id=2mIgusGquJFz&format=png" alt="discord" />Discord</a> |
-                        <a target="_blank" href="https://www.youtube.com/@Talebound"><img src="https://img.icons8.com/?size=1x&id=9a46bTk3awwI&format=png" alt="youtube" />Youtube</a> |
-                        <a target="_blank" href="https://github.com/Talebound"><img src="https://img.icons8.com/?size=1x&id=AZOZNnY73haj&format=png" alt="github" />GitHub</a> |
-                        <a target="_blank" href="https://ko-fi.com/talebound"><img src="https://img.icons8.com/?size=1x&id=pDSKjMcOYsWo&format=png" alt="ko-fi" />Ko-Fi</a> |
-                    </div>
-                    <p>&copy; 2023 Talebound</p>
-                </div>
+                <table class="socials">
+                    <tr class="icons">
+                        <td><a target="_blank" href="https://discord.gg/wWsXB5gVmY"><img src="https://img.icons8.com/?size=1x&id=2mIgusGquJFz&format=png" alt="discord" /></a></td>
+                        <td><a target="_blank" href="https://discord.gg/wWsXB5gVmY">Discord</a></td>
+                        <td>|</td>
+                        <td><a target="_blank" href="https://www.youtube.com/@Talebound"><img src="https://img.icons8.com/?size=1x&id=9a46bTk3awwI&format=png" alt="youtube" /></a></td>
+                        <td><a target="_blank" href="https://www.youtube.com/@Talebound">Youtube</a></td>
+                        <td>|</td>
+                        <td><a target="_blank" href="https://github.com/Talebound"><img src="https://img.icons8.com/?size=1x&id=AZOZNnY73haj&format=png" alt="github" /></a></td>
+                        <td><a target="_blank" href="https://github.com/Talebound">GitHub</a></td>
+                        <td>|</td>
+                        <td><a target="_blank" href="https://ko-fi.com/talebound"><img src="https://img.icons8.com/?size=1x&id=pDSKjMcOYsWo&format=png" alt="ko-fi" /></a></td>
+                        <td><a target="_blank" href="https://ko-fi.com/talebound">Ko-Fi</a></td>
+                        <td>|</td>
+                        <td>&copy; 2023 Talebound</td>
+                    </tr>
+                </table>
             </div>
         </td>
     </tr>

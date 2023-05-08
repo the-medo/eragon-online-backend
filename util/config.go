@@ -40,10 +40,15 @@ func LoadConfig(path string) (config Config, err error) {
 	}
 
 	localConfigPath := path + "/app.env.local"
-	if _, err := os.Stat(localConfigPath); err == nil {
+	_, err = os.Stat(localConfigPath)
+	if err != nil && !os.IsNotExist(err) {
+		return
+	}
+
+	if !os.IsNotExist(err) {
 		viper.SetConfigName("app.env.local")
 		err = viper.MergeInConfig()
-		if err != nil && !os.IsNotExist(err) {
+		if err != nil {
 			return
 		}
 	}
