@@ -8,7 +8,9 @@ import (
 	"github.com/the-medo/talebound-backend/util"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -66,10 +68,19 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 	rsp := &pb.LoginUserResponse{
 		User:                  convertUser(user),
 		SessionId:             session.ID.String(),
-		AccessToken:           accessToken,
 		AccessTokenExpiresAt:  timestamppb.New(accessPayload.ExpiredAt),
-		RefreshToken:          refreshToken,
 		RefreshTokenExpiresAt: timestamppb.New(refreshPayload.ExpiredAt),
+	}
+
+	md := metadata.Pairs(
+		"X-Access-Token", accessToken,
+		"X-Access-Token-Expires-At", accessPayload.ExpiredAt.String(),
+		"X-Refresh-Token", refreshToken,
+		"X-Refresh-Token-Expires-At", refreshPayload.ExpiredAt.String(),
+	)
+	err = grpc.SendHeader(ctx, md)
+	if err != nil {
+		return nil, err
 	}
 
 	return rsp, nil

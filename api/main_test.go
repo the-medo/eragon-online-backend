@@ -14,6 +14,24 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
+type mockServerTransportStream struct{}
+
+func (m *mockServerTransportStream) Method() string {
+	return "foo"
+}
+
+func (m *mockServerTransportStream) SetHeader(md metadata.MD) error {
+	return nil
+}
+
+func (m *mockServerTransportStream) SendHeader(md metadata.MD) error {
+	return nil
+}
+
+func (m *mockServerTransportStream) SetTrailer(md metadata.MD) error {
+	return nil
+}
+
 func newTestServer(t *testing.T, store db.Store, taskDistributor worker.TaskDistributor) *Server {
 	config := util.Config{
 		TokenSymmetricKey:   util.RandomString(32),

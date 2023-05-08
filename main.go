@@ -112,15 +112,20 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 		log.Fatal().Err(err).Msg("Cannot create server:")
 	}
 
-	jsonOption := runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
-		MarshalOptions: protojson.MarshalOptions{
-			UseProtoNames: true,
-		},
-		UnmarshalOptions: protojson.UnmarshalOptions{
-			DiscardUnknown: true,
-		},
-	})
-	grpcMux := runtime.NewServeMux(jsonOption)
+	grpcMux := runtime.NewServeMux(
+		runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
+			MarshalOptions: protojson.MarshalOptions{
+				UseProtoNames: true,
+			},
+			UnmarshalOptions: protojson.UnmarshalOptions{
+				DiscardUnknown: true,
+			},
+		}),
+		runtime.WithOutgoingHeaderMatcher(func(s string) (string, bool) {
+			return s[2:], true
+		}),
+		runtime.WithForwardResponseOption(util.CreateFilterTokensToCookies(config)),
+	)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -132,13 +137,13 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	mux := http.NewServeMux()
 	mux.Handle("/", grpcMux)
 
-	var muxWithCORS http.Handler = mux
+	var muxWithCORS http.Handler
 
 	if config.Environment == "development" {
 		corsMiddleware := cors.New(cors.Options{
-			AllowedOrigins:   []string{"http://localhost:4000"},
-			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
-			AllowedHeaders:   []string{"Content-Type", "Authorization"},
+			AllowedOrigins:   []string{config.CorsOrigin},
+			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
+			AllowedHeaders:   []string{"Content-Type", "Set-Cookie"},
 			AllowCredentials: true,
 		})
 		muxWithCORS = corsMiddleware.Handler(mux)

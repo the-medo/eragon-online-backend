@@ -126,40 +126,6 @@
         ]
       }
     },
-    "/login": {
-      "post": {
-        "summary": "Login user",
-        "description": "Use this API to login user and get access + refresh user",
-        "operationId": "Talebound_LoginUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbLoginUserResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbLoginUserRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
     "/users": {
       "get": {
         "summary": "Get list of users",
@@ -256,6 +222,76 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/pbUpdateUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "Login user",
+        "description": "Login user - get user object and set HttpOnly cookies",
+        "operationId": "Talebound_LoginUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbLoginUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "summary": "Logout user",
+        "description": "Logout user - it clears HttpOnly cookies - no request data required",
+        "operationId": "Talebound_LogoutUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
             }
           }
         ],
@@ -560,12 +596,6 @@
           "$ref": "#/definitions/pbUser"
         },
         "sessionId": {
-          "type": "string"
-        },
-        "accessToken": {
-          "type": "string"
-        },
-        "refreshToken": {
           "type": "string"
         },
         "accessTokenExpiresAt": {
