@@ -78,11 +78,11 @@ func (processor *RedisTaskProcessor) ProcessTaskSendVerifyEmail(ctx context.Cont
 
                 Before you can fully enjoy all the features that Talebound has to offer, we need you to verify your email address. By doing so, you help us ensure the security and authenticity of our community.<br/><br/>
 
-                Please click the button below to verify your email address:<br/>
+                Please click the button below to verify your email address:<br/><br/>
 
                 <div class="button-wrapper">
                     <a href="%s" target="_blank" class="button">Verify email</a>
-                </div>
+                </div><br/>
 
                 If you are unable to click the button, copy and paste the following URL into your browser:<br/>
 

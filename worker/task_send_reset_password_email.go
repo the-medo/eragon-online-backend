@@ -74,9 +74,10 @@ func (processor *RedisTaskProcessor) ProcessTaskSendResetPasswordEmail(ctx conte
 		Hello,<br/>
 		We received a request to reset the password for your account. If you initiated this request, please click the button below to create a new password.<br/><br/>
 		<div class="button-wrapper">
+			<b>Valid only for 15 minutes</b><br/>
 			<a href="%s" class="button">Reset Your Password</a>
 		</div>
-		<br/><br/>
+		<br/>
 
 		If the button above does not work, please copy and paste the following URL into your browser:<br/>
 
