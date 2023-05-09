@@ -368,6 +368,38 @@
         ]
       }
     },
+    "/users/reset/verify-code-validity": {
+      "get": {
+        "summary": "Validate reset password secret code",
+        "description": "Validate reset password secret code",
+        "operationId": "Talebound_ResetPasswordVerifyCodeValidity",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordVerifyCodeValidityResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "secretCode",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/users/roles": {
       "get": {
         "summary": "Get user roles (admin, moderator, etc.)",
@@ -709,10 +741,6 @@
     "pbResetPasswordVerifyCodeRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "integer",
-          "format": "int32"
-        },
         "secretCode": {
           "type": "string"
         },
@@ -722,6 +750,17 @@
       }
     },
     "pbResetPasswordVerifyCodeResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "pbResetPasswordVerifyCodeValidityResponse": {
       "type": "object",
       "properties": {
         "success": {

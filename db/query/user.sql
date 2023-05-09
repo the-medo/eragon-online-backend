@@ -70,7 +70,7 @@ OFFSET @page_offset
 INSERT INTO user_password_reset (user_id, code) VALUES (@user_id, @code) RETURNING *;
 
 -- name: GetUserPasswordReset :one
-SELECT * FROM user_password_reset WHERE user_id = @user_id AND code = @code AND expired_at > NOW() LIMIT 1;
+SELECT * FROM user_password_reset WHERE code = @code AND expired_at > NOW() LIMIT 1;
 
 -- name: DeleteUserPasswordReset :exec
 DELETE FROM user_password_reset WHERE user_id = @user_id AND code = @code;

@@ -152,16 +152,11 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User,
 }
 
 const getUserPasswordReset = `-- name: GetUserPasswordReset :one
-SELECT user_id, code, expired_at FROM user_password_reset WHERE user_id = $1 AND code = $2 LIMIT 1
+SELECT user_id, code, expired_at FROM user_password_reset WHERE code = $1 AND expired_at > NOW() LIMIT 1
 `
 
-type GetUserPasswordResetParams struct {
-	UserID int32  `json:"user_id"`
-	Code   string `json:"code"`
-}
-
-func (q *Queries) GetUserPasswordReset(ctx context.Context, arg GetUserPasswordResetParams) (UserPasswordReset, error) {
-	row := q.db.QueryRowContext(ctx, getUserPasswordReset, arg.UserID, arg.Code)
+func (q *Queries) GetUserPasswordReset(ctx context.Context, code string) (UserPasswordReset, error) {
+	row := q.db.QueryRowContext(ctx, getUserPasswordReset, code)
 	var i UserPasswordReset
 	err := row.Scan(&i.UserID, &i.Code, &i.ExpiredAt)
 	return i, err

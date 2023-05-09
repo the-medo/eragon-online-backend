@@ -178,6 +178,16 @@ service Talebound {
     };
   };
 
+  rpc ResetPasswordVerifyCodeValidity(ResetPasswordVerifyCodeValidityRequest) returns (ResetPasswordVerifyCodeValidityResponse) {
+    option (google.api.http) = {
+      get: "/users/reset/verify-code-validity"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Validate reset password secret code";
+      summary: "Validate reset password secret code";
+    };
+  };
+
   // ============= VERIFY =================
   rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {
     option (google.api.http) = {

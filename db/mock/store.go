@@ -260,7 +260,7 @@ func (mr *MockStoreMockRecorder) GetUserByUsername(arg0, arg1 interface{}) *gomo
 }
 
 // GetUserPasswordReset mocks base method.
-func (m *MockStore) GetUserPasswordReset(arg0 context.Context, arg1 db.GetUserPasswordResetParams) (db.UserPasswordReset, error) {
+func (m *MockStore) GetUserPasswordReset(arg0 context.Context, arg1 string) (db.UserPasswordReset, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserPasswordReset", arg0, arg1)
 	ret0, _ := ret[0].(db.UserPasswordReset)

@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"database/sql"
 	"github.com/hibiken/asynq"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -56,7 +57,6 @@ func (server *Server) ResetPasswordVerifyCode(ctx context.Context, req *pb.Reset
 	}
 
 	arg := db.ResetPasswordVerifyTxParams{
-		UserId:      req.GetUserId(),
 		Code:        req.GetSecretCode(),
 		NewPassword: req.GetNewPassword(),
 	}
@@ -74,6 +74,37 @@ func (server *Server) ResetPasswordVerifyCode(ctx context.Context, req *pb.Reset
 	return rsp, nil
 }
 
+func (server *Server) ResetPasswordVerifyCodeValidity(ctx context.Context, req *pb.ResetPasswordVerifyCodeValidityRequest) (*pb.ResetPasswordVerifyCodeValidityResponse, error) {
+
+	var rsp *pb.ResetPasswordVerifyCodeValidityResponse
+
+	println("ResetPasswordVerifyCodeValidity - ", req.GetSecretCode())
+
+	violations := validateResetPasswordVerifyCodeValidity(req)
+	if violations != nil {
+		return nil, invalidArgumentError(violations)
+	}
+
+	_, err := server.store.GetUserPasswordReset(ctx, req.GetSecretCode())
+	if err != nil {
+		if err == sql.ErrNoRows {
+			rsp = &pb.ResetPasswordVerifyCodeValidityResponse{
+				Success: false,
+				Message: "Code is invalid",
+			}
+			return rsp, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to validate secret code: %s", err)
+	}
+
+	rsp = &pb.ResetPasswordVerifyCodeValidityResponse{
+		Success: true,
+		Message: "Code is valid",
+	}
+
+	return rsp, nil
+}
+
 func validateResetPasswordSendCode(req *pb.ResetPasswordSendCodeRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateEmail(req.GetEmail()); err != nil {
 		violations = append(violations, FieldViolation("email", err))
@@ -83,17 +114,21 @@ func validateResetPasswordSendCode(req *pb.ResetPasswordSendCodeRequest) (violat
 }
 
 func validateResetPasswordVerifyCode(req *pb.ResetPasswordVerifyCodeRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-
-	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-		violations = append(violations, FieldViolation("user_id", err))
-	}
-
 	if err := validator.ValidateSecretCode(req.GetSecretCode()); err != nil {
 		violations = append(violations, FieldViolation("secret_code", err))
 	}
 
 	if err := validator.ValidatePassword(req.GetNewPassword()); err != nil {
 		violations = append(violations, FieldViolation("new_password", err))
+	}
+
+	return violations
+}
+
+func validateResetPasswordVerifyCodeValidity(req *pb.ResetPasswordVerifyCodeValidityRequest) (violations []*errdetails.BadRequest_FieldViolation) {
+
+	if err := validator.ValidateSecretCode(req.GetSecretCode()); err != nil {
+		violations = append(violations, FieldViolation("secret_code", err))
 	}
 
 	return violations

@@ -28,10 +28,8 @@ func (store *SQLStore) ResetPasswordVerifyTx(ctx context.Context, arg ResetPassw
 	err := store.execTx(ctx, func(q *Queries) error {
 		var err error
 
-		_, err = q.GetUserPasswordReset(ctx, GetUserPasswordResetParams{
-			UserID: arg.UserId,
-			Code:   arg.Code,
-		})
+		_, err = q.GetUserPasswordReset(ctx, arg.Code)
+
 		if err != nil {
 			return status.Errorf(codes.Internal, "failed to get user password reset: %s", err)
 		}

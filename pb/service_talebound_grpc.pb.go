@@ -20,20 +20,21 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Talebound_GetUserRoles_FullMethodName            = "/pb.Talebound/GetUserRoles"
-	Talebound_AddRoleToUser_FullMethodName           = "/pb.Talebound/AddRoleToUser"
-	Talebound_RemoveRoleFromUser_FullMethodName      = "/pb.Talebound/RemoveRoleFromUser"
-	Talebound_GetChatMessages_FullMethodName         = "/pb.Talebound/GetChatMessages"
-	Talebound_AddChatMessage_FullMethodName          = "/pb.Talebound/AddChatMessage"
-	Talebound_DeleteChatMessage_FullMethodName       = "/pb.Talebound/DeleteChatMessage"
-	Talebound_GetUsers_FullMethodName                = "/pb.Talebound/GetUsers"
-	Talebound_CreateUser_FullMethodName              = "/pb.Talebound/CreateUser"
-	Talebound_UpdateUser_FullMethodName              = "/pb.Talebound/UpdateUser"
-	Talebound_LoginUser_FullMethodName               = "/pb.Talebound/LoginUser"
-	Talebound_LogoutUser_FullMethodName              = "/pb.Talebound/LogoutUser"
-	Talebound_ResetPasswordSendCode_FullMethodName   = "/pb.Talebound/ResetPasswordSendCode"
-	Talebound_ResetPasswordVerifyCode_FullMethodName = "/pb.Talebound/ResetPasswordVerifyCode"
-	Talebound_VerifyEmail_FullMethodName             = "/pb.Talebound/VerifyEmail"
+	Talebound_GetUserRoles_FullMethodName                    = "/pb.Talebound/GetUserRoles"
+	Talebound_AddRoleToUser_FullMethodName                   = "/pb.Talebound/AddRoleToUser"
+	Talebound_RemoveRoleFromUser_FullMethodName              = "/pb.Talebound/RemoveRoleFromUser"
+	Talebound_GetChatMessages_FullMethodName                 = "/pb.Talebound/GetChatMessages"
+	Talebound_AddChatMessage_FullMethodName                  = "/pb.Talebound/AddChatMessage"
+	Talebound_DeleteChatMessage_FullMethodName               = "/pb.Talebound/DeleteChatMessage"
+	Talebound_GetUsers_FullMethodName                        = "/pb.Talebound/GetUsers"
+	Talebound_CreateUser_FullMethodName                      = "/pb.Talebound/CreateUser"
+	Talebound_UpdateUser_FullMethodName                      = "/pb.Talebound/UpdateUser"
+	Talebound_LoginUser_FullMethodName                       = "/pb.Talebound/LoginUser"
+	Talebound_LogoutUser_FullMethodName                      = "/pb.Talebound/LogoutUser"
+	Talebound_ResetPasswordSendCode_FullMethodName           = "/pb.Talebound/ResetPasswordSendCode"
+	Talebound_ResetPasswordVerifyCode_FullMethodName         = "/pb.Talebound/ResetPasswordVerifyCode"
+	Talebound_ResetPasswordVerifyCodeValidity_FullMethodName = "/pb.Talebound/ResetPasswordVerifyCodeValidity"
+	Talebound_VerifyEmail_FullMethodName                     = "/pb.Talebound/VerifyEmail"
 )
 
 // TaleboundClient is the client API for Talebound service.
@@ -55,6 +56,7 @@ type TaleboundClient interface {
 	LogoutUser(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ResetPasswordSendCode(ctx context.Context, in *ResetPasswordSendCodeRequest, opts ...grpc.CallOption) (*ResetPasswordSendCodeResponse, error)
 	ResetPasswordVerifyCode(ctx context.Context, in *ResetPasswordVerifyCodeRequest, opts ...grpc.CallOption) (*ResetPasswordVerifyCodeResponse, error)
+	ResetPasswordVerifyCodeValidity(ctx context.Context, in *ResetPasswordVerifyCodeValidityRequest, opts ...grpc.CallOption) (*ResetPasswordVerifyCodeValidityResponse, error)
 	// ============= VERIFY =================
 	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error)
 }
@@ -184,6 +186,15 @@ func (c *taleboundClient) ResetPasswordVerifyCode(ctx context.Context, in *Reset
 	return out, nil
 }
 
+func (c *taleboundClient) ResetPasswordVerifyCodeValidity(ctx context.Context, in *ResetPasswordVerifyCodeValidityRequest, opts ...grpc.CallOption) (*ResetPasswordVerifyCodeValidityResponse, error) {
+	out := new(ResetPasswordVerifyCodeValidityResponse)
+	err := c.cc.Invoke(ctx, Talebound_ResetPasswordVerifyCodeValidity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *taleboundClient) VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error) {
 	out := new(VerifyEmailResponse)
 	err := c.cc.Invoke(ctx, Talebound_VerifyEmail_FullMethodName, in, out, opts...)
@@ -212,6 +223,7 @@ type TaleboundServer interface {
 	LogoutUser(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
 	ResetPasswordSendCode(context.Context, *ResetPasswordSendCodeRequest) (*ResetPasswordSendCodeResponse, error)
 	ResetPasswordVerifyCode(context.Context, *ResetPasswordVerifyCodeRequest) (*ResetPasswordVerifyCodeResponse, error)
+	ResetPasswordVerifyCodeValidity(context.Context, *ResetPasswordVerifyCodeValidityRequest) (*ResetPasswordVerifyCodeValidityResponse, error)
 	// ============= VERIFY =================
 	VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error)
 	mustEmbedUnimplementedTaleboundServer()
@@ -259,6 +271,9 @@ func (UnimplementedTaleboundServer) ResetPasswordSendCode(context.Context, *Rese
 }
 func (UnimplementedTaleboundServer) ResetPasswordVerifyCode(context.Context, *ResetPasswordVerifyCodeRequest) (*ResetPasswordVerifyCodeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResetPasswordVerifyCode not implemented")
+}
+func (UnimplementedTaleboundServer) ResetPasswordVerifyCodeValidity(context.Context, *ResetPasswordVerifyCodeValidityRequest) (*ResetPasswordVerifyCodeValidityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResetPasswordVerifyCodeValidity not implemented")
 }
 func (UnimplementedTaleboundServer) VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyEmail not implemented")
@@ -510,6 +525,24 @@ func _Talebound_ResetPasswordVerifyCode_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_ResetPasswordVerifyCodeValidity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResetPasswordVerifyCodeValidityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).ResetPasswordVerifyCodeValidity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_ResetPasswordVerifyCodeValidity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).ResetPasswordVerifyCodeValidity(ctx, req.(*ResetPasswordVerifyCodeValidityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Talebound_VerifyEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(VerifyEmailRequest)
 	if err := dec(in); err != nil {
@@ -586,6 +619,10 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ResetPasswordVerifyCode",
 			Handler:    _Talebound_ResetPasswordVerifyCode_Handler,
+		},
+		{
+			MethodName: "ResetPasswordVerifyCodeValidity",
+			Handler:    _Talebound_ResetPasswordVerifyCodeValidity_Handler,
 		},
 		{
 			MethodName: "VerifyEmail",
