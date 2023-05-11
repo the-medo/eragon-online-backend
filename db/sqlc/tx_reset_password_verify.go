@@ -11,7 +11,6 @@ import (
 
 // ResetPasswordVerifyTxParams contains the input parameters of the reset transaction
 type ResetPasswordVerifyTxParams struct {
-	UserId      int32
 	Code        string
 	NewPassword string
 }
@@ -28,8 +27,7 @@ func (store *SQLStore) ResetPasswordVerifyTx(ctx context.Context, arg ResetPassw
 	err := store.execTx(ctx, func(q *Queries) error {
 		var err error
 
-		_, err = q.GetUserPasswordReset(ctx, arg.Code)
-
+		upr, err := q.GetUserPasswordReset(ctx, arg.Code)
 		if err != nil {
 			return status.Errorf(codes.Internal, "failed to get user password reset: %s", err)
 		}
@@ -40,7 +38,7 @@ func (store *SQLStore) ResetPasswordVerifyTx(ctx context.Context, arg ResetPassw
 		}
 
 		result.User, err = q.UpdateUser(ctx, UpdateUserParams{
-			ID: arg.UserId,
+			ID: upr.UserID,
 			HashedPassword: sql.NullString{
 				String: hashedPassword,
 				Valid:  true,
@@ -52,7 +50,7 @@ func (store *SQLStore) ResetPasswordVerifyTx(ctx context.Context, arg ResetPassw
 		})
 
 		err = q.DeleteUserPasswordReset(ctx, DeleteUserPasswordResetParams{
-			UserID: arg.UserId,
+			UserID: upr.UserID,
 			Code:   arg.Code,
 		})
 		if err != nil {
