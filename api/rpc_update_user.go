@@ -14,9 +14,17 @@ import (
 )
 
 func (server *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
-	authPayload, err := server.authorizeUser(ctx)
+	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(err)
+	}
+
+	if req.Id == 0 {
+		req.Id = authPayload.UserId
+	}
+
+	if req.Id != authPayload.UserId {
+		return nil, status.Errorf(codes.PermissionDenied, "you are not allowed to update this user")
 	}
 
 	violations := validateUpdateUserRequest(req)

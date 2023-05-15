@@ -3,8 +3,10 @@ package util
 import (
 	"context"
 	"github.com/rs/zerolog/log"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/proto"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -104,4 +106,12 @@ func CreateFilterTokensToCookies(config Config) func(ctx context.Context, w http
 
 		return nil
 	}
+}
+
+func CookieAnnotator(ctx context.Context, req *http.Request) metadata.MD {
+	cookieHeaders := make([]string, len(req.Cookies()))
+	for i, cookie := range req.Cookies() {
+		cookieHeaders[i] = cookie.String()
+	}
+	return metadata.Pairs("grpc-gateway-cookie", strings.Join(cookieHeaders, ";"))
 }

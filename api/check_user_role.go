@@ -10,7 +10,7 @@ import (
 
 func (server *Server) CheckUserRole(ctx context.Context, roleTypes []pb.RoleType) error {
 
-	authPayload, err := server.authorizeUser(ctx)
+	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
 		return unauthenticatedError(err)
 	}

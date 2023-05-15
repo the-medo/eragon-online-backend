@@ -55,7 +55,7 @@ func (server *Server) authorizeUserCookie(ctx context.Context) (*token.Payload, 
 		return nil, fmt.Errorf("missing metadata")
 	}
 
-	cookieHeaders := md.Get("cookie")
+	cookieHeaders := md.Get("grpc-gateway-cookie")
 	if len(cookieHeaders) == 0 {
 		return nil, fmt.Errorf("missing cookie header")
 	}

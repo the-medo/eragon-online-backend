@@ -55,7 +55,7 @@ func (server *Server) AddChatMessage(ctx context.Context, req *pb.AddChatMessage
 		return nil, invalidArgumentError(violations)
 	}
 
-	authPayload, err := server.authorizeUser(ctx)
+	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(err)
 	}

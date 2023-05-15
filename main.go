@@ -125,6 +125,7 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 			return s[2:], true
 		}),
 		runtime.WithForwardResponseOption(util.CreateFilterTokensToCookies(config)),
+		runtime.WithMetadata(util.CookieAnnotator),
 	)
 
 	ctx, cancel := context.WithCancel(context.Background())
