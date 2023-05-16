@@ -42,6 +42,26 @@ Table sessions {
   expired_at timestamptz [not null, default: `now() + INTERVAL '15 minutes'`]
 }
 
+enum evaluation_type {
+  self
+  dm
+}
+
+Table evaluations {
+  id int [pk, increment]
+  name varchar [not null]
+  description varchar [not null]
+  evaluation_type evaluation_type [not null]
+}
+
+Table evaluation_votes {
+  evaluation_id int [not null, ref: > evaluations.id]
+  user_id int [not null, ref: > users.id]
+  user_id_voter int [not null, ref: > users.id]
+  value int [not null]
+  created_at timestamptz [not null, default: `now()`]
+}
+
 Table user_password_reset {
   user_id int [not null, ref: > users.id]
   code varchar [not null]
@@ -192,6 +212,25 @@ Table character_skills {
   character_id int [not null, ref: > characters.id]
   skill_id int [not null, ref: > skills.id]
   skill_level int [not null]
+}
+
+TableGroup Evaluations {
+  evaluations
+  evaluation_votes
+}
+
+TableGroup Images {
+  image_types
+  images
+}
+
+TableGroup UserStuff {
+  users
+  user_roles
+  roles
+  verify_emails
+  sessions
+  user_password_reset
 }
 
 //Ref: users.id < follows.following_user_id
