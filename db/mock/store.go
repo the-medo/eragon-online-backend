@@ -81,6 +81,21 @@ func (mr *MockStoreMockRecorder) AddUserRole(arg0, arg1 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddUserRole", reflect.TypeOf((*MockStore)(nil).AddUserRole), arg0, arg1)
 }
 
+// CreateEvaluationVote mocks base method.
+func (m *MockStore) CreateEvaluationVote(arg0 context.Context, arg1 db.CreateEvaluationVoteParams) (db.EvaluationVote, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateEvaluationVote", arg0, arg1)
+	ret0, _ := ret[0].(db.EvaluationVote)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateEvaluationVote indicates an expected call of CreateEvaluationVote.
+func (mr *MockStoreMockRecorder) CreateEvaluationVote(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateEvaluationVote", reflect.TypeOf((*MockStore)(nil).CreateEvaluationVote), arg0, arg1)
+}
+
 // CreateSession mocks base method.
 func (m *MockStore) CreateSession(arg0 context.Context, arg1 db.CreateSessionParams) (db.Session, error) {
 	m.ctrl.T.Helper()
@@ -155,6 +170,20 @@ func (mr *MockStoreMockRecorder) DeleteChatMessage(arg0, arg1 interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteChatMessage", reflect.TypeOf((*MockStore)(nil).DeleteChatMessage), arg0, arg1)
 }
 
+// DeleteEvaluationVote mocks base method.
+func (m *MockStore) DeleteEvaluationVote(arg0 context.Context, arg1 db.DeleteEvaluationVoteParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteEvaluationVote", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteEvaluationVote indicates an expected call of DeleteEvaluationVote.
+func (mr *MockStoreMockRecorder) DeleteEvaluationVote(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteEvaluationVote", reflect.TypeOf((*MockStore)(nil).DeleteEvaluationVote), arg0, arg1)
+}
+
 // DeleteUserPasswordReset mocks base method.
 func (m *MockStore) DeleteUserPasswordReset(arg0 context.Context, arg1 db.DeleteUserPasswordResetParams) error {
 	m.ctrl.T.Helper()
@@ -167,6 +196,21 @@ func (m *MockStore) DeleteUserPasswordReset(arg0 context.Context, arg1 db.Delete
 func (mr *MockStoreMockRecorder) DeleteUserPasswordReset(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUserPasswordReset", reflect.TypeOf((*MockStore)(nil).DeleteUserPasswordReset), arg0, arg1)
+}
+
+// GetAverageUserEvaluationsByType mocks base method.
+func (m *MockStore) GetAverageUserEvaluationsByType(arg0 context.Context, arg1 db.GetAverageUserEvaluationsByTypeParams) ([]db.GetAverageUserEvaluationsByTypeRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAverageUserEvaluationsByType", arg0, arg1)
+	ret0, _ := ret[0].([]db.GetAverageUserEvaluationsByTypeRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAverageUserEvaluationsByType indicates an expected call of GetAverageUserEvaluationsByType.
+func (mr *MockStoreMockRecorder) GetAverageUserEvaluationsByType(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAverageUserEvaluationsByType", reflect.TypeOf((*MockStore)(nil).GetAverageUserEvaluationsByType), arg0, arg1)
 }
 
 // GetChatMessage mocks base method.
@@ -197,6 +241,66 @@ func (m *MockStore) GetChatMessages(arg0 context.Context, arg1 db.GetChatMessage
 func (mr *MockStoreMockRecorder) GetChatMessages(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetChatMessages", reflect.TypeOf((*MockStore)(nil).GetChatMessages), arg0, arg1)
+}
+
+// GetEvaluationById mocks base method.
+func (m *MockStore) GetEvaluationById(arg0 context.Context, arg1 int32) (db.Evaluation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEvaluationById", arg0, arg1)
+	ret0, _ := ret[0].(db.Evaluation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEvaluationById indicates an expected call of GetEvaluationById.
+func (mr *MockStoreMockRecorder) GetEvaluationById(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEvaluationById", reflect.TypeOf((*MockStore)(nil).GetEvaluationById), arg0, arg1)
+}
+
+// GetEvaluationVoteByUserIdAndVoter mocks base method.
+func (m *MockStore) GetEvaluationVoteByUserIdAndVoter(arg0 context.Context, arg1 db.GetEvaluationVoteByUserIdAndVoterParams) (db.EvaluationVote, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEvaluationVoteByUserIdAndVoter", arg0, arg1)
+	ret0, _ := ret[0].(db.EvaluationVote)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEvaluationVoteByUserIdAndVoter indicates an expected call of GetEvaluationVoteByUserIdAndVoter.
+func (mr *MockStoreMockRecorder) GetEvaluationVoteByUserIdAndVoter(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEvaluationVoteByUserIdAndVoter", reflect.TypeOf((*MockStore)(nil).GetEvaluationVoteByUserIdAndVoter), arg0, arg1)
+}
+
+// GetEvaluationVotesByUserId mocks base method.
+func (m *MockStore) GetEvaluationVotesByUserId(arg0 context.Context, arg1 int32) ([]db.EvaluationVote, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEvaluationVotesByUserId", arg0, arg1)
+	ret0, _ := ret[0].([]db.EvaluationVote)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEvaluationVotesByUserId indicates an expected call of GetEvaluationVotesByUserId.
+func (mr *MockStoreMockRecorder) GetEvaluationVotesByUserId(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEvaluationVotesByUserId", reflect.TypeOf((*MockStore)(nil).GetEvaluationVotesByUserId), arg0, arg1)
+}
+
+// GetEvaluationsByType mocks base method.
+func (m *MockStore) GetEvaluationsByType(arg0 context.Context, arg1 db.EvaluationType) ([]db.Evaluation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEvaluationsByType", arg0, arg1)
+	ret0, _ := ret[0].([]db.Evaluation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEvaluationsByType indicates an expected call of GetEvaluationsByType.
+func (mr *MockStoreMockRecorder) GetEvaluationsByType(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEvaluationsByType", reflect.TypeOf((*MockStore)(nil).GetEvaluationsByType), arg0, arg1)
 }
 
 // GetSession mocks base method.
@@ -361,6 +465,21 @@ func (m *MockStore) ResetPasswordVerifyTx(arg0 context.Context, arg1 db.ResetPas
 func (mr *MockStoreMockRecorder) ResetPasswordVerifyTx(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ResetPasswordVerifyTx", reflect.TypeOf((*MockStore)(nil).ResetPasswordVerifyTx), arg0, arg1)
+}
+
+// UpdateEvaluationVote mocks base method.
+func (m *MockStore) UpdateEvaluationVote(arg0 context.Context, arg1 db.UpdateEvaluationVoteParams) (db.EvaluationVote, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateEvaluationVote", arg0, arg1)
+	ret0, _ := ret[0].(db.EvaluationVote)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateEvaluationVote indicates an expected call of UpdateEvaluationVote.
+func (mr *MockStoreMockRecorder) UpdateEvaluationVote(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateEvaluationVote", reflect.TypeOf((*MockStore)(nil).UpdateEvaluationVote), arg0, arg1)
 }
 
 // UpdateUser mocks base method.

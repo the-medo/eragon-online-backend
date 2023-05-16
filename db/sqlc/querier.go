@@ -14,13 +14,20 @@ type Querier interface {
 	AddChatMessage(ctx context.Context, arg AddChatMessageParams) (Chat, error)
 	AddUserPasswordReset(ctx context.Context, arg AddUserPasswordResetParams) (UserPasswordReset, error)
 	AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error)
+	CreateEvaluationVote(ctx context.Context, arg CreateEvaluationVoteParams) (EvaluationVote, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
 	DeleteChatMessage(ctx context.Context, id int64) error
+	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
+	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
 	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
+	GetEvaluationById(ctx context.Context, evaluationID int32) (Evaluation, error)
+	GetEvaluationVoteByUserIdAndVoter(ctx context.Context, arg GetEvaluationVoteByUserIdAndVoterParams) (EvaluationVote, error)
+	GetEvaluationVotesByUserId(ctx context.Context, userID int32) ([]EvaluationVote, error)
+	GetEvaluationsByType(ctx context.Context, evaluationType EvaluationType) ([]Evaluation, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserById(ctx context.Context, id int32) (User, error)
@@ -30,6 +37,7 @@ type Querier interface {
 	GetUsers(ctx context.Context, arg GetUsersParams) ([]User, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
+	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)
 }

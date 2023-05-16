@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS evaluation_votes_unique_index;

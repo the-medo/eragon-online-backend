@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-05-16T08:27:18.892Z
+-- Generated at: 2023-05-16T18:13:47.688Z
 
 CREATE TYPE "evaluation_type" AS ENUM (
   'self',
@@ -185,6 +185,8 @@ CREATE TABLE "character_skills" (
   "skill_id" int NOT NULL,
   "skill_level" int NOT NULL
 );
+
+CREATE UNIQUE INDEX ON "evaluation_votes" ("evaluation_id", "user_id", "user_id_voter");
 
 CREATE UNIQUE INDEX ON "user_roles" ("role_id", "user_id");
 

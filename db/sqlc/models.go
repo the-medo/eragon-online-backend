@@ -6,10 +6,54 @@ package db
 
 import (
 	"database/sql"
+	"database/sql/driver"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
 )
+
+type EvaluationType string
+
+const (
+	EvaluationTypeSelf EvaluationType = "self"
+	EvaluationTypeDm   EvaluationType = "dm"
+)
+
+func (e *EvaluationType) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = EvaluationType(s)
+	case string:
+		*e = EvaluationType(s)
+	default:
+		return fmt.Errorf("unsupported scan type for EvaluationType: %T", src)
+	}
+	return nil
+}
+
+type NullEvaluationType struct {
+	EvaluationType EvaluationType
+	Valid          bool // Valid is true if EvaluationType is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullEvaluationType) Scan(value interface{}) error {
+	if value == nil {
+		ns.EvaluationType, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.EvaluationType.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullEvaluationType) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.EvaluationType), nil
+}
 
 type Character struct {
 	ID             int32         `json:"id"`
@@ -42,6 +86,21 @@ type Chat struct {
 	UserID    int32     `json:"user_id"`
 	Text      string    `json:"text"`
 	CreatedAt time.Time `json:"created_at"`
+}
+
+type Evaluation struct {
+	ID             int32          `json:"id"`
+	Name           string         `json:"name"`
+	Description    string         `json:"description"`
+	EvaluationType EvaluationType `json:"evaluation_type"`
+}
+
+type EvaluationVote struct {
+	EvaluationID int32     `json:"evaluation_id"`
+	UserID       int32     `json:"user_id"`
+	UserIDVoter  int32     `json:"user_id_voter"`
+	Value        int32     `json:"value"`
+	CreatedAt    time.Time `json:"created_at"`
 }
 
 type Image struct {

@@ -60,6 +60,10 @@ Table evaluation_votes {
   user_id_voter int [not null, ref: > users.id]
   value int [not null]
   created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (evaluation_id, user_id, user_id_voter) [unique]
+  }
 }
 
 Table user_password_reset {

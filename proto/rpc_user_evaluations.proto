@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+// ====================  Types  ====================
+
+enum EvaluationType {
+  self = 0;
+  dm = 1;
+}
+
+message Evaluation {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  EvaluationType type = 4;
+}
+
+message EvaluationVote {
+  int32 evaluation_id = 1;
+  int32 user_id = 2;
+  int32 user_id_voter = 3;
+  int32 value = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+message AverageEvaluationVote {
+  int32 evaluation_id = 1;
+  int32 user_id = 2;
+  string name = 3;
+  string description = 4;
+  EvaluationType type = 5;
+  float average = 6;
+}
+
+
+// ==================== Requests and Responses ====================
+
+// Evaluation by id
+message GetEvaluationByIdRequest {
+  int32 id = 1;
+}
+
+message GetEvaluationByIdResponse {
+  Evaluation evaluation = 1;
+}
+
+// Evaluations by type
+message GetEvaluationsByTypeRequest {
+  EvaluationType type = 1;
+}
+
+message GetEvaluationsByTypeResponse {
+  repeated Evaluation evaluation = 1;
+}
+
+// Create or update evaluation
+message CreateOrUpdateEvaluationVoteRequest {
+  int32 evaluation_id = 1;
+  int32 user_id = 2;
+  int32 user_id_voter = 3;
+  int32 value = 4;
+}
+
+message CreateOrUpdateEvaluationVoteResponse {
+  EvaluationVote evaluation_vote = 1;
+}
+
+// Get evaluation votes by user id
+message GetEvaluationVotesByUserIdRequest {
+  int32 user_id = 1;
+}
+
+message GetEvaluationVotesByUserIdResponse {
+  repeated EvaluationVote evaluation_vote = 1;
+}
+
+// Get evaluation votes by user id and voter
+message GetEvaluationVotesByUserIdAndVoterRequest {
+  int32 user_id = 1;
+  int32 user_id_voter = 2;
+}
+
+message GetEvaluationVotesByUserIdAndVoterResponse {
+  repeated EvaluationVote evaluation_vote = 1;
+}
+
+// Delete evaluation vote
+message DeleteEvaluationVoteRequest {
+  int32 evaluation_id = 1;
+  int32 user_id = 2;
+  int32 user_id_voter = 3;
+}
+
+message DeleteEvaluationVoteResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Get average user evaluations by type
+message GetAverageUserEvaluationsByTypeRequest {
+  int32 user_id = 1;
+  EvaluationType type = 2;
+}
+
+message GetAverageUserEvaluationsByTypeResponse {
+  repeated AverageEvaluationVote average_evaluation_vote = 1;
+}
