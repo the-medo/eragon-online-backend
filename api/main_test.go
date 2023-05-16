@@ -57,3 +57,17 @@ func newContextWithBearerToken(t *testing.T, tokenMaker token.Maker, userId int3
 
 	return metadata.NewIncomingContext(context.Background(), md)
 }
+
+func newContextWithCookie(t *testing.T, tokenMaker token.Maker, userId int32, duration time.Duration) context.Context {
+	accessToken, _, err := tokenMaker.CreateToken(userId, duration)
+	require.NoError(t, err)
+
+	cookie := fmt.Sprintf("%s=%s", cookieName, accessToken)
+	md := metadata.MD{
+		grpcCookieHeader: []string{
+			cookie,
+		},
+	}
+
+	return metadata.NewIncomingContext(context.Background(), md)
+}

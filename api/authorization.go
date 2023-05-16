@@ -11,6 +11,8 @@ import (
 const (
 	authorizationHeader = "authorization"
 	authorizationBearer = "bearer"
+	grpcCookieHeader    = "grpc-gateway-cookie"
+	cookieName          = "access_token"
 )
 
 func (server *Server) authorizeUser(ctx context.Context) (*token.Payload, error) {
@@ -45,17 +47,13 @@ func (server *Server) authorizeUser(ctx context.Context) (*token.Payload, error)
 	return payload, nil
 }
 
-const (
-	cookieName = "access_token"
-)
-
 func (server *Server) authorizeUserCookie(ctx context.Context) (*token.Payload, error) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return nil, fmt.Errorf("missing metadata")
 	}
 
-	cookieHeaders := md.Get("grpc-gateway-cookie")
+	cookieHeaders := md.Get(grpcCookieHeader)
 	if len(cookieHeaders) == 0 {
 		return nil, fmt.Errorf("missing cookie header")
 	}
