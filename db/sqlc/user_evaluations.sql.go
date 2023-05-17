@@ -144,6 +144,29 @@ func (q *Queries) GetEvaluationById(ctx context.Context, evaluationID int32) (Ev
 	return i, err
 }
 
+const getEvaluationVoteByEvaluationIdUserIdAndVoter = `-- name: GetEvaluationVoteByEvaluationIdUserIdAndVoter :one
+SELECT evaluation_id, user_id, user_id_voter, value, created_at FROM evaluation_votes WHERE evaluation_id = $1 AND user_id = $2 AND user_id_voter = $3
+`
+
+type GetEvaluationVoteByEvaluationIdUserIdAndVoterParams struct {
+	EvaluationID int32 `json:"evaluation_id"`
+	UserID       int32 `json:"user_id"`
+	UserIDVoter  int32 `json:"user_id_voter"`
+}
+
+func (q *Queries) GetEvaluationVoteByEvaluationIdUserIdAndVoter(ctx context.Context, arg GetEvaluationVoteByEvaluationIdUserIdAndVoterParams) (EvaluationVote, error) {
+	row := q.db.QueryRowContext(ctx, getEvaluationVoteByEvaluationIdUserIdAndVoter, arg.EvaluationID, arg.UserID, arg.UserIDVoter)
+	var i EvaluationVote
+	err := row.Scan(
+		&i.EvaluationID,
+		&i.UserID,
+		&i.UserIDVoter,
+		&i.Value,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const getEvaluationVoteByUserIdAndVoter = `-- name: GetEvaluationVoteByUserIdAndVoter :one
 SELECT evaluation_id, user_id, user_id_voter, value, created_at FROM evaluation_votes WHERE user_id = $1 AND user_id_voter = $2
 `

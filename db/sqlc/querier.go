@@ -25,6 +25,7 @@ type Querier interface {
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
 	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
 	GetEvaluationById(ctx context.Context, evaluationID int32) (Evaluation, error)
+	GetEvaluationVoteByEvaluationIdUserIdAndVoter(ctx context.Context, arg GetEvaluationVoteByEvaluationIdUserIdAndVoterParams) (EvaluationVote, error)
 	GetEvaluationVoteByUserIdAndVoter(ctx context.Context, arg GetEvaluationVoteByUserIdAndVoterParams) (EvaluationVote, error)
 	GetEvaluationVotesByUserId(ctx context.Context, userID int32) ([]EvaluationVote, error)
 	GetEvaluationsByType(ctx context.Context, evaluationType EvaluationType) ([]Evaluation, error)

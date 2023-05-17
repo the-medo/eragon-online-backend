@@ -22,6 +22,9 @@ SELECT * FROM evaluation_votes WHERE user_id = @user_id;
 -- name: GetEvaluationVoteByUserIdAndVoter :one
 SELECT * FROM evaluation_votes WHERE user_id = @user_id AND user_id_voter = @user_id_voter;
 
+-- name: GetEvaluationVoteByEvaluationIdUserIdAndVoter :one
+SELECT * FROM evaluation_votes WHERE evaluation_id = @evaluation_id AND user_id = @user_id AND user_id_voter = @user_id_voter;
+
 -- name: UpdateEvaluationVote :one
 UPDATE evaluation_votes
 SET
