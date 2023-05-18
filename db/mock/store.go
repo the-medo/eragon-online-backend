@@ -273,21 +273,6 @@ func (mr *MockStoreMockRecorder) GetEvaluationVoteByEvaluationIdUserIdAndVoter(a
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEvaluationVoteByEvaluationIdUserIdAndVoter", reflect.TypeOf((*MockStore)(nil).GetEvaluationVoteByEvaluationIdUserIdAndVoter), arg0, arg1)
 }
 
-// GetEvaluationVoteByUserIdAndVoter mocks base method.
-func (m *MockStore) GetEvaluationVoteByUserIdAndVoter(arg0 context.Context, arg1 db.GetEvaluationVoteByUserIdAndVoterParams) (db.EvaluationVote, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetEvaluationVoteByUserIdAndVoter", arg0, arg1)
-	ret0, _ := ret[0].(db.EvaluationVote)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetEvaluationVoteByUserIdAndVoter indicates an expected call of GetEvaluationVoteByUserIdAndVoter.
-func (mr *MockStoreMockRecorder) GetEvaluationVoteByUserIdAndVoter(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEvaluationVoteByUserIdAndVoter", reflect.TypeOf((*MockStore)(nil).GetEvaluationVoteByUserIdAndVoter), arg0, arg1)
-}
-
 // GetEvaluationVotesByUserId mocks base method.
 func (m *MockStore) GetEvaluationVotesByUserId(arg0 context.Context, arg1 int32) ([]db.EvaluationVote, error) {
 	m.ctrl.T.Helper()
@@ -301,6 +286,21 @@ func (m *MockStore) GetEvaluationVotesByUserId(arg0 context.Context, arg1 int32)
 func (mr *MockStoreMockRecorder) GetEvaluationVotesByUserId(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEvaluationVotesByUserId", reflect.TypeOf((*MockStore)(nil).GetEvaluationVotesByUserId), arg0, arg1)
+}
+
+// GetEvaluationVotesByUserIdAndVoter mocks base method.
+func (m *MockStore) GetEvaluationVotesByUserIdAndVoter(arg0 context.Context, arg1 db.GetEvaluationVotesByUserIdAndVoterParams) ([]db.EvaluationVote, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEvaluationVotesByUserIdAndVoter", arg0, arg1)
+	ret0, _ := ret[0].([]db.EvaluationVote)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEvaluationVotesByUserIdAndVoter indicates an expected call of GetEvaluationVotesByUserIdAndVoter.
+func (mr *MockStoreMockRecorder) GetEvaluationVotesByUserIdAndVoter(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEvaluationVotesByUserIdAndVoter", reflect.TypeOf((*MockStore)(nil).GetEvaluationVotesByUserIdAndVoter), arg0, arg1)
 }
 
 // GetEvaluationsByType mocks base method.

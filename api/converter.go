@@ -34,3 +34,15 @@ func convertChatMessage(msg db.GetChatMessagesRow) *pb.ChatMessage {
 
 	return pbMessage
 }
+
+func convertEvaluationVote(evaluationVote db.EvaluationVote) *pb.EvaluationVote {
+	pbEvaluationVote := &pb.EvaluationVote{
+		EvaluationId: evaluationVote.EvaluationID,
+		UserId:       evaluationVote.UserID,
+		UserIdVoter:  evaluationVote.UserIDVoter,
+		Value:        evaluationVote.Value,
+		CreatedAt:    timestamppb.New(evaluationVote.CreatedAt),
+	}
+
+	return pbEvaluationVote
+}

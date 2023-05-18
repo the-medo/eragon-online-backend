@@ -19,7 +19,7 @@ RETURNING *;
 -- name: GetEvaluationVotesByUserId :many
 SELECT * FROM evaluation_votes WHERE user_id = @user_id;
 
--- name: GetEvaluationVoteByUserIdAndVoter :one
+-- name: GetEvaluationVotesByUserIdAndVoter :many
 SELECT * FROM evaluation_votes WHERE user_id = @user_id AND user_id_voter = @user_id_voter;
 
 -- name: GetEvaluationVoteByEvaluationIdUserIdAndVoter :one

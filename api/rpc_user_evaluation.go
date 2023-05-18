@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"math"
 )
 
 func StringToEvaluationType(value string) (pb.EvaluationType, error) {
@@ -124,6 +125,99 @@ func (server *Server) CreateOrUpdateEvaluationVote(ctx context.Context, req *pb.
 			UserIdVoter:  evaluationVoteNew.UserIDVoter,
 			Value:        evaluationVoteNew.Value,
 			CreatedAt:    timestamppb.New(evaluationVoteNew.CreatedAt),
+		}
+	}
+
+	return rsp, nil
+}
+
+func (server *Server) GetEvaluationVotesByUserId(ctx context.Context, req *pb.GetEvaluationVotesByUserIdRequest) (*pb.GetEvaluationVotesByUserIdResponse, error) {
+	evaluationVotes, err := server.store.GetEvaluationVotesByUserId(ctx, req.GetUserId())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get evaluation votes : %v", err)
+	}
+
+	rsp := &pb.GetEvaluationVotesByUserIdResponse{
+		EvaluationVote: make([]*pb.EvaluationVote, len(evaluationVotes)),
+	}
+
+	for i, evaluationVote := range evaluationVotes {
+		rsp.EvaluationVote[i] = convertEvaluationVote(evaluationVote)
+	}
+	return rsp, nil
+}
+
+func (server *Server) GetEvaluationVotesByUserIdAndVoter(ctx context.Context, req *pb.GetEvaluationVotesByUserIdAndVoterRequest) (*pb.GetEvaluationVotesByUserIdAndVoterResponse, error) {
+	arg := db.GetEvaluationVotesByUserIdAndVoterParams{
+		UserID:      req.GetUserId(),
+		UserIDVoter: req.GetUserIdVoter(),
+	}
+
+	evaluationVotes, err := server.store.GetEvaluationVotesByUserIdAndVoter(ctx, arg)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get evaluation votes : %v", err)
+	}
+
+	rsp := &pb.GetEvaluationVotesByUserIdAndVoterResponse{
+		EvaluationVote: make([]*pb.EvaluationVote, len(evaluationVotes)),
+	}
+
+	for i, evaluationVote := range evaluationVotes {
+		rsp.EvaluationVote[i] = convertEvaluationVote(evaluationVote)
+	}
+	return rsp, nil
+}
+
+func (server *Server) DeleteEvaluationVote(ctx context.Context, req *pb.DeleteEvaluationVoteRequest) (*pb.DeleteEvaluationVoteResponse, error) {
+	arg := db.DeleteEvaluationVoteParams{
+		EvaluationID: req.GetEvaluationId(),
+		UserID:       req.GetUserId(),
+		UserIDVoter:  req.GetUserIdVoter(),
+	}
+
+	err := server.store.DeleteEvaluationVote(ctx, arg)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get evaluation votes : %v", err)
+	}
+
+	rsp := &pb.DeleteEvaluationVoteResponse{
+		Success: true,
+		Message: "Evaluation vote deleted successfully",
+	}
+
+	return rsp, nil
+}
+
+func (server *Server) GetAverageUserEvaluationsByType(ctx context.Context, req *pb.GetAverageUserEvaluationsByTypeRequest) (*pb.GetAverageUserEvaluationsByTypeResponse, error) {
+	evaluationType := db.EvaluationType(req.GetType())
+
+	arg := db.GetAverageUserEvaluationsByTypeParams{
+		UserID:         req.GetUserId(),
+		EvaluationType: evaluationType,
+	}
+
+	avgEvaluationVotes, err := server.store.GetAverageUserEvaluationsByType(ctx, arg)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get evaluation averages: %v", err)
+	}
+
+	rsp := &pb.GetAverageUserEvaluationsByTypeResponse{
+		AverageEvaluationVote: make([]*pb.AverageEvaluationVote, len(avgEvaluationVotes)),
+	}
+
+	for i, e := range avgEvaluationVotes {
+		evaluationType, err := StringToEvaluationType(string(e.EvaluationType))
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to convert evaluation type: %v", err)
+		}
+
+		rsp.AverageEvaluationVote[i] = &pb.AverageEvaluationVote{
+			EvaluationId: e.EvaluationID,
+			UserId:       e.UserID,
+			Name:         e.Name,
+			Description:  e.Description,
+			Type:         evaluationType,
+			Average:      float32(math.Round(e.AvgValue*100) / 100),
 		}
 	}
 

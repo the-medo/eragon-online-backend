@@ -167,34 +167,50 @@ func (q *Queries) GetEvaluationVoteByEvaluationIdUserIdAndVoter(ctx context.Cont
 	return i, err
 }
 
-const getEvaluationVoteByUserIdAndVoter = `-- name: GetEvaluationVoteByUserIdAndVoter :one
-SELECT evaluation_id, user_id, user_id_voter, value, created_at FROM evaluation_votes WHERE user_id = $1 AND user_id_voter = $2
-`
-
-type GetEvaluationVoteByUserIdAndVoterParams struct {
-	UserID      int32 `json:"user_id"`
-	UserIDVoter int32 `json:"user_id_voter"`
-}
-
-func (q *Queries) GetEvaluationVoteByUserIdAndVoter(ctx context.Context, arg GetEvaluationVoteByUserIdAndVoterParams) (EvaluationVote, error) {
-	row := q.db.QueryRowContext(ctx, getEvaluationVoteByUserIdAndVoter, arg.UserID, arg.UserIDVoter)
-	var i EvaluationVote
-	err := row.Scan(
-		&i.EvaluationID,
-		&i.UserID,
-		&i.UserIDVoter,
-		&i.Value,
-		&i.CreatedAt,
-	)
-	return i, err
-}
-
 const getEvaluationVotesByUserId = `-- name: GetEvaluationVotesByUserId :many
 SELECT evaluation_id, user_id, user_id_voter, value, created_at FROM evaluation_votes WHERE user_id = $1
 `
 
 func (q *Queries) GetEvaluationVotesByUserId(ctx context.Context, userID int32) ([]EvaluationVote, error) {
 	rows, err := q.db.QueryContext(ctx, getEvaluationVotesByUserId, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []EvaluationVote{}
+	for rows.Next() {
+		var i EvaluationVote
+		if err := rows.Scan(
+			&i.EvaluationID,
+			&i.UserID,
+			&i.UserIDVoter,
+			&i.Value,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getEvaluationVotesByUserIdAndVoter = `-- name: GetEvaluationVotesByUserIdAndVoter :many
+SELECT evaluation_id, user_id, user_id_voter, value, created_at FROM evaluation_votes WHERE user_id = $1 AND user_id_voter = $2
+`
+
+type GetEvaluationVotesByUserIdAndVoterParams struct {
+	UserID      int32 `json:"user_id"`
+	UserIDVoter int32 `json:"user_id_voter"`
+}
+
+func (q *Queries) GetEvaluationVotesByUserIdAndVoter(ctx context.Context, arg GetEvaluationVotesByUserIdAndVoterParams) ([]EvaluationVote, error) {
+	rows, err := q.db.QueryContext(ctx, getEvaluationVotesByUserIdAndVoter, arg.UserID, arg.UserIDVoter)
 	if err != nil {
 		return nil, err
 	}
