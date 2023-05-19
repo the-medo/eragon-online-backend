@@ -20,21 +20,28 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Talebound_GetUserRoles_FullMethodName                    = "/pb.Talebound/GetUserRoles"
-	Talebound_AddRoleToUser_FullMethodName                   = "/pb.Talebound/AddRoleToUser"
-	Talebound_RemoveRoleFromUser_FullMethodName              = "/pb.Talebound/RemoveRoleFromUser"
-	Talebound_GetChatMessages_FullMethodName                 = "/pb.Talebound/GetChatMessages"
-	Talebound_AddChatMessage_FullMethodName                  = "/pb.Talebound/AddChatMessage"
-	Talebound_DeleteChatMessage_FullMethodName               = "/pb.Talebound/DeleteChatMessage"
-	Talebound_GetUsers_FullMethodName                        = "/pb.Talebound/GetUsers"
-	Talebound_CreateUser_FullMethodName                      = "/pb.Talebound/CreateUser"
-	Talebound_UpdateUser_FullMethodName                      = "/pb.Talebound/UpdateUser"
-	Talebound_LoginUser_FullMethodName                       = "/pb.Talebound/LoginUser"
-	Talebound_LogoutUser_FullMethodName                      = "/pb.Talebound/LogoutUser"
-	Talebound_ResetPasswordSendCode_FullMethodName           = "/pb.Talebound/ResetPasswordSendCode"
-	Talebound_ResetPasswordVerifyCode_FullMethodName         = "/pb.Talebound/ResetPasswordVerifyCode"
-	Talebound_ResetPasswordVerifyCodeValidity_FullMethodName = "/pb.Talebound/ResetPasswordVerifyCodeValidity"
-	Talebound_VerifyEmail_FullMethodName                     = "/pb.Talebound/VerifyEmail"
+	Talebound_GetUserRoles_FullMethodName                       = "/pb.Talebound/GetUserRoles"
+	Talebound_AddRoleToUser_FullMethodName                      = "/pb.Talebound/AddRoleToUser"
+	Talebound_RemoveRoleFromUser_FullMethodName                 = "/pb.Talebound/RemoveRoleFromUser"
+	Talebound_GetChatMessages_FullMethodName                    = "/pb.Talebound/GetChatMessages"
+	Talebound_AddChatMessage_FullMethodName                     = "/pb.Talebound/AddChatMessage"
+	Talebound_DeleteChatMessage_FullMethodName                  = "/pb.Talebound/DeleteChatMessage"
+	Talebound_GetUsers_FullMethodName                           = "/pb.Talebound/GetUsers"
+	Talebound_CreateUser_FullMethodName                         = "/pb.Talebound/CreateUser"
+	Talebound_UpdateUser_FullMethodName                         = "/pb.Talebound/UpdateUser"
+	Talebound_LoginUser_FullMethodName                          = "/pb.Talebound/LoginUser"
+	Talebound_LogoutUser_FullMethodName                         = "/pb.Talebound/LogoutUser"
+	Talebound_ResetPasswordSendCode_FullMethodName              = "/pb.Talebound/ResetPasswordSendCode"
+	Talebound_ResetPasswordVerifyCode_FullMethodName            = "/pb.Talebound/ResetPasswordVerifyCode"
+	Talebound_ResetPasswordVerifyCodeValidity_FullMethodName    = "/pb.Talebound/ResetPasswordVerifyCodeValidity"
+	Talebound_VerifyEmail_FullMethodName                        = "/pb.Talebound/VerifyEmail"
+	Talebound_GetEvaluationById_FullMethodName                  = "/pb.Talebound/GetEvaluationById"
+	Talebound_GetEvaluationsByType_FullMethodName               = "/pb.Talebound/GetEvaluationsByType"
+	Talebound_CreateOrUpdateEvaluationVote_FullMethodName       = "/pb.Talebound/CreateOrUpdateEvaluationVote"
+	Talebound_GetEvaluationVotesByUserId_FullMethodName         = "/pb.Talebound/GetEvaluationVotesByUserId"
+	Talebound_GetEvaluationVotesByUserIdAndVoter_FullMethodName = "/pb.Talebound/GetEvaluationVotesByUserIdAndVoter"
+	Talebound_DeleteEvaluationVote_FullMethodName               = "/pb.Talebound/DeleteEvaluationVote"
+	Talebound_GetAverageUserEvaluationsByType_FullMethodName    = "/pb.Talebound/GetAverageUserEvaluationsByType"
 )
 
 // TaleboundClient is the client API for Talebound service.
@@ -59,6 +66,14 @@ type TaleboundClient interface {
 	ResetPasswordVerifyCodeValidity(ctx context.Context, in *ResetPasswordVerifyCodeValidityRequest, opts ...grpc.CallOption) (*ResetPasswordVerifyCodeValidityResponse, error)
 	// ============= VERIFY =================
 	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error)
+	// ============= USER EVALUATION =================
+	GetEvaluationById(ctx context.Context, in *GetEvaluationByIdRequest, opts ...grpc.CallOption) (*GetEvaluationByIdResponse, error)
+	GetEvaluationsByType(ctx context.Context, in *GetEvaluationsByTypeRequest, opts ...grpc.CallOption) (*GetEvaluationsByTypeResponse, error)
+	CreateOrUpdateEvaluationVote(ctx context.Context, in *CreateOrUpdateEvaluationVoteRequest, opts ...grpc.CallOption) (*CreateOrUpdateEvaluationVoteResponse, error)
+	GetEvaluationVotesByUserId(ctx context.Context, in *GetEvaluationVotesByUserIdRequest, opts ...grpc.CallOption) (*GetEvaluationVotesByUserIdResponse, error)
+	GetEvaluationVotesByUserIdAndVoter(ctx context.Context, in *GetEvaluationVotesByUserIdAndVoterRequest, opts ...grpc.CallOption) (*GetEvaluationVotesByUserIdAndVoterResponse, error)
+	DeleteEvaluationVote(ctx context.Context, in *DeleteEvaluationVoteRequest, opts ...grpc.CallOption) (*DeleteEvaluationVoteResponse, error)
+	GetAverageUserEvaluationsByType(ctx context.Context, in *GetAverageUserEvaluationsByTypeRequest, opts ...grpc.CallOption) (*GetAverageUserEvaluationsByTypeResponse, error)
 }
 
 type taleboundClient struct {
@@ -204,6 +219,69 @@ func (c *taleboundClient) VerifyEmail(ctx context.Context, in *VerifyEmailReques
 	return out, nil
 }
 
+func (c *taleboundClient) GetEvaluationById(ctx context.Context, in *GetEvaluationByIdRequest, opts ...grpc.CallOption) (*GetEvaluationByIdResponse, error) {
+	out := new(GetEvaluationByIdResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetEvaluationById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetEvaluationsByType(ctx context.Context, in *GetEvaluationsByTypeRequest, opts ...grpc.CallOption) (*GetEvaluationsByTypeResponse, error) {
+	out := new(GetEvaluationsByTypeResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetEvaluationsByType_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) CreateOrUpdateEvaluationVote(ctx context.Context, in *CreateOrUpdateEvaluationVoteRequest, opts ...grpc.CallOption) (*CreateOrUpdateEvaluationVoteResponse, error) {
+	out := new(CreateOrUpdateEvaluationVoteResponse)
+	err := c.cc.Invoke(ctx, Talebound_CreateOrUpdateEvaluationVote_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetEvaluationVotesByUserId(ctx context.Context, in *GetEvaluationVotesByUserIdRequest, opts ...grpc.CallOption) (*GetEvaluationVotesByUserIdResponse, error) {
+	out := new(GetEvaluationVotesByUserIdResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetEvaluationVotesByUserId_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetEvaluationVotesByUserIdAndVoter(ctx context.Context, in *GetEvaluationVotesByUserIdAndVoterRequest, opts ...grpc.CallOption) (*GetEvaluationVotesByUserIdAndVoterResponse, error) {
+	out := new(GetEvaluationVotesByUserIdAndVoterResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetEvaluationVotesByUserIdAndVoter_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) DeleteEvaluationVote(ctx context.Context, in *DeleteEvaluationVoteRequest, opts ...grpc.CallOption) (*DeleteEvaluationVoteResponse, error) {
+	out := new(DeleteEvaluationVoteResponse)
+	err := c.cc.Invoke(ctx, Talebound_DeleteEvaluationVote_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetAverageUserEvaluationsByType(ctx context.Context, in *GetAverageUserEvaluationsByTypeRequest, opts ...grpc.CallOption) (*GetAverageUserEvaluationsByTypeResponse, error) {
+	out := new(GetAverageUserEvaluationsByTypeResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetAverageUserEvaluationsByType_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TaleboundServer is the server API for Talebound service.
 // All implementations must embed UnimplementedTaleboundServer
 // for forward compatibility
@@ -226,6 +304,14 @@ type TaleboundServer interface {
 	ResetPasswordVerifyCodeValidity(context.Context, *ResetPasswordVerifyCodeValidityRequest) (*ResetPasswordVerifyCodeValidityResponse, error)
 	// ============= VERIFY =================
 	VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error)
+	// ============= USER EVALUATION =================
+	GetEvaluationById(context.Context, *GetEvaluationByIdRequest) (*GetEvaluationByIdResponse, error)
+	GetEvaluationsByType(context.Context, *GetEvaluationsByTypeRequest) (*GetEvaluationsByTypeResponse, error)
+	CreateOrUpdateEvaluationVote(context.Context, *CreateOrUpdateEvaluationVoteRequest) (*CreateOrUpdateEvaluationVoteResponse, error)
+	GetEvaluationVotesByUserId(context.Context, *GetEvaluationVotesByUserIdRequest) (*GetEvaluationVotesByUserIdResponse, error)
+	GetEvaluationVotesByUserIdAndVoter(context.Context, *GetEvaluationVotesByUserIdAndVoterRequest) (*GetEvaluationVotesByUserIdAndVoterResponse, error)
+	DeleteEvaluationVote(context.Context, *DeleteEvaluationVoteRequest) (*DeleteEvaluationVoteResponse, error)
+	GetAverageUserEvaluationsByType(context.Context, *GetAverageUserEvaluationsByTypeRequest) (*GetAverageUserEvaluationsByTypeResponse, error)
 	mustEmbedUnimplementedTaleboundServer()
 }
 
@@ -277,6 +363,27 @@ func (UnimplementedTaleboundServer) ResetPasswordVerifyCodeValidity(context.Cont
 }
 func (UnimplementedTaleboundServer) VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyEmail not implemented")
+}
+func (UnimplementedTaleboundServer) GetEvaluationById(context.Context, *GetEvaluationByIdRequest) (*GetEvaluationByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEvaluationById not implemented")
+}
+func (UnimplementedTaleboundServer) GetEvaluationsByType(context.Context, *GetEvaluationsByTypeRequest) (*GetEvaluationsByTypeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEvaluationsByType not implemented")
+}
+func (UnimplementedTaleboundServer) CreateOrUpdateEvaluationVote(context.Context, *CreateOrUpdateEvaluationVoteRequest) (*CreateOrUpdateEvaluationVoteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOrUpdateEvaluationVote not implemented")
+}
+func (UnimplementedTaleboundServer) GetEvaluationVotesByUserId(context.Context, *GetEvaluationVotesByUserIdRequest) (*GetEvaluationVotesByUserIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEvaluationVotesByUserId not implemented")
+}
+func (UnimplementedTaleboundServer) GetEvaluationVotesByUserIdAndVoter(context.Context, *GetEvaluationVotesByUserIdAndVoterRequest) (*GetEvaluationVotesByUserIdAndVoterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEvaluationVotesByUserIdAndVoter not implemented")
+}
+func (UnimplementedTaleboundServer) DeleteEvaluationVote(context.Context, *DeleteEvaluationVoteRequest) (*DeleteEvaluationVoteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteEvaluationVote not implemented")
+}
+func (UnimplementedTaleboundServer) GetAverageUserEvaluationsByType(context.Context, *GetAverageUserEvaluationsByTypeRequest) (*GetAverageUserEvaluationsByTypeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAverageUserEvaluationsByType not implemented")
 }
 func (UnimplementedTaleboundServer) mustEmbedUnimplementedTaleboundServer() {}
 
@@ -561,6 +668,132 @@ func _Talebound_VerifyEmail_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_GetEvaluationById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEvaluationByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetEvaluationById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetEvaluationById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetEvaluationById(ctx, req.(*GetEvaluationByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetEvaluationsByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEvaluationsByTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetEvaluationsByType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetEvaluationsByType_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetEvaluationsByType(ctx, req.(*GetEvaluationsByTypeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_CreateOrUpdateEvaluationVote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateOrUpdateEvaluationVoteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).CreateOrUpdateEvaluationVote(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_CreateOrUpdateEvaluationVote_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).CreateOrUpdateEvaluationVote(ctx, req.(*CreateOrUpdateEvaluationVoteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetEvaluationVotesByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEvaluationVotesByUserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetEvaluationVotesByUserId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetEvaluationVotesByUserId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetEvaluationVotesByUserId(ctx, req.(*GetEvaluationVotesByUserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetEvaluationVotesByUserIdAndVoter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEvaluationVotesByUserIdAndVoterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetEvaluationVotesByUserIdAndVoter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetEvaluationVotesByUserIdAndVoter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetEvaluationVotesByUserIdAndVoter(ctx, req.(*GetEvaluationVotesByUserIdAndVoterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_DeleteEvaluationVote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteEvaluationVoteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).DeleteEvaluationVote(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_DeleteEvaluationVote_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).DeleteEvaluationVote(ctx, req.(*DeleteEvaluationVoteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetAverageUserEvaluationsByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAverageUserEvaluationsByTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetAverageUserEvaluationsByType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetAverageUserEvaluationsByType_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetAverageUserEvaluationsByType(ctx, req.(*GetAverageUserEvaluationsByTypeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Talebound_ServiceDesc is the grpc.ServiceDesc for Talebound service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -627,6 +860,34 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "VerifyEmail",
 			Handler:    _Talebound_VerifyEmail_Handler,
+		},
+		{
+			MethodName: "GetEvaluationById",
+			Handler:    _Talebound_GetEvaluationById_Handler,
+		},
+		{
+			MethodName: "GetEvaluationsByType",
+			Handler:    _Talebound_GetEvaluationsByType_Handler,
+		},
+		{
+			MethodName: "CreateOrUpdateEvaluationVote",
+			Handler:    _Talebound_CreateOrUpdateEvaluationVote_Handler,
+		},
+		{
+			MethodName: "GetEvaluationVotesByUserId",
+			Handler:    _Talebound_GetEvaluationVotesByUserId_Handler,
+		},
+		{
+			MethodName: "GetEvaluationVotesByUserIdAndVoter",
+			Handler:    _Talebound_GetEvaluationVotesByUserIdAndVoter_Handler,
+		},
+		{
+			MethodName: "DeleteEvaluationVote",
+			Handler:    _Talebound_DeleteEvaluationVote_Handler,
+		},
+		{
+			MethodName: "GetAverageUserEvaluationsByType",
+			Handler:    _Talebound_GetAverageUserEvaluationsByType_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

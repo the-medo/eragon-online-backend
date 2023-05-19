@@ -126,6 +126,74 @@
         ]
       }
     },
+    "/evaluations/id/{id}": {
+      "get": {
+        "summary": "============= USER EVALUATION =================",
+        "operationId": "Talebound_GetEvaluationById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetEvaluationByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/evaluations/type/{type}": {
+      "get": {
+        "summary": "Get evaluations by type",
+        "description": "Get evaluations by type",
+        "operationId": "Talebound_GetEvaluationsByType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetEvaluationsByTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "self",
+              "dm"
+            ]
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/users": {
       "get": {
         "summary": "Get list of users",
@@ -465,6 +533,223 @@
         ]
       }
     },
+    "/users/{userId}/evaluation-vote": {
+      "get": {
+        "summary": "Get evaluation votes by user id",
+        "description": "Get evaluation votes by user id",
+        "operationId": "Talebound_GetEvaluationVotesByUserId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetEvaluationVotesByUserIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
+      "post": {
+        "summary": "Create or update evaluation vote",
+        "description": "Create or update evaluation vote",
+        "operationId": "Talebound_CreateOrUpdateEvaluationVote",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateOrUpdateEvaluationVoteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "evaluationId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "userIdVoter": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "value": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "title": "Create or update evaluation"
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/users/{userId}/evaluation-vote/type/{type}/average": {
+      "get": {
+        "summary": "Get average user evaluation",
+        "description": "Get average user evaluation by type",
+        "operationId": "Talebound_GetAverageUserEvaluationsByType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetAverageUserEvaluationsByTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "self",
+              "dm"
+            ]
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/users/{userId}/evaluation-vote/voter/{userIdVoter}": {
+      "get": {
+        "summary": "Get evaluation votes by user id and voter",
+        "description": "Get evaluation votes by user id and voter",
+        "operationId": "Talebound_GetEvaluationVotesByUserIdAndVoter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetEvaluationVotesByUserIdAndVoterResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "userIdVoter",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/users/{userId}/evaluation-vote/{evaluationId}/voter/{userIdVoter}": {
+      "delete": {
+        "summary": "Delete evaluation vote",
+        "description": "Delete evaluation vote",
+        "operationId": "Talebound_DeleteEvaluationVote",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbDeleteEvaluationVoteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "userIdVoter",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/users/{userId}/roles/{roleId}": {
       "delete": {
         "summary": "Remove role from user",
@@ -586,6 +871,32 @@
         }
       }
     },
+    "pbAverageEvaluationVote": {
+      "type": "object",
+      "properties": {
+        "evaluationId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/pbEvaluationType"
+        },
+        "average": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
     "pbChatMessage": {
       "type": "object",
       "properties": {
@@ -606,6 +917,14 @@
         "createdAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbCreateOrUpdateEvaluationVoteResponse": {
+      "type": "object",
+      "properties": {
+        "evaluationVote": {
+          "$ref": "#/definitions/pbEvaluationVote"
         }
       }
     },
@@ -642,6 +961,80 @@
         }
       }
     },
+    "pbDeleteEvaluationVoteResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "pbEvaluation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/pbEvaluationType"
+        }
+      }
+    },
+    "pbEvaluationType": {
+      "type": "string",
+      "enum": [
+        "self",
+        "dm"
+      ],
+      "default": "self"
+    },
+    "pbEvaluationVote": {
+      "type": "object",
+      "properties": {
+        "evaluationId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userIdVoter": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "value": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "pbGetAverageUserEvaluationsByTypeResponse": {
+      "type": "object",
+      "properties": {
+        "averageEvaluationVote": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbAverageEvaluationVote"
+          }
+        }
+      }
+    },
     "pbGetChatMessagesResponse": {
       "type": "object",
       "properties": {
@@ -650,6 +1043,50 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbChatMessage"
+          }
+        }
+      }
+    },
+    "pbGetEvaluationByIdResponse": {
+      "type": "object",
+      "properties": {
+        "evaluation": {
+          "$ref": "#/definitions/pbEvaluation"
+        }
+      }
+    },
+    "pbGetEvaluationVotesByUserIdAndVoterResponse": {
+      "type": "object",
+      "properties": {
+        "evaluationVote": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbEvaluationVote"
+          }
+        }
+      }
+    },
+    "pbGetEvaluationVotesByUserIdResponse": {
+      "type": "object",
+      "properties": {
+        "evaluationVote": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbEvaluationVote"
+          }
+        }
+      }
+    },
+    "pbGetEvaluationsByTypeResponse": {
+      "type": "object",
+      "properties": {
+        "evaluation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbEvaluation"
           }
         }
       }

@@ -41,21 +41,18 @@ DELETE FROM evaluation_votes WHERE evaluation_id = @evaluation_id AND user_id = 
 
 -- name: GetAverageUserEvaluationsByType :many
 SELECT
-    ev.evaluation_id,
-    ev.user_id,
+    e.id AS evaluation_id,
     e.name,
     e.description,
     e.evaluation_type,
-    AVG(ev.value) AS avg_value
+    AVG(COALESCE(ev.value, 0)) AS avg_value
 FROM
-    evaluation_votes ev
-    JOIN evaluations e ON e.id = ev.evaluation_id
+    evaluations e
+    LEFT JOIN evaluation_votes ev ON e.id = ev.evaluation_id AND ev.user_id = @user_id
 WHERE
-    ev.user_id = @user_id AND
     e.evaluation_type = @evaluation_type
 GROUP BY
-    ev.evaluation_id,
-    ev.user_id,
+    e.id,
     e.name,
     e.description,
     e.evaluation_type;

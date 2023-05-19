@@ -64,21 +64,18 @@ func (q *Queries) DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluation
 
 const getAverageUserEvaluationsByType = `-- name: GetAverageUserEvaluationsByType :many
 SELECT
-    ev.evaluation_id,
-    ev.user_id,
+    e.id AS evaluation_id,
     e.name,
     e.description,
     e.evaluation_type,
-    AVG(ev.value) AS avg_value
+    AVG(COALESCE(ev.value, 0)) AS avg_value
 FROM
-    evaluation_votes ev
-    JOIN evaluations e ON e.id = ev.evaluation_id
+    evaluations e
+    LEFT JOIN evaluation_votes ev ON e.id = ev.evaluation_id AND ev.user_id = $1
 WHERE
-    ev.user_id = $1 AND
     e.evaluation_type = $2
 GROUP BY
-    ev.evaluation_id,
-    ev.user_id,
+    e.id,
     e.name,
     e.description,
     e.evaluation_type
@@ -91,7 +88,6 @@ type GetAverageUserEvaluationsByTypeParams struct {
 
 type GetAverageUserEvaluationsByTypeRow struct {
 	EvaluationID   int32          `json:"evaluation_id"`
-	UserID         int32          `json:"user_id"`
 	Name           string         `json:"name"`
 	Description    string         `json:"description"`
 	EvaluationType EvaluationType `json:"evaluation_type"`
@@ -109,7 +105,6 @@ func (q *Queries) GetAverageUserEvaluationsByType(ctx context.Context, arg GetAv
 		var i GetAverageUserEvaluationsByTypeRow
 		if err := rows.Scan(
 			&i.EvaluationID,
-			&i.UserID,
 			&i.Name,
 			&i.Description,
 			&i.EvaluationType,

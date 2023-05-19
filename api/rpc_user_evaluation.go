@@ -213,7 +213,7 @@ func (server *Server) GetAverageUserEvaluationsByType(ctx context.Context, req *
 
 		rsp.AverageEvaluationVote[i] = &pb.AverageEvaluationVote{
 			EvaluationId: e.EvaluationID,
-			UserId:       e.UserID,
+			UserId:       req.GetUserId(),
 			Name:         e.Name,
 			Description:  e.Description,
 			Type:         evaluationType,

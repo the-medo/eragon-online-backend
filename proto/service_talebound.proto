@@ -12,6 +12,7 @@ import "rpc_user_roles.proto";
 import "rpc_chat.proto";
 import "rpc_get_user.proto";
 import "rpc_reset_password.proto";
+import "rpc_user_evaluations.proto";
 import "google/protobuf/empty.proto";
 
 
@@ -196,6 +197,78 @@ service Talebound {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Verify user email";
       summary: "Verify email";
+    };
+  };
+
+  // ============= USER EVALUATION =================
+  rpc GetEvaluationById(GetEvaluationByIdRequest) returns (GetEvaluationByIdResponse) {
+    option (google.api.http) = {
+      get: "/evaluations/id/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "";
+      summary: "";
+    };
+  };
+
+  rpc GetEvaluationsByType(GetEvaluationsByTypeRequest) returns (GetEvaluationsByTypeResponse) {
+    option (google.api.http) = {
+      get: "/evaluations/type/{type}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Get evaluations by type";
+      summary: "Get evaluations by type";
+    };
+  };
+
+  rpc CreateOrUpdateEvaluationVote(CreateOrUpdateEvaluationVoteRequest) returns (CreateOrUpdateEvaluationVoteResponse) {
+    option (google.api.http) = {
+      post: "/users/{user_id}/evaluation-vote"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Create or update evaluation vote";
+      summary: "Create or update evaluation vote";
+    };
+  };
+
+  rpc GetEvaluationVotesByUserId(GetEvaluationVotesByUserIdRequest) returns (GetEvaluationVotesByUserIdResponse) {
+    option (google.api.http) = {
+      get: "/users/{user_id}/evaluation-vote"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Get evaluation votes by user id";
+      summary: "Get evaluation votes by user id";
+    };
+  };
+
+  rpc GetEvaluationVotesByUserIdAndVoter(GetEvaluationVotesByUserIdAndVoterRequest) returns (GetEvaluationVotesByUserIdAndVoterResponse) {
+    option (google.api.http) = {
+      get: "/users/{user_id}/evaluation-vote/voter/{user_id_voter}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Get evaluation votes by user id and voter";
+      summary: "Get evaluation votes by user id and voter";
+    };
+  };
+
+  rpc DeleteEvaluationVote(DeleteEvaluationVoteRequest) returns (DeleteEvaluationVoteResponse) {
+    option (google.api.http) = {
+      delete: "/users/{user_id}/evaluation-vote/{evaluation_id}/voter/{user_id_voter}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Delete evaluation vote";
+      summary: "Delete evaluation vote";
+    };
+  };
+
+  rpc GetAverageUserEvaluationsByType(GetAverageUserEvaluationsByTypeRequest) returns (GetAverageUserEvaluationsByTypeResponse) {
+    option (google.api.http) = {
+      get: "/users/{user_id}/evaluation-vote/type/{type}/average"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Get average user evaluation by type";
+      summary: "Get average user evaluation";
     };
   };
 }
