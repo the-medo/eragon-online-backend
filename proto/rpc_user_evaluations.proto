@@ -33,7 +33,7 @@ message AverageEvaluationVote {
   int32 user_id = 2;
   string name = 3;
   string description = 4;
-  EvaluationType type = 5;
+  string type = 5;
   float average = 6;
 }
 
@@ -104,9 +104,9 @@ message DeleteEvaluationVoteResponse {
 // Get average user evaluations by type
 message GetAverageUserEvaluationsByTypeRequest {
   int32 user_id = 1;
-  EvaluationType type = 2;
+  string type = 2;
 }
 
 message GetAverageUserEvaluationsByTypeResponse {
-  repeated AverageEvaluationVote average_evaluation_vote = 1;
+  repeated AverageEvaluationVote averageEvaluationVote = 1;
 }

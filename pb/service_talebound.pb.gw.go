@@ -1008,7 +1008,6 @@ func request_Talebound_GetAverageUserEvaluationsByType_0(ctx context.Context, ma
 
 	var (
 		val string
-		e   int32
 		ok  bool
 		err error
 		_   = err
@@ -1029,12 +1028,10 @@ func request_Talebound_GetAverageUserEvaluationsByType_0(ctx context.Context, ma
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "type")
 	}
 
-	e, err = runtime.Enum(val, EvaluationType_value)
+	protoReq.Type, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "type", err)
 	}
-
-	protoReq.Type = EvaluationType(e)
 
 	msg, err := client.GetAverageUserEvaluationsByType(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -1047,7 +1044,6 @@ func local_request_Talebound_GetAverageUserEvaluationsByType_0(ctx context.Conte
 
 	var (
 		val string
-		e   int32
 		ok  bool
 		err error
 		_   = err
@@ -1068,12 +1064,10 @@ func local_request_Talebound_GetAverageUserEvaluationsByType_0(ctx context.Conte
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "type")
 	}
 
-	e, err = runtime.Enum(val, EvaluationType_value)
+	protoReq.Type, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "type", err)
 	}
-
-	protoReq.Type = EvaluationType(e)
 
 	msg, err := server.GetAverageUserEvaluationsByType(ctx, &protoReq)
 	return msg, metadata, err

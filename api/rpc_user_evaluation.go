@@ -206,7 +206,6 @@ func (server *Server) GetAverageUserEvaluationsByType(ctx context.Context, req *
 	}
 
 	for i, e := range avgEvaluationVotes {
-		evaluationType, err := StringToEvaluationType(string(e.EvaluationType))
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to convert evaluation type: %v", err)
 		}
@@ -216,7 +215,7 @@ func (server *Server) GetAverageUserEvaluationsByType(ctx context.Context, req *
 			UserId:       req.GetUserId(),
 			Name:         e.Name,
 			Description:  e.Description,
-			Type:         evaluationType,
+			Type:         string(e.EvaluationType),
 			Average:      float32(math.Round(e.AvgValue*100) / 100),
 		}
 	}

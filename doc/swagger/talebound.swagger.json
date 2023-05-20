@@ -651,11 +651,7 @@
             "name": "type",
             "in": "path",
             "required": true,
-            "type": "string",
-            "enum": [
-              "self",
-              "dm"
-            ]
+            "type": "string"
           }
         ],
         "tags": [
@@ -889,7 +885,7 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/definitions/pbEvaluationType"
+          "type": "string"
         },
         "average": {
           "type": "number",
