@@ -5,10 +5,10 @@ package pb;
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 message VerifyEmailRequest {
-  int64 email_id = 1;
-  string secret_code = 2;
+  int64 emailId = 1;
+  string secretCode = 2;
 }
 
 message VerifyEmailResponse {
-  bool is_verified = 1;
+  bool isVerified = 1;
 }

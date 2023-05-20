@@ -113,24 +113,24 @@ func request_Talebound_RemoveRoleFromUser_0(ctx context.Context, marshaler runti
 		_   = err
 	)
 
-	val, ok = pathParams["user_id"]
+	val, ok = pathParams["userId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
-	val, ok = pathParams["role_id"]
+	val, ok = pathParams["roleId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "role_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "roleId")
 	}
 
 	protoReq.RoleId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "role_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "roleId", err)
 	}
 
 	msg, err := client.RemoveRoleFromUser(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -149,24 +149,24 @@ func local_request_Talebound_RemoveRoleFromUser_0(ctx context.Context, marshaler
 		_   = err
 	)
 
-	val, ok = pathParams["user_id"]
+	val, ok = pathParams["userId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
-	val, ok = pathParams["role_id"]
+	val, ok = pathParams["roleId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "role_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "roleId")
 	}
 
 	protoReq.RoleId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "role_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "roleId", err)
 	}
 
 	msg, err := server.RemoveRoleFromUser(ctx, &protoReq)
@@ -737,14 +737,14 @@ func request_Talebound_CreateOrUpdateEvaluationVote_0(ctx context.Context, marsh
 		_   = err
 	)
 
-	val, ok = pathParams["user_id"]
+	val, ok = pathParams["userId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
 	msg, err := client.CreateOrUpdateEvaluationVote(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -771,14 +771,14 @@ func local_request_Talebound_CreateOrUpdateEvaluationVote_0(ctx context.Context,
 		_   = err
 	)
 
-	val, ok = pathParams["user_id"]
+	val, ok = pathParams["userId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
 	msg, err := server.CreateOrUpdateEvaluationVote(ctx, &protoReq)
@@ -797,14 +797,14 @@ func request_Talebound_GetEvaluationVotesByUserId_0(ctx context.Context, marshal
 		_   = err
 	)
 
-	val, ok = pathParams["user_id"]
+	val, ok = pathParams["userId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
 	msg, err := client.GetEvaluationVotesByUserId(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -823,14 +823,14 @@ func local_request_Talebound_GetEvaluationVotesByUserId_0(ctx context.Context, m
 		_   = err
 	)
 
-	val, ok = pathParams["user_id"]
+	val, ok = pathParams["userId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
 	msg, err := server.GetEvaluationVotesByUserId(ctx, &protoReq)
@@ -849,24 +849,24 @@ func request_Talebound_GetEvaluationVotesByUserIdAndVoter_0(ctx context.Context,
 		_   = err
 	)
 
-	val, ok = pathParams["user_id"]
+	val, ok = pathParams["userId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
-	val, ok = pathParams["user_id_voter"]
+	val, ok = pathParams["userIdVoter"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id_voter")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userIdVoter")
 	}
 
 	protoReq.UserIdVoter, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id_voter", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userIdVoter", err)
 	}
 
 	msg, err := client.GetEvaluationVotesByUserIdAndVoter(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -885,24 +885,24 @@ func local_request_Talebound_GetEvaluationVotesByUserIdAndVoter_0(ctx context.Co
 		_   = err
 	)
 
-	val, ok = pathParams["user_id"]
+	val, ok = pathParams["userId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
-	val, ok = pathParams["user_id_voter"]
+	val, ok = pathParams["userIdVoter"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id_voter")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userIdVoter")
 	}
 
 	protoReq.UserIdVoter, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id_voter", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userIdVoter", err)
 	}
 
 	msg, err := server.GetEvaluationVotesByUserIdAndVoter(ctx, &protoReq)
@@ -921,34 +921,34 @@ func request_Talebound_DeleteEvaluationVote_0(ctx context.Context, marshaler run
 		_   = err
 	)
 
-	val, ok = pathParams["user_id"]
+	val, ok = pathParams["userId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
-	val, ok = pathParams["evaluation_id"]
+	val, ok = pathParams["evaluationId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "evaluation_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "evaluationId")
 	}
 
 	protoReq.EvaluationId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "evaluation_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "evaluationId", err)
 	}
 
-	val, ok = pathParams["user_id_voter"]
+	val, ok = pathParams["userIdVoter"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id_voter")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userIdVoter")
 	}
 
 	protoReq.UserIdVoter, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id_voter", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userIdVoter", err)
 	}
 
 	msg, err := client.DeleteEvaluationVote(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -967,34 +967,34 @@ func local_request_Talebound_DeleteEvaluationVote_0(ctx context.Context, marshal
 		_   = err
 	)
 
-	val, ok = pathParams["user_id"]
+	val, ok = pathParams["userId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
-	val, ok = pathParams["evaluation_id"]
+	val, ok = pathParams["evaluationId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "evaluation_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "evaluationId")
 	}
 
 	protoReq.EvaluationId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "evaluation_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "evaluationId", err)
 	}
 
-	val, ok = pathParams["user_id_voter"]
+	val, ok = pathParams["userIdVoter"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id_voter")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userIdVoter")
 	}
 
 	protoReq.UserIdVoter, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id_voter", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userIdVoter", err)
 	}
 
 	msg, err := server.DeleteEvaluationVote(ctx, &protoReq)
@@ -1013,14 +1013,14 @@ func request_Talebound_GetAverageUserEvaluationsByType_0(ctx context.Context, ma
 		_   = err
 	)
 
-	val, ok = pathParams["user_id"]
+	val, ok = pathParams["userId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
 	val, ok = pathParams["type"]
@@ -1049,14 +1049,14 @@ func local_request_Talebound_GetAverageUserEvaluationsByType_0(ctx context.Conte
 		_   = err
 	)
 
-	val, ok = pathParams["user_id"]
+	val, ok = pathParams["userId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
 	val, ok = pathParams["type"]
@@ -1138,7 +1138,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/RemoveRoleFromUser", runtime.WithHTTPPathPattern("/users/{user_id}/roles/{role_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/RemoveRoleFromUser", runtime.WithHTTPPathPattern("/users/{userId}/roles/{roleId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1513,7 +1513,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/CreateOrUpdateEvaluationVote", runtime.WithHTTPPathPattern("/users/{user_id}/evaluation-vote"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/CreateOrUpdateEvaluationVote", runtime.WithHTTPPathPattern("/users/{userId}/evaluation-vote"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1538,7 +1538,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetEvaluationVotesByUserId", runtime.WithHTTPPathPattern("/users/{user_id}/evaluation-vote"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetEvaluationVotesByUserId", runtime.WithHTTPPathPattern("/users/{userId}/evaluation-vote"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1563,7 +1563,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetEvaluationVotesByUserIdAndVoter", runtime.WithHTTPPathPattern("/users/{user_id}/evaluation-vote/voter/{user_id_voter}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetEvaluationVotesByUserIdAndVoter", runtime.WithHTTPPathPattern("/users/{userId}/evaluation-vote/voter/{userIdVoter}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1588,7 +1588,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/DeleteEvaluationVote", runtime.WithHTTPPathPattern("/users/{user_id}/evaluation-vote/{evaluation_id}/voter/{user_id_voter}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/DeleteEvaluationVote", runtime.WithHTTPPathPattern("/users/{userId}/evaluation-vote/{evaluationId}/voter/{userIdVoter}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1613,7 +1613,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetAverageUserEvaluationsByType", runtime.WithHTTPPathPattern("/users/{user_id}/evaluation-vote/type/{type}/average"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetAverageUserEvaluationsByType", runtime.WithHTTPPathPattern("/users/{userId}/evaluation-vote/type/{type}/average"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1721,7 +1721,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/RemoveRoleFromUser", runtime.WithHTTPPathPattern("/users/{user_id}/roles/{role_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/RemoveRoleFromUser", runtime.WithHTTPPathPattern("/users/{userId}/roles/{roleId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2051,7 +2051,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/CreateOrUpdateEvaluationVote", runtime.WithHTTPPathPattern("/users/{user_id}/evaluation-vote"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/CreateOrUpdateEvaluationVote", runtime.WithHTTPPathPattern("/users/{userId}/evaluation-vote"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2073,7 +2073,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetEvaluationVotesByUserId", runtime.WithHTTPPathPattern("/users/{user_id}/evaluation-vote"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetEvaluationVotesByUserId", runtime.WithHTTPPathPattern("/users/{userId}/evaluation-vote"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2095,7 +2095,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetEvaluationVotesByUserIdAndVoter", runtime.WithHTTPPathPattern("/users/{user_id}/evaluation-vote/voter/{user_id_voter}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetEvaluationVotesByUserIdAndVoter", runtime.WithHTTPPathPattern("/users/{userId}/evaluation-vote/voter/{userIdVoter}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2117,7 +2117,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/DeleteEvaluationVote", runtime.WithHTTPPathPattern("/users/{user_id}/evaluation-vote/{evaluation_id}/voter/{user_id_voter}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/DeleteEvaluationVote", runtime.WithHTTPPathPattern("/users/{userId}/evaluation-vote/{evaluationId}/voter/{userIdVoter}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2139,7 +2139,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetAverageUserEvaluationsByType", runtime.WithHTTPPathPattern("/users/{user_id}/evaluation-vote/type/{type}/average"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetAverageUserEvaluationsByType", runtime.WithHTTPPathPattern("/users/{userId}/evaluation-vote/type/{type}/average"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2163,7 +2163,7 @@ var (
 
 	pattern_Talebound_AddRoleToUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"users", "roles"}, ""))
 
-	pattern_Talebound_RemoveRoleFromUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"users", "user_id", "roles", "role_id"}, ""))
+	pattern_Talebound_RemoveRoleFromUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"users", "userId", "roles", "roleId"}, ""))
 
 	pattern_Talebound_GetChatMessages_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"chat"}, ""))
 
@@ -2193,15 +2193,15 @@ var (
 
 	pattern_Talebound_GetEvaluationsByType_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 1}, []string{"evaluations", "type"}, ""))
 
-	pattern_Talebound_CreateOrUpdateEvaluationVote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"users", "user_id", "evaluation-vote"}, ""))
+	pattern_Talebound_CreateOrUpdateEvaluationVote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"users", "userId", "evaluation-vote"}, ""))
 
-	pattern_Talebound_GetEvaluationVotesByUserId_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"users", "user_id", "evaluation-vote"}, ""))
+	pattern_Talebound_GetEvaluationVotesByUserId_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"users", "userId", "evaluation-vote"}, ""))
 
-	pattern_Talebound_GetEvaluationVotesByUserIdAndVoter_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"users", "user_id", "evaluation-vote", "voter", "user_id_voter"}, ""))
+	pattern_Talebound_GetEvaluationVotesByUserIdAndVoter_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"users", "userId", "evaluation-vote", "voter", "userIdVoter"}, ""))
 
-	pattern_Talebound_DeleteEvaluationVote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"users", "user_id", "evaluation-vote", "evaluation_id", "voter", "user_id_voter"}, ""))
+	pattern_Talebound_DeleteEvaluationVote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"users", "userId", "evaluation-vote", "evaluationId", "voter", "userIdVoter"}, ""))
 
-	pattern_Talebound_GetAverageUserEvaluationsByType_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"users", "user_id", "evaluation-vote", "type", "average"}, ""))
+	pattern_Talebound_GetAverageUserEvaluationsByType_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"users", "userId", "evaluation-vote", "type", "average"}, ""))
 )
 
 var (

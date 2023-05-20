@@ -7,7 +7,7 @@ import "role.proto";
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 message GetUserRolesRequest {
-  int32 user_id = 1;
+  int32 userId = 1;
 }
 
 message GetUserRolesResponse {
@@ -15,8 +15,8 @@ message GetUserRolesResponse {
 }
 
 message AddRoleToUserRequest {
-  int32 user_id = 1;
-  int32 role_id = 2;
+  int32 userId = 1;
+  int32 roleId = 2;
 }
 
 message AddRoleToUserResponse {
@@ -25,8 +25,8 @@ message AddRoleToUserResponse {
 }
 
 message RemoveRoleFromUserRequest {
-  int32 user_id = 1;
-  int32 role_id = 2;
+  int32 userId = 1;
+  int32 roleId = 2;
 }
 
 message RemoveRoleFromUserResponse {

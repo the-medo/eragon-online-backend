@@ -11,7 +11,7 @@ message UpdateUserRequest {
   optional string username = 2;
   optional string email = 3;
   optional string password = 4;
-  optional int32 img_id = 5;
+  optional int32 imgId = 5;
 }
 
 message UpdateUserResponse {

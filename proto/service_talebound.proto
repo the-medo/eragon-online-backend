@@ -58,7 +58,7 @@ service Talebound {
 
   rpc RemoveRoleFromUser(RemoveRoleFromUserRequest) returns (RemoveRoleFromUserResponse) {
     option (google.api.http) = {
-      delete: "/users/{user_id}/roles/{role_id}"
+      delete: "/users/{userId}/roles/{roleId}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "removes role from user";
@@ -223,7 +223,7 @@ service Talebound {
 
   rpc CreateOrUpdateEvaluationVote(CreateOrUpdateEvaluationVoteRequest) returns (CreateOrUpdateEvaluationVoteResponse) {
     option (google.api.http) = {
-      post: "/users/{user_id}/evaluation-vote"
+      post: "/users/{userId}/evaluation-vote"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -234,7 +234,7 @@ service Talebound {
 
   rpc GetEvaluationVotesByUserId(GetEvaluationVotesByUserIdRequest) returns (GetEvaluationVotesByUserIdResponse) {
     option (google.api.http) = {
-      get: "/users/{user_id}/evaluation-vote"
+      get: "/users/{userId}/evaluation-vote"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Get evaluation votes by user id";
@@ -244,7 +244,7 @@ service Talebound {
 
   rpc GetEvaluationVotesByUserIdAndVoter(GetEvaluationVotesByUserIdAndVoterRequest) returns (GetEvaluationVotesByUserIdAndVoterResponse) {
     option (google.api.http) = {
-      get: "/users/{user_id}/evaluation-vote/voter/{user_id_voter}"
+      get: "/users/{userId}/evaluation-vote/voter/{userIdVoter}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Get evaluation votes by user id and voter";
@@ -254,7 +254,7 @@ service Talebound {
 
   rpc DeleteEvaluationVote(DeleteEvaluationVoteRequest) returns (DeleteEvaluationVoteResponse) {
     option (google.api.http) = {
-      delete: "/users/{user_id}/evaluation-vote/{evaluation_id}/voter/{user_id_voter}"
+      delete: "/users/{userId}/evaluation-vote/{evaluationId}/voter/{userIdVoter}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Delete evaluation vote";
@@ -264,7 +264,7 @@ service Talebound {
 
   rpc GetAverageUserEvaluationsByType(GetAverageUserEvaluationsByTypeRequest) returns (GetAverageUserEvaluationsByTypeResponse) {
     option (google.api.http) = {
-      get: "/users/{user_id}/evaluation-vote/type/{type}/average"
+      get: "/users/{userId}/evaluation-vote/type/{type}/average"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Get average user evaluation by type";
