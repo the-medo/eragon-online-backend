@@ -74,9 +74,9 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 
 	md := metadata.Pairs(
 		"X-Access-Token", accessToken,
-		"X-Access-Token-Expires-At", accessPayload.ExpiredAt.String(),
+		"X-Access-Token-Expires-At", accessPayload.ExpiredAt.Format(util.TimeLayout),
 		"X-Refresh-Token", refreshToken,
-		"X-Refresh-Token-Expires-At", refreshPayload.ExpiredAt.String(),
+		"X-Refresh-Token-Expires-At", refreshPayload.ExpiredAt.Format(util.TimeLayout),
 	)
 	err = grpc.SendHeader(ctx, md)
 	if err != nil {

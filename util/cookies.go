@@ -58,11 +58,9 @@ func CreateFilterTokensToCookies(config Config) func(ctx context.Context, w http
 		accessToken := headers.Get("Access-Token")
 		accessTokenExpiresAt := headers.Get("Access-Token-Expires-At")
 
-		const timeLayout = "2006-01-02 15:04:05.9999999 -0700"
-
 		if accessToken != "" && accessTokenExpiresAt != "" {
 			if accessToken != "null" {
-				expiresAt, err := time.Parse(timeLayout, accessTokenExpiresAt[:33])
+				expiresAt, err := time.Parse(TimeLayout, accessTokenExpiresAt)
 				if err != nil {
 					http.Error(w, "Failed to parse access token expiry", http.StatusInternalServerError)
 					return err
@@ -85,7 +83,7 @@ func CreateFilterTokensToCookies(config Config) func(ctx context.Context, w http
 
 		if refreshToken != "" && refreshTokenExpiresAt != "" {
 			if refreshToken != "null" {
-				expiresAt, err := time.Parse(timeLayout, refreshTokenExpiresAt[:33])
+				expiresAt, err := time.Parse(TimeLayout, refreshTokenExpiresAt)
 				if err != nil {
 					http.Error(w, "Failed to parse refresh token expiry", http.StatusInternalServerError)
 					return err

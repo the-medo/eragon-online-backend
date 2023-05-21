@@ -69,7 +69,7 @@ func HttpLogger(handler http.Handler) http.Handler {
 
 		logger := log.Info()
 
-		if recorder.StatusCode != http.StatusOK {
+		if recorder.StatusCode != http.StatusOK && recorder.StatusCode != http.StatusNoContent {
 			logger = log.Error().Bytes("body", recorder.Body)
 		}
 
