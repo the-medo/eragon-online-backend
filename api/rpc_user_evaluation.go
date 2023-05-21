@@ -87,7 +87,7 @@ func (server *Server) CreateOrUpdateEvaluationVote(ctx context.Context, req *pb.
 		}
 	}
 
-	var rsp *pb.CreateOrUpdateEvaluationVoteResponse
+	rsp := &pb.CreateOrUpdateEvaluationVoteResponse{}
 
 	if alreadyExists {
 
