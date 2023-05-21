@@ -1,0 +1,1 @@
+ALTER TABLE "evaluation_votes" ALTER COLUMN "value" TYPE int;

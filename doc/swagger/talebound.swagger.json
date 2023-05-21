@@ -607,8 +607,8 @@
                   "format": "int32"
                 },
                 "value": {
-                  "type": "integer",
-                  "format": "int32"
+                  "type": "number",
+                  "format": "double"
                 }
               },
               "title": "Create or update evaluation"
@@ -889,7 +889,7 @@
         },
         "average": {
           "type": "number",
-          "format": "float"
+          "format": "double"
         }
       }
     },
@@ -1010,8 +1010,8 @@
           "format": "int32"
         },
         "value": {
-          "type": "integer",
-          "format": "int32"
+          "type": "number",
+          "format": "double"
         },
         "createdAt": {
           "type": "string",

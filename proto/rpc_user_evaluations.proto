@@ -24,7 +24,7 @@ message EvaluationVote {
   int32 evaluationId = 1;
   int32 userId = 2;
   int32 userIdVoter = 3;
-  int32 value = 4;
+  double value = 4;
   google.protobuf.Timestamp createdAt = 5;
 }
 
@@ -34,7 +34,7 @@ message AverageEvaluationVote {
   string name = 3;
   string description = 4;
   string type = 5;
-  float average = 6;
+  double average = 6;
 }
 
 
@@ -63,7 +63,7 @@ message CreateOrUpdateEvaluationVoteRequest {
   int32 evaluationId = 1;
   int32 userId = 2;
   int32 userIdVoter = 3;
-  int32 value = 4;
+  double value = 4;
 }
 
 message CreateOrUpdateEvaluationVoteResponse {

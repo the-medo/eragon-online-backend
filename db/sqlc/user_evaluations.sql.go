@@ -23,10 +23,10 @@ RETURNING evaluation_id, user_id, user_id_voter, value, created_at
 `
 
 type CreateEvaluationVoteParams struct {
-	EvaluationID int32 `json:"evaluation_id"`
-	UserID       int32 `json:"user_id"`
-	UserIDVoter  int32 `json:"user_id_voter"`
-	Value        int32 `json:"value"`
+	EvaluationID int32   `json:"evaluation_id"`
+	UserID       int32   `json:"user_id"`
+	UserIDVoter  int32   `json:"user_id_voter"`
+	Value        float64 `json:"value"`
 }
 
 func (q *Queries) CreateEvaluationVote(ctx context.Context, arg CreateEvaluationVoteParams) (EvaluationVote, error) {
@@ -278,10 +278,10 @@ RETURNING evaluation_id, user_id, user_id_voter, value, created_at
 `
 
 type UpdateEvaluationVoteParams struct {
-	Value        int32 `json:"value"`
-	EvaluationID int32 `json:"evaluation_id"`
-	UserID       int32 `json:"user_id"`
-	UserIDVoter  int32 `json:"user_id_voter"`
+	Value        float64 `json:"value"`
+	EvaluationID int32   `json:"evaluation_id"`
+	UserID       int32   `json:"user_id"`
+	UserIDVoter  int32   `json:"user_id_voter"`
 }
 
 func (q *Queries) UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error) {

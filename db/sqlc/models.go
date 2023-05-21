@@ -99,7 +99,7 @@ type EvaluationVote struct {
 	EvaluationID int32     `json:"evaluation_id"`
 	UserID       int32     `json:"user_id"`
 	UserIDVoter  int32     `json:"user_id_voter"`
-	Value        int32     `json:"value"`
+	Value        float64   `json:"value"`
 	CreatedAt    time.Time `json:"created_at"`
 }
 

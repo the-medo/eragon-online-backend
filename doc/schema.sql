@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-05-16T18:13:47.688Z
+-- Generated at: 2023-05-21T16:50:44.001Z
 
 CREATE TYPE "evaluation_type" AS ENUM (
   'self',
@@ -59,7 +59,7 @@ CREATE TABLE "evaluation_votes" (
   "evaluation_id" int NOT NULL,
   "user_id" int NOT NULL,
   "user_id_voter" int NOT NULL,
-  "value" int NOT NULL,
+  "value" float NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 

@@ -216,7 +216,7 @@ func (server *Server) GetAverageUserEvaluationsByType(ctx context.Context, req *
 			Name:         e.Name,
 			Description:  e.Description,
 			Type:         string(e.EvaluationType),
-			Average:      float32(math.Round(e.AvgValue*100) / 100),
+			Average:      math.Round(e.AvgValue*100) / 100,
 		}
 	}
 
