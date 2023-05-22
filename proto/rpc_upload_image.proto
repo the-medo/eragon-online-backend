@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message UploadImageRequest {
+  string filename = 1;
+  bytes data = 2;
+}
+
+message UploadImageResponse {
+  string id = 1;
+  string filename = 2;
+  repeated string variants = 3;
+  google.protobuf.Timestamp uploadedAt = 4;
+}

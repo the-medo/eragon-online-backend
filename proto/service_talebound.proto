@@ -13,6 +13,7 @@ import "rpc_chat.proto";
 import "rpc_get_user.proto";
 import "rpc_reset_password.proto";
 import "rpc_user_evaluations.proto";
+import "rpc_upload_image.proto";
 import "google/protobuf/empty.proto";
 
 
@@ -271,4 +272,17 @@ service Talebound {
       summary: "Get average user evaluation";
     };
   };
+
+  // ============= FILE UPLOAD ================
+  rpc UploadImage(UploadImageRequest) returns (UploadImageResponse) {
+    option (google.api.http) = {
+      post: "/files/upload"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "uploads an image file";
+      summary: "Upload image";
+    };
+  };
+
 }

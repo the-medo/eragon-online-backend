@@ -42,6 +42,7 @@ const (
 	Talebound_GetEvaluationVotesByUserIdAndVoter_FullMethodName = "/pb.Talebound/GetEvaluationVotesByUserIdAndVoter"
 	Talebound_DeleteEvaluationVote_FullMethodName               = "/pb.Talebound/DeleteEvaluationVote"
 	Talebound_GetAverageUserEvaluationsByType_FullMethodName    = "/pb.Talebound/GetAverageUserEvaluationsByType"
+	Talebound_UploadImage_FullMethodName                        = "/pb.Talebound/UploadImage"
 )
 
 // TaleboundClient is the client API for Talebound service.
@@ -74,6 +75,8 @@ type TaleboundClient interface {
 	GetEvaluationVotesByUserIdAndVoter(ctx context.Context, in *GetEvaluationVotesByUserIdAndVoterRequest, opts ...grpc.CallOption) (*GetEvaluationVotesByUserIdAndVoterResponse, error)
 	DeleteEvaluationVote(ctx context.Context, in *DeleteEvaluationVoteRequest, opts ...grpc.CallOption) (*DeleteEvaluationVoteResponse, error)
 	GetAverageUserEvaluationsByType(ctx context.Context, in *GetAverageUserEvaluationsByTypeRequest, opts ...grpc.CallOption) (*GetAverageUserEvaluationsByTypeResponse, error)
+	// ============= FILE UPLOAD ================
+	UploadImage(ctx context.Context, in *UploadImageRequest, opts ...grpc.CallOption) (*UploadImageResponse, error)
 }
 
 type taleboundClient struct {
@@ -282,6 +285,15 @@ func (c *taleboundClient) GetAverageUserEvaluationsByType(ctx context.Context, i
 	return out, nil
 }
 
+func (c *taleboundClient) UploadImage(ctx context.Context, in *UploadImageRequest, opts ...grpc.CallOption) (*UploadImageResponse, error) {
+	out := new(UploadImageResponse)
+	err := c.cc.Invoke(ctx, Talebound_UploadImage_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TaleboundServer is the server API for Talebound service.
 // All implementations must embed UnimplementedTaleboundServer
 // for forward compatibility
@@ -312,6 +324,8 @@ type TaleboundServer interface {
 	GetEvaluationVotesByUserIdAndVoter(context.Context, *GetEvaluationVotesByUserIdAndVoterRequest) (*GetEvaluationVotesByUserIdAndVoterResponse, error)
 	DeleteEvaluationVote(context.Context, *DeleteEvaluationVoteRequest) (*DeleteEvaluationVoteResponse, error)
 	GetAverageUserEvaluationsByType(context.Context, *GetAverageUserEvaluationsByTypeRequest) (*GetAverageUserEvaluationsByTypeResponse, error)
+	// ============= FILE UPLOAD ================
+	UploadImage(context.Context, *UploadImageRequest) (*UploadImageResponse, error)
 	mustEmbedUnimplementedTaleboundServer()
 }
 
@@ -384,6 +398,9 @@ func (UnimplementedTaleboundServer) DeleteEvaluationVote(context.Context, *Delet
 }
 func (UnimplementedTaleboundServer) GetAverageUserEvaluationsByType(context.Context, *GetAverageUserEvaluationsByTypeRequest) (*GetAverageUserEvaluationsByTypeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAverageUserEvaluationsByType not implemented")
+}
+func (UnimplementedTaleboundServer) UploadImage(context.Context, *UploadImageRequest) (*UploadImageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UploadImage not implemented")
 }
 func (UnimplementedTaleboundServer) mustEmbedUnimplementedTaleboundServer() {}
 
@@ -794,6 +811,24 @@ func _Talebound_GetAverageUserEvaluationsByType_Handler(srv interface{}, ctx con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_UploadImage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UploadImageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).UploadImage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_UploadImage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).UploadImage(ctx, req.(*UploadImageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Talebound_ServiceDesc is the grpc.ServiceDesc for Talebound service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -888,6 +923,10 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAverageUserEvaluationsByType",
 			Handler:    _Talebound_GetAverageUserEvaluationsByType_Handler,
+		},
+		{
+			MethodName: "UploadImage",
+			Handler:    _Talebound_UploadImage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

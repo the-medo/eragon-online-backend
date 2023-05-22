@@ -24,6 +24,8 @@ type Config struct {
 	SmtpPassword         string        `mapstructure:"SMTP_PASSWORD"`
 	CookieDomain         string        `mapstructure:"COOKIE_DOMAIN"`
 	FullDomain           string        `mapstructure:"FULL_DOMAIN"`
+	CloudflareApiToken   string        `mapstructure:"CLOUDFLARE_API_TOKEN"`
+	CloudflareAccountId  string        `mapstructure:"CLOUDFLARE_ACCOUNT_ID"`
 }
 
 func LoadConfig(path string) (config Config, err error) {
