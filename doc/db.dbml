@@ -1,21 +1,31 @@
 // Use DBML to define your database structure
 // Docs: https://www.dbml.org/docs
 
+enum image_variant {
+  100x100
+  1200x800
+  150x150
+  1920x200
+  200x200
+  300x300
+  30x30
+  public
+}
+
 Table image_types {
-  id int [pk, increment]
+  id int [not null, unique]
   name varchar [unique, not null]
-  width int [null]
-  height int [null]
   description text [not null]
+  variant image_variant [not null, note: 'Variant name from cloudflare. ']
 }
 
 Table images {
   id int [pk, increment]
+  img_guid uuid [unique]
   image_type_id int [ref: > image_types.id]
   name varchar [unique]
-  address varchar [not null]
-  width int [not null]
-  height int [not null]
+  url varchar [not null]
+  base_url varchar [not null]
   created_at timestamptz [not null, default: `now()`]
 }
 
