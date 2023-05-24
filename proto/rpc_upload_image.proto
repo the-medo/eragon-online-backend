@@ -17,3 +17,8 @@ message UploadImageResponse {
   repeated string variants = 3;
   google.protobuf.Timestamp uploadedAt = 4;
 }
+
+message UploadImageUserAvatarRequest {
+  int32 userId = 1;
+  bytes data = 2;
+}

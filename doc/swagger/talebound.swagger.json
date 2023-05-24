@@ -567,6 +567,53 @@
         ]
       }
     },
+    "/users/{userId}/avatar": {
+      "post": {
+        "summary": "Upload user avatar",
+        "description": "uploads an user avatar",
+        "operationId": "Talebound_UploadUserAvatar",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUploadImageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/users/{userId}/evaluation-vote": {
       "get": {
         "summary": "Get evaluation votes by user id",

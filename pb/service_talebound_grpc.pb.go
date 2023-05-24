@@ -43,6 +43,7 @@ const (
 	Talebound_DeleteEvaluationVote_FullMethodName               = "/pb.Talebound/DeleteEvaluationVote"
 	Talebound_GetAverageUserEvaluationsByType_FullMethodName    = "/pb.Talebound/GetAverageUserEvaluationsByType"
 	Talebound_UploadImage_FullMethodName                        = "/pb.Talebound/UploadImage"
+	Talebound_UploadUserAvatar_FullMethodName                   = "/pb.Talebound/UploadUserAvatar"
 )
 
 // TaleboundClient is the client API for Talebound service.
@@ -77,6 +78,7 @@ type TaleboundClient interface {
 	GetAverageUserEvaluationsByType(ctx context.Context, in *GetAverageUserEvaluationsByTypeRequest, opts ...grpc.CallOption) (*GetAverageUserEvaluationsByTypeResponse, error)
 	// ============= FILE UPLOAD ================
 	UploadImage(ctx context.Context, in *UploadImageRequest, opts ...grpc.CallOption) (*UploadImageResponse, error)
+	UploadUserAvatar(ctx context.Context, in *UploadImageUserAvatarRequest, opts ...grpc.CallOption) (*UploadImageResponse, error)
 }
 
 type taleboundClient struct {
@@ -294,6 +296,15 @@ func (c *taleboundClient) UploadImage(ctx context.Context, in *UploadImageReques
 	return out, nil
 }
 
+func (c *taleboundClient) UploadUserAvatar(ctx context.Context, in *UploadImageUserAvatarRequest, opts ...grpc.CallOption) (*UploadImageResponse, error) {
+	out := new(UploadImageResponse)
+	err := c.cc.Invoke(ctx, Talebound_UploadUserAvatar_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TaleboundServer is the server API for Talebound service.
 // All implementations must embed UnimplementedTaleboundServer
 // for forward compatibility
@@ -326,6 +337,7 @@ type TaleboundServer interface {
 	GetAverageUserEvaluationsByType(context.Context, *GetAverageUserEvaluationsByTypeRequest) (*GetAverageUserEvaluationsByTypeResponse, error)
 	// ============= FILE UPLOAD ================
 	UploadImage(context.Context, *UploadImageRequest) (*UploadImageResponse, error)
+	UploadUserAvatar(context.Context, *UploadImageUserAvatarRequest) (*UploadImageResponse, error)
 	mustEmbedUnimplementedTaleboundServer()
 }
 
@@ -401,6 +413,9 @@ func (UnimplementedTaleboundServer) GetAverageUserEvaluationsByType(context.Cont
 }
 func (UnimplementedTaleboundServer) UploadImage(context.Context, *UploadImageRequest) (*UploadImageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadImage not implemented")
+}
+func (UnimplementedTaleboundServer) UploadUserAvatar(context.Context, *UploadImageUserAvatarRequest) (*UploadImageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UploadUserAvatar not implemented")
 }
 func (UnimplementedTaleboundServer) mustEmbedUnimplementedTaleboundServer() {}
 
@@ -829,6 +844,24 @@ func _Talebound_UploadImage_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_UploadUserAvatar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UploadImageUserAvatarRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).UploadUserAvatar(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_UploadUserAvatar_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).UploadUserAvatar(ctx, req.(*UploadImageUserAvatarRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Talebound_ServiceDesc is the grpc.ServiceDesc for Talebound service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -927,6 +960,10 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UploadImage",
 			Handler:    _Talebound_UploadImage_Handler,
+		},
+		{
+			MethodName: "UploadUserAvatar",
+			Handler:    _Talebound_UploadUserAvatar_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
