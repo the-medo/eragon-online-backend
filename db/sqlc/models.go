@@ -55,6 +55,54 @@ func (ns NullEvaluationType) Value() (driver.Value, error) {
 	return string(ns.EvaluationType), nil
 }
 
+type ImageVariant string
+
+const (
+	ImageVariant100x100  ImageVariant = "100x100"
+	ImageVariant1200x800 ImageVariant = "1200x800"
+	ImageVariant150x150  ImageVariant = "150x150"
+	ImageVariant1920x200 ImageVariant = "1920x200"
+	ImageVariant200x200  ImageVariant = "200x200"
+	ImageVariant300x300  ImageVariant = "300x300"
+	ImageVariant30x30    ImageVariant = "30x30"
+	ImageVariantPublic   ImageVariant = "public"
+)
+
+func (e *ImageVariant) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = ImageVariant(s)
+	case string:
+		*e = ImageVariant(s)
+	default:
+		return fmt.Errorf("unsupported scan type for ImageVariant: %T", src)
+	}
+	return nil
+}
+
+type NullImageVariant struct {
+	ImageVariant ImageVariant
+	Valid        bool // Valid is true if ImageVariant is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullImageVariant) Scan(value interface{}) error {
+	if value == nil {
+		ns.ImageVariant, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.ImageVariant.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullImageVariant) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.ImageVariant), nil
+}
+
 type Character struct {
 	ID             int32         `json:"id"`
 	UserID         int32         `json:"user_id"`
@@ -107,18 +155,18 @@ type Image struct {
 	ID          int32          `json:"id"`
 	ImageTypeID sql.NullInt32  `json:"image_type_id"`
 	Name        sql.NullString `json:"name"`
-	Address     string         `json:"address"`
-	Width       int32          `json:"width"`
-	Height      int32          `json:"height"`
+	Url         string         `json:"url"`
 	CreatedAt   time.Time      `json:"created_at"`
+	BaseUrl     string         `json:"base_url"`
+	ImgGuid     uuid.NullUUID  `json:"img_guid"`
 }
 
 type ImageType struct {
-	ID          int32         `json:"id"`
-	Name        string        `json:"name"`
-	Width       sql.NullInt32 `json:"width"`
-	Height      sql.NullInt32 `json:"height"`
-	Description string        `json:"description"`
+	ID          int32  `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	// Variant name from cloudflare.
+	Variant ImageVariant `json:"variant"`
 }
 
 type Property struct {

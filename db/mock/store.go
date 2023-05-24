@@ -6,6 +6,7 @@ package mockdb
 
 import (
 	context "context"
+	sql "database/sql"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -96,6 +97,21 @@ func (mr *MockStoreMockRecorder) CreateEvaluationVote(arg0, arg1 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateEvaluationVote", reflect.TypeOf((*MockStore)(nil).CreateEvaluationVote), arg0, arg1)
 }
 
+// CreateImage mocks base method.
+func (m *MockStore) CreateImage(arg0 context.Context, arg1 db.CreateImageParams) (db.Image, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateImage", arg0, arg1)
+	ret0, _ := ret[0].(db.Image)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateImage indicates an expected call of CreateImage.
+func (mr *MockStoreMockRecorder) CreateImage(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateImage", reflect.TypeOf((*MockStore)(nil).CreateImage), arg0, arg1)
+}
+
 // CreateSession mocks base method.
 func (m *MockStore) CreateSession(arg0 context.Context, arg1 db.CreateSessionParams) (db.Session, error) {
 	m.ctrl.T.Helper()
@@ -182,6 +198,20 @@ func (m *MockStore) DeleteEvaluationVote(arg0 context.Context, arg1 db.DeleteEva
 func (mr *MockStoreMockRecorder) DeleteEvaluationVote(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteEvaluationVote", reflect.TypeOf((*MockStore)(nil).DeleteEvaluationVote), arg0, arg1)
+}
+
+// DeleteImage mocks base method.
+func (m *MockStore) DeleteImage(arg0 context.Context, arg1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteImage", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteImage indicates an expected call of DeleteImage.
+func (mr *MockStoreMockRecorder) DeleteImage(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteImage", reflect.TypeOf((*MockStore)(nil).DeleteImage), arg0, arg1)
 }
 
 // DeleteUserPasswordReset mocks base method.
@@ -316,6 +346,81 @@ func (m *MockStore) GetEvaluationsByType(arg0 context.Context, arg1 db.Evaluatio
 func (mr *MockStoreMockRecorder) GetEvaluationsByType(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEvaluationsByType", reflect.TypeOf((*MockStore)(nil).GetEvaluationsByType), arg0, arg1)
+}
+
+// GetImageByGUID mocks base method.
+func (m *MockStore) GetImageByGUID(arg0 context.Context, arg1 uuid.NullUUID) (db.Image, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetImageByGUID", arg0, arg1)
+	ret0, _ := ret[0].(db.Image)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetImageByGUID indicates an expected call of GetImageByGUID.
+func (mr *MockStoreMockRecorder) GetImageByGUID(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImageByGUID", reflect.TypeOf((*MockStore)(nil).GetImageByGUID), arg0, arg1)
+}
+
+// GetImageById mocks base method.
+func (m *MockStore) GetImageById(arg0 context.Context, arg1 int32) (db.Image, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetImageById", arg0, arg1)
+	ret0, _ := ret[0].(db.Image)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetImageById indicates an expected call of GetImageById.
+func (mr *MockStoreMockRecorder) GetImageById(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImageById", reflect.TypeOf((*MockStore)(nil).GetImageById), arg0, arg1)
+}
+
+// GetImageTypeById mocks base method.
+func (m *MockStore) GetImageTypeById(arg0 context.Context, arg1 int32) (db.ImageType, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetImageTypeById", arg0, arg1)
+	ret0, _ := ret[0].(db.ImageType)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetImageTypeById indicates an expected call of GetImageTypeById.
+func (mr *MockStoreMockRecorder) GetImageTypeById(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImageTypeById", reflect.TypeOf((*MockStore)(nil).GetImageTypeById), arg0, arg1)
+}
+
+// GetImageTypeByName mocks base method.
+func (m *MockStore) GetImageTypeByName(arg0 context.Context, arg1 string) (db.ImageType, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetImageTypeByName", arg0, arg1)
+	ret0, _ := ret[0].(db.ImageType)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetImageTypeByName indicates an expected call of GetImageTypeByName.
+func (mr *MockStoreMockRecorder) GetImageTypeByName(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImageTypeByName", reflect.TypeOf((*MockStore)(nil).GetImageTypeByName), arg0, arg1)
+}
+
+// GetImagesByImageTypeId mocks base method.
+func (m *MockStore) GetImagesByImageTypeId(arg0 context.Context, arg1 sql.NullInt32) ([]db.Image, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetImagesByImageTypeId", arg0, arg1)
+	ret0, _ := ret[0].([]db.Image)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetImagesByImageTypeId indicates an expected call of GetImagesByImageTypeId.
+func (mr *MockStoreMockRecorder) GetImagesByImageTypeId(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImagesByImageTypeId", reflect.TypeOf((*MockStore)(nil).GetImagesByImageTypeId), arg0, arg1)
 }
 
 // GetSession mocks base method.
@@ -495,6 +600,21 @@ func (m *MockStore) UpdateEvaluationVote(arg0 context.Context, arg1 db.UpdateEva
 func (mr *MockStoreMockRecorder) UpdateEvaluationVote(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateEvaluationVote", reflect.TypeOf((*MockStore)(nil).UpdateEvaluationVote), arg0, arg1)
+}
+
+// UpdateImage mocks base method.
+func (m *MockStore) UpdateImage(arg0 context.Context, arg1 db.UpdateImageParams) (db.Image, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateImage", arg0, arg1)
+	ret0, _ := ret[0].(db.Image)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateImage indicates an expected call of UpdateImage.
+func (mr *MockStoreMockRecorder) UpdateImage(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateImage", reflect.TypeOf((*MockStore)(nil).UpdateImage), arg0, arg1)
 }
 
 // UpdateUser mocks base method.

@@ -78,7 +78,7 @@ type TaleboundClient interface {
 	GetAverageUserEvaluationsByType(ctx context.Context, in *GetAverageUserEvaluationsByTypeRequest, opts ...grpc.CallOption) (*GetAverageUserEvaluationsByTypeResponse, error)
 	// ============= FILE UPLOAD ================
 	UploadImage(ctx context.Context, in *UploadImageRequest, opts ...grpc.CallOption) (*UploadImageResponse, error)
-	UploadUserAvatar(ctx context.Context, in *UploadImageUserAvatarRequest, opts ...grpc.CallOption) (*UploadImageResponse, error)
+	UploadUserAvatar(ctx context.Context, in *UploadUserAvatarRequest, opts ...grpc.CallOption) (*UploadUserAvatarResponse, error)
 }
 
 type taleboundClient struct {
@@ -296,8 +296,8 @@ func (c *taleboundClient) UploadImage(ctx context.Context, in *UploadImageReques
 	return out, nil
 }
 
-func (c *taleboundClient) UploadUserAvatar(ctx context.Context, in *UploadImageUserAvatarRequest, opts ...grpc.CallOption) (*UploadImageResponse, error) {
-	out := new(UploadImageResponse)
+func (c *taleboundClient) UploadUserAvatar(ctx context.Context, in *UploadUserAvatarRequest, opts ...grpc.CallOption) (*UploadUserAvatarResponse, error) {
+	out := new(UploadUserAvatarResponse)
 	err := c.cc.Invoke(ctx, Talebound_UploadUserAvatar_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -337,7 +337,7 @@ type TaleboundServer interface {
 	GetAverageUserEvaluationsByType(context.Context, *GetAverageUserEvaluationsByTypeRequest) (*GetAverageUserEvaluationsByTypeResponse, error)
 	// ============= FILE UPLOAD ================
 	UploadImage(context.Context, *UploadImageRequest) (*UploadImageResponse, error)
-	UploadUserAvatar(context.Context, *UploadImageUserAvatarRequest) (*UploadImageResponse, error)
+	UploadUserAvatar(context.Context, *UploadUserAvatarRequest) (*UploadUserAvatarResponse, error)
 	mustEmbedUnimplementedTaleboundServer()
 }
 
@@ -414,7 +414,7 @@ func (UnimplementedTaleboundServer) GetAverageUserEvaluationsByType(context.Cont
 func (UnimplementedTaleboundServer) UploadImage(context.Context, *UploadImageRequest) (*UploadImageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadImage not implemented")
 }
-func (UnimplementedTaleboundServer) UploadUserAvatar(context.Context, *UploadImageUserAvatarRequest) (*UploadImageResponse, error) {
+func (UnimplementedTaleboundServer) UploadUserAvatar(context.Context, *UploadUserAvatarRequest) (*UploadUserAvatarResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadUserAvatar not implemented")
 }
 func (UnimplementedTaleboundServer) mustEmbedUnimplementedTaleboundServer() {}
@@ -845,7 +845,7 @@ func _Talebound_UploadImage_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _Talebound_UploadUserAvatar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UploadImageUserAvatarRequest)
+	in := new(UploadUserAvatarRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -857,7 +857,7 @@ func _Talebound_UploadUserAvatar_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: Talebound_UploadUserAvatar_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaleboundServer).UploadUserAvatar(ctx, req.(*UploadImageUserAvatarRequest))
+		return srv.(TaleboundServer).UploadUserAvatar(ctx, req.(*UploadUserAvatarRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

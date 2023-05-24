@@ -284,5 +284,15 @@ service Talebound {
       summary: "Upload image";
     };
   };
+  rpc UploadUserAvatar(UploadUserAvatarRequest) returns (UploadUserAvatarResponse) {
+    option (google.api.http) = {
+      post: "/users/{userId}/avatar"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "uploads an user avatar";
+      summary: "Upload user avatar";
+    };
+  };
 
 }

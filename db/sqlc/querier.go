@@ -6,6 +6,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/google/uuid"
 )
@@ -15,11 +16,13 @@ type Querier interface {
 	AddUserPasswordReset(ctx context.Context, arg AddUserPasswordResetParams) (UserPasswordReset, error)
 	AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error)
 	CreateEvaluationVote(ctx context.Context, arg CreateEvaluationVoteParams) (EvaluationVote, error)
+	CreateImage(ctx context.Context, arg CreateImageParams) (Image, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
 	DeleteChatMessage(ctx context.Context, id int64) error
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
+	DeleteImage(ctx context.Context, id int32) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
@@ -29,6 +32,11 @@ type Querier interface {
 	GetEvaluationVotesByUserId(ctx context.Context, userID int32) ([]EvaluationVote, error)
 	GetEvaluationVotesByUserIdAndVoter(ctx context.Context, arg GetEvaluationVotesByUserIdAndVoterParams) ([]EvaluationVote, error)
 	GetEvaluationsByType(ctx context.Context, evaluationType EvaluationType) ([]Evaluation, error)
+	GetImageByGUID(ctx context.Context, imgGuid uuid.NullUUID) (Image, error)
+	GetImageById(ctx context.Context, id int32) (Image, error)
+	GetImageTypeById(ctx context.Context, id int32) (ImageType, error)
+	GetImageTypeByName(ctx context.Context, name string) (ImageType, error)
+	GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.NullInt32) ([]Image, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserById(ctx context.Context, id int32) (User, error)
@@ -39,6 +47,7 @@ type Querier interface {
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
+	UpdateImage(ctx context.Context, arg UpdateImageParams) (Image, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)
 }

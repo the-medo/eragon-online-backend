@@ -576,7 +576,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbUploadImageResponse"
+              "$ref": "#/definitions/pbUploadUserAvatarResponse"
             }
           },
           "default": {
@@ -1192,6 +1192,35 @@
         }
       }
     },
+    "pbImage": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "imgGuid": {
+          "type": "string"
+        },
+        "imageTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "baseUrl": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "pbLoginUserRequest": {
       "type": "object",
       "properties": {
@@ -1360,6 +1389,18 @@
         "uploadedAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbUploadUserAvatarResponse": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "image": {
+          "$ref": "#/definitions/pbImage"
         }
       }
     },

@@ -3,6 +3,7 @@ syntax = "proto3";
 package pb;
 
 import "google/protobuf/timestamp.proto";
+import "image.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -18,7 +19,12 @@ message UploadImageResponse {
   google.protobuf.Timestamp uploadedAt = 4;
 }
 
-message UploadImageUserAvatarRequest {
+message UploadUserAvatarRequest {
   int32 userId = 1;
   bytes data = 2;
+}
+
+message UploadUserAvatarResponse {
+  int32 userId = 1;
+  Image image = 2;
 }
