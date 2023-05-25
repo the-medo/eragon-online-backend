@@ -77,6 +77,14 @@ func (server *Server) UploadAndInsertToDb(ctx context.Context, data []byte, imgT
 	return &dbImg, nil
 }
 
+/*
+UploadUserAvatar
+Uploads a user avatar image to Cloudflare and inserts it into the DB
+  - 1. filename: avatar-{userId}
+  - 2. upload to cloudflare => get cloudflareId
+  - 3. insert into DB `avatar-{userId}_{cloudflareId}`
+  - 4. update user imgId in DB
+*/
 func (server *Server) UploadUserAvatar(ctx context.Context, request *pb.UploadUserAvatarRequest) (*pb.UploadUserAvatarResponse, error) {
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {

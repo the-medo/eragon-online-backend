@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"github.com/google/uuid"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -122,15 +123,16 @@ func convertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb
 	//format : https://imagedelivery.net/<account_id>/<image_id>/<variant_name>
 	baseUrl := path.Dir(uploadImg.GetVariants()[0]) //removes last part of URL
 	url := path.Join(baseUrl, "/", string(imageType.Variant))
+	imgGuid := uuid.MustParse(uploadImg.GetId())
 
 	rsp := db.CreateImageParams{
 		ImgGuid: uuid.NullUUID{
-			UUID:  uuid.MustParse(uploadImg.GetId()),
+			UUID:  imgGuid,
 			Valid: true,
 		},
 		ImgTypeID: nullImgTypeId,
 		Name: sql.NullString{
-			String: filename,
+			String: fmt.Sprintf("%s_%s", filename, imgGuid.String()),
 			Valid:  true,
 		},
 		Url:     url,
