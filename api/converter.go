@@ -12,7 +12,7 @@ import (
 	"path"
 )
 
-func convertImage(dbImage db.Image) *pb.Image {
+func convertImage(dbImage *db.Image) *pb.Image {
 	pbImage := &pb.Image{
 		Id:          dbImage.ID,
 		ImgGuid:     dbImage.ImgGuid.UUID.String(),
@@ -21,6 +21,7 @@ func convertImage(dbImage db.Image) *pb.Image {
 		Url:         dbImage.Url,
 		BaseUrl:     dbImage.BaseUrl,
 		CreatedAt:   timestamppb.New(dbImage.CreatedAt),
+		UserId:      dbImage.UserID,
 	}
 	return pbImage
 }
@@ -51,7 +52,7 @@ func convertUserGetImage(server *Server, ctx context.Context, user db.User) *pb.
 		if err != nil {
 			return nil
 		}
-		pbUser.Img = convertImage(img)
+		pbUser.Img = convertImage(&img)
 	}
 
 	return pbUser
@@ -107,7 +108,7 @@ func convertEvaluationVote(evaluationVote db.EvaluationVote) *pb.EvaluationVote 
 	return pbEvaluationVote
 }
 
-func convertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb.UploadImageResponse, imgTypeId ImageTypeIds, filename string) (db.CreateImageParams, error) {
+func convertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb.UploadImageResponse, imgTypeId ImageTypeIds, filename string, userId int32) (db.CreateImageParams, error) {
 	nullImgTypeId := sql.NullInt32{
 		Int32: int32(imgTypeId),
 		Valid: true,
@@ -134,6 +135,7 @@ func convertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb
 		},
 		Url:     url,
 		BaseUrl: baseUrl,
+		UserID:  userId,
 	}
 
 	return rsp, nil

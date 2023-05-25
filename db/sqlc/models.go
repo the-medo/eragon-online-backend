@@ -159,6 +159,7 @@ type Image struct {
 	CreatedAt   time.Time      `json:"created_at"`
 	BaseUrl     string         `json:"base_url"`
 	ImgGuid     uuid.NullUUID  `json:"img_guid"`
+	UserID      int32          `json:"user_id"`
 }
 
 type ImageType struct {

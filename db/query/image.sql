@@ -5,10 +5,11 @@ INSERT INTO images
     image_type_id,
     name,
     url,
-    base_url
+    base_url,
+    user_id
 )
 VALUES
-    (@img_guid, @img_type_id, @name, @url, @base_url)
+    (@img_guid, @img_type_id, @name, @url, @base_url, @user_id)
 RETURNING *;
 
 -- name: GetImageById :one
@@ -27,7 +28,8 @@ SET
     image_type_id = COALESCE(sqlc.arg(image_type_id), image_type_id),
     name = COALESCE(sqlc.arg(name), name),
     url = COALESCE(sqlc.arg(url), url),
-    base_url = COALESCE(sqlc.arg(base_url), base_url)
+    base_url = COALESCE(sqlc.arg(base_url), base_url),
+    user_id = COALESCE(sqlc.arg(user_id), user_id)
 WHERE
     id = sqlc.arg(id)
 RETURNING *;

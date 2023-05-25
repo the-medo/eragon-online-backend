@@ -1218,6 +1218,10 @@
         "createdAt": {
           "type": "string",
           "format": "date-time"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

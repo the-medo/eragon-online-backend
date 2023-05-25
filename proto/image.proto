@@ -34,4 +34,5 @@ message Image {
   string url = 5;
   string base_url = 6;
   google.protobuf.Timestamp created_at = 7;
+  int32 user_id = 8;
 }
