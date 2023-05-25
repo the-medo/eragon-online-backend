@@ -37,6 +37,10 @@ func TestLoginUserAPI(t *testing.T) {
 					Times(1).
 					Return(user, nil)
 				store.EXPECT().
+					GetImageById(gomock.Any(), gomock.Any()).
+					Times(1).
+					Return(db.Image{}, nil)
+				store.EXPECT().
 					CreateSession(gomock.Any(), gomock.Any()).
 					Times(1).
 					Return(db.Session{}, nil)
