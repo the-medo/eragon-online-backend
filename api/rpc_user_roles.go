@@ -34,7 +34,7 @@ func (server *Server) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (*p
 	}
 
 	for i, user := range users {
-		rsp.Users[i] = convertUser(user)
+		rsp.Users[i] = convertUserRowWithImage(user)
 	}
 
 	return rsp, nil

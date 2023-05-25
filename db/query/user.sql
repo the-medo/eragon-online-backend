@@ -59,7 +59,8 @@ DELETE FROM user_roles WHERE user_id = @user_id AND role_id = @role_id;
 SELECT
     *
 FROM
-    users
+    users AS u
+    LEFT JOIN images i ON u.img_id = i.id
 ORDER BY username
 LIMIT @page_limit
 OFFSET @page_offset

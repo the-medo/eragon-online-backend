@@ -1431,6 +1431,9 @@
         },
         "isEmailVerified": {
           "type": "boolean"
+        },
+        "img": {
+          "$ref": "#/definitions/pbImage"
         }
       }
     },

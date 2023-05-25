@@ -12,7 +12,20 @@ import (
 	"path"
 )
 
-func convertUser(user db.User) *pb.User {
+func convertImage(dbImage db.Image) *pb.Image {
+	pbImage := &pb.Image{
+		Id:          dbImage.ID,
+		ImgGuid:     dbImage.ImgGuid.UUID.String(),
+		ImageTypeId: dbImage.ImageTypeID.Int32,
+		Name:        dbImage.Name.String,
+		Url:         dbImage.Url,
+		BaseUrl:     dbImage.BaseUrl,
+		CreatedAt:   timestamppb.New(dbImage.CreatedAt),
+	}
+	return pbImage
+}
+
+func convertUser(user db.User, img *pb.Image) *pb.User {
 	pbUser := &pb.User{
 		Id:                user.ID,
 		Username:          user.Username,
@@ -24,6 +37,47 @@ func convertUser(user db.User) *pb.User {
 
 	if user.ImgID.Valid == true {
 		pbUser.ImgId = &user.ImgID.Int32
+		pbUser.Img = img
+	}
+
+	return pbUser
+}
+
+func convertUserGetImage(server *Server, ctx context.Context, user db.User) *pb.User {
+	pbUser := convertUser(user, nil)
+
+	if user.ImgID.Valid == true {
+		img, err := server.store.GetImageById(ctx, *pbUser.ImgId)
+		if err != nil {
+			return nil
+		}
+		pbUser.Img = convertImage(img)
+	}
+
+	return pbUser
+}
+
+func convertUserRowWithImage(user db.GetUsersRow) *pb.User {
+	pbUser := &pb.User{
+		Id:                user.ID,
+		Username:          user.Username,
+		Email:             user.Email,
+		PasswordChangedAt: timestamppb.New(user.PasswordChangedAt),
+		CreatedAt:         timestamppb.New(user.CreatedAt),
+		IsEmailVerified:   user.IsEmailVerified,
+	}
+
+	if user.ImgID.Valid == true {
+		pbUser.ImgId = &user.ImgID.Int32
+		pbUser.Img = &pb.Image{
+			Id:          user.ImgID.Int32,
+			ImgGuid:     user.ImgGuid.UUID.String(),
+			ImageTypeId: user.ImageTypeID.Int32,
+			Name:        user.Name.String,
+			Url:         user.Url.String,
+			BaseUrl:     user.BaseUrl.String,
+			CreatedAt:   timestamppb.New(user.CreatedAt_2.Time),
+		}
 	}
 
 	return pbUser
@@ -83,17 +137,4 @@ func convertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb
 	}
 
 	return rsp, nil
-}
-
-func convertImage(dbImage db.Image) *pb.Image {
-	pbImage := &pb.Image{
-		Id:          dbImage.ID,
-		ImgGuid:     dbImage.ImgGuid.UUID.String(),
-		ImageTypeId: dbImage.ImageTypeID.Int32,
-		Name:        dbImage.Name.String,
-		Url:         dbImage.Url,
-		BaseUrl:     dbImage.BaseUrl,
-		CreatedAt:   timestamppb.New(dbImage.CreatedAt),
-	}
-	return pbImage
 }

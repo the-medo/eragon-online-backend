@@ -9,6 +9,8 @@ import (
 	"context"
 	"database/sql"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 const addUserPasswordReset = `-- name: AddUserPasswordReset :one
@@ -212,9 +214,10 @@ func (q *Queries) GetUserRoles(ctx context.Context, userID int32) ([]GetUserRole
 
 const getUsers = `-- name: GetUsers :many
 SELECT
-    id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified
+    u.id, username, hashed_password, email, img_id, password_changed_at, u.created_at, is_email_verified, i.id, image_type_id, name, url, i.created_at, base_url, img_guid
 FROM
-    users
+    users AS u
+    LEFT JOIN images i ON u.img_id = i.id
 ORDER BY username
 LIMIT $2
 OFFSET $1
@@ -225,15 +228,33 @@ type GetUsersParams struct {
 	PageLimit  int32 `json:"page_limit"`
 }
 
-func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]User, error) {
+type GetUsersRow struct {
+	ID                int32          `json:"id"`
+	Username          string         `json:"username"`
+	HashedPassword    string         `json:"hashed_password"`
+	Email             string         `json:"email"`
+	ImgID             sql.NullInt32  `json:"img_id"`
+	PasswordChangedAt time.Time      `json:"password_changed_at"`
+	CreatedAt         time.Time      `json:"created_at"`
+	IsEmailVerified   bool           `json:"is_email_verified"`
+	ID_2              sql.NullInt32  `json:"id_2"`
+	ImageTypeID       sql.NullInt32  `json:"image_type_id"`
+	Name              sql.NullString `json:"name"`
+	Url               sql.NullString `json:"url"`
+	CreatedAt_2       sql.NullTime   `json:"created_at_2"`
+	BaseUrl           sql.NullString `json:"base_url"`
+	ImgGuid           uuid.NullUUID  `json:"img_guid"`
+}
+
+func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error) {
 	rows, err := q.db.QueryContext(ctx, getUsers, arg.PageOffset, arg.PageLimit)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []User{}
+	items := []GetUsersRow{}
 	for rows.Next() {
-		var i User
+		var i GetUsersRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.Username,
@@ -243,6 +264,13 @@ func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]User, err
 			&i.PasswordChangedAt,
 			&i.CreatedAt,
 			&i.IsEmailVerified,
+			&i.ID_2,
+			&i.ImageTypeID,
+			&i.Name,
+			&i.Url,
+			&i.CreatedAt_2,
+			&i.BaseUrl,
+			&i.ImgGuid,
 		); err != nil {
 			return nil, err
 		}

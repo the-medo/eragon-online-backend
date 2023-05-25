@@ -43,7 +43,7 @@ type Querier interface {
 	GetUserByUsername(ctx context.Context, username string) (User, error)
 	GetUserPasswordReset(ctx context.Context, code string) (UserPasswordReset, error)
 	GetUserRoles(ctx context.Context, userID int32) ([]GetUserRolesRow, error)
-	GetUsers(ctx context.Context, arg GetUsersParams) ([]User, error)
+	GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)

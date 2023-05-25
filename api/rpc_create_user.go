@@ -59,7 +59,7 @@ func (server *Server) CreateUser(ctx context.Context, req *pb.CreateUserRequest)
 	}
 
 	rsp := &pb.CreateUserResponse{
-		User: convertUser(txResult.User),
+		User: convertUser(txResult.User, &pb.Image{}),
 	}
 
 	return rsp, nil

@@ -66,7 +66,7 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 	}
 
 	rsp := &pb.LoginUserResponse{
-		User:                  convertUser(user),
+		User:                  convertUserGetImage(server, ctx, user),
 		SessionId:             session.ID.String(),
 		AccessTokenExpiresAt:  timestamppb.New(accessPayload.ExpiredAt),
 		RefreshTokenExpiresAt: timestamppb.New(refreshPayload.ExpiredAt),
