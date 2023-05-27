@@ -12,13 +12,14 @@ import (
 )
 
 func (server *Server) CreateWorld(ctx context.Context, req *pb.CreateWorldRequest) (*pb.World, error) {
-	authPayload, err := server.authorizeUserCookie(ctx)
-	if err != nil {
-		return nil, unauthenticatedError(err)
-	}
 	violations := validateCreateWorldRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
+	}
+
+	authPayload, err := server.authorizeUserCookie(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
 	}
 
 	arg := db.CreateWorldTxParams{
