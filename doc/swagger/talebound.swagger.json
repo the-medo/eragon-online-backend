@@ -867,6 +867,38 @@
         ]
       }
     },
+    "/users/{userId}/worlds_creator": {
+      "get": {
+        "summary": "Get creator's worlds",
+        "description": "Get list of worlds that the creator is part of",
+        "operationId": "Talebound_GetWorldsOfCreator",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetWorldsOfCreatorResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/verify": {
       "get": {
         "summary": "Verify email",
@@ -982,10 +1014,6 @@
                 },
                 "public": {
                   "type": "boolean"
-                },
-                "imgId": {
-                  "type": "integer",
-                  "format": "int32"
                 }
               }
             }
@@ -1000,7 +1028,7 @@
       "post": {
         "summary": "Upload image for world",
         "description": "uploads and sets new image for given world",
-        "operationId": "Talebound_UploadWorldAvatar",
+        "operationId": "Talebound_UploadWorldImage",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1344,6 +1372,18 @@
         }
       }
     },
+    "pbGetWorldsOfCreatorResponse": {
+      "type": "object",
+      "properties": {
+        "worlds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbWorldOfCreatorResponse"
+          }
+        }
+      }
+    },
     "pbImage": {
       "type": "object",
       "properties": {
@@ -1634,6 +1674,17 @@
         "activity": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "pbWorldOfCreatorResponse": {
+      "type": "object",
+      "properties": {
+        "world": {
+          "$ref": "#/definitions/pbWorld"
+        },
+        "isMain": {
+          "type": "boolean"
         }
       }
     },

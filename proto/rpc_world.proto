@@ -7,8 +7,17 @@ import "world.proto";
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 
-message WorldResponse {
+message WorldOfCreatorResponse {
   World world = 1;
+  bool isMain = 2;
+}
+
+message GetWorldsOfCreatorRequest {
+  string userId = 1;
+}
+
+message GetWorldsOfCreatorResponse {
+  repeated WorldOfCreatorResponse worlds = 1;
 }
 
 message CreateWorldRequest {
@@ -21,7 +30,6 @@ message UpdateWorldRequest {
   optional string name = 2;
   optional string description = 3;
   optional bool public = 4;
-  optional int32 imgId = 5;
 }
 
 message UploadWorldImageRequest {

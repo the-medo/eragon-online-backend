@@ -44,9 +44,10 @@ const (
 	Talebound_GetAverageUserEvaluationsByType_FullMethodName    = "/pb.Talebound/GetAverageUserEvaluationsByType"
 	Talebound_UploadImage_FullMethodName                        = "/pb.Talebound/UploadImage"
 	Talebound_UploadUserAvatar_FullMethodName                   = "/pb.Talebound/UploadUserAvatar"
+	Talebound_GetWorldsOfCreator_FullMethodName                 = "/pb.Talebound/GetWorldsOfCreator"
 	Talebound_CreateWorld_FullMethodName                        = "/pb.Talebound/CreateWorld"
 	Talebound_UpdateWorld_FullMethodName                        = "/pb.Talebound/UpdateWorld"
-	Talebound_UploadWorldAvatar_FullMethodName                  = "/pb.Talebound/UploadWorldAvatar"
+	Talebound_UploadWorldImage_FullMethodName                   = "/pb.Talebound/UploadWorldImage"
 )
 
 // TaleboundClient is the client API for Talebound service.
@@ -82,10 +83,10 @@ type TaleboundClient interface {
 	// ============= FILE UPLOAD ================
 	UploadImage(ctx context.Context, in *UploadImageRequest, opts ...grpc.CallOption) (*UploadImageResponse, error)
 	UploadUserAvatar(ctx context.Context, in *UploadUserAvatarRequest, opts ...grpc.CallOption) (*UploadUserAvatarResponse, error)
-	// ============= WORLD =================
+	GetWorldsOfCreator(ctx context.Context, in *GetWorldsOfCreatorRequest, opts ...grpc.CallOption) (*GetWorldsOfCreatorResponse, error)
 	CreateWorld(ctx context.Context, in *CreateWorldRequest, opts ...grpc.CallOption) (*World, error)
 	UpdateWorld(ctx context.Context, in *UpdateWorldRequest, opts ...grpc.CallOption) (*World, error)
-	UploadWorldAvatar(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error)
+	UploadWorldImage(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error)
 }
 
 type taleboundClient struct {
@@ -312,6 +313,15 @@ func (c *taleboundClient) UploadUserAvatar(ctx context.Context, in *UploadUserAv
 	return out, nil
 }
 
+func (c *taleboundClient) GetWorldsOfCreator(ctx context.Context, in *GetWorldsOfCreatorRequest, opts ...grpc.CallOption) (*GetWorldsOfCreatorResponse, error) {
+	out := new(GetWorldsOfCreatorResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetWorldsOfCreator_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *taleboundClient) CreateWorld(ctx context.Context, in *CreateWorldRequest, opts ...grpc.CallOption) (*World, error) {
 	out := new(World)
 	err := c.cc.Invoke(ctx, Talebound_CreateWorld_FullMethodName, in, out, opts...)
@@ -330,9 +340,9 @@ func (c *taleboundClient) UpdateWorld(ctx context.Context, in *UpdateWorldReques
 	return out, nil
 }
 
-func (c *taleboundClient) UploadWorldAvatar(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error) {
+func (c *taleboundClient) UploadWorldImage(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error) {
 	out := new(Image)
-	err := c.cc.Invoke(ctx, Talebound_UploadWorldAvatar_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Talebound_UploadWorldImage_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -372,10 +382,10 @@ type TaleboundServer interface {
 	// ============= FILE UPLOAD ================
 	UploadImage(context.Context, *UploadImageRequest) (*UploadImageResponse, error)
 	UploadUserAvatar(context.Context, *UploadUserAvatarRequest) (*UploadUserAvatarResponse, error)
-	// ============= WORLD =================
+	GetWorldsOfCreator(context.Context, *GetWorldsOfCreatorRequest) (*GetWorldsOfCreatorResponse, error)
 	CreateWorld(context.Context, *CreateWorldRequest) (*World, error)
 	UpdateWorld(context.Context, *UpdateWorldRequest) (*World, error)
-	UploadWorldAvatar(context.Context, *UploadWorldImageRequest) (*Image, error)
+	UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error)
 	mustEmbedUnimplementedTaleboundServer()
 }
 
@@ -455,14 +465,17 @@ func (UnimplementedTaleboundServer) UploadImage(context.Context, *UploadImageReq
 func (UnimplementedTaleboundServer) UploadUserAvatar(context.Context, *UploadUserAvatarRequest) (*UploadUserAvatarResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadUserAvatar not implemented")
 }
+func (UnimplementedTaleboundServer) GetWorldsOfCreator(context.Context, *GetWorldsOfCreatorRequest) (*GetWorldsOfCreatorResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorldsOfCreator not implemented")
+}
 func (UnimplementedTaleboundServer) CreateWorld(context.Context, *CreateWorldRequest) (*World, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateWorld not implemented")
 }
 func (UnimplementedTaleboundServer) UpdateWorld(context.Context, *UpdateWorldRequest) (*World, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateWorld not implemented")
 }
-func (UnimplementedTaleboundServer) UploadWorldAvatar(context.Context, *UploadWorldImageRequest) (*Image, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UploadWorldAvatar not implemented")
+func (UnimplementedTaleboundServer) UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UploadWorldImage not implemented")
 }
 func (UnimplementedTaleboundServer) mustEmbedUnimplementedTaleboundServer() {}
 
@@ -909,6 +922,24 @@ func _Talebound_UploadUserAvatar_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_GetWorldsOfCreator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorldsOfCreatorRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetWorldsOfCreator(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetWorldsOfCreator_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetWorldsOfCreator(ctx, req.(*GetWorldsOfCreatorRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Talebound_CreateWorld_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateWorldRequest)
 	if err := dec(in); err != nil {
@@ -945,20 +976,20 @@ func _Talebound_UpdateWorld_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Talebound_UploadWorldAvatar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Talebound_UploadWorldImage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UploadWorldImageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TaleboundServer).UploadWorldAvatar(ctx, in)
+		return srv.(TaleboundServer).UploadWorldImage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Talebound_UploadWorldAvatar_FullMethodName,
+		FullMethod: Talebound_UploadWorldImage_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaleboundServer).UploadWorldAvatar(ctx, req.(*UploadWorldImageRequest))
+		return srv.(TaleboundServer).UploadWorldImage(ctx, req.(*UploadWorldImageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1067,6 +1098,10 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Talebound_UploadUserAvatar_Handler,
 		},
 		{
+			MethodName: "GetWorldsOfCreator",
+			Handler:    _Talebound_GetWorldsOfCreator_Handler,
+		},
+		{
 			MethodName: "CreateWorld",
 			Handler:    _Talebound_CreateWorld_Handler,
 		},
@@ -1075,8 +1110,8 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Talebound_UpdateWorld_Handler,
 		},
 		{
-			MethodName: "UploadWorldAvatar",
-			Handler:    _Talebound_UploadWorldAvatar_Handler,
+			MethodName: "UploadWorldImage",
+			Handler:    _Talebound_UploadWorldImage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

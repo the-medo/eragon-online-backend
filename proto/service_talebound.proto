@@ -299,6 +299,17 @@ service Talebound {
   };
 
   // ============= WORLD =================
+
+  rpc GetWorldsOfCreator(GetWorldsOfCreatorRequest) returns (GetWorldsOfCreatorResponse) {
+    option (google.api.http) = {
+      get: "/users/{userId}/worlds_creator"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Get list of worlds that the creator is part of";
+      summary: "Get creator's worlds";
+    };
+  };
+
   rpc CreateWorld(CreateWorldRequest) returns (World) {
     option (google.api.http) = {
       post: "/worlds"
@@ -321,7 +332,7 @@ service Talebound {
     };
   };
 
-  rpc UploadWorldAvatar(UploadWorldImageRequest) returns (Image) {
+  rpc UploadWorldImage(UploadWorldImageRequest) returns (Image) {
     option (google.api.http) = {
       post: "/worlds/{worldId}/images"
       body: "*"

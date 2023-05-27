@@ -9,9 +9,9 @@ INSERT INTO worlds (
 -- name: UpdateWorld :one
 UPDATE worlds
 SET
-    name = COALESCE(sqlc.arg(name), name),
-    public = COALESCE(sqlc.arg(public), public),
-    description = COALESCE(sqlc.arg(description), description)
+    name = COALESCE(sqlc.narg(name), name),
+    public = COALESCE(sqlc.narg(public), public),
+    description = COALESCE(sqlc.narg(description), description)
 WHERE
     id = sqlc.arg(world_id)
 RETURNING *;
@@ -55,10 +55,14 @@ WHERE
 
 -- name: GetAdminsOfWorld :many
 SELECT
-    vu.*
+    vu.*,
+    wa.is_main as is_main
 FROM
     view_users vu
     JOIN world_admins wa on wa.user_id = vu.id
 WHERE
     wa.world_id = @world_id
 ;
+
+-- name: IsWorldAdmin :one
+SELECT * FROM world_admins WHERE user_id = @user_id AND world_id = @world_id;

@@ -33,7 +33,7 @@ type Querier interface {
 	DeleteWorldImages(ctx context.Context, worldID int32) error
 	DeleteWorldStats(ctx context.Context, worldID int32) error
 	DeleteWorldStatsHistory(ctx context.Context, worldID sql.NullInt32) error
-	GetAdminsOfWorld(ctx context.Context, worldID sql.NullInt32) ([]ViewUser, error)
+	GetAdminsOfWorld(ctx context.Context, worldID sql.NullInt32) ([]GetAdminsOfWorldRow, error)
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
 	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
@@ -62,6 +62,7 @@ type Querier interface {
 	GetWorldsOfUser(ctx context.Context, userID sql.NullInt32) ([]ViewWorld, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
 	InsertWorldStatsHistory(ctx context.Context, arg InsertWorldStatsHistoryParams) (WorldStatsHistory, error)
+	IsWorldAdmin(ctx context.Context, arg IsWorldAdminParams) (WorldAdmin, error)
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
 	UpdateImage(ctx context.Context, arg UpdateImageParams) (Image, error)
