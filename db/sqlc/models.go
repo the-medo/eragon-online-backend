@@ -269,16 +269,48 @@ type VerifyEmail struct {
 	ExpiredAt  time.Time `json:"expired_at"`
 }
 
+type ViewWorld struct {
+	ID          int32          `json:"id"`
+	Name        string         `json:"name"`
+	Public      bool           `json:"public"`
+	CreatedAt   time.Time      `json:"created_at"`
+	Description string         `json:"description"`
+	ImageAvatar sql.NullString `json:"image_avatar"`
+	ImageHeader sql.NullString `json:"image_header"`
+	Rating      int32          `json:"rating"`
+	Activity    int32          `json:"activity"`
+}
+
 type World struct {
-	ID        int32         `json:"id"`
-	Name      string        `json:"name"`
-	ImgID     sql.NullInt32 `json:"img_id"`
-	Public    bool          `json:"public"`
-	CreatedAt time.Time     `json:"created_at"`
+	ID          int32     `json:"id"`
+	Name        string    `json:"name"`
+	Public      bool      `json:"public"`
+	CreatedAt   time.Time `json:"created_at"`
+	Description string    `json:"description"`
 }
 
 type WorldAdmin struct {
 	WorldID   sql.NullInt32 `json:"world_id"`
 	UserID    sql.NullInt32 `json:"user_id"`
 	CreatedAt time.Time     `json:"created_at"`
+	IsMain    bool          `json:"is_main"`
+}
+
+type WorldImage struct {
+	WorldID     int32         `json:"world_id"`
+	ImageHeader sql.NullInt32 `json:"image_header"`
+	ImageAvatar sql.NullInt32 `json:"image_avatar"`
+}
+
+type WorldStat struct {
+	WorldID            int32 `json:"world_id"`
+	FinalContentRating int32 `json:"final_content_rating"`
+	FinalActivity      int32 `json:"final_activity"`
+}
+
+type WorldStatsHistory struct {
+	WorldID            sql.NullInt32 `json:"world_id"`
+	FinalContentRating int32         `json:"final_content_rating"`
+	FinalActivity      int32         `json:"final_activity"`
+	CreatedAt          time.Time     `json:"created_at"`
 }

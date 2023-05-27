@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package pb;
+
+import "world.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+
+message WorldResponse {
+  World world = 1;
+}
+
+message CreateWorldRequest {
+  string name = 1;
+  string description = 2;
+}
+
+message UpdateWorldRequest {
+  int32 worldId = 1;
+  optional string name = 2;
+  optional string description = 3;
+  optional bool public = 4;
+  optional int32 imgId = 5;
+}
+
+message UploadWorldImageRequest {
+  int32 worldId = 1;
+  bytes data = 2;
+  int32 imageTypeId = 3;
+}

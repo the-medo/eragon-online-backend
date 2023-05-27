@@ -7,6 +7,7 @@ package db
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -20,10 +21,17 @@ type Querier interface {
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
+	CreateWorld(ctx context.Context, arg CreateWorldParams) (World, error)
+	CreateWorldImages(ctx context.Context, worldID int32) error
+	CreateWorldStats(ctx context.Context, worldID int32) error
 	DeleteChatMessage(ctx context.Context, id int64) error
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
 	DeleteImage(ctx context.Context, id int32) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
+	DeleteWorld(ctx context.Context, worldID int32) error
+	DeleteWorldImages(ctx context.Context, worldID int32) error
+	DeleteWorldStats(ctx context.Context, worldID int32) error
+	DeleteWorldStatsHistory(ctx context.Context, worldID sql.NullInt32) error
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
 	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
@@ -44,12 +52,21 @@ type Querier interface {
 	GetUserPasswordReset(ctx context.Context, code string) (UserPasswordReset, error)
 	GetUserRoles(ctx context.Context, userID int32) ([]GetUserRolesRow, error)
 	GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error)
+	GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error)
+	GetWorldImages(ctx context.Context, worldID int32) (WorldImage, error)
+	GetWorldStats(ctx context.Context, worldID int32) (WorldStat, error)
+	GetWorldStatsHistory(ctx context.Context, startDate time.Time) ([]WorldStatsHistory, error)
+	GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWorld, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
+	InsertWorldStatsHistory(ctx context.Context, arg InsertWorldStatsHistoryParams) (WorldStatsHistory, error)
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
 	UpdateImage(ctx context.Context, arg UpdateImageParams) (Image, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)
+	UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World, error)
+	UpdateWorldImages(ctx context.Context, arg UpdateWorldImagesParams) (WorldImage, error)
+	UpdateWorldStats(ctx context.Context, arg UpdateWorldStatsParams) (WorldStat, error)
 }
 
 var _ Querier = (*Queries)(nil)

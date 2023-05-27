@@ -905,6 +905,147 @@
           "Talebound"
         ]
       }
+    },
+    "/worlds": {
+      "post": {
+        "summary": "Create world",
+        "description": "Create completely new world",
+        "operationId": "Talebound_CreateWorld",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbWorld"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateWorldRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/worlds/{worldId}": {
+      "patch": {
+        "summary": "Update world",
+        "description": "Update world properties (NO images or stats!)",
+        "operationId": "Talebound_UpdateWorld",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbWorld"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "public": {
+                  "type": "boolean"
+                },
+                "imgId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/worlds/{worldId}/images": {
+      "post": {
+        "summary": "Upload image for world",
+        "description": "uploads and sets new image for given world",
+        "operationId": "Talebound_UploadWorldAvatar",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbImage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string",
+                  "format": "byte"
+                },
+                "imageTypeId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
     }
   },
   "definitions": {
@@ -1024,6 +1165,17 @@
       "properties": {
         "user": {
           "$ref": "#/definitions/pbUser"
+        }
+      }
+    },
+    "pbCreateWorldRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
         }
       }
     },
@@ -1446,6 +1598,42 @@
       "properties": {
         "isVerified": {
           "type": "boolean"
+        }
+      }
+    },
+    "pbWorld": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "public": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "imageAvatar": {
+          "type": "string"
+        },
+        "imageHeader": {
+          "type": "string"
+        },
+        "rating": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "activity": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
