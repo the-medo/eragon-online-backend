@@ -34,3 +34,10 @@ ORDER BY
 DESC
 LIMIT @page_limit
 OFFSET @page_offset;
+
+-- name: CreateWorldAdmin :one
+INSERT INTO world_admins (
+    world_id,
+    user_id,
+    is_main
+) VALUES (@world_id, @user_id, @is_main) RETURNING *;

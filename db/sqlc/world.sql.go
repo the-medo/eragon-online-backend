@@ -7,6 +7,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 )
 
 const createWorld = `-- name: CreateWorld :one
@@ -32,6 +33,32 @@ func (q *Queries) CreateWorld(ctx context.Context, arg CreateWorldParams) (World
 		&i.Public,
 		&i.CreatedAt,
 		&i.Description,
+	)
+	return i, err
+}
+
+const createWorldAdmin = `-- name: CreateWorldAdmin :one
+INSERT INTO world_admins (
+    world_id,
+    user_id,
+    is_main
+) VALUES ($1, $2, $3) RETURNING world_id, user_id, created_at, is_main
+`
+
+type CreateWorldAdminParams struct {
+	WorldID sql.NullInt32 `json:"world_id"`
+	UserID  sql.NullInt32 `json:"user_id"`
+	IsMain  bool          `json:"is_main"`
+}
+
+func (q *Queries) CreateWorldAdmin(ctx context.Context, arg CreateWorldAdminParams) (WorldAdmin, error) {
+	row := q.db.QueryRowContext(ctx, createWorldAdmin, arg.WorldID, arg.UserID, arg.IsMain)
+	var i WorldAdmin
+	err := row.Scan(
+		&i.WorldID,
+		&i.UserID,
+		&i.CreatedAt,
+		&i.IsMain,
 	)
 	return i, err
 }

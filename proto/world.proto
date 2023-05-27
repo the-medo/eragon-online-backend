@@ -12,8 +12,8 @@ message World {
   bool public = 3;
   google.protobuf.Timestamp createdAt = 4;
   string description = 5;
-  string image_avatar = 6;
-  string image_header = 7;
+  string imageAvatar = 6;
+  string imageHeader = 7;
   int32 rating = 8;
   int32 activity = 9;
 }

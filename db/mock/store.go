@@ -188,6 +188,21 @@ func (mr *MockStoreMockRecorder) CreateWorld(arg0, arg1 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorld", reflect.TypeOf((*MockStore)(nil).CreateWorld), arg0, arg1)
 }
 
+// CreateWorldAdmin mocks base method.
+func (m *MockStore) CreateWorldAdmin(arg0 context.Context, arg1 db.CreateWorldAdminParams) (db.WorldAdmin, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateWorldAdmin", arg0, arg1)
+	ret0, _ := ret[0].(db.WorldAdmin)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateWorldAdmin indicates an expected call of CreateWorldAdmin.
+func (mr *MockStoreMockRecorder) CreateWorldAdmin(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorldAdmin", reflect.TypeOf((*MockStore)(nil).CreateWorldAdmin), arg0, arg1)
+}
+
 // CreateWorldImages mocks base method.
 func (m *MockStore) CreateWorldImages(arg0 context.Context, arg1 int32) error {
 	m.ctrl.T.Helper()
@@ -214,6 +229,21 @@ func (m *MockStore) CreateWorldStats(arg0 context.Context, arg1 int32) error {
 func (mr *MockStoreMockRecorder) CreateWorldStats(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorldStats", reflect.TypeOf((*MockStore)(nil).CreateWorldStats), arg0, arg1)
+}
+
+// CreateWorldTx mocks base method.
+func (m *MockStore) CreateWorldTx(arg0 context.Context, arg1 db.CreateWorldTxParams) (db.ViewWorld, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateWorldTx", arg0, arg1)
+	ret0, _ := ret[0].(db.ViewWorld)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateWorldTx indicates an expected call of CreateWorldTx.
+func (mr *MockStoreMockRecorder) CreateWorldTx(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorldTx", reflect.TypeOf((*MockStore)(nil).CreateWorldTx), arg0, arg1)
 }
 
 // DeleteChatMessage mocks base method.

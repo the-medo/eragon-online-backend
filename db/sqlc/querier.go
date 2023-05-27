@@ -22,6 +22,7 @@ type Querier interface {
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
 	CreateWorld(ctx context.Context, arg CreateWorldParams) (World, error)
+	CreateWorldAdmin(ctx context.Context, arg CreateWorldAdminParams) (WorldAdmin, error)
 	CreateWorldImages(ctx context.Context, worldID int32) error
 	CreateWorldStats(ctx context.Context, worldID int32) error
 	DeleteChatMessage(ctx context.Context, id int64) error
