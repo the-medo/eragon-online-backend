@@ -119,19 +119,39 @@ Table chat {
 Table worlds {
   id int [pk, increment]
   name varchar [not null, unique]
-  img_id int [ref: > images.id]
   public boolean [not null, default: false]
   created_at timestamptz [not null, default: `now()`]
+  description varchar [not null, default: '']
 }
 
 Table world_admins {
   world_id int [ref: > worlds.id]
   user_id int [ref: > users.id]
   created_at timestamptz [not null, default: `now()`]
+  is_main boolean [not null, default: false]
 
   indexes {
     (world_id, user_id) [unique]
   }
+}
+
+Table world_images {
+  world_id int [pk, ref: > worlds.id]
+  image_header int [ref: > images.id]
+  image_avatar int [ref: > images.id]
+}
+
+Table world_stats {
+  world_id int [pk, ref: > worlds.id]
+  final_content_rating int [not null, default: 0]
+  final_activity int [not null, default: 0]
+}
+
+Table world_stats_history {
+  world_id int [ref: > worlds.id]
+  final_content_rating int [not null, default: 0]
+  final_activity int [not null, default: 0]
+  created_at timestamptz [not null, default: `now()`]
 }
 
 Table races {
@@ -247,6 +267,15 @@ TableGroup UserStuff {
   sessions
   user_password_reset
 }
+
+TableGroup Worlds {
+  worlds
+  world_images
+  world_stats
+  world_stats_history
+  world_admins
+}
+
 
 //Ref: users.id < follows.following_user_id
 

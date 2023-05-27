@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+import "image.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message World {
+  int32 id = 1;
+  string name = 2;
+  bool public = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  optional int32 imgId = 4;
+  google.protobuf.Timestamp passwordChangedAt = 5;
+  bool isEmailVerified = 7;
+  Image img = 8;
+}
+
