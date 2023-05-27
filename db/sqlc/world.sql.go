@@ -72,6 +72,49 @@ func (q *Queries) DeleteWorld(ctx context.Context, worldID int32) error {
 	return err
 }
 
+const getAdminsOfWorld = `-- name: GetAdminsOfWorld :many
+SELECT
+    vu.id, vu.username, vu.hashed_password, vu.email, vu.img_id, vu.password_changed_at, vu.created_at, vu.is_email_verified, vu.image_avatar
+FROM
+    view_users vu
+    JOIN world_admins wa on wa.user_id = vu.id
+WHERE
+    wa.world_id = $1
+`
+
+func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID sql.NullInt32) ([]ViewUser, error) {
+	rows, err := q.db.QueryContext(ctx, getAdminsOfWorld, worldID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ViewUser{}
+	for rows.Next() {
+		var i ViewUser
+		if err := rows.Scan(
+			&i.ID,
+			&i.Username,
+			&i.HashedPassword,
+			&i.Email,
+			&i.ImgID,
+			&i.PasswordChangedAt,
+			&i.CreatedAt,
+			&i.IsEmailVerified,
+			&i.ImageAvatar,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getWorldByID = `-- name: GetWorldByID :one
 SELECT id, name, public, created_at, description, image_avatar, image_header, rating, activity FROM view_worlds WHERE id = $1 LIMIT 1
 `
@@ -123,6 +166,49 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 		arg.PageOffset,
 		arg.PageLimit,
 	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ViewWorld{}
+	for rows.Next() {
+		var i ViewWorld
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Public,
+			&i.CreatedAt,
+			&i.Description,
+			&i.ImageAvatar,
+			&i.ImageHeader,
+			&i.Rating,
+			&i.Activity,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getWorldsOfUser = `-- name: GetWorldsOfUser :many
+SELECT
+    vw.id, vw.name, vw.public, vw.created_at, vw.description, vw.image_avatar, vw.image_header, vw.rating, vw.activity
+FROM
+    view_worlds vw
+    JOIN world_admins wa ON wa.world_id = vw.id
+WHERE
+    wa.user_id = $1
+`
+
+func (q *Queries) GetWorldsOfUser(ctx context.Context, userID sql.NullInt32) ([]ViewWorld, error) {
+	rows, err := q.db.QueryContext(ctx, getWorldsOfUser, userID)
 	if err != nil {
 		return nil, err
 	}

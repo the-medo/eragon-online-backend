@@ -47,3 +47,12 @@ FROM
     LEFT JOIN images i_avatar on wi.image_avatar = i_avatar.id
     LEFT JOIN images i_header on wi.image_header = i_header.id
 ;
+
+CREATE VIEW view_users AS
+SELECT
+    u.*,
+    i.url as image_avatar
+FROM
+    users AS u
+    LEFT JOIN images i ON u.img_id = i.id
+;

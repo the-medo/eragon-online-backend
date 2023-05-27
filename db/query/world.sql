@@ -41,3 +41,24 @@ INSERT INTO world_admins (
     user_id,
     is_main
 ) VALUES (@world_id, @user_id, @is_main) RETURNING *;
+
+
+-- name: GetWorldsOfUser :many
+SELECT
+    vw.*
+FROM
+    view_worlds vw
+    JOIN world_admins wa ON wa.world_id = vw.id
+WHERE
+    wa.user_id = @user_id
+;
+
+-- name: GetAdminsOfWorld :many
+SELECT
+    vu.*
+FROM
+    view_users vu
+    JOIN world_admins wa on wa.user_id = vu.id
+WHERE
+    wa.world_id = @world_id
+;

@@ -269,6 +269,18 @@ type VerifyEmail struct {
 	ExpiredAt  time.Time `json:"expired_at"`
 }
 
+type ViewUser struct {
+	ID                int32          `json:"id"`
+	Username          string         `json:"username"`
+	HashedPassword    string         `json:"hashed_password"`
+	Email             string         `json:"email"`
+	ImgID             sql.NullInt32  `json:"img_id"`
+	PasswordChangedAt time.Time      `json:"password_changed_at"`
+	CreatedAt         time.Time      `json:"created_at"`
+	IsEmailVerified   bool           `json:"is_email_verified"`
+	ImageAvatar       sql.NullString `json:"image_avatar"`
+}
+
 type ViewWorld struct {
 	ID          int32          `json:"id"`
 	Name        string         `json:"name"`
