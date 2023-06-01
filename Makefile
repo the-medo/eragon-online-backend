@@ -33,7 +33,7 @@ migratedown1:
 	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
 
 sqlc-generate:
-	docker run --rm -v "C:\Users\Medo\OneDrive\Desktop\Projects\talebound-backend:/src" -w /src kjconroy/sqlc generate
+	docker run --rm -v "$(CURDIR):/src" -w /src kjconroy/sqlc generate
 
 test:
 	go test -v -cover -short ./...
