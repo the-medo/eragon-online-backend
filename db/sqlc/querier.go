@@ -18,6 +18,7 @@ type Querier interface {
 	AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error)
 	CreateEvaluationVote(ctx context.Context, arg CreateEvaluationVoteParams) (EvaluationVote, error)
 	CreateImage(ctx context.Context, arg CreateImageParams) (Image, error)
+	CreatePost(ctx context.Context, arg CreatePostParams) (Post, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
@@ -28,6 +29,7 @@ type Querier interface {
 	DeleteChatMessage(ctx context.Context, id int64) error
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
 	DeleteImage(ctx context.Context, id int32) error
+	DeletePost(ctx context.Context, id int32) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
 	DeleteWorld(ctx context.Context, worldID int32) error
 	DeleteWorldImages(ctx context.Context, worldID int32) error
@@ -47,6 +49,9 @@ type Querier interface {
 	GetImageTypeById(ctx context.Context, id int32) (ImageType, error)
 	GetImageTypeByName(ctx context.Context, name string) (ImageType, error)
 	GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.NullInt32) ([]Image, error)
+	GetPostById(ctx context.Context, postID int32) (Post, error)
+	GetPostHistoryByPostId(ctx context.Context, postID int32) ([]PostHistory, error)
+	GetPostsByUserId(ctx context.Context, userID int32) ([]Post, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserById(ctx context.Context, id int32) (User, error)
@@ -61,11 +66,13 @@ type Querier interface {
 	GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWorld, error)
 	GetWorldsOfUser(ctx context.Context, userID sql.NullInt32) ([]ViewWorld, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
+	InsertPostHistory(ctx context.Context, postID int32) (PostHistory, error)
 	InsertWorldStatsHistory(ctx context.Context, arg InsertWorldStatsHistoryParams) (WorldStatsHistory, error)
 	IsWorldAdmin(ctx context.Context, arg IsWorldAdminParams) (WorldAdmin, error)
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
 	UpdateImage(ctx context.Context, arg UpdateImageParams) (Image, error)
+	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)
 	UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World, error)

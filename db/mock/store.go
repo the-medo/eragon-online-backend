@@ -113,6 +113,21 @@ func (mr *MockStoreMockRecorder) CreateImage(arg0, arg1 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateImage", reflect.TypeOf((*MockStore)(nil).CreateImage), arg0, arg1)
 }
 
+// CreatePost mocks base method.
+func (m *MockStore) CreatePost(arg0 context.Context, arg1 db.CreatePostParams) (db.Post, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreatePost", arg0, arg1)
+	ret0, _ := ret[0].(db.Post)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreatePost indicates an expected call of CreatePost.
+func (mr *MockStoreMockRecorder) CreatePost(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatePost", reflect.TypeOf((*MockStore)(nil).CreatePost), arg0, arg1)
+}
+
 // CreateSession mocks base method.
 func (m *MockStore) CreateSession(arg0 context.Context, arg1 db.CreateSessionParams) (db.Session, error) {
 	m.ctrl.T.Helper()
@@ -286,6 +301,20 @@ func (m *MockStore) DeleteImage(arg0 context.Context, arg1 int32) error {
 func (mr *MockStoreMockRecorder) DeleteImage(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteImage", reflect.TypeOf((*MockStore)(nil).DeleteImage), arg0, arg1)
+}
+
+// DeletePost mocks base method.
+func (m *MockStore) DeletePost(arg0 context.Context, arg1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeletePost", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeletePost indicates an expected call of DeletePost.
+func (mr *MockStoreMockRecorder) DeletePost(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePost", reflect.TypeOf((*MockStore)(nil).DeletePost), arg0, arg1)
 }
 
 // DeleteUserPasswordReset mocks base method.
@@ -568,6 +597,51 @@ func (mr *MockStoreMockRecorder) GetImagesByImageTypeId(arg0, arg1 interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImagesByImageTypeId", reflect.TypeOf((*MockStore)(nil).GetImagesByImageTypeId), arg0, arg1)
 }
 
+// GetPostById mocks base method.
+func (m *MockStore) GetPostById(arg0 context.Context, arg1 int32) (db.Post, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPostById", arg0, arg1)
+	ret0, _ := ret[0].(db.Post)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPostById indicates an expected call of GetPostById.
+func (mr *MockStoreMockRecorder) GetPostById(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostById", reflect.TypeOf((*MockStore)(nil).GetPostById), arg0, arg1)
+}
+
+// GetPostHistoryByPostId mocks base method.
+func (m *MockStore) GetPostHistoryByPostId(arg0 context.Context, arg1 int32) ([]db.PostHistory, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPostHistoryByPostId", arg0, arg1)
+	ret0, _ := ret[0].([]db.PostHistory)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPostHistoryByPostId indicates an expected call of GetPostHistoryByPostId.
+func (mr *MockStoreMockRecorder) GetPostHistoryByPostId(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostHistoryByPostId", reflect.TypeOf((*MockStore)(nil).GetPostHistoryByPostId), arg0, arg1)
+}
+
+// GetPostsByUserId mocks base method.
+func (m *MockStore) GetPostsByUserId(arg0 context.Context, arg1 int32) ([]db.Post, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPostsByUserId", arg0, arg1)
+	ret0, _ := ret[0].([]db.Post)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPostsByUserId indicates an expected call of GetPostsByUserId.
+func (mr *MockStoreMockRecorder) GetPostsByUserId(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostsByUserId", reflect.TypeOf((*MockStore)(nil).GetPostsByUserId), arg0, arg1)
+}
+
 // GetSession mocks base method.
 func (m *MockStore) GetSession(arg0 context.Context, arg1 uuid.UUID) (db.Session, error) {
 	m.ctrl.T.Helper()
@@ -778,6 +852,21 @@ func (mr *MockStoreMockRecorder) HasUserRole(arg0, arg1 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasUserRole", reflect.TypeOf((*MockStore)(nil).HasUserRole), arg0, arg1)
 }
 
+// InsertPostHistory mocks base method.
+func (m *MockStore) InsertPostHistory(arg0 context.Context, arg1 int32) (db.PostHistory, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "InsertPostHistory", arg0, arg1)
+	ret0, _ := ret[0].(db.PostHistory)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// InsertPostHistory indicates an expected call of InsertPostHistory.
+func (mr *MockStoreMockRecorder) InsertPostHistory(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertPostHistory", reflect.TypeOf((*MockStore)(nil).InsertPostHistory), arg0, arg1)
+}
+
 // InsertWorldStatsHistory mocks base method.
 func (m *MockStore) InsertWorldStatsHistory(arg0 context.Context, arg1 db.InsertWorldStatsHistoryParams) (db.WorldStatsHistory, error) {
 	m.ctrl.T.Helper()
@@ -880,6 +969,21 @@ func (m *MockStore) UpdateImage(arg0 context.Context, arg1 db.UpdateImageParams)
 func (mr *MockStoreMockRecorder) UpdateImage(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateImage", reflect.TypeOf((*MockStore)(nil).UpdateImage), arg0, arg1)
+}
+
+// UpdatePost mocks base method.
+func (m *MockStore) UpdatePost(arg0 context.Context, arg1 db.UpdatePostParams) (db.Post, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdatePost", arg0, arg1)
+	ret0, _ := ret[0].(db.Post)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdatePost indicates an expected call of UpdatePost.
+func (mr *MockStoreMockRecorder) UpdatePost(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePost", reflect.TypeOf((*MockStore)(nil).UpdatePost), arg0, arg1)
 }
 
 // UpdateUser mocks base method.

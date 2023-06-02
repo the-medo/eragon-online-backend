@@ -170,6 +170,29 @@ type ImageType struct {
 	Variant ImageVariant `json:"variant"`
 }
 
+type Post struct {
+	ID                int32         `json:"id"`
+	UserID            int32         `json:"user_id"`
+	Title             string        `json:"title"`
+	Content           string        `json:"content"`
+	CreatedAt         time.Time     `json:"created_at"`
+	DeletedAt         sql.NullTime  `json:"deleted_at"`
+	LastUpdatedAt     sql.NullTime  `json:"last_updated_at"`
+	LastUpdatedUserID sql.NullInt32 `json:"last_updated_user_id"`
+}
+
+type PostHistory struct {
+	ID                int32         `json:"id"`
+	PostID            int32         `json:"post_id"`
+	UserID            int32         `json:"user_id"`
+	Title             string        `json:"title"`
+	Content           string        `json:"content"`
+	CreatedAt         time.Time     `json:"created_at"`
+	DeletedAt         sql.NullTime  `json:"deleted_at"`
+	LastUpdatedAt     sql.NullTime  `json:"last_updated_at"`
+	LastUpdatedUserID sql.NullInt32 `json:"last_updated_user_id"`
+}
+
 type Property struct {
 	ID      int32  `json:"id"`
 	WorldID int32  `json:"world_id"`
