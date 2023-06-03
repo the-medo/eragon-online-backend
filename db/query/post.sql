@@ -60,4 +60,26 @@ WHERE
 RETURNING *;
 
 -- name: GetPostHistoryByPostId :many
-SELECT * FROM post_history WHERE post_id = sqlc.arg(post_id) ORDER BY created_at DESC;
+SELECT
+    id as post_history_id,
+    post_id,
+    user_id,
+    title,
+    created_at,
+    deleted_at,
+    last_updated_at,
+    last_updated_user_id
+FROM post_history WHERE post_id = sqlc.arg(post_id) ORDER BY created_at DESC;
+
+-- name: GetPostHistoryById :many
+SELECT
+    id as post_history_id,
+    post_id,
+    user_id,
+    title,
+    content,
+    created_at,
+    deleted_at,
+    last_updated_at,
+    last_updated_user_id
+FROM post_history WHERE id = sqlc.arg(post_history_id);

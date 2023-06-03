@@ -15,8 +15,10 @@ import "rpc_reset_password.proto";
 import "rpc_user_evaluations.proto";
 import "rpc_upload_image.proto";
 import "rpc_world.proto";
+import "rpc_post.proto";
 import "image.proto";
 import "world.proto";
+import "post.proto";
 import "google/protobuf/empty.proto";
 
 
@@ -295,6 +297,80 @@ service Talebound {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "uploads an user avatar";
       summary: "Upload user avatar";
+    };
+  };
+
+  // ============= POSTS =================
+
+  rpc GetPostById(GetPostByIdRequest) returns (Post) {
+    option (google.api.http) = {
+      get: "/posts/{postId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Get content of post by its ID";
+      summary: "Get post by id";
+    };
+  };
+
+  rpc GetPostsByUserId(GetPostsByUserIdRequest) returns (GetPostsByUserIdResponse) {
+    option (google.api.http) = {
+      get: "/users/{userId}/posts"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Get posts of user by userID";
+      summary: "Get user posts";
+    };
+  };
+
+  rpc GetPostHistory(GetPostHistoryRequest) returns (GetPostHistoryResponse) {
+    option (google.api.http) = {
+      get: "/post_history/post/{postId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Get list of history changes of post by its ID - without content";
+      summary: "Get post history";
+    };
+  };
+
+  rpc GetPostHistoryById(GetPostHistoryByIdRequest) returns (HistoryPost) {
+    option (google.api.http) = {
+      get: "/post_history/content/{postHistoryId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Get content of single update iteration of post";
+      summary: "Get post history content";
+    };
+  };
+
+  rpc CreatePost(CreatePostRequest) returns (Post) {
+    option (google.api.http) = {
+      post: "/posts"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Create completely new post";
+      summary: "Create post";
+    };
+  };
+
+  rpc UpdatePost(UpdatePostRequest) returns (World) {
+    option (google.api.http) = {
+      patch: "/posts/{postId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Update title or content of the post";
+      summary: "Update post";
+    };
+  };
+
+  rpc DeletePost(DeletePostRequest) returns (DeletePostResponse) {
+    option (google.api.http) = {
+      delete: "/posts/{postId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Deletes post";
+      summary: "Delete post";
     };
   };
 

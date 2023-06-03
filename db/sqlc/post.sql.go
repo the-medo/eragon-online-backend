@@ -8,6 +8,7 @@ package db
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 const createPost = `-- name: CreatePost :one
@@ -77,25 +78,103 @@ func (q *Queries) GetPostById(ctx context.Context, postID int32) (Post, error) {
 	return i, err
 }
 
-const getPostHistoryByPostId = `-- name: GetPostHistoryByPostId :many
-SELECT id, post_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id FROM post_history WHERE post_id = $1 ORDER BY created_at DESC
+const getPostHistoryById = `-- name: GetPostHistoryById :many
+SELECT
+    id as post_history_id,
+    post_id,
+    user_id,
+    title,
+    content,
+    created_at,
+    deleted_at,
+    last_updated_at,
+    last_updated_user_id
+FROM post_history WHERE id = $1
 `
 
-func (q *Queries) GetPostHistoryByPostId(ctx context.Context, postID int32) ([]PostHistory, error) {
+type GetPostHistoryByIdRow struct {
+	PostHistoryID     int32         `json:"post_history_id"`
+	PostID            int32         `json:"post_id"`
+	UserID            int32         `json:"user_id"`
+	Title             string        `json:"title"`
+	Content           string        `json:"content"`
+	CreatedAt         time.Time     `json:"created_at"`
+	DeletedAt         sql.NullTime  `json:"deleted_at"`
+	LastUpdatedAt     sql.NullTime  `json:"last_updated_at"`
+	LastUpdatedUserID sql.NullInt32 `json:"last_updated_user_id"`
+}
+
+func (q *Queries) GetPostHistoryById(ctx context.Context, postHistoryID int32) ([]GetPostHistoryByIdRow, error) {
+	rows, err := q.db.QueryContext(ctx, getPostHistoryById, postHistoryID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetPostHistoryByIdRow{}
+	for rows.Next() {
+		var i GetPostHistoryByIdRow
+		if err := rows.Scan(
+			&i.PostHistoryID,
+			&i.PostID,
+			&i.UserID,
+			&i.Title,
+			&i.Content,
+			&i.CreatedAt,
+			&i.DeletedAt,
+			&i.LastUpdatedAt,
+			&i.LastUpdatedUserID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getPostHistoryByPostId = `-- name: GetPostHistoryByPostId :many
+SELECT
+    id as post_history_id,
+    post_id,
+    user_id,
+    title,
+    created_at,
+    deleted_at,
+    last_updated_at,
+    last_updated_user_id
+FROM post_history WHERE post_id = $1 ORDER BY created_at DESC
+`
+
+type GetPostHistoryByPostIdRow struct {
+	PostHistoryID     int32         `json:"post_history_id"`
+	PostID            int32         `json:"post_id"`
+	UserID            int32         `json:"user_id"`
+	Title             string        `json:"title"`
+	CreatedAt         time.Time     `json:"created_at"`
+	DeletedAt         sql.NullTime  `json:"deleted_at"`
+	LastUpdatedAt     sql.NullTime  `json:"last_updated_at"`
+	LastUpdatedUserID sql.NullInt32 `json:"last_updated_user_id"`
+}
+
+func (q *Queries) GetPostHistoryByPostId(ctx context.Context, postID int32) ([]GetPostHistoryByPostIdRow, error) {
 	rows, err := q.db.QueryContext(ctx, getPostHistoryByPostId, postID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []PostHistory{}
+	items := []GetPostHistoryByPostIdRow{}
 	for rows.Next() {
-		var i PostHistory
+		var i GetPostHistoryByPostIdRow
 		if err := rows.Scan(
-			&i.ID,
+			&i.PostHistoryID,
 			&i.PostID,
 			&i.UserID,
 			&i.Title,
-			&i.Content,
 			&i.CreatedAt,
 			&i.DeletedAt,
 			&i.LastUpdatedAt,

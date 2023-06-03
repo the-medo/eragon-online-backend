@@ -17,3 +17,15 @@ message Post {
   google.protobuf.Timestamp lastUpdatedUserId = 8;
 }
 
+message HistoryPost {
+  int32 id = 1;
+  int32 postId = 2;
+  int32 userId = 3;
+  string title = 4;
+  string content = 5;
+  google.protobuf.Timestamp createdAt = 6;
+  google.protobuf.Timestamp deletedAt = 7;
+  google.protobuf.Timestamp lastUpdatedAt = 8;
+  google.protobuf.Timestamp lastUpdatedUserId = 9;
+}
+

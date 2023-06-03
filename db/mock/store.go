@@ -612,11 +612,26 @@ func (mr *MockStoreMockRecorder) GetPostById(arg0, arg1 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostById", reflect.TypeOf((*MockStore)(nil).GetPostById), arg0, arg1)
 }
 
+// GetPostHistoryById mocks base method.
+func (m *MockStore) GetPostHistoryById(arg0 context.Context, arg1 int32) ([]db.GetPostHistoryByIdRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPostHistoryById", arg0, arg1)
+	ret0, _ := ret[0].([]db.GetPostHistoryByIdRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPostHistoryById indicates an expected call of GetPostHistoryById.
+func (mr *MockStoreMockRecorder) GetPostHistoryById(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostHistoryById", reflect.TypeOf((*MockStore)(nil).GetPostHistoryById), arg0, arg1)
+}
+
 // GetPostHistoryByPostId mocks base method.
-func (m *MockStore) GetPostHistoryByPostId(arg0 context.Context, arg1 int32) ([]db.PostHistory, error) {
+func (m *MockStore) GetPostHistoryByPostId(arg0 context.Context, arg1 int32) ([]db.GetPostHistoryByPostIdRow, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPostHistoryByPostId", arg0, arg1)
-	ret0, _ := ret[0].([]db.PostHistory)
+	ret0, _ := ret[0].([]db.GetPostHistoryByPostIdRow)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package pb;
 
+import "post.proto";
+
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 
@@ -13,8 +15,20 @@ message GetPostsByUserIdRequest {
   int32 userId = 1;
 }
 
+message GetPostsByUserIdResponse {
+  repeated Post posts = 1;
+}
+
 message GetPostHistoryRequest {
   int32 postId = 1;
+}
+
+message GetPostHistoryResponse {
+  repeated HistoryPost historyPosts = 1;
+}
+
+message GetPostHistoryByIdRequest {
+  int32 postHistoryId = 1;
 }
 
 message CreatePostRequest {
@@ -32,3 +46,7 @@ message DeletePostRequest {
   int32 postId = 1;
 }
 
+message DeletePostResponse {
+  bool success = 1;
+  string message = 2;
+}

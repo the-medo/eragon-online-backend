@@ -44,6 +44,13 @@ const (
 	Talebound_GetAverageUserEvaluationsByType_FullMethodName    = "/pb.Talebound/GetAverageUserEvaluationsByType"
 	Talebound_UploadImage_FullMethodName                        = "/pb.Talebound/UploadImage"
 	Talebound_UploadUserAvatar_FullMethodName                   = "/pb.Talebound/UploadUserAvatar"
+	Talebound_GetPostById_FullMethodName                        = "/pb.Talebound/GetPostById"
+	Talebound_GetPostsByUserId_FullMethodName                   = "/pb.Talebound/GetPostsByUserId"
+	Talebound_GetPostHistory_FullMethodName                     = "/pb.Talebound/GetPostHistory"
+	Talebound_GetPostHistoryById_FullMethodName                 = "/pb.Talebound/GetPostHistoryById"
+	Talebound_CreatePost_FullMethodName                         = "/pb.Talebound/CreatePost"
+	Talebound_UpdatePost_FullMethodName                         = "/pb.Talebound/UpdatePost"
+	Talebound_DeletePost_FullMethodName                         = "/pb.Talebound/DeletePost"
 	Talebound_GetWorldsOfCreator_FullMethodName                 = "/pb.Talebound/GetWorldsOfCreator"
 	Talebound_CreateWorld_FullMethodName                        = "/pb.Talebound/CreateWorld"
 	Talebound_UpdateWorld_FullMethodName                        = "/pb.Talebound/UpdateWorld"
@@ -83,6 +90,13 @@ type TaleboundClient interface {
 	// ============= FILE UPLOAD ================
 	UploadImage(ctx context.Context, in *UploadImageRequest, opts ...grpc.CallOption) (*UploadImageResponse, error)
 	UploadUserAvatar(ctx context.Context, in *UploadUserAvatarRequest, opts ...grpc.CallOption) (*UploadUserAvatarResponse, error)
+	GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*Post, error)
+	GetPostsByUserId(ctx context.Context, in *GetPostsByUserIdRequest, opts ...grpc.CallOption) (*GetPostsByUserIdResponse, error)
+	GetPostHistory(ctx context.Context, in *GetPostHistoryRequest, opts ...grpc.CallOption) (*GetPostHistoryResponse, error)
+	GetPostHistoryById(ctx context.Context, in *GetPostHistoryByIdRequest, opts ...grpc.CallOption) (*HistoryPost, error)
+	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*Post, error)
+	UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*World, error)
+	DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*DeletePostResponse, error)
 	GetWorldsOfCreator(ctx context.Context, in *GetWorldsOfCreatorRequest, opts ...grpc.CallOption) (*GetWorldsOfCreatorResponse, error)
 	CreateWorld(ctx context.Context, in *CreateWorldRequest, opts ...grpc.CallOption) (*World, error)
 	UpdateWorld(ctx context.Context, in *UpdateWorldRequest, opts ...grpc.CallOption) (*World, error)
@@ -313,6 +327,69 @@ func (c *taleboundClient) UploadUserAvatar(ctx context.Context, in *UploadUserAv
 	return out, nil
 }
 
+func (c *taleboundClient) GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*Post, error) {
+	out := new(Post)
+	err := c.cc.Invoke(ctx, Talebound_GetPostById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetPostsByUserId(ctx context.Context, in *GetPostsByUserIdRequest, opts ...grpc.CallOption) (*GetPostsByUserIdResponse, error) {
+	out := new(GetPostsByUserIdResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetPostsByUserId_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetPostHistory(ctx context.Context, in *GetPostHistoryRequest, opts ...grpc.CallOption) (*GetPostHistoryResponse, error) {
+	out := new(GetPostHistoryResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetPostHistory_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetPostHistoryById(ctx context.Context, in *GetPostHistoryByIdRequest, opts ...grpc.CallOption) (*HistoryPost, error) {
+	out := new(HistoryPost)
+	err := c.cc.Invoke(ctx, Talebound_GetPostHistoryById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*Post, error) {
+	out := new(Post)
+	err := c.cc.Invoke(ctx, Talebound_CreatePost_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*World, error) {
+	out := new(World)
+	err := c.cc.Invoke(ctx, Talebound_UpdatePost_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*DeletePostResponse, error) {
+	out := new(DeletePostResponse)
+	err := c.cc.Invoke(ctx, Talebound_DeletePost_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *taleboundClient) GetWorldsOfCreator(ctx context.Context, in *GetWorldsOfCreatorRequest, opts ...grpc.CallOption) (*GetWorldsOfCreatorResponse, error) {
 	out := new(GetWorldsOfCreatorResponse)
 	err := c.cc.Invoke(ctx, Talebound_GetWorldsOfCreator_FullMethodName, in, out, opts...)
@@ -382,6 +459,13 @@ type TaleboundServer interface {
 	// ============= FILE UPLOAD ================
 	UploadImage(context.Context, *UploadImageRequest) (*UploadImageResponse, error)
 	UploadUserAvatar(context.Context, *UploadUserAvatarRequest) (*UploadUserAvatarResponse, error)
+	GetPostById(context.Context, *GetPostByIdRequest) (*Post, error)
+	GetPostsByUserId(context.Context, *GetPostsByUserIdRequest) (*GetPostsByUserIdResponse, error)
+	GetPostHistory(context.Context, *GetPostHistoryRequest) (*GetPostHistoryResponse, error)
+	GetPostHistoryById(context.Context, *GetPostHistoryByIdRequest) (*HistoryPost, error)
+	CreatePost(context.Context, *CreatePostRequest) (*Post, error)
+	UpdatePost(context.Context, *UpdatePostRequest) (*World, error)
+	DeletePost(context.Context, *DeletePostRequest) (*DeletePostResponse, error)
 	GetWorldsOfCreator(context.Context, *GetWorldsOfCreatorRequest) (*GetWorldsOfCreatorResponse, error)
 	CreateWorld(context.Context, *CreateWorldRequest) (*World, error)
 	UpdateWorld(context.Context, *UpdateWorldRequest) (*World, error)
@@ -464,6 +548,27 @@ func (UnimplementedTaleboundServer) UploadImage(context.Context, *UploadImageReq
 }
 func (UnimplementedTaleboundServer) UploadUserAvatar(context.Context, *UploadUserAvatarRequest) (*UploadUserAvatarResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadUserAvatar not implemented")
+}
+func (UnimplementedTaleboundServer) GetPostById(context.Context, *GetPostByIdRequest) (*Post, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPostById not implemented")
+}
+func (UnimplementedTaleboundServer) GetPostsByUserId(context.Context, *GetPostsByUserIdRequest) (*GetPostsByUserIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPostsByUserId not implemented")
+}
+func (UnimplementedTaleboundServer) GetPostHistory(context.Context, *GetPostHistoryRequest) (*GetPostHistoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPostHistory not implemented")
+}
+func (UnimplementedTaleboundServer) GetPostHistoryById(context.Context, *GetPostHistoryByIdRequest) (*HistoryPost, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPostHistoryById not implemented")
+}
+func (UnimplementedTaleboundServer) CreatePost(context.Context, *CreatePostRequest) (*Post, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePost not implemented")
+}
+func (UnimplementedTaleboundServer) UpdatePost(context.Context, *UpdatePostRequest) (*World, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePost not implemented")
+}
+func (UnimplementedTaleboundServer) DeletePost(context.Context, *DeletePostRequest) (*DeletePostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeletePost not implemented")
 }
 func (UnimplementedTaleboundServer) GetWorldsOfCreator(context.Context, *GetWorldsOfCreatorRequest) (*GetWorldsOfCreatorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWorldsOfCreator not implemented")
@@ -922,6 +1027,132 @@ func _Talebound_UploadUserAvatar_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_GetPostById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPostByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetPostById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetPostById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetPostById(ctx, req.(*GetPostByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetPostsByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPostsByUserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetPostsByUserId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetPostsByUserId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetPostsByUserId(ctx, req.(*GetPostsByUserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetPostHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPostHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetPostHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetPostHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetPostHistory(ctx, req.(*GetPostHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetPostHistoryById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPostHistoryByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetPostHistoryById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetPostHistoryById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetPostHistoryById(ctx, req.(*GetPostHistoryByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_CreatePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).CreatePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_CreatePost_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).CreatePost(ctx, req.(*CreatePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_UpdatePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).UpdatePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_UpdatePost_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).UpdatePost(ctx, req.(*UpdatePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_DeletePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeletePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).DeletePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_DeletePost_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).DeletePost(ctx, req.(*DeletePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Talebound_GetWorldsOfCreator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetWorldsOfCreatorRequest)
 	if err := dec(in); err != nil {
@@ -1096,6 +1327,34 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UploadUserAvatar",
 			Handler:    _Talebound_UploadUserAvatar_Handler,
+		},
+		{
+			MethodName: "GetPostById",
+			Handler:    _Talebound_GetPostById_Handler,
+		},
+		{
+			MethodName: "GetPostsByUserId",
+			Handler:    _Talebound_GetPostsByUserId_Handler,
+		},
+		{
+			MethodName: "GetPostHistory",
+			Handler:    _Talebound_GetPostHistory_Handler,
+		},
+		{
+			MethodName: "GetPostHistoryById",
+			Handler:    _Talebound_GetPostHistoryById_Handler,
+		},
+		{
+			MethodName: "CreatePost",
+			Handler:    _Talebound_CreatePost_Handler,
+		},
+		{
+			MethodName: "UpdatePost",
+			Handler:    _Talebound_UpdatePost_Handler,
+		},
+		{
+			MethodName: "DeletePost",
+			Handler:    _Talebound_DeletePost_Handler,
 		},
 		{
 			MethodName: "GetWorldsOfCreator",
