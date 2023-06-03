@@ -8,18 +8,7 @@ option go_package = "github.com/the-medo/talebound-backend/pb";
 
 message Post {
   int32 id = 1;
-  int32 userId = 2;
-  string title = 3;
-  string content = 4;
-  google.protobuf.Timestamp createdAt = 5;
-  google.protobuf.Timestamp deletedAt = 6;
-  google.protobuf.Timestamp lastUpdatedAt = 7;
-  google.protobuf.Timestamp lastUpdatedUserId = 8;
-}
-
-message HistoryPost {
-  int32 id = 1;
-  int32 postId = 2;
+  int32 postTypeId = 2;
   int32 userId = 3;
   string title = 4;
   string content = 5;
@@ -27,5 +16,18 @@ message HistoryPost {
   google.protobuf.Timestamp deletedAt = 7;
   google.protobuf.Timestamp lastUpdatedAt = 8;
   google.protobuf.Timestamp lastUpdatedUserId = 9;
+}
+
+message HistoryPost {
+  int32 id = 1;
+  int32 postId = 2;
+  int32 postTypeId = 3;
+  int32 userId = 4;
+  string title = 5;
+  string content = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  google.protobuf.Timestamp deletedAt = 8;
+  google.protobuf.Timestamp lastUpdatedAt = 9;
+  google.protobuf.Timestamp lastUpdatedUserId = 10;
 }
 

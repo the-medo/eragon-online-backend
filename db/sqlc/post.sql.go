@@ -16,24 +16,32 @@ INSERT INTO posts
 (
     user_id,
     title,
+    post_type_id,
     content
 )
 VALUES
-    ($1, $2, $3)
-RETURNING id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id
+    ($1, $2, $3, $4)
+RETURNING id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id
 `
 
 type CreatePostParams struct {
-	UserID  int32  `json:"user_id"`
-	Title   string `json:"title"`
-	Content string `json:"content"`
+	UserID     int32  `json:"user_id"`
+	Title      string `json:"title"`
+	PostTypeID int32  `json:"post_type_id"`
+	Content    string `json:"content"`
 }
 
 func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, error) {
-	row := q.db.QueryRowContext(ctx, createPost, arg.UserID, arg.Title, arg.Content)
+	row := q.db.QueryRowContext(ctx, createPost,
+		arg.UserID,
+		arg.Title,
+		arg.PostTypeID,
+		arg.Content,
+	)
 	var i Post
 	err := row.Scan(
 		&i.ID,
+		&i.PostTypeID,
 		&i.UserID,
 		&i.Title,
 		&i.Content,
@@ -59,7 +67,7 @@ func (q *Queries) DeletePost(ctx context.Context, id int32) error {
 }
 
 const getPostById = `-- name: GetPostById :one
-SELECT id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id FROM posts WHERE id = $1
+SELECT id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id FROM posts WHERE id = $1
 `
 
 func (q *Queries) GetPostById(ctx context.Context, postID int32) (Post, error) {
@@ -67,6 +75,7 @@ func (q *Queries) GetPostById(ctx context.Context, postID int32) (Post, error) {
 	var i Post
 	err := row.Scan(
 		&i.ID,
+		&i.PostTypeID,
 		&i.UserID,
 		&i.Title,
 		&i.Content,
@@ -82,6 +91,7 @@ const getPostHistoryById = `-- name: GetPostHistoryById :many
 SELECT
     id as post_history_id,
     post_id,
+    post_type_id,
     user_id,
     title,
     content,
@@ -95,6 +105,7 @@ FROM post_history WHERE id = $1
 type GetPostHistoryByIdRow struct {
 	PostHistoryID     int32         `json:"post_history_id"`
 	PostID            int32         `json:"post_id"`
+	PostTypeID        int32         `json:"post_type_id"`
 	UserID            int32         `json:"user_id"`
 	Title             string        `json:"title"`
 	Content           string        `json:"content"`
@@ -116,6 +127,7 @@ func (q *Queries) GetPostHistoryById(ctx context.Context, postHistoryID int32) (
 		if err := rows.Scan(
 			&i.PostHistoryID,
 			&i.PostID,
+			&i.PostTypeID,
 			&i.UserID,
 			&i.Title,
 			&i.Content,
@@ -141,6 +153,7 @@ const getPostHistoryByPostId = `-- name: GetPostHistoryByPostId :many
 SELECT
     id as post_history_id,
     post_id,
+    post_type_id,
     user_id,
     title,
     created_at,
@@ -153,6 +166,7 @@ FROM post_history WHERE post_id = $1 ORDER BY created_at DESC
 type GetPostHistoryByPostIdRow struct {
 	PostHistoryID     int32         `json:"post_history_id"`
 	PostID            int32         `json:"post_id"`
+	PostTypeID        int32         `json:"post_type_id"`
 	UserID            int32         `json:"user_id"`
 	Title             string        `json:"title"`
 	CreatedAt         time.Time     `json:"created_at"`
@@ -173,6 +187,7 @@ func (q *Queries) GetPostHistoryByPostId(ctx context.Context, postID int32) ([]G
 		if err := rows.Scan(
 			&i.PostHistoryID,
 			&i.PostID,
+			&i.PostTypeID,
 			&i.UserID,
 			&i.Title,
 			&i.CreatedAt,
@@ -194,7 +209,7 @@ func (q *Queries) GetPostHistoryByPostId(ctx context.Context, postID int32) ([]G
 }
 
 const getPostsByUserId = `-- name: GetPostsByUserId :many
-SELECT id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id FROM posts WHERE user_id = $1 AND deleted_at IS NULL ORDER BY created_at DESC
+SELECT id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id FROM posts WHERE user_id = $1 AND deleted_at IS NULL ORDER BY created_at DESC
 `
 
 func (q *Queries) GetPostsByUserId(ctx context.Context, userID int32) ([]Post, error) {
@@ -208,6 +223,49 @@ func (q *Queries) GetPostsByUserId(ctx context.Context, userID int32) ([]Post, e
 		var i Post
 		if err := rows.Scan(
 			&i.ID,
+			&i.PostTypeID,
+			&i.UserID,
+			&i.Title,
+			&i.Content,
+			&i.CreatedAt,
+			&i.DeletedAt,
+			&i.LastUpdatedAt,
+			&i.LastUpdatedUserID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getPostsByUserIdAndType = `-- name: GetPostsByUserIdAndType :many
+SELECT id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id FROM posts WHERE user_id = $1 AND post_type_id = $2 AND deleted_at IS NULL ORDER BY created_at DESC
+`
+
+type GetPostsByUserIdAndTypeParams struct {
+	UserID     int32 `json:"user_id"`
+	PostTypeID int32 `json:"post_type_id"`
+}
+
+func (q *Queries) GetPostsByUserIdAndType(ctx context.Context, arg GetPostsByUserIdAndTypeParams) ([]Post, error) {
+	rows, err := q.db.QueryContext(ctx, getPostsByUserIdAndType, arg.UserID, arg.PostTypeID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Post{}
+	for rows.Next() {
+		var i Post
+		if err := rows.Scan(
+			&i.ID,
+			&i.PostTypeID,
 			&i.UserID,
 			&i.Title,
 			&i.Content,
@@ -232,6 +290,7 @@ func (q *Queries) GetPostsByUserId(ctx context.Context, userID int32) ([]Post, e
 const insertPostHistory = `-- name: InsertPostHistory :one
 INSERT INTO post_history (
     post_id,
+    post_type_id,
     user_id,
     title,
     content,
@@ -242,6 +301,7 @@ INSERT INTO post_history (
 )
 SELECT
     id,
+    post_type_id,
     user_id,
     title,
     content,
@@ -253,7 +313,7 @@ FROM
     posts
 WHERE
     posts.id = $1
-RETURNING id, post_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id
+RETURNING id, post_id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id
 `
 
 func (q *Queries) InsertPostHistory(ctx context.Context, postID int32) (PostHistory, error) {
@@ -262,6 +322,7 @@ func (q *Queries) InsertPostHistory(ctx context.Context, postID int32) (PostHist
 	err := row.Scan(
 		&i.ID,
 		&i.PostID,
+		&i.PostTypeID,
 		&i.UserID,
 		&i.Title,
 		&i.Content,
@@ -278,16 +339,18 @@ UPDATE posts
 SET
     title = COALESCE($1, title),
     content = COALESCE($2, content),
+    post_type_id = COALESCE($3, post_type_id),
     last_updated_at = now(),
-    last_updated_user_id = $3
+    last_updated_user_id = $4
 WHERE
-    id = $4
-RETURNING id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id
+    id = $5
+RETURNING id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id
 `
 
 type UpdatePostParams struct {
 	Title             string        `json:"title"`
 	Content           string        `json:"content"`
+	PostTypeID        int32         `json:"post_type_id"`
 	LastUpdatedUserID sql.NullInt32 `json:"last_updated_user_id"`
 	PostID            int32         `json:"post_id"`
 }
@@ -296,12 +359,14 @@ func (q *Queries) UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, e
 	row := q.db.QueryRowContext(ctx, updatePost,
 		arg.Title,
 		arg.Content,
+		arg.PostTypeID,
 		arg.LastUpdatedUserID,
 		arg.PostID,
 	)
 	var i Post
 	err := row.Scan(
 		&i.ID,
+		&i.PostTypeID,
 		&i.UserID,
 		&i.Title,
 		&i.Content,

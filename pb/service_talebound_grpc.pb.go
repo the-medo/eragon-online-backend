@@ -45,7 +45,8 @@ const (
 	Talebound_UploadImage_FullMethodName                        = "/pb.Talebound/UploadImage"
 	Talebound_UploadUserAvatar_FullMethodName                   = "/pb.Talebound/UploadUserAvatar"
 	Talebound_GetPostById_FullMethodName                        = "/pb.Talebound/GetPostById"
-	Talebound_GetPostsByUserId_FullMethodName                   = "/pb.Talebound/GetPostsByUserId"
+	Talebound_GetUserPosts_FullMethodName                       = "/pb.Talebound/GetUserPosts"
+	Talebound_GetUserPostsByType_FullMethodName                 = "/pb.Talebound/GetUserPostsByType"
 	Talebound_GetPostHistory_FullMethodName                     = "/pb.Talebound/GetPostHistory"
 	Talebound_GetPostHistoryById_FullMethodName                 = "/pb.Talebound/GetPostHistoryById"
 	Talebound_CreatePost_FullMethodName                         = "/pb.Talebound/CreatePost"
@@ -91,7 +92,8 @@ type TaleboundClient interface {
 	UploadImage(ctx context.Context, in *UploadImageRequest, opts ...grpc.CallOption) (*UploadImageResponse, error)
 	UploadUserAvatar(ctx context.Context, in *UploadUserAvatarRequest, opts ...grpc.CallOption) (*UploadUserAvatarResponse, error)
 	GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*Post, error)
-	GetPostsByUserId(ctx context.Context, in *GetPostsByUserIdRequest, opts ...grpc.CallOption) (*GetPostsByUserIdResponse, error)
+	GetUserPosts(ctx context.Context, in *GetUserPostsRequest, opts ...grpc.CallOption) (*GetUserPostsResponse, error)
+	GetUserPostsByType(ctx context.Context, in *GetUserPostsByTypeRequest, opts ...grpc.CallOption) (*GetUserPostsResponse, error)
 	GetPostHistory(ctx context.Context, in *GetPostHistoryRequest, opts ...grpc.CallOption) (*GetPostHistoryResponse, error)
 	GetPostHistoryById(ctx context.Context, in *GetPostHistoryByIdRequest, opts ...grpc.CallOption) (*HistoryPost, error)
 	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*Post, error)
@@ -336,9 +338,18 @@ func (c *taleboundClient) GetPostById(ctx context.Context, in *GetPostByIdReques
 	return out, nil
 }
 
-func (c *taleboundClient) GetPostsByUserId(ctx context.Context, in *GetPostsByUserIdRequest, opts ...grpc.CallOption) (*GetPostsByUserIdResponse, error) {
-	out := new(GetPostsByUserIdResponse)
-	err := c.cc.Invoke(ctx, Talebound_GetPostsByUserId_FullMethodName, in, out, opts...)
+func (c *taleboundClient) GetUserPosts(ctx context.Context, in *GetUserPostsRequest, opts ...grpc.CallOption) (*GetUserPostsResponse, error) {
+	out := new(GetUserPostsResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetUserPosts_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetUserPostsByType(ctx context.Context, in *GetUserPostsByTypeRequest, opts ...grpc.CallOption) (*GetUserPostsResponse, error) {
+	out := new(GetUserPostsResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetUserPostsByType_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -460,7 +471,8 @@ type TaleboundServer interface {
 	UploadImage(context.Context, *UploadImageRequest) (*UploadImageResponse, error)
 	UploadUserAvatar(context.Context, *UploadUserAvatarRequest) (*UploadUserAvatarResponse, error)
 	GetPostById(context.Context, *GetPostByIdRequest) (*Post, error)
-	GetPostsByUserId(context.Context, *GetPostsByUserIdRequest) (*GetPostsByUserIdResponse, error)
+	GetUserPosts(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error)
+	GetUserPostsByType(context.Context, *GetUserPostsByTypeRequest) (*GetUserPostsResponse, error)
 	GetPostHistory(context.Context, *GetPostHistoryRequest) (*GetPostHistoryResponse, error)
 	GetPostHistoryById(context.Context, *GetPostHistoryByIdRequest) (*HistoryPost, error)
 	CreatePost(context.Context, *CreatePostRequest) (*Post, error)
@@ -552,8 +564,11 @@ func (UnimplementedTaleboundServer) UploadUserAvatar(context.Context, *UploadUse
 func (UnimplementedTaleboundServer) GetPostById(context.Context, *GetPostByIdRequest) (*Post, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostById not implemented")
 }
-func (UnimplementedTaleboundServer) GetPostsByUserId(context.Context, *GetPostsByUserIdRequest) (*GetPostsByUserIdResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetPostsByUserId not implemented")
+func (UnimplementedTaleboundServer) GetUserPosts(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserPosts not implemented")
+}
+func (UnimplementedTaleboundServer) GetUserPostsByType(context.Context, *GetUserPostsByTypeRequest) (*GetUserPostsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserPostsByType not implemented")
 }
 func (UnimplementedTaleboundServer) GetPostHistory(context.Context, *GetPostHistoryRequest) (*GetPostHistoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostHistory not implemented")
@@ -1045,20 +1060,38 @@ func _Talebound_GetPostById_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Talebound_GetPostsByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetPostsByUserIdRequest)
+func _Talebound_GetUserPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserPostsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TaleboundServer).GetPostsByUserId(ctx, in)
+		return srv.(TaleboundServer).GetUserPosts(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Talebound_GetPostsByUserId_FullMethodName,
+		FullMethod: Talebound_GetUserPosts_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaleboundServer).GetPostsByUserId(ctx, req.(*GetPostsByUserIdRequest))
+		return srv.(TaleboundServer).GetUserPosts(ctx, req.(*GetUserPostsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetUserPostsByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserPostsByTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetUserPostsByType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetUserPostsByType_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetUserPostsByType(ctx, req.(*GetUserPostsByTypeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1333,8 +1366,12 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Talebound_GetPostById_Handler,
 		},
 		{
-			MethodName: "GetPostsByUserId",
-			Handler:    _Talebound_GetPostsByUserId_Handler,
+			MethodName: "GetUserPosts",
+			Handler:    _Talebound_GetUserPosts_Handler,
+		},
+		{
+			MethodName: "GetUserPostsByType",
+			Handler:    _Talebound_GetUserPostsByType_Handler,
 		},
 		{
 			MethodName: "GetPostHistory",

@@ -172,6 +172,7 @@ type ImageType struct {
 
 type Post struct {
 	ID                int32         `json:"id"`
+	PostTypeID        int32         `json:"post_type_id"`
 	UserID            int32         `json:"user_id"`
 	Title             string        `json:"title"`
 	Content           string        `json:"content"`
@@ -184,6 +185,7 @@ type Post struct {
 type PostHistory struct {
 	ID                int32         `json:"id"`
 	PostID            int32         `json:"post_id"`
+	PostTypeID        int32         `json:"post_type_id"`
 	UserID            int32         `json:"user_id"`
 	Title             string        `json:"title"`
 	Content           string        `json:"content"`
@@ -191,6 +193,11 @@ type PostHistory struct {
 	DeletedAt         sql.NullTime  `json:"deleted_at"`
 	LastUpdatedAt     sql.NullTime  `json:"last_updated_at"`
 	LastUpdatedUserID sql.NullInt32 `json:"last_updated_user_id"`
+}
+
+type PostType struct {
+	ID   int32  `json:"id"`
+	Name string `json:"name"`
 }
 
 type Property struct {

@@ -429,6 +429,10 @@
                 },
                 "content": {
                   "type": "string"
+                },
+                "postTypeId": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -1042,12 +1046,12 @@
       "get": {
         "summary": "Get user posts",
         "description": "Get posts of user by userID",
-        "operationId": "Talebound_GetPostsByUserId",
+        "operationId": "Talebound_GetUserPosts",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbGetPostsByUserIdResponse"
+              "$ref": "#/definitions/pbGetUserPostsResponse"
             }
           },
           "default": {
@@ -1060,6 +1064,46 @@
         "parameters": [
           {
             "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/users/{userId}/posts/type/{postTypeId}": {
+      "get": {
+        "summary": "Get user posts by type",
+        "description": "Get posts of user by userID and post type",
+        "operationId": "Talebound_GetUserPostsByType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetUserPostsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "postTypeId",
             "in": "path",
             "required": true,
             "type": "integer",
@@ -1426,6 +1470,10 @@
         },
         "content": {
           "type": "string"
+        },
+        "postTypeId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -1626,7 +1674,7 @@
         }
       }
     },
-    "pbGetPostsByUserIdResponse": {
+    "pbGetUserPostsResponse": {
       "type": "object",
       "properties": {
         "posts": {
@@ -1682,6 +1730,10 @@
           "format": "int32"
         },
         "postId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "postTypeId": {
           "type": "integer",
           "format": "int32"
         },
@@ -1780,6 +1832,10 @@
       "type": "object",
       "properties": {
         "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "postTypeId": {
           "type": "integer",
           "format": "int32"
         },
