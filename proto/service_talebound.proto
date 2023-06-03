@@ -334,7 +334,7 @@ service Talebound {
 
   rpc GetPostHistory(GetPostHistoryRequest) returns (GetPostHistoryResponse) {
     option (google.api.http) = {
-      get: "/posts/{postId}/history/"
+      get: "/posts/{postId}/history"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Get list of history changes of post by its ID - without content";

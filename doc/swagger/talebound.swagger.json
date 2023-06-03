@@ -228,72 +228,6 @@
         ]
       }
     },
-    "/post_history/content/{postHistoryId}": {
-      "get": {
-        "summary": "Get post history content",
-        "description": "Get content of single update iteration of post",
-        "operationId": "Talebound_GetPostHistoryById",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbHistoryPost"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "postHistoryId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/post_history/post/{postId}": {
-      "get": {
-        "summary": "Get post history",
-        "description": "Get list of history changes of post by its ID - without content",
-        "operationId": "Talebound_GetPostHistory",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetPostHistoryResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "postId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
     "/posts": {
       "post": {
         "summary": "Create post",
@@ -321,6 +255,39 @@
             "schema": {
               "$ref": "#/definitions/pbCreatePostRequest"
             }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/posts/history/content/{postHistoryId}": {
+      "get": {
+        "summary": "Get post history content",
+        "description": "Get content of single update iteration of post",
+        "operationId": "Talebound_GetPostHistoryById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbHistoryPost"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "postHistoryId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "tags": [
@@ -436,6 +403,39 @@
                 }
               }
             }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/posts/{postId}/history": {
+      "get": {
+        "summary": "Get post history",
+        "description": "Get list of history changes of post by its ID - without content",
+        "operationId": "Talebound_GetPostHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetPostHistoryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "tags": [

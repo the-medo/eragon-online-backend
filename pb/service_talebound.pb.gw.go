@@ -2521,7 +2521,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetPostHistory", runtime.WithHTTPPathPattern("/post_history/post/{postId}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetPostHistory", runtime.WithHTTPPathPattern("/posts/{postId}/history"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2546,7 +2546,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetPostHistoryById", runtime.WithHTTPPathPattern("/post_history/content/{postHistoryId}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetPostHistoryById", runtime.WithHTTPPathPattern("/posts/history/content/{postHistoryId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3379,7 +3379,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetPostHistory", runtime.WithHTTPPathPattern("/post_history/post/{postId}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetPostHistory", runtime.WithHTTPPathPattern("/posts/{postId}/history"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3401,7 +3401,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetPostHistoryById", runtime.WithHTTPPathPattern("/post_history/content/{postHistoryId}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetPostHistoryById", runtime.WithHTTPPathPattern("/posts/history/content/{postHistoryId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3629,9 +3629,9 @@ var (
 
 	pattern_Talebound_GetUserPostsByType_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"users", "userId", "posts", "type", "postTypeId"}, ""))
 
-	pattern_Talebound_GetPostHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"post_history", "post", "postId"}, ""))
+	pattern_Talebound_GetPostHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"posts", "postId", "history"}, ""))
 
-	pattern_Talebound_GetPostHistoryById_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"post_history", "content", "postHistoryId"}, ""))
+	pattern_Talebound_GetPostHistoryById_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"posts", "history", "content", "postHistoryId"}, ""))
 
 	pattern_Talebound_CreatePost_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"posts"}, ""))
 
