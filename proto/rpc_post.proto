@@ -44,9 +44,9 @@ message CreatePostRequest {
 
 message UpdatePostRequest {
   int32 postId = 1;
-  string title = 2;
-  string content = 3;
-  int32 postTypeId = 4;
+  optional string title = 2;
+  optional string content = 3;
+  optional int32 postTypeId = 4;
 }
 
 message DeletePostRequest {

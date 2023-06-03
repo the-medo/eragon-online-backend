@@ -122,3 +122,25 @@ func ValidateSecretCode(value string) error {
 	}
 	return nil
 }
+
+func ValidatePostId(value int32) error {
+	if value < 1 {
+		return fmt.Errorf("must be a positive integer")
+	}
+	return nil
+}
+
+func ValidatePostTypeId(value int32) error {
+	if value < 1 {
+		return fmt.Errorf("must be a positive integer")
+	}
+	return nil
+}
+
+func ValidatePostTitle(value string) error {
+	if err := ValidateString(value, 3, 256); err != nil {
+		return err
+	}
+
+	return nil
+}

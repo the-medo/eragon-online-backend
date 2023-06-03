@@ -29,7 +29,7 @@ type Querier interface {
 	DeleteChatMessage(ctx context.Context, id int64) error
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
 	DeleteImage(ctx context.Context, id int32) error
-	DeletePost(ctx context.Context, id int32) error
+	DeletePost(ctx context.Context, postID int32) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
 	DeleteWorld(ctx context.Context, worldID int32) error
 	DeleteWorldImages(ctx context.Context, worldID int32) error

@@ -22,11 +22,11 @@ SELECT * FROM posts WHERE user_id = sqlc.arg(user_id) AND post_type_id = sqlc.ar
 -- name: UpdatePost :one
 UPDATE posts
 SET
-    title = COALESCE(sqlc.arg(title), title),
-    content = COALESCE(sqlc.arg(content), content),
-    post_type_id = COALESCE(sqlc.arg(post_type_id), post_type_id),
-    last_updated_at = now(),
-    last_updated_user_id = sqlc.arg(last_updated_user_id)
+    title = COALESCE(sqlc.narg(title), title),
+    content = COALESCE(sqlc.narg(content), content),
+    post_type_id = COALESCE(sqlc.narg(post_type_id), post_type_id),
+    last_updated_user_id = sqlc.arg(last_updated_user_id),
+    last_updated_at = now()
 WHERE
     id = sqlc.arg(post_id)
 RETURNING *;
@@ -36,7 +36,7 @@ UPDATE posts
 SET
     deleted_at = now()
 WHERE
-    id = sqlc.arg(id);
+    id = sqlc.arg(post_id);
 
 -- name: InsertPostHistory :one
 INSERT INTO post_history (

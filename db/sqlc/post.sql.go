@@ -61,8 +61,8 @@ WHERE
     id = $1
 `
 
-func (q *Queries) DeletePost(ctx context.Context, id int32) error {
-	_, err := q.db.ExecContext(ctx, deletePost, id)
+func (q *Queries) DeletePost(ctx context.Context, postID int32) error {
+	_, err := q.db.ExecContext(ctx, deletePost, postID)
 	return err
 }
 
@@ -340,19 +340,19 @@ SET
     title = COALESCE($1, title),
     content = COALESCE($2, content),
     post_type_id = COALESCE($3, post_type_id),
-    last_updated_at = now(),
-    last_updated_user_id = $4
+    last_updated_user_id = $4,
+    last_updated_at = now()
 WHERE
     id = $5
 RETURNING id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id
 `
 
 type UpdatePostParams struct {
-	Title             string        `json:"title"`
-	Content           string        `json:"content"`
-	PostTypeID        int32         `json:"post_type_id"`
-	LastUpdatedUserID sql.NullInt32 `json:"last_updated_user_id"`
-	PostID            int32         `json:"post_id"`
+	Title             sql.NullString `json:"title"`
+	Content           sql.NullString `json:"content"`
+	PostTypeID        sql.NullInt32  `json:"post_type_id"`
+	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
+	PostID            int32          `json:"post_id"`
 }
 
 func (q *Queries) UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error) {
