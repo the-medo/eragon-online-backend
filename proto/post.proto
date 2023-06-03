@@ -15,7 +15,7 @@ message Post {
   google.protobuf.Timestamp createdAt = 6;
   google.protobuf.Timestamp deletedAt = 7;
   google.protobuf.Timestamp lastUpdatedAt = 8;
-  google.protobuf.Timestamp lastUpdatedUserId = 9;
+  int32 lastUpdatedUserId = 9;
 }
 
 message HistoryPost {
@@ -28,6 +28,6 @@ message HistoryPost {
   google.protobuf.Timestamp createdAt = 7;
   google.protobuf.Timestamp deletedAt = 8;
   google.protobuf.Timestamp lastUpdatedAt = 9;
-  google.protobuf.Timestamp lastUpdatedUserId = 10;
+  int32 lastUpdatedUserId = 10;
 }
 

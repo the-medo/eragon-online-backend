@@ -158,3 +158,28 @@ func convertWorld(world db.ViewWorld) *pb.World {
 
 	return pbWorld
 }
+
+func convertPost(post db.Post) *pb.Post {
+	pbPost := &pb.Post{
+		Id:         post.ID,
+		PostTypeId: post.PostTypeID,
+		UserId:     post.UserID,
+		Title:      post.Title,
+		Content:    post.Content,
+		CreatedAt:  timestamppb.New(post.CreatedAt),
+	}
+
+	if post.DeletedAt.Valid == true {
+		pbPost.DeletedAt = timestamppb.New(post.DeletedAt.Time)
+	}
+
+	if post.LastUpdatedAt.Valid == true {
+		pbPost.LastUpdatedAt = timestamppb.New(post.LastUpdatedAt.Time)
+	}
+
+	if post.LastUpdatedUserID.Valid == true {
+		pbPost.LastUpdatedUserId = post.LastUpdatedUserID.Int32
+	}
+
+	return pbPost
+}

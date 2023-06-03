@@ -1760,8 +1760,8 @@
           "format": "date-time"
         },
         "lastUpdatedUserId": {
-          "type": "string",
-          "format": "date-time"
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -1862,8 +1862,8 @@
           "format": "date-time"
         },
         "lastUpdatedUserId": {
-          "type": "string",
-          "format": "date-time"
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
