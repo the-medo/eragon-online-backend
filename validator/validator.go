@@ -130,6 +130,13 @@ func ValidatePostId(value int32) error {
 	return nil
 }
 
+func ValidatePostHistoryId(value int32) error {
+	if value < 1 {
+		return fmt.Errorf("must be a positive integer")
+	}
+	return nil
+}
+
 func ValidatePostTypeId(value int32) error {
 	if value < 1 {
 		return fmt.Errorf("must be a positive integer")

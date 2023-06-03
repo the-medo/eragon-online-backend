@@ -128,7 +128,8 @@
     },
     "/evaluations/id/{id}": {
       "get": {
-        "summary": "============= USER EVALUATION =================",
+        "summary": "Get evaluation by id",
+        "description": "Get evaluation by id",
         "operationId": "Talebound_GetEvaluationById",
         "responses": {
           "200": {
@@ -262,39 +263,6 @@
         ]
       }
     },
-    "/posts/history/content/{postHistoryId}": {
-      "get": {
-        "summary": "Get post history content",
-        "description": "Get content of single update iteration of post",
-        "operationId": "Talebound_GetPostHistoryById",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbHistoryPost"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "postHistoryId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
     "/posts/{postId}": {
       "get": {
         "summary": "Get post by id",
@@ -366,7 +334,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbWorld"
+              "$ref": "#/definitions/pbPost"
             }
           },
           "default": {
@@ -432,6 +400,46 @@
         "parameters": [
           {
             "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/posts/{postId}/history/{postHistoryId}/content": {
+      "get": {
+        "summary": "Get post history content",
+        "description": "Get content of single update iteration of post",
+        "operationId": "Talebound_GetPostHistoryById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbHistoryPost"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "postHistoryId",
             "in": "path",
             "required": true,
             "type": "integer",
@@ -1068,44 +1076,25 @@
             "required": true,
             "type": "integer",
             "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/users/{userId}/posts/type/{postTypeId}": {
-      "get": {
-        "summary": "Get user posts by type",
-        "description": "Get posts of user by userID and post type",
-        "operationId": "Talebound_GetUserPostsByType",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetUserPostsResponse"
-            }
           },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
           {
-            "name": "userId",
-            "in": "path",
-            "required": true,
+            "name": "postTypeId",
+            "in": "query",
+            "required": false,
             "type": "integer",
             "format": "int32"
           },
           {
-            "name": "postTypeId",
-            "in": "path",
-            "required": true,
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
             "type": "integer",
             "format": "int32"
           }

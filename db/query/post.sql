@@ -14,10 +14,17 @@ RETURNING *;
 SELECT * FROM posts WHERE id = sqlc.arg(post_id);
 
 -- name: GetPostsByUserId :many
-SELECT * FROM posts WHERE user_id = sqlc.arg(user_id) AND deleted_at IS NULL ORDER BY created_at DESC;
-
--- name: GetPostsByUserIdAndType :many
-SELECT * FROM posts WHERE user_id = sqlc.arg(user_id) AND post_type_id = sqlc.arg(post_type_id) AND deleted_at IS NULL ORDER BY created_at DESC;
+SELECT
+    *
+FROM
+    posts
+WHERE
+    user_id = sqlc.arg(user_id) AND
+    post_type_id = COALESCE(sqlc.narg(post_type_id), post_type_id) AND
+    deleted_at IS NULL
+ORDER BY created_at DESC
+LIMIT @page_limit
+OFFSET @page_offset;
 
 -- name: UpdatePost :one
 UPDATE posts
@@ -79,7 +86,7 @@ SELECT
     last_updated_user_id
 FROM post_history WHERE post_id = sqlc.arg(post_id) ORDER BY created_at DESC;
 
--- name: GetPostHistoryById :many
+-- name: GetPostHistoryById :one
 SELECT
     id as post_history_id,
     post_id,

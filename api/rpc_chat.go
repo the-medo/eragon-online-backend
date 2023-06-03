@@ -19,15 +19,7 @@ func (server *Server) GetChatMessages(ctx context.Context, req *pb.GetChatMessag
 		return nil, invalidArgumentError(violations)
 	}
 
-	limit := req.GetLimit()
-	if limit == 0 {
-		limit = 100
-	}
-
-	offset := req.GetOffset()
-	if offset < 0 {
-		offset = 0
-	}
+	limit, offset := GetDefaultQueryBoundaries(req.GetLimit(), req.GetOffset())
 
 	messages, err := server.store.GetChatMessages(ctx, db.GetChatMessagesParams{
 		PageLimit:  limit,

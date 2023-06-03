@@ -16,6 +16,7 @@ import "rpc_user_evaluations.proto";
 import "rpc_upload_image.proto";
 import "rpc_world.proto";
 import "rpc_post.proto";
+import "rpc_post_history.proto";
 import "image.proto";
 import "world.proto";
 import "post.proto";
@@ -212,8 +213,8 @@ service Talebound {
       get: "/evaluations/id/{id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "";
-      summary: "";
+      description: "Get evaluation by id";
+      summary: "Get evaluation by id";
     };
   };
 
@@ -322,16 +323,6 @@ service Talebound {
     };
   };
 
-  rpc GetUserPostsByType(GetUserPostsByTypeRequest) returns (GetUserPostsResponse) {
-    option (google.api.http) = {
-      get: "/users/{userId}/posts/type/{postTypeId}"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get posts of user by userID and post type";
-      summary: "Get user posts by type";
-    };
-  };
-
   rpc GetPostHistory(GetPostHistoryRequest) returns (GetPostHistoryResponse) {
     option (google.api.http) = {
       get: "/posts/{postId}/history"
@@ -344,7 +335,7 @@ service Talebound {
 
   rpc GetPostHistoryById(GetPostHistoryByIdRequest) returns (HistoryPost) {
     option (google.api.http) = {
-      get: "/posts/history/content/{postHistoryId}"
+      get: "/posts/{postId}/history/{postHistoryId}/content"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Get content of single update iteration of post";
@@ -363,7 +354,7 @@ service Talebound {
     };
   };
 
-  rpc UpdatePost(UpdatePostRequest) returns (World) {
+  rpc UpdatePost(UpdatePostRequest) returns (Post) {
     option (google.api.http) = {
       patch: "/posts/{postId}"
       body: "*"

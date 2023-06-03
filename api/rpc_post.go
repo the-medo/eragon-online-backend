@@ -103,7 +103,7 @@ func (server *Server) DeletePost(ctx context.Context, req *pb.DeletePostRequest)
 	if post.UserID != authPayload.UserId {
 		err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
 		if err != nil {
-			return nil, status.Errorf(codes.PermissionDenied, "can not update this post - you are not creator or admin: %v", err)
+			return nil, status.Errorf(codes.PermissionDenied, "can not delete this post - you are not creator or admin: %v", err)
 		}
 	}
 
@@ -116,6 +116,80 @@ func (server *Server) DeletePost(ctx context.Context, req *pb.DeletePostRequest)
 		Success: true,
 		Message: fmt.Sprintf("Post %s (%v) deleted successfully.", post.Title, req.GetPostId()),
 	}, nil
+}
+
+func (server *Server) GetPostById(ctx context.Context, req *pb.GetPostByIdRequest) (*pb.Post, error) {
+	violations := validateGetPostByIdRequest(req)
+	if violations != nil {
+		return nil, invalidArgumentError(violations)
+	}
+
+	authPayload, err := server.authorizeUserCookie(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
+
+	post, err := server.store.GetPostById(ctx, req.GetPostId())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get post: %v", err)
+	}
+
+	if post.UserID != authPayload.UserId {
+		err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
+		if err != nil {
+			return nil, status.Errorf(codes.PermissionDenied, "can not update this post - you are not creator or admin: %v", err)
+		}
+	}
+
+	rsp := convertPost(post)
+
+	return rsp, nil
+}
+
+func (server *Server) GetUserPosts(ctx context.Context, req *pb.GetUserPostsRequest) (*pb.GetUserPostsResponse, error) {
+	violations := validateGetUserPostsRequest(req)
+	if violations != nil {
+		return nil, invalidArgumentError(violations)
+	}
+
+	limit, offset := GetDefaultQueryBoundaries(req.GetLimit(), req.GetOffset())
+
+	authPayload, err := server.authorizeUserCookie(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
+
+	if req.GetUserId() != authPayload.UserId {
+		err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
+		if err != nil {
+			return nil, status.Errorf(codes.PermissionDenied, "can not get list of posts - you are not creator or admin: %v", err)
+		}
+	}
+
+	arg := db.GetPostsByUserIdParams{
+		UserID: req.GetUserId(),
+		PostTypeID: sql.NullInt32{
+			Int32: req.GetPostTypeId(),
+			Valid: req.PostTypeId != nil,
+		},
+		PageLimit:  limit,
+		PageOffset: offset,
+	}
+
+	posts, err := server.store.GetPostsByUserId(ctx, arg)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get posts: %v", err)
+	}
+
+	rsp := &pb.GetUserPostsResponse{
+		Posts: make([]*pb.Post, len(posts)),
+	}
+
+	for i, post := range posts {
+		rsp.Posts[i] = convertPost(post)
+	}
+
+	return rsp, nil
 }
 
 // ================= VALIDATION =================
@@ -151,6 +225,28 @@ func validateUpdatePostRequest(req *pb.UpdatePostRequest) (violations []*errdeta
 func validateDeletePostRequest(req *pb.DeletePostRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidatePostId(req.GetPostId()); err != nil {
 		violations = append(violations, FieldViolation("post_id", err))
+	}
+
+	return violations
+}
+
+func validateGetPostByIdRequest(req *pb.GetPostByIdRequest) (violations []*errdetails.BadRequest_FieldViolation) {
+	if err := validator.ValidatePostId(req.GetPostId()); err != nil {
+		violations = append(violations, FieldViolation("post_id", err))
+	}
+
+	return violations
+}
+
+func validateGetUserPostsRequest(req *pb.GetUserPostsRequest) (violations []*errdetails.BadRequest_FieldViolation) {
+	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
+		violations = append(violations, FieldViolation("user_id", err))
+	}
+
+	if req.PostTypeId != nil {
+		if err := validator.ValidatePostTypeId(req.GetPostTypeId()); err != nil {
+			violations = append(violations, FieldViolation("post_type_id", err))
+		}
 	}
 
 	return violations

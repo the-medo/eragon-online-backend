@@ -87,7 +87,7 @@ func (q *Queries) GetPostById(ctx context.Context, postID int32) (Post, error) {
 	return i, err
 }
 
-const getPostHistoryById = `-- name: GetPostHistoryById :many
+const getPostHistoryById = `-- name: GetPostHistoryById :one
 SELECT
     id as post_history_id,
     post_id,
@@ -115,38 +115,22 @@ type GetPostHistoryByIdRow struct {
 	LastUpdatedUserID sql.NullInt32 `json:"last_updated_user_id"`
 }
 
-func (q *Queries) GetPostHistoryById(ctx context.Context, postHistoryID int32) ([]GetPostHistoryByIdRow, error) {
-	rows, err := q.db.QueryContext(ctx, getPostHistoryById, postHistoryID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []GetPostHistoryByIdRow{}
-	for rows.Next() {
-		var i GetPostHistoryByIdRow
-		if err := rows.Scan(
-			&i.PostHistoryID,
-			&i.PostID,
-			&i.PostTypeID,
-			&i.UserID,
-			&i.Title,
-			&i.Content,
-			&i.CreatedAt,
-			&i.DeletedAt,
-			&i.LastUpdatedAt,
-			&i.LastUpdatedUserID,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
+func (q *Queries) GetPostHistoryById(ctx context.Context, postHistoryID int32) (GetPostHistoryByIdRow, error) {
+	row := q.db.QueryRowContext(ctx, getPostHistoryById, postHistoryID)
+	var i GetPostHistoryByIdRow
+	err := row.Scan(
+		&i.PostHistoryID,
+		&i.PostID,
+		&i.PostTypeID,
+		&i.UserID,
+		&i.Title,
+		&i.Content,
+		&i.CreatedAt,
+		&i.DeletedAt,
+		&i.LastUpdatedAt,
+		&i.LastUpdatedUserID,
+	)
+	return i, err
 }
 
 const getPostHistoryByPostId = `-- name: GetPostHistoryByPostId :many
@@ -209,53 +193,33 @@ func (q *Queries) GetPostHistoryByPostId(ctx context.Context, postID int32) ([]G
 }
 
 const getPostsByUserId = `-- name: GetPostsByUserId :many
-SELECT id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id FROM posts WHERE user_id = $1 AND deleted_at IS NULL ORDER BY created_at DESC
+SELECT
+    id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id
+FROM
+    posts
+WHERE
+    user_id = $1 AND
+    post_type_id = COALESCE($2, post_type_id) AND
+    deleted_at IS NULL
+ORDER BY created_at DESC
+LIMIT $4
+OFFSET $3
 `
 
-func (q *Queries) GetPostsByUserId(ctx context.Context, userID int32) ([]Post, error) {
-	rows, err := q.db.QueryContext(ctx, getPostsByUserId, userID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []Post{}
-	for rows.Next() {
-		var i Post
-		if err := rows.Scan(
-			&i.ID,
-			&i.PostTypeID,
-			&i.UserID,
-			&i.Title,
-			&i.Content,
-			&i.CreatedAt,
-			&i.DeletedAt,
-			&i.LastUpdatedAt,
-			&i.LastUpdatedUserID,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
+type GetPostsByUserIdParams struct {
+	UserID     int32         `json:"user_id"`
+	PostTypeID sql.NullInt32 `json:"post_type_id"`
+	PageOffset int32         `json:"page_offset"`
+	PageLimit  int32         `json:"page_limit"`
 }
 
-const getPostsByUserIdAndType = `-- name: GetPostsByUserIdAndType :many
-SELECT id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id FROM posts WHERE user_id = $1 AND post_type_id = $2 AND deleted_at IS NULL ORDER BY created_at DESC
-`
-
-type GetPostsByUserIdAndTypeParams struct {
-	UserID     int32 `json:"user_id"`
-	PostTypeID int32 `json:"post_type_id"`
-}
-
-func (q *Queries) GetPostsByUserIdAndType(ctx context.Context, arg GetPostsByUserIdAndTypeParams) ([]Post, error) {
-	rows, err := q.db.QueryContext(ctx, getPostsByUserIdAndType, arg.UserID, arg.PostTypeID)
+func (q *Queries) GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdParams) ([]Post, error) {
+	rows, err := q.db.QueryContext(ctx, getPostsByUserId,
+		arg.UserID,
+		arg.PostTypeID,
+		arg.PageOffset,
+		arg.PageLimit,
+	)
 	if err != nil {
 		return nil, err
 	}

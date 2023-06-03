@@ -183,3 +183,54 @@ func convertPost(post db.Post) *pb.Post {
 
 	return pbPost
 }
+
+func convertHistoryPostWithoutContent(postHistory db.GetPostHistoryByPostIdRow) *pb.HistoryPost {
+	pbHistoryPost := &pb.HistoryPost{
+		Id:         postHistory.PostHistoryID,
+		PostId:     postHistory.PostID,
+		PostTypeId: postHistory.PostTypeID,
+		UserId:     postHistory.UserID,
+		Title:      postHistory.Title,
+		CreatedAt:  timestamppb.New(postHistory.CreatedAt),
+	}
+
+	if postHistory.DeletedAt.Valid == true {
+		pbHistoryPost.DeletedAt = timestamppb.New(postHistory.DeletedAt.Time)
+	}
+
+	if postHistory.LastUpdatedAt.Valid == true {
+		pbHistoryPost.LastUpdatedAt = timestamppb.New(postHistory.LastUpdatedAt.Time)
+	}
+
+	if postHistory.LastUpdatedUserID.Valid == true {
+		pbHistoryPost.LastUpdatedUserId = postHistory.LastUpdatedUserID.Int32
+	}
+
+	return pbHistoryPost
+}
+
+func convertHistoryPost(postHistory db.GetPostHistoryByIdRow) *pb.HistoryPost {
+	pbHistoryPost := &pb.HistoryPost{
+		Id:         postHistory.PostHistoryID,
+		PostId:     postHistory.PostID,
+		PostTypeId: postHistory.PostTypeID,
+		UserId:     postHistory.UserID,
+		Title:      postHistory.Title,
+		Content:    postHistory.Content,
+		CreatedAt:  timestamppb.New(postHistory.CreatedAt),
+	}
+
+	if postHistory.DeletedAt.Valid == true {
+		pbHistoryPost.DeletedAt = timestamppb.New(postHistory.DeletedAt.Time)
+	}
+
+	if postHistory.LastUpdatedAt.Valid == true {
+		pbHistoryPost.LastUpdatedAt = timestamppb.New(postHistory.LastUpdatedAt.Time)
+	}
+
+	if postHistory.LastUpdatedUserID.Valid == true {
+		pbHistoryPost.LastUpdatedUserId = postHistory.LastUpdatedUserID.Int32
+	}
+
+	return pbHistoryPost
+}

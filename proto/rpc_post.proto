@@ -13,27 +13,13 @@ message GetPostByIdRequest {
 
 message GetUserPostsRequest {
   int32 userId = 1;
+  optional int32 postTypeId = 2;
+  optional int32 limit = 3;
+  optional int32 offset = 4;
 }
 
 message GetUserPostsResponse {
   repeated Post posts = 1;
-}
-
-message GetUserPostsByTypeRequest {
-  int32 userId = 1;
-  int32 postTypeId = 2;
-}
-
-message GetPostHistoryRequest {
-  int32 postId = 1;
-}
-
-message GetPostHistoryResponse {
-  repeated HistoryPost historyPosts = 1;
-}
-
-message GetPostHistoryByIdRequest {
-  int32 postHistoryId = 1;
 }
 
 message CreatePostRequest {

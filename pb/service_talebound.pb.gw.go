@@ -1228,6 +1228,10 @@ func local_request_Talebound_GetPostById_0(ctx context.Context, marshaler runtim
 
 }
 
+var (
+	filter_Talebound_GetUserPosts_0 = &utilities.DoubleArray{Encoding: map[string]int{"userId": 0}, Base: []int{1, 2, 0, 0}, Check: []int{0, 1, 2, 2}}
+)
+
 func request_Talebound_GetUserPosts_0(ctx context.Context, marshaler runtime.Marshaler, client TaleboundClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetUserPostsRequest
 	var metadata runtime.ServerMetadata
@@ -1247,6 +1251,13 @@ func request_Talebound_GetUserPosts_0(ctx context.Context, marshaler runtime.Mar
 	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Talebound_GetUserPosts_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.GetUserPosts(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -1275,79 +1286,14 @@ func local_request_Talebound_GetUserPosts_0(ctx context.Context, marshaler runti
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
 
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Talebound_GetUserPosts_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
 	msg, err := server.GetUserPosts(ctx, &protoReq)
-	return msg, metadata, err
-
-}
-
-func request_Talebound_GetUserPostsByType_0(ctx context.Context, marshaler runtime.Marshaler, client TaleboundClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetUserPostsByTypeRequest
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["userId"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
-	}
-
-	protoReq.UserId, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
-	}
-
-	val, ok = pathParams["postTypeId"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "postTypeId")
-	}
-
-	protoReq.PostTypeId, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "postTypeId", err)
-	}
-
-	msg, err := client.GetUserPostsByType(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_Talebound_GetUserPostsByType_0(ctx context.Context, marshaler runtime.Marshaler, server TaleboundServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetUserPostsByTypeRequest
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["userId"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
-	}
-
-	protoReq.UserId, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
-	}
-
-	val, ok = pathParams["postTypeId"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "postTypeId")
-	}
-
-	protoReq.PostTypeId, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "postTypeId", err)
-	}
-
-	msg, err := server.GetUserPostsByType(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -1415,6 +1361,16 @@ func request_Talebound_GetPostHistoryById_0(ctx context.Context, marshaler runti
 		_   = err
 	)
 
+	val, ok = pathParams["postId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "postId")
+	}
+
+	protoReq.PostId, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "postId", err)
+	}
+
 	val, ok = pathParams["postHistoryId"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "postHistoryId")
@@ -1440,6 +1396,16 @@ func local_request_Talebound_GetPostHistoryById_0(ctx context.Context, marshaler
 		err error
 		_   = err
 	)
+
+	val, ok = pathParams["postId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "postId")
+	}
+
+	protoReq.PostId, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "postId", err)
+	}
 
 	val, ok = pathParams["postHistoryId"]
 	if !ok {
@@ -2488,31 +2454,6 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
-	mux.Handle("GET", pattern_Talebound_GetUserPostsByType_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetUserPostsByType", runtime.WithHTTPPathPattern("/users/{userId}/posts/type/{postTypeId}"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_Talebound_GetUserPostsByType_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_Talebound_GetUserPostsByType_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
 	mux.Handle("GET", pattern_Talebound_GetPostHistory_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -2546,7 +2487,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetPostHistoryById", runtime.WithHTTPPathPattern("/posts/history/content/{postHistoryId}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetPostHistoryById", runtime.WithHTTPPathPattern("/posts/{postId}/history/{postHistoryId}/content"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3351,28 +3292,6 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
-	mux.Handle("GET", pattern_Talebound_GetUserPostsByType_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetUserPostsByType", runtime.WithHTTPPathPattern("/users/{userId}/posts/type/{postTypeId}"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_Talebound_GetUserPostsByType_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_Talebound_GetUserPostsByType_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
 	mux.Handle("GET", pattern_Talebound_GetPostHistory_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -3401,7 +3320,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetPostHistoryById", runtime.WithHTTPPathPattern("/posts/history/content/{postHistoryId}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetPostHistoryById", runtime.WithHTTPPathPattern("/posts/{postId}/history/{postHistoryId}/content"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3627,11 +3546,9 @@ var (
 
 	pattern_Talebound_GetUserPosts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"users", "userId", "posts"}, ""))
 
-	pattern_Talebound_GetUserPostsByType_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"users", "userId", "posts", "type", "postTypeId"}, ""))
-
 	pattern_Talebound_GetPostHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"posts", "postId", "history"}, ""))
 
-	pattern_Talebound_GetPostHistoryById_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"posts", "history", "content", "postHistoryId"}, ""))
+	pattern_Talebound_GetPostHistoryById_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"posts", "postId", "history", "postHistoryId", "content"}, ""))
 
 	pattern_Talebound_CreatePost_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"posts"}, ""))
 
@@ -3700,8 +3617,6 @@ var (
 	forward_Talebound_GetPostById_0 = runtime.ForwardResponseMessage
 
 	forward_Talebound_GetUserPosts_0 = runtime.ForwardResponseMessage
-
-	forward_Talebound_GetUserPostsByType_0 = runtime.ForwardResponseMessage
 
 	forward_Talebound_GetPostHistory_0 = runtime.ForwardResponseMessage
 
