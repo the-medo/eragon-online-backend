@@ -54,7 +54,7 @@ INSERT INTO users
 )
 VALUES
     ($1, $2, $3)
-RETURNING id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified
+RETURNING id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id
 `
 
 type CreateUserParams struct {
@@ -75,6 +75,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.PasswordChangedAt,
 		&i.CreatedAt,
 		&i.IsEmailVerified,
+		&i.IntroductionPostID,
 	)
 	return i, err
 }
@@ -94,7 +95,7 @@ func (q *Queries) DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPas
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified FROM users WHERE email = $1 LIMIT 1
+SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id FROM users WHERE email = $1 LIMIT 1
 `
 
 func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
@@ -109,12 +110,13 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.PasswordChangedAt,
 		&i.CreatedAt,
 		&i.IsEmailVerified,
+		&i.IntroductionPostID,
 	)
 	return i, err
 }
 
 const getUserById = `-- name: GetUserById :one
-SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified FROM users WHERE id = $1 LIMIT 1
+SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id FROM users WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetUserById(ctx context.Context, id int32) (User, error) {
@@ -129,12 +131,13 @@ func (q *Queries) GetUserById(ctx context.Context, id int32) (User, error) {
 		&i.PasswordChangedAt,
 		&i.CreatedAt,
 		&i.IsEmailVerified,
+		&i.IntroductionPostID,
 	)
 	return i, err
 }
 
 const getUserByUsername = `-- name: GetUserByUsername :one
-SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified FROM users WHERE username = $1 LIMIT 1
+SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id FROM users WHERE username = $1 LIMIT 1
 `
 
 func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User, error) {
@@ -149,6 +152,7 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User,
 		&i.PasswordChangedAt,
 		&i.CreatedAt,
 		&i.IsEmailVerified,
+		&i.IntroductionPostID,
 	)
 	return i, err
 }
@@ -214,7 +218,7 @@ func (q *Queries) GetUserRoles(ctx context.Context, userID int32) ([]GetUserRole
 
 const getUsers = `-- name: GetUsers :many
 SELECT
-    u.id, username, hashed_password, email, img_id, password_changed_at, u.created_at, is_email_verified, i.id, image_type_id, name, url, i.created_at, base_url, img_guid, user_id
+    u.id, username, hashed_password, email, img_id, password_changed_at, u.created_at, is_email_verified, introduction_post_id, i.id, image_type_id, name, url, i.created_at, base_url, img_guid, user_id
 FROM
     users AS u
     LEFT JOIN images i ON u.img_id = i.id
@@ -229,22 +233,23 @@ type GetUsersParams struct {
 }
 
 type GetUsersRow struct {
-	ID                int32          `json:"id"`
-	Username          string         `json:"username"`
-	HashedPassword    string         `json:"hashed_password"`
-	Email             string         `json:"email"`
-	ImgID             sql.NullInt32  `json:"img_id"`
-	PasswordChangedAt time.Time      `json:"password_changed_at"`
-	CreatedAt         time.Time      `json:"created_at"`
-	IsEmailVerified   bool           `json:"is_email_verified"`
-	ID_2              sql.NullInt32  `json:"id_2"`
-	ImageTypeID       sql.NullInt32  `json:"image_type_id"`
-	Name              sql.NullString `json:"name"`
-	Url               sql.NullString `json:"url"`
-	CreatedAt_2       sql.NullTime   `json:"created_at_2"`
-	BaseUrl           sql.NullString `json:"base_url"`
-	ImgGuid           uuid.NullUUID  `json:"img_guid"`
-	UserID            sql.NullInt32  `json:"user_id"`
+	ID                 int32          `json:"id"`
+	Username           string         `json:"username"`
+	HashedPassword     string         `json:"hashed_password"`
+	Email              string         `json:"email"`
+	ImgID              sql.NullInt32  `json:"img_id"`
+	PasswordChangedAt  time.Time      `json:"password_changed_at"`
+	CreatedAt          time.Time      `json:"created_at"`
+	IsEmailVerified    bool           `json:"is_email_verified"`
+	IntroductionPostID sql.NullInt32  `json:"introduction_post_id"`
+	ID_2               sql.NullInt32  `json:"id_2"`
+	ImageTypeID        sql.NullInt32  `json:"image_type_id"`
+	Name               sql.NullString `json:"name"`
+	Url                sql.NullString `json:"url"`
+	CreatedAt_2        sql.NullTime   `json:"created_at_2"`
+	BaseUrl            sql.NullString `json:"base_url"`
+	ImgGuid            uuid.NullUUID  `json:"img_guid"`
+	UserID             sql.NullInt32  `json:"user_id"`
 }
 
 func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error) {
@@ -265,6 +270,7 @@ func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersR
 			&i.PasswordChangedAt,
 			&i.CreatedAt,
 			&i.IsEmailVerified,
+			&i.IntroductionPostID,
 			&i.ID_2,
 			&i.ImageTypeID,
 			&i.Name,
@@ -346,20 +352,22 @@ SET
     username = COALESCE($3, username),
     email = COALESCE($4, email),
     img_id = COALESCE($5, img_id),
-    is_email_verified = COALESCE($6, is_email_verified)
+    is_email_verified = COALESCE($6, is_email_verified),
+    introduction_post_id = COALESCE($7, introduction_post_id)
 WHERE
-    id = $7
-RETURNING id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified
+    id = $8
+RETURNING id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id
 `
 
 type UpdateUserParams struct {
-	HashedPassword    sql.NullString `json:"hashed_password"`
-	PasswordChangedAt sql.NullTime   `json:"password_changed_at"`
-	Username          sql.NullString `json:"username"`
-	Email             sql.NullString `json:"email"`
-	ImgID             sql.NullInt32  `json:"img_id"`
-	IsEmailVerified   sql.NullBool   `json:"is_email_verified"`
-	ID                int32          `json:"id"`
+	HashedPassword     sql.NullString `json:"hashed_password"`
+	PasswordChangedAt  sql.NullTime   `json:"password_changed_at"`
+	Username           sql.NullString `json:"username"`
+	Email              sql.NullString `json:"email"`
+	ImgID              sql.NullInt32  `json:"img_id"`
+	IsEmailVerified    sql.NullBool   `json:"is_email_verified"`
+	IntroductionPostID sql.NullInt32  `json:"introduction_post_id"`
+	ID                 int32          `json:"id"`
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
@@ -370,6 +378,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		arg.Email,
 		arg.ImgID,
 		arg.IsEmailVerified,
+		arg.IntroductionPostID,
 		arg.ID,
 	)
 	var i User
@@ -382,6 +391,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		&i.PasswordChangedAt,
 		&i.CreatedAt,
 		&i.IsEmailVerified,
+		&i.IntroductionPostID,
 	)
 	return i, err
 }

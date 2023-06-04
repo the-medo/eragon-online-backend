@@ -141,6 +141,17 @@ service Talebound {
     };
   };
 
+  rpc UpdateUserIntroduction(UpdateUserIntroductionRequest) returns (Post) {
+    option (google.api.http) = {
+      patch: "/users/{userId}/introduction"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Use this API to update user introduction";
+      summary: "Update user introduction";
+    };
+  };
+
   // ============= LOGIN & LOGOUT =================
   rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {
     option (google.api.http) = {

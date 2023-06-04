@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-06-03T11:46:12.718Z
+-- Generated at: 2023-06-04T11:32:44.021Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -44,7 +44,8 @@ CREATE TABLE "users" (
   "img_id" int,
   "password_changed_at" timestamptz NOT NULL DEFAULT '0001-01-01 00:00:00Z',
   "created_at" timestamptz NOT NULL DEFAULT (now()),
-  "is_email_verified" bool NOT NULL DEFAULT false
+  "is_email_verified" bool NOT NULL DEFAULT false,
+  "introduction_post_id" int
 );
 
 CREATE TABLE "sessions" (
@@ -276,6 +277,8 @@ ALTER TABLE "images" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 ALTER TABLE "images" ADD FOREIGN KEY ("image_type_id") REFERENCES "image_types" ("id");
 
 ALTER TABLE "users" ADD FOREIGN KEY ("img_id") REFERENCES "images" ("id");
+
+ALTER TABLE "users" ADD FOREIGN KEY ("introduction_post_id") REFERENCES "posts" ("id");
 
 ALTER TABLE "sessions" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 

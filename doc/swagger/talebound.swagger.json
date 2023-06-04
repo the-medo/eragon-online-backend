@@ -1050,6 +1050,52 @@
         ]
       }
     },
+    "/users/{userId}/introduction": {
+      "patch": {
+        "summary": "Update user introduction",
+        "description": "Use this API to update user introduction",
+        "operationId": "Talebound_UpdateUserIntroduction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPost"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/users/{userId}/posts": {
       "get": {
         "summary": "Get user posts",
@@ -1953,6 +1999,10 @@
         "imgId": {
           "type": "integer",
           "format": "int32"
+        },
+        "introductionPostId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -2039,6 +2089,10 @@
         },
         "img": {
           "$ref": "#/definitions/pbImage"
+        },
+        "introductionPostId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

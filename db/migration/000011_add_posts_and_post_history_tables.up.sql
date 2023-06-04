@@ -29,6 +29,11 @@ CREATE TABLE "post_history" (
     "last_updated_user_id" int
 );
 
+
+ALTER TABLE "users" ADD COLUMN "introduction_post_id" int;
+
+ALTER TABLE "users" ADD FOREIGN KEY ("introduction_post_id") REFERENCES "posts" ("id");
+
 ALTER TABLE "posts" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "posts" ADD FOREIGN KEY ("last_updated_user_id") REFERENCES "users" ("id");
@@ -51,5 +56,7 @@ VALUES
     (300, 'World description'),
     (400, 'Rule set description'),
     (500, 'Quest description'),
-    (600, 'Character description')
+    (600, 'Character description'),
+    (700, 'News'),
+    (800, 'User introduction')
 ;

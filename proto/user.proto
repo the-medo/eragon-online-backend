@@ -16,5 +16,6 @@ message User {
   google.protobuf.Timestamp createdAt = 6;
   bool isEmailVerified = 7;
   Image img = 8;
+  optional int32 introductionPostId = 9;
 }
 

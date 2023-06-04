@@ -267,14 +267,15 @@ type SkillRequirementSkill struct {
 }
 
 type User struct {
-	ID                int32         `json:"id"`
-	Username          string        `json:"username"`
-	HashedPassword    string        `json:"hashed_password"`
-	Email             string        `json:"email"`
-	ImgID             sql.NullInt32 `json:"img_id"`
-	PasswordChangedAt time.Time     `json:"password_changed_at"`
-	CreatedAt         time.Time     `json:"created_at"`
-	IsEmailVerified   bool          `json:"is_email_verified"`
+	ID                 int32         `json:"id"`
+	Username           string        `json:"username"`
+	HashedPassword     string        `json:"hashed_password"`
+	Email              string        `json:"email"`
+	ImgID              sql.NullInt32 `json:"img_id"`
+	PasswordChangedAt  time.Time     `json:"password_changed_at"`
+	CreatedAt          time.Time     `json:"created_at"`
+	IsEmailVerified    bool          `json:"is_email_verified"`
+	IntroductionPostID sql.NullInt32 `json:"introduction_post_id"`
 }
 
 type UserPasswordReset struct {

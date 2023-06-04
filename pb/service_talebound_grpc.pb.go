@@ -29,6 +29,7 @@ const (
 	Talebound_GetUsers_FullMethodName                           = "/pb.Talebound/GetUsers"
 	Talebound_CreateUser_FullMethodName                         = "/pb.Talebound/CreateUser"
 	Talebound_UpdateUser_FullMethodName                         = "/pb.Talebound/UpdateUser"
+	Talebound_UpdateUserIntroduction_FullMethodName             = "/pb.Talebound/UpdateUserIntroduction"
 	Talebound_LoginUser_FullMethodName                          = "/pb.Talebound/LoginUser"
 	Talebound_LogoutUser_FullMethodName                         = "/pb.Talebound/LogoutUser"
 	Talebound_ResetPasswordSendCode_FullMethodName              = "/pb.Talebound/ResetPasswordSendCode"
@@ -71,6 +72,7 @@ type TaleboundClient interface {
 	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
+	UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*Post, error)
 	// ============= LOGIN & LOGOUT =================
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	LogoutUser(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -186,6 +188,15 @@ func (c *taleboundClient) CreateUser(ctx context.Context, in *CreateUserRequest,
 func (c *taleboundClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
 	out := new(UpdateUserResponse)
 	err := c.cc.Invoke(ctx, Talebound_UpdateUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*Post, error) {
+	out := new(Post)
+	err := c.cc.Invoke(ctx, Talebound_UpdateUserIntroduction_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -440,6 +451,7 @@ type TaleboundServer interface {
 	GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
+	UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*Post, error)
 	// ============= LOGIN & LOGOUT =================
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
 	LogoutUser(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
@@ -503,6 +515,9 @@ func (UnimplementedTaleboundServer) CreateUser(context.Context, *CreateUserReque
 }
 func (UnimplementedTaleboundServer) UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
+}
+func (UnimplementedTaleboundServer) UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*Post, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserIntroduction not implemented")
 }
 func (UnimplementedTaleboundServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
@@ -753,6 +768,24 @@ func _Talebound_UpdateUser_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TaleboundServer).UpdateUser(ctx, req.(*UpdateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_UpdateUserIntroduction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUserIntroductionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).UpdateUserIntroduction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_UpdateUserIntroduction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).UpdateUserIntroduction(ctx, req.(*UpdateUserIntroductionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1267,6 +1300,10 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateUser",
 			Handler:    _Talebound_UpdateUser_Handler,
+		},
+		{
+			MethodName: "UpdateUserIntroduction",
+			Handler:    _Talebound_UpdateUserIntroduction_Handler,
 		},
 		{
 			MethodName: "LoginUser",

@@ -26,7 +26,8 @@ SET
     username = COALESCE(sqlc.narg(username), username),
     email = COALESCE(sqlc.narg(email), email),
     img_id = COALESCE(sqlc.narg(img_id), img_id),
-    is_email_verified = COALESCE(sqlc.narg(is_email_verified), is_email_verified)
+    is_email_verified = COALESCE(sqlc.narg(is_email_verified), is_email_verified),
+    introduction_post_id = COALESCE(sqlc.narg(introduction_post_id), introduction_post_id)
 WHERE
     id = sqlc.arg(id)
 RETURNING *;
