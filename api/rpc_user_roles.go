@@ -10,6 +10,16 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+func (server *Server) GetUserById(ctx context.Context, req *pb.GetUserByIdRequest) (*pb.ViewUser, error) {
+
+	user, err := server.store.GetUserById(ctx, req.GetUserId())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
+	}
+
+	return convertViewUser(user), nil
+}
+
 func (server *Server) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
 	limit := req.GetLimit()
 	if limit == 0 {

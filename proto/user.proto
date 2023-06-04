@@ -19,3 +19,17 @@ message User {
   optional int32 introductionPostId = 9;
 }
 
+message ViewUser {
+  int32 id = 1;
+  string username = 2;
+  string email = 3;
+  optional int32 imgId = 4;
+  google.protobuf.Timestamp passwordChangedAt = 5;
+  google.protobuf.Timestamp createdAt = 6;
+  bool isEmailVerified = 7;
+  optional string avatarImageUrl = 8;
+  optional string avatarImageGuid = 9;
+  optional int32 introductionPostId = 10;
+  optional google.protobuf.Timestamp introductionPostDeletedAt = 11;
+}
+

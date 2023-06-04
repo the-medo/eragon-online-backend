@@ -301,15 +301,19 @@ type VerifyEmail struct {
 }
 
 type ViewUser struct {
-	ID                int32          `json:"id"`
-	Username          string         `json:"username"`
-	HashedPassword    string         `json:"hashed_password"`
-	Email             string         `json:"email"`
-	ImgID             sql.NullInt32  `json:"img_id"`
-	PasswordChangedAt time.Time      `json:"password_changed_at"`
-	CreatedAt         time.Time      `json:"created_at"`
-	IsEmailVerified   bool           `json:"is_email_verified"`
-	ImageAvatar       sql.NullString `json:"image_avatar"`
+	ID                        int32          `json:"id"`
+	Username                  string         `json:"username"`
+	HashedPassword            string         `json:"hashed_password"`
+	Email                     string         `json:"email"`
+	ImgID                     sql.NullInt32  `json:"img_id"`
+	PasswordChangedAt         time.Time      `json:"password_changed_at"`
+	CreatedAt                 time.Time      `json:"created_at"`
+	IsEmailVerified           bool           `json:"is_email_verified"`
+	IntroductionPostID        sql.NullInt32  `json:"introduction_post_id"`
+	AvatarImageID             sql.NullInt32  `json:"avatar_image_id"`
+	AvatarImageUrl            sql.NullString `json:"avatar_image_url"`
+	AvatarImageGuid           uuid.NullUUID  `json:"avatar_image_guid"`
+	IntroductionPostDeletedAt sql.NullTime   `json:"introduction_post_deleted_at"`
 }
 
 type ViewWorld struct {

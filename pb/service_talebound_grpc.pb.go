@@ -27,6 +27,7 @@ const (
 	Talebound_AddChatMessage_FullMethodName                     = "/pb.Talebound/AddChatMessage"
 	Talebound_DeleteChatMessage_FullMethodName                  = "/pb.Talebound/DeleteChatMessage"
 	Talebound_GetUsers_FullMethodName                           = "/pb.Talebound/GetUsers"
+	Talebound_GetUserById_FullMethodName                        = "/pb.Talebound/GetUserById"
 	Talebound_CreateUser_FullMethodName                         = "/pb.Talebound/CreateUser"
 	Talebound_UpdateUser_FullMethodName                         = "/pb.Talebound/UpdateUser"
 	Talebound_UpdateUserIntroduction_FullMethodName             = "/pb.Talebound/UpdateUserIntroduction"
@@ -70,6 +71,7 @@ type TaleboundClient interface {
 	AddChatMessage(ctx context.Context, in *AddChatMessageRequest, opts ...grpc.CallOption) (*AddChatMessageResponse, error)
 	DeleteChatMessage(ctx context.Context, in *DeleteChatMessageRequest, opts ...grpc.CallOption) (*DeleteChatMessageResponse, error)
 	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
+	GetUserById(ctx context.Context, in *GetUserByIdRequest, opts ...grpc.CallOption) (*ViewUser, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*Post, error)
@@ -170,6 +172,15 @@ func (c *taleboundClient) DeleteChatMessage(ctx context.Context, in *DeleteChatM
 func (c *taleboundClient) GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error) {
 	out := new(GetUsersResponse)
 	err := c.cc.Invoke(ctx, Talebound_GetUsers_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetUserById(ctx context.Context, in *GetUserByIdRequest, opts ...grpc.CallOption) (*ViewUser, error) {
+	out := new(ViewUser)
+	err := c.cc.Invoke(ctx, Talebound_GetUserById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -449,6 +460,7 @@ type TaleboundServer interface {
 	AddChatMessage(context.Context, *AddChatMessageRequest) (*AddChatMessageResponse, error)
 	DeleteChatMessage(context.Context, *DeleteChatMessageRequest) (*DeleteChatMessageResponse, error)
 	GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error)
+	GetUserById(context.Context, *GetUserByIdRequest) (*ViewUser, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*Post, error)
@@ -509,6 +521,9 @@ func (UnimplementedTaleboundServer) DeleteChatMessage(context.Context, *DeleteCh
 }
 func (UnimplementedTaleboundServer) GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
+}
+func (UnimplementedTaleboundServer) GetUserById(context.Context, *GetUserByIdRequest) (*ViewUser, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserById not implemented")
 }
 func (UnimplementedTaleboundServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
@@ -732,6 +747,24 @@ func _Talebound_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TaleboundServer).GetUsers(ctx, req.(*GetUsersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetUserById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetUserById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetUserById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetUserById(ctx, req.(*GetUserByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1292,6 +1325,10 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUsers",
 			Handler:    _Talebound_GetUsers_Handler,
+		},
+		{
+			MethodName: "GetUserById",
+			Handler:    _Talebound_GetUserById_Handler,
 		},
 		{
 			MethodName: "CreateUser",

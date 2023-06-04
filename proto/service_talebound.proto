@@ -20,6 +20,7 @@ import "rpc_post_history.proto";
 import "image.proto";
 import "world.proto";
 import "post.proto";
+import "user.proto";
 import "google/protobuf/empty.proto";
 
 
@@ -116,6 +117,16 @@ service Talebound {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "returns list of users";
       summary: "Get list of users";
+    };
+  };
+
+  rpc GetUserById(GetUserByIdRequest) returns (ViewUser) {
+    option (google.api.http) = {
+      get: "/users/id/{userId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns information about one user";
+      summary: "Get user";
     };
   };
 

@@ -21,21 +21,21 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 		return nil, invalidArgumentError(violations)
 	}
 
-	user, err := server.store.GetUserByUsername(ctx, req.GetUsername())
+	viewUser, err := server.store.GetUserByUsername(ctx, req.GetUsername())
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, status.Errorf(codes.NotFound, "user not found: %v", err)
+			return nil, status.Errorf(codes.NotFound, "viewUser not found: %v", err)
 		}
-		return nil, status.Errorf(codes.Internal, "failed to find user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to find viewUser: %v", err)
 	}
 
-	err = util.CheckPassword(req.Password, user.HashedPassword)
+	err = util.CheckPassword(req.Password, viewUser.HashedPassword)
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "incorrect password: %v", err)
 	}
 
 	accessToken, accessPayload, err := server.tokenMaker.CreateToken(
-		user.ID,
+		viewUser.ID,
 		server.config.AccessTokenDuration,
 	)
 	if err != nil {
@@ -43,7 +43,7 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 	}
 
 	refreshToken, refreshPayload, err := server.tokenMaker.CreateToken(
-		user.ID,
+		viewUser.ID,
 		server.config.RefreshTokenDuration,
 	)
 	if err != nil {
@@ -53,8 +53,8 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 	mtdt := server.extractMetadata(ctx)
 	session, err := server.store.CreateSession(ctx, db.CreateSessionParams{
 		ID:           refreshPayload.ID,
-		UserID:       user.ID,
-		Username:     user.Username,
+		UserID:       viewUser.ID,
+		Username:     viewUser.Username,
 		RefreshToken: refreshToken,
 		UserAgent:    mtdt.UserAgent,
 		ClientIp:     mtdt.ClientIP,
@@ -65,6 +65,7 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 		return nil, status.Errorf(codes.Internal, "failed to create session: %v", err)
 	}
 
+	user := convertViewUserToUser(viewUser)
 	rsp := &pb.LoginUserResponse{
 		User:                  convertUserGetImage(server, ctx, user),
 		SessionId:             session.ID.String(),

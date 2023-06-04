@@ -59,6 +59,55 @@ func convertUserGetImage(server *Server, ctx context.Context, user db.User) *pb.
 	return pbUser
 }
 
+func convertViewUser(user db.ViewUser) *pb.ViewUser {
+	pbUser := &pb.ViewUser{
+		Id:                user.ID,
+		Username:          user.Username,
+		Email:             user.Email,
+		PasswordChangedAt: timestamppb.New(user.PasswordChangedAt),
+		CreatedAt:         timestamppb.New(user.CreatedAt),
+		IsEmailVerified:   user.IsEmailVerified,
+	}
+
+	if user.ImgID.Valid == true {
+		pbUser.ImgId = &user.ImgID.Int32
+	}
+
+	if user.AvatarImageUrl.Valid == true {
+		pbUser.AvatarImageUrl = &user.AvatarImageUrl.String
+	}
+
+	if user.AvatarImageGuid.Valid == true {
+		avatarImageGuid := user.AvatarImageGuid.UUID.String()
+		pbUser.AvatarImageGuid = &avatarImageGuid
+	}
+
+	if user.IntroductionPostID.Valid == true {
+		pbUser.IntroductionPostId = &user.IntroductionPostID.Int32
+	}
+
+	if user.IntroductionPostDeletedAt.Valid == true {
+		pbUser.IntroductionPostDeletedAt = timestamppb.New(user.IntroductionPostDeletedAt.Time)
+	}
+
+	return pbUser
+}
+
+func convertViewUserToUser(user db.ViewUser) db.User {
+	dbUser := db.User{
+		ID:                 user.ID,
+		Username:           user.Username,
+		Email:              user.Email,
+		ImgID:              user.ImgID,
+		PasswordChangedAt:  user.PasswordChangedAt,
+		CreatedAt:          user.CreatedAt,
+		IsEmailVerified:    user.IsEmailVerified,
+		IntroductionPostID: user.IntroductionPostID,
+	}
+
+	return dbUser
+}
+
 func convertUserRowWithImage(user db.GetUsersRow) *pb.User {
 	pbUser := &pb.User{
 		Id:                user.ID,

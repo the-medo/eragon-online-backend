@@ -11,6 +11,10 @@ message GetUsersRequest {
   optional int32 offset = 2;
 }
 
+message GetUserByIdRequest {
+  int32 userId = 1;
+}
+
 message GetUsersResponse {
   repeated User users = 1;
 }

@@ -95,12 +95,12 @@ func (q *Queries) DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPas
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id FROM users WHERE email = $1 LIMIT 1
+SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id, avatar_image_id, avatar_image_url, avatar_image_guid, introduction_post_deleted_at FROM view_users WHERE email = $1 LIMIT 1
 `
 
-func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
+func (q *Queries) GetUserByEmail(ctx context.Context, email string) (ViewUser, error) {
 	row := q.db.QueryRowContext(ctx, getUserByEmail, email)
-	var i User
+	var i ViewUser
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
@@ -111,17 +111,21 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.CreatedAt,
 		&i.IsEmailVerified,
 		&i.IntroductionPostID,
+		&i.AvatarImageID,
+		&i.AvatarImageUrl,
+		&i.AvatarImageGuid,
+		&i.IntroductionPostDeletedAt,
 	)
 	return i, err
 }
 
 const getUserById = `-- name: GetUserById :one
-SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id FROM users WHERE id = $1 LIMIT 1
+SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id, avatar_image_id, avatar_image_url, avatar_image_guid, introduction_post_deleted_at FROM view_users WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) GetUserById(ctx context.Context, id int32) (User, error) {
+func (q *Queries) GetUserById(ctx context.Context, id int32) (ViewUser, error) {
 	row := q.db.QueryRowContext(ctx, getUserById, id)
-	var i User
+	var i ViewUser
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
@@ -132,17 +136,21 @@ func (q *Queries) GetUserById(ctx context.Context, id int32) (User, error) {
 		&i.CreatedAt,
 		&i.IsEmailVerified,
 		&i.IntroductionPostID,
+		&i.AvatarImageID,
+		&i.AvatarImageUrl,
+		&i.AvatarImageGuid,
+		&i.IntroductionPostDeletedAt,
 	)
 	return i, err
 }
 
 const getUserByUsername = `-- name: GetUserByUsername :one
-SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id FROM users WHERE username = $1 LIMIT 1
+SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id, avatar_image_id, avatar_image_url, avatar_image_guid, introduction_post_deleted_at FROM view_users WHERE username = $1 LIMIT 1
 `
 
-func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User, error) {
+func (q *Queries) GetUserByUsername(ctx context.Context, username string) (ViewUser, error) {
 	row := q.db.QueryRowContext(ctx, getUserByUsername, username)
-	var i User
+	var i ViewUser
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
@@ -153,6 +161,10 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User,
 		&i.CreatedAt,
 		&i.IsEmailVerified,
 		&i.IntroductionPostID,
+		&i.AvatarImageID,
+		&i.AvatarImageUrl,
+		&i.AvatarImageGuid,
+		&i.IntroductionPostDeletedAt,
 	)
 	return i, err
 }

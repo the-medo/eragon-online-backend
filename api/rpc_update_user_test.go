@@ -211,6 +211,21 @@ func randomUser(t *testing.T) (user db.User, password string) {
 	return
 }
 
+func randomViewUser(t *testing.T, user db.User) (viewUser db.ViewUser) {
+
+	viewUser = db.ViewUser{
+		ID:                user.ID,
+		Username:          user.Username,
+		HashedPassword:    user.HashedPassword,
+		Email:             user.Email,
+		ImgID:             user.ImgID,
+		PasswordChangedAt: user.PasswordChangedAt,
+		CreatedAt:         user.CreatedAt,
+		IsEmailVerified:   user.IsEmailVerified,
+	}
+	return
+}
+
 func requireMatchUser(t *testing.T, user1 pb.User, user2 db.User) {
 	require.Equal(t, user1.Username, user2.Username)
 	require.Equal(t, user1.Email, user2.Email)

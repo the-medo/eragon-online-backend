@@ -9,6 +9,8 @@ import (
 	"context"
 	"database/sql"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 const createWorld = `-- name: CreateWorld :one
@@ -75,7 +77,7 @@ func (q *Queries) DeleteWorld(ctx context.Context, worldID int32) error {
 
 const getAdminsOfWorld = `-- name: GetAdminsOfWorld :many
 SELECT
-    vu.id, vu.username, vu.hashed_password, vu.email, vu.img_id, vu.password_changed_at, vu.created_at, vu.is_email_verified, vu.image_avatar,
+    vu.id, vu.username, vu.hashed_password, vu.email, vu.img_id, vu.password_changed_at, vu.created_at, vu.is_email_verified, vu.introduction_post_id, vu.avatar_image_id, vu.avatar_image_url, vu.avatar_image_guid, vu.introduction_post_deleted_at,
     wa.is_main as is_main
 FROM
     view_users vu
@@ -85,16 +87,20 @@ WHERE
 `
 
 type GetAdminsOfWorldRow struct {
-	ID                int32          `json:"id"`
-	Username          string         `json:"username"`
-	HashedPassword    string         `json:"hashed_password"`
-	Email             string         `json:"email"`
-	ImgID             sql.NullInt32  `json:"img_id"`
-	PasswordChangedAt time.Time      `json:"password_changed_at"`
-	CreatedAt         time.Time      `json:"created_at"`
-	IsEmailVerified   bool           `json:"is_email_verified"`
-	ImageAvatar       sql.NullString `json:"image_avatar"`
-	IsMain            bool           `json:"is_main"`
+	ID                        int32          `json:"id"`
+	Username                  string         `json:"username"`
+	HashedPassword            string         `json:"hashed_password"`
+	Email                     string         `json:"email"`
+	ImgID                     sql.NullInt32  `json:"img_id"`
+	PasswordChangedAt         time.Time      `json:"password_changed_at"`
+	CreatedAt                 time.Time      `json:"created_at"`
+	IsEmailVerified           bool           `json:"is_email_verified"`
+	IntroductionPostID        sql.NullInt32  `json:"introduction_post_id"`
+	AvatarImageID             sql.NullInt32  `json:"avatar_image_id"`
+	AvatarImageUrl            sql.NullString `json:"avatar_image_url"`
+	AvatarImageGuid           uuid.NullUUID  `json:"avatar_image_guid"`
+	IntroductionPostDeletedAt sql.NullTime   `json:"introduction_post_deleted_at"`
+	IsMain                    bool           `json:"is_main"`
 }
 
 func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID sql.NullInt32) ([]GetAdminsOfWorldRow, error) {
@@ -115,7 +121,11 @@ func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID sql.NullInt32) (
 			&i.PasswordChangedAt,
 			&i.CreatedAt,
 			&i.IsEmailVerified,
-			&i.ImageAvatar,
+			&i.IntroductionPostID,
+			&i.AvatarImageID,
+			&i.AvatarImageUrl,
+			&i.AvatarImageGuid,
+			&i.IntroductionPostDeletedAt,
 			&i.IsMain,
 		); err != nil {
 			return nil, err

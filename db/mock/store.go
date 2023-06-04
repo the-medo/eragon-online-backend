@@ -673,10 +673,10 @@ func (mr *MockStoreMockRecorder) GetSession(arg0, arg1 interface{}) *gomock.Call
 }
 
 // GetUserByEmail mocks base method.
-func (m *MockStore) GetUserByEmail(arg0 context.Context, arg1 string) (db.User, error) {
+func (m *MockStore) GetUserByEmail(arg0 context.Context, arg1 string) (db.ViewUser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserByEmail", arg0, arg1)
-	ret0, _ := ret[0].(db.User)
+	ret0, _ := ret[0].(db.ViewUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -688,10 +688,10 @@ func (mr *MockStoreMockRecorder) GetUserByEmail(arg0, arg1 interface{}) *gomock.
 }
 
 // GetUserById mocks base method.
-func (m *MockStore) GetUserById(arg0 context.Context, arg1 int32) (db.User, error) {
+func (m *MockStore) GetUserById(arg0 context.Context, arg1 int32) (db.ViewUser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserById", arg0, arg1)
-	ret0, _ := ret[0].(db.User)
+	ret0, _ := ret[0].(db.ViewUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -703,10 +703,10 @@ func (mr *MockStoreMockRecorder) GetUserById(arg0, arg1 interface{}) *gomock.Cal
 }
 
 // GetUserByUsername mocks base method.
-func (m *MockStore) GetUserByUsername(arg0 context.Context, arg1 string) (db.User, error) {
+func (m *MockStore) GetUserByUsername(arg0 context.Context, arg1 string) (db.ViewUser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserByUsername", arg0, arg1)
-	ret0, _ := ret[0].(db.User)
+	ret0, _ := ret[0].(db.ViewUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

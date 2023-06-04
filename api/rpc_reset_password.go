@@ -22,7 +22,7 @@ func (server *Server) ResetPasswordSendCode(ctx context.Context, req *pb.ResetPa
 
 	arg := db.ResetPasswordRequestTxParams{
 		Email: req.Email,
-		AfterCreate: func(user db.User) error {
+		AfterCreate: func(user db.ViewUser) error {
 			taskPayload := &worker.PayloadSendResetPasswordEmail{
 				Email: req.Email,
 			}

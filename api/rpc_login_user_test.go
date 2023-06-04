@@ -18,6 +18,7 @@ import (
 func TestLoginUserAPI(t *testing.T) {
 	ctx := grpc.NewContextWithServerTransportStream(context.Background(), &mockServerTransportStream{})
 	user, password := randomUser(t)
+	viewUser := randomViewUser(t, user)
 
 	testCases := []struct {
 		name          string
@@ -35,7 +36,7 @@ func TestLoginUserAPI(t *testing.T) {
 				store.EXPECT().
 					GetUserByUsername(gomock.Any(), gomock.Eq(user.Username)).
 					Times(1).
-					Return(user, nil)
+					Return(viewUser, nil)
 				store.EXPECT().
 					GetImageById(gomock.Any(), gomock.Any()).
 					Times(1).
@@ -59,7 +60,7 @@ func TestLoginUserAPI(t *testing.T) {
 				store.EXPECT().
 					GetUserByUsername(gomock.Any(), gomock.Any()).
 					Times(1).
-					Return(db.User{}, sql.ErrNoRows)
+					Return(db.ViewUser{}, sql.ErrNoRows)
 			},
 			checkResponse: func(t *testing.T, res *pb.LoginUserResponse, err error) {
 				require.Error(t, err)
@@ -78,7 +79,7 @@ func TestLoginUserAPI(t *testing.T) {
 				store.EXPECT().
 					GetUserByUsername(gomock.Any(), user.Username).
 					Times(1).
-					Return(user, nil)
+					Return(viewUser, nil)
 			},
 			checkResponse: func(t *testing.T, res *pb.LoginUserResponse, err error) {
 				require.Error(t, err)

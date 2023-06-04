@@ -10,12 +10,12 @@ import (
 // ResetPasswordRequestTxParams contains the input parameters of the reset transaction
 type ResetPasswordRequestTxParams struct {
 	Email       string
-	AfterCreate func(user User) error
+	AfterCreate func(user ViewUser) error
 }
 
 // ResetPasswordRequestTxResult contains the result of the reset transaction
 type ResetPasswordRequestTxResult struct {
-	User User `json:"user"`
+	User ViewUser `json:"user"`
 }
 
 // ResetPasswordRequestTx performs a reset password verification.
