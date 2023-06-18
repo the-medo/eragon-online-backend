@@ -159,10 +159,6 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 }
 
 func validateUpdateUserRequest(req *pb.UpdateUserRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateUserId(req.GetId()); err != nil {
-		violations = append(violations, FieldViolation("id", err))
-	}
-
 	if req.Username != nil {
 		if err := validator.ValidateUsername(req.GetUsername()); err != nil {
 			violations = append(violations, FieldViolation("username", err))
