@@ -1256,7 +1256,7 @@
       }
     },
     "/verify": {
-      "get": {
+      "post": {
         "summary": "Verify email",
         "description": "Verify user email",
         "operationId": "Talebound_VerifyEmail",
@@ -1276,17 +1276,12 @@
         },
         "parameters": [
           {
-            "name": "emailId",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "secretCode",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbVerifyEmailRequest"
+            }
           }
         ],
         "tags": [
@@ -2126,6 +2121,18 @@
         "introductionPostId": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "pbVerifyEmailRequest": {
+      "type": "object",
+      "properties": {
+        "emailId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "secretCode": {
+          "type": "string"
         }
       }
     },

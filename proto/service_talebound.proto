@@ -221,7 +221,8 @@ service Talebound {
   // ============= VERIFY =================
   rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {
     option (google.api.http) = {
-      get: "/verify"
+      post: "/verify"
+      body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Verify user email";
