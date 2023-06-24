@@ -26,6 +26,8 @@ message CreatePostRequest {
   string title = 1;
   string content = 2;
   int32 postTypeId = 3;
+  optional bool isDraft = 4;
+  optional bool isPrivate = 5;
 }
 
 message UpdatePostRequest {
@@ -33,6 +35,8 @@ message UpdatePostRequest {
   optional string title = 2;
   optional string content = 3;
   optional int32 postTypeId = 4;
+  optional bool isDraft = 5;
+  optional bool isPrivate = 6;
 }
 
 message DeletePostRequest {

@@ -269,11 +269,15 @@ Table posts {
   deleted_at timestamptz
   last_updated_at timestamptz
   last_updated_user_id int [ref: > users.id]
+  is_draft bool [not null]
+  is_private bool [not null]
 }
 
 Table post_types {
   id int [pk]
   name varchar [not null]
+  draftable bool [not null, default: true]
+  privatable bool [not null, default: false]
 }
 
 Table post_history {
@@ -287,6 +291,8 @@ Table post_history {
   deleted_at timestamptz
   last_updated_at timestamptz
   last_updated_user_id int [ref: > users.id]
+  is_draft bool [not null]
+  is_private bool [not null]
 }
 
 TableGroup Evaluations {

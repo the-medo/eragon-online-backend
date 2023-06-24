@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-06-04T11:32:44.021Z
+-- Generated at: 2023-06-24T14:17:18.718Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -227,12 +227,16 @@ CREATE TABLE "posts" (
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "deleted_at" timestamptz,
   "last_updated_at" timestamptz,
-  "last_updated_user_id" int
+  "last_updated_user_id" int,
+  "is_draft" bool NOT NULL,
+  "is_private" bool NOT NULL
 );
 
 CREATE TABLE "post_types" (
   "id" int PRIMARY KEY,
-  "name" varchar NOT NULL
+  "name" varchar NOT NULL,
+  "draftable" bool NOT NULL DEFAULT true,
+  "privatable" bool NOT NULL DEFAULT false
 );
 
 CREATE TABLE "post_history" (
@@ -245,7 +249,9 @@ CREATE TABLE "post_history" (
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "deleted_at" timestamptz,
   "last_updated_at" timestamptz,
-  "last_updated_user_id" int
+  "last_updated_user_id" int,
+  "is_draft" bool NOT NULL,
+  "is_private" bool NOT NULL
 );
 
 CREATE UNIQUE INDEX ON "evaluation_votes" ("evaluation_id", "user_id", "user_id_voter");

@@ -180,6 +180,8 @@ type Post struct {
 	DeletedAt         sql.NullTime  `json:"deleted_at"`
 	LastUpdatedAt     sql.NullTime  `json:"last_updated_at"`
 	LastUpdatedUserID sql.NullInt32 `json:"last_updated_user_id"`
+	IsDraft           bool          `json:"is_draft"`
+	IsPrivate         bool          `json:"is_private"`
 }
 
 type PostHistory struct {
@@ -193,11 +195,15 @@ type PostHistory struct {
 	DeletedAt         sql.NullTime  `json:"deleted_at"`
 	LastUpdatedAt     sql.NullTime  `json:"last_updated_at"`
 	LastUpdatedUserID sql.NullInt32 `json:"last_updated_user_id"`
+	IsDraft           bool          `json:"is_draft"`
+	IsPrivate         bool          `json:"is_private"`
 }
 
 type PostType struct {
-	ID   int32  `json:"id"`
-	Name string `json:"name"`
+	ID         int32  `json:"id"`
+	Name       string `json:"name"`
+	Draftable  bool   `json:"draftable"`
+	Privatable bool   `json:"privatable"`
 }
 
 type Property struct {

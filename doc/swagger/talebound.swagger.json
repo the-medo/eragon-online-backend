@@ -368,6 +368,12 @@
                 "postTypeId": {
                   "type": "integer",
                   "format": "int32"
+                },
+                "isDraft": {
+                  "type": "boolean"
+                },
+                "isPrivate": {
+                  "type": "boolean"
                 }
               }
             }
@@ -1119,6 +1125,9 @@
               "properties": {
                 "content": {
                   "type": "string"
+                },
+                "saveAsDraft": {
+                  "type": "boolean"
                 }
               }
             }
@@ -1537,6 +1546,12 @@
         "postTypeId": {
           "type": "integer",
           "format": "int32"
+        },
+        "isDraft": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
         }
       }
     },
@@ -1825,6 +1840,12 @@
         "lastUpdatedUserId": {
           "type": "integer",
           "format": "int32"
+        },
+        "isDraft": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
         }
       }
     },
@@ -1927,6 +1948,12 @@
         "lastUpdatedUserId": {
           "type": "integer",
           "format": "int32"
+        },
+        "isDraft": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
         }
       }
     },

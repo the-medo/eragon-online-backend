@@ -118,6 +118,8 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 			Title:      "User introduction",
 			PostTypeID: 800,
 			Content:    req.GetContent(),
+			IsDraft:    req.GetSaveAsDraft(),
+			IsPrivate:  false,
 		}
 
 		post, err := server.store.CreatePost(ctx, createPostArg)
@@ -147,6 +149,10 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 			Content: sql.NullString{
 				String: req.GetContent(),
 				Valid:  true,
+			},
+			IsDraft: sql.NullBool{
+				Bool:  req.GetSaveAsDraft(),
+				Valid: req.SaveAsDraft != nil,
 			},
 		}
 		post, err := server.store.UpdatePost(ctx, arg)

@@ -4,14 +4,19 @@ INSERT INTO posts
     user_id,
     title,
     post_type_id,
-    content
+    content,
+    is_draft,
+    is_private
 )
 VALUES
-    (sqlc.arg(user_id), sqlc.arg(title), sqlc.arg(post_type_id), sqlc.arg(content))
+    (sqlc.arg(user_id), sqlc.arg(title), sqlc.arg(post_type_id), sqlc.arg(content), sqlc.arg(is_draft), sqlc.arg(is_private))
 RETURNING *;
 
 -- name: GetPostById :one
 SELECT * FROM posts WHERE id = sqlc.arg(post_id);
+
+-- name: GetPostTypeById :one
+SELECT * FROM post_types WHERE id = sqlc.arg(post_type_id);
 
 -- name: GetPostsByUserId :many
 SELECT
@@ -32,6 +37,8 @@ SET
     title = COALESCE(sqlc.narg(title), title),
     content = COALESCE(sqlc.narg(content), content),
     post_type_id = COALESCE(sqlc.narg(post_type_id), post_type_id),
+    is_draft = COALESCE(sqlc.narg(is_draft), is_draft),
+    is_private = COALESCE(sqlc.narg(is_private), is_private),
     last_updated_user_id = sqlc.arg(last_updated_user_id),
     last_updated_at = now()
 WHERE
@@ -55,7 +62,9 @@ INSERT INTO post_history (
     created_at,
     deleted_at,
     last_updated_at,
-    last_updated_user_id
+    last_updated_user_id,
+    is_draft,
+    is_private
 )
 SELECT
     id,
@@ -66,7 +75,9 @@ SELECT
     created_at,
     deleted_at,
     last_updated_at,
-    last_updated_user_id
+    last_updated_user_id,
+    is_draft,
+    is_private
 FROM
     posts
 WHERE
@@ -83,7 +94,9 @@ SELECT
     created_at,
     deleted_at,
     last_updated_at,
-    last_updated_user_id
+    last_updated_user_id,
+    is_draft,
+    is_private
 FROM post_history WHERE post_id = sqlc.arg(post_id) ORDER BY created_at DESC;
 
 -- name: GetPostHistoryById :one
@@ -97,5 +110,7 @@ SELECT
     created_at,
     deleted_at,
     last_updated_at,
-    last_updated_user_id
+    last_updated_user_id,
+    is_draft,
+    is_private
 FROM post_history WHERE id = sqlc.arg(post_history_id);

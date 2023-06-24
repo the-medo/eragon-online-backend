@@ -10,6 +10,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"time"
 )
 
 func (server *Server) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.Post, error) {
@@ -28,6 +29,28 @@ func (server *Server) CreatePost(ctx context.Context, req *pb.CreatePostRequest)
 		PostTypeID: req.GetPostTypeId(),
 		Title:      req.GetTitle(),
 		Content:    req.GetContent(),
+	}
+
+	//in case we got a nil value for IsDraft or IsPrivate, we need to get the default value from the post type
+	postTypeNeeded := false
+	if req.IsDraft == nil || req.IsPrivate == nil {
+		postTypeNeeded = true
+	}
+
+	if postTypeNeeded {
+		postType, err := server.store.GetPostTypeById(ctx, req.GetPostTypeId())
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
+		}
+		if req.IsDraft == nil {
+			arg.IsDraft = postType.Draftable
+		}
+		if req.IsPrivate == nil {
+			arg.IsPrivate = postType.Privatable
+		}
+	} else {
+		arg.IsDraft = req.GetIsDraft()
+		arg.IsPrivate = req.GetIsPrivate()
 	}
 
 	postResult, err := server.store.CreatePost(ctx, arg)
@@ -72,6 +95,14 @@ func (server *Server) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest)
 		LastUpdatedUserID: sql.NullInt32{
 			Int32: authPayload.UserId,
 			Valid: true,
+		},
+		IsDraft: sql.NullBool{
+			Bool:  req.GetIsDraft(),
+			Valid: req.IsDraft != nil,
+		},
+		IsPrivate: sql.NullBool{
+			Bool:  req.GetIsPrivate(),
+			Valid: req.IsPrivate != nil,
 		},
 	}
 
@@ -124,24 +155,26 @@ func (server *Server) GetPostById(ctx context.Context, req *pb.GetPostByIdReques
 		return nil, invalidArgumentError(violations)
 	}
 
-	authPayload, err := server.authorizeUserCookie(ctx)
-	if err != nil {
-		return nil, unauthenticatedError(err)
-	}
+	//authPayload, err := server.authorizeUserCookie(ctx)
+	//if err != nil {
+	//	return nil, unauthenticatedError(err)
+	//}
 
 	post, err := server.store.GetPostById(ctx, req.GetPostId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post: %v", err)
 	}
 
-	if post.UserID != authPayload.UserId {
-		err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
-		if err != nil {
-			return nil, status.Errorf(codes.PermissionDenied, "can not update this post - you are not creator or admin: %v", err)
-		}
-	}
+	//if post.UserID != authPayload.UserId {
+	//	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
+	//	if err != nil {
+	//		return nil, status.Errorf(codes.PermissionDenied, "can not update this post - you are not creator or admin: %v", err)
+	//	}
+	//}
 
 	rsp := convertPost(post)
+
+	time.Sleep(2 * time.Second)
 
 	return rsp, nil
 }

@@ -16,6 +16,8 @@ message Post {
   google.protobuf.Timestamp deletedAt = 7;
   google.protobuf.Timestamp lastUpdatedAt = 8;
   int32 lastUpdatedUserId = 9;
+  bool isDraft = 10;
+  bool isPrivate = 11;
 }
 
 message HistoryPost {
@@ -29,5 +31,7 @@ message HistoryPost {
   google.protobuf.Timestamp deletedAt = 8;
   google.protobuf.Timestamp lastUpdatedAt = 9;
   int32 lastUpdatedUserId = 10;
+  bool isDraft = 11;
+  bool isPrivate = 12;
 }
 
