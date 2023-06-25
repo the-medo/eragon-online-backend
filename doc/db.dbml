@@ -9,6 +9,7 @@ enum image_variant {
   200x200
   300x300
   30x30
+  original
   public
 }
 

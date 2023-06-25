@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-06-24T14:17:18.718Z
+-- Generated at: 2023-06-25T11:59:40.429Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -10,6 +10,7 @@ CREATE TYPE "image_variant" AS ENUM (
   '200x200',
   '300x300',
   '30x30',
+  'original',
   'public'
 );
 

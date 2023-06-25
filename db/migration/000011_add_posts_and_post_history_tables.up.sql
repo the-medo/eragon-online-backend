@@ -83,3 +83,5 @@ FROM
     LEFT JOIN images i ON u.img_id = i.id
     LEFT JOIN posts p ON u.introduction_post_id = p.id
 ;
+
+ALTER TYPE "image_variant" ADD VALUE 'original';
