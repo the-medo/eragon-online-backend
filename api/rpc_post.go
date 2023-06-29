@@ -13,6 +13,17 @@ import (
 	"time"
 )
 
+const (
+	PostTypeUniversal            = 100
+	PostTypeQuestPost            = 200
+	PostTypeWorldDescription     = 300
+	PostTypeRuleSetDescription   = 400
+	PostTypeQuestDescription     = 500
+	PostTypeCharacterDescription = 600
+	PostTypeNews                 = 700
+	PostTypeUserIntroduction     = 800
+)
+
 func (server *Server) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.Post, error) {
 	violations := validateCreatePostRequest(req)
 	if violations != nil {
@@ -58,7 +69,12 @@ func (server *Server) CreatePost(ctx context.Context, req *pb.CreatePostRequest)
 		return nil, status.Errorf(codes.Internal, "failed to create post: %s", err)
 	}
 
-	rsp := convertPost(postResult)
+	postType, err := server.store.GetPostTypeById(ctx, postResult.PostTypeID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
+	}
+
+	rsp := convertPostAndPostType(postResult, postType)
 
 	return rsp, nil
 }
@@ -110,7 +126,13 @@ func (server *Server) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to update post: %v", err)
 	}
-	rsp := convertPost(post)
+
+	postType, err := server.store.GetPostTypeById(ctx, post.PostTypeID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
+	}
+
+	rsp := convertPostAndPostType(post, postType)
 
 	return rsp, nil
 }
@@ -172,7 +194,7 @@ func (server *Server) GetPostById(ctx context.Context, req *pb.GetPostByIdReques
 	//	}
 	//}
 
-	rsp := convertPost(post)
+	rsp := convertViewPost(post)
 
 	time.Sleep(2 * time.Second)
 
@@ -219,7 +241,7 @@ func (server *Server) GetUserPosts(ctx context.Context, req *pb.GetUserPostsRequ
 	}
 
 	for i, post := range posts {
-		rsp.Posts[i] = convertPost(post)
+		rsp.Posts[i] = convertViewPost(post)
 	}
 
 	return rsp, nil

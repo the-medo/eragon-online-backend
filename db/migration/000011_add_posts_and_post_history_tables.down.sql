@@ -1,4 +1,4 @@
-
+DROP VIEW IF EXISTS "view_posts";
 
 DROP VIEW IF EXISTS "view_users";
 

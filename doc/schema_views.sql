@@ -25,3 +25,14 @@ FROM
     LEFT JOIN images i ON u.img_id = i.id
     LEFT JOIN posts p ON u.introduction_post_id = p.id
 ;
+
+CREATE VIEW view_posts AS
+SELECT
+    p.*,
+    pt.name as post_type_name,
+    pt.draftable as post_type_draftable,
+    pt.privatable as post_type_privatable
+FROM
+    posts p
+    JOIN post_types pt ON p.post_type_id = pt.id
+;

@@ -41,8 +41,13 @@ func (server *Server) GetPostHistory(ctx context.Context, req *pb.GetPostHistory
 		HistoryPosts: make([]*pb.HistoryPost, len(postHistory)),
 	}
 
+	postType, err := server.store.GetPostTypeById(ctx, post.PostTypeID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
+	}
+
 	for i, post := range postHistory {
-		rsp.HistoryPosts[i] = convertHistoryPostWithoutContent(post)
+		rsp.HistoryPosts[i] = convertHistoryPostWithoutContent(post, postType)
 	}
 
 	return rsp, nil
@@ -71,7 +76,12 @@ func (server *Server) GetPostHistoryById(ctx context.Context, req *pb.GetPostHis
 		}
 	}
 
-	rsp := convertHistoryPost(post)
+	postType, err := server.store.GetPostTypeById(ctx, post.PostTypeID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
+	}
+
+	rsp := convertHistoryPost(post, postType)
 
 	return rsp, nil
 }

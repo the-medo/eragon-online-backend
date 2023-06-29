@@ -102,13 +102,25 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 	if req.GetUserId() != authPayload.UserId {
 		err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
 		if err != nil {
-			return nil, status.Errorf(codes.PermissionDenied, "can not update this post - you are not creator or admin: %v", err)
+			return nil, status.Errorf(codes.PermissionDenied, "unable to save changes - you are not creator or admin: %v", err)
 		}
 	}
 
+	time.Sleep(2 * time.Second)
+	//return nil, status.Errorf(codes.PermissionDenied, "Testing error message. Please ignore this error.")
+
 	user, err := server.store.GetUserById(ctx, req.GetUserId())
 	if err != nil {
-		return nil, status.Errorf(codes.NotFound, "user not found: %s", err)
+		return nil, status.Errorf(codes.NotFound, "unable to save changes - user not found: %s", err)
+	}
+
+	postType, err := server.store.GetPostTypeById(ctx, PostTypeUserIntroduction)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
+	}
+
+	if !postType.Draftable && req.GetSaveAsDraft() {
+		return nil, status.Errorf(codes.InvalidArgument, "cannot save this post as draft")
 	}
 
 	if !user.IntroductionPostID.Valid {
@@ -116,7 +128,7 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 		createPostArg := db.CreatePostParams{
 			UserID:     req.GetUserId(),
 			Title:      "User introduction",
-			PostTypeID: 800,
+			PostTypeID: PostTypeUserIntroduction,
 			Content:    req.GetContent(),
 			IsDraft:    req.GetSaveAsDraft(),
 			IsPrivate:  false,
@@ -137,7 +149,7 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 		}
 		_, err = server.store.UpdateUser(ctx, updateUserArg)
 
-		return convertPost(post), nil
+		return convertPostAndPostType(post, postType), nil
 	} else {
 		//update existing post
 		arg := db.UpdatePostParams{
@@ -160,7 +172,7 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 			return nil, status.Errorf(codes.Internal, "failed to update post: %s", err)
 		}
 
-		return convertPost(post), nil
+		return convertPostAndPostType(post, postType), nil
 	}
 }
 

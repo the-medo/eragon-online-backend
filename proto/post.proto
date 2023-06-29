@@ -6,7 +6,7 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
-message Post {
+message DataPost {
   int32 id = 1;
   int32 postTypeId = 2;
   int32 userId = 3;
@@ -20,7 +20,14 @@ message Post {
   bool isPrivate = 11;
 }
 
-message HistoryPost {
+message DataPostType {
+  int32 id = 1;
+  string name = 2;
+  bool draftable = 3;
+  bool privatable = 4;
+}
+
+message DataHistoryPost {
   int32 id = 1;
   int32 postId = 2;
   int32 postTypeId = 3;
@@ -33,5 +40,18 @@ message HistoryPost {
   int32 lastUpdatedUserId = 10;
   bool isDraft = 11;
   bool isPrivate = 12;
+  string postTypeName = 13;
+  bool postTypeDraftable = 14;
+  bool postTypePrivatable = 15;
+}
+
+message Post {
+  DataPost post = 1;
+  DataPostType postType = 2;
+}
+
+message HistoryPost {
+  DataHistoryPost post = 1;
+  DataPostType postType = 2;
 }
 

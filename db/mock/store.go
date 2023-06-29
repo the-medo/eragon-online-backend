@@ -598,10 +598,10 @@ func (mr *MockStoreMockRecorder) GetImagesByImageTypeId(arg0, arg1 interface{}) 
 }
 
 // GetPostById mocks base method.
-func (m *MockStore) GetPostById(arg0 context.Context, arg1 int32) (db.Post, error) {
+func (m *MockStore) GetPostById(arg0 context.Context, arg1 int32) (db.ViewPost, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPostById", arg0, arg1)
-	ret0, _ := ret[0].(db.Post)
+	ret0, _ := ret[0].(db.ViewPost)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -658,10 +658,10 @@ func (mr *MockStoreMockRecorder) GetPostTypeById(arg0, arg1 interface{}) *gomock
 }
 
 // GetPostsByUserId mocks base method.
-func (m *MockStore) GetPostsByUserId(arg0 context.Context, arg1 db.GetPostsByUserIdParams) ([]db.Post, error) {
+func (m *MockStore) GetPostsByUserId(arg0 context.Context, arg1 db.GetPostsByUserIdParams) ([]db.ViewPost, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPostsByUserId", arg0, arg1)
-	ret0, _ := ret[0].([]db.Post)
+	ret0, _ := ret[0].([]db.ViewPost)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

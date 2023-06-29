@@ -13,7 +13,12 @@ VALUES
 RETURNING *;
 
 -- name: GetPostById :one
-SELECT * FROM posts WHERE id = sqlc.arg(post_id);
+SELECT
+    *
+FROM
+    view_posts
+WHERE
+    id = sqlc.arg(post_id);
 
 -- name: GetPostTypeById :one
 SELECT * FROM post_types WHERE id = sqlc.arg(post_type_id);
@@ -22,7 +27,7 @@ SELECT * FROM post_types WHERE id = sqlc.arg(post_type_id);
 SELECT
     *
 FROM
-    posts
+    view_posts
 WHERE
     user_id = sqlc.arg(user_id) AND
     post_type_id = COALESCE(sqlc.narg(post_type_id), post_type_id) AND

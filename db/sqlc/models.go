@@ -66,6 +66,7 @@ const (
 	ImageVariant300x300  ImageVariant = "300x300"
 	ImageVariant30x30    ImageVariant = "30x30"
 	ImageVariantPublic   ImageVariant = "public"
+	ImageVariantOriginal ImageVariant = "original"
 )
 
 func (e *ImageVariant) Scan(src interface{}) error {
@@ -304,6 +305,23 @@ type VerifyEmail struct {
 	IsUsed     bool      `json:"is_used"`
 	CreatedAt  time.Time `json:"created_at"`
 	ExpiredAt  time.Time `json:"expired_at"`
+}
+
+type ViewPost struct {
+	ID                 int32         `json:"id"`
+	PostTypeID         int32         `json:"post_type_id"`
+	UserID             int32         `json:"user_id"`
+	Title              string        `json:"title"`
+	Content            string        `json:"content"`
+	CreatedAt          time.Time     `json:"created_at"`
+	DeletedAt          sql.NullTime  `json:"deleted_at"`
+	LastUpdatedAt      sql.NullTime  `json:"last_updated_at"`
+	LastUpdatedUserID  sql.NullInt32 `json:"last_updated_user_id"`
+	IsDraft            bool          `json:"is_draft"`
+	IsPrivate          bool          `json:"is_private"`
+	PostTypeName       string        `json:"post_type_name"`
+	PostTypeDraftable  bool          `json:"post_type_draftable"`
+	PostTypePrivatable bool          `json:"post_type_privatable"`
 }
 
 type ViewUser struct {

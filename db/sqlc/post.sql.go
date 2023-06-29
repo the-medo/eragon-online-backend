@@ -75,12 +75,17 @@ func (q *Queries) DeletePost(ctx context.Context, postID int32) error {
 }
 
 const getPostById = `-- name: GetPostById :one
-SELECT id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private FROM posts WHERE id = $1
+SELECT
+    id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, post_type_name, post_type_draftable, post_type_privatable
+FROM
+    view_posts
+WHERE
+    id = $1
 `
 
-func (q *Queries) GetPostById(ctx context.Context, postID int32) (Post, error) {
+func (q *Queries) GetPostById(ctx context.Context, postID int32) (ViewPost, error) {
 	row := q.db.QueryRowContext(ctx, getPostById, postID)
-	var i Post
+	var i ViewPost
 	err := row.Scan(
 		&i.ID,
 		&i.PostTypeID,
@@ -93,6 +98,9 @@ func (q *Queries) GetPostById(ctx context.Context, postID int32) (Post, error) {
 		&i.LastUpdatedUserID,
 		&i.IsDraft,
 		&i.IsPrivate,
+		&i.PostTypeName,
+		&i.PostTypeDraftable,
+		&i.PostTypePrivatable,
 	)
 	return i, err
 }
@@ -232,9 +240,9 @@ func (q *Queries) GetPostTypeById(ctx context.Context, postTypeID int32) (PostTy
 
 const getPostsByUserId = `-- name: GetPostsByUserId :many
 SELECT
-    id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private
+    id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, post_type_name, post_type_draftable, post_type_privatable
 FROM
-    posts
+    view_posts
 WHERE
     user_id = $1 AND
     post_type_id = COALESCE($2, post_type_id) AND
@@ -251,7 +259,7 @@ type GetPostsByUserIdParams struct {
 	PageLimit  int32         `json:"page_limit"`
 }
 
-func (q *Queries) GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdParams) ([]Post, error) {
+func (q *Queries) GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdParams) ([]ViewPost, error) {
 	rows, err := q.db.QueryContext(ctx, getPostsByUserId,
 		arg.UserID,
 		arg.PostTypeID,
@@ -262,9 +270,9 @@ func (q *Queries) GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdPara
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Post{}
+	items := []ViewPost{}
 	for rows.Next() {
-		var i Post
+		var i ViewPost
 		if err := rows.Scan(
 			&i.ID,
 			&i.PostTypeID,
@@ -277,6 +285,9 @@ func (q *Queries) GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdPara
 			&i.LastUpdatedUserID,
 			&i.IsDraft,
 			&i.IsPrivate,
+			&i.PostTypeName,
+			&i.PostTypeDraftable,
+			&i.PostTypePrivatable,
 		); err != nil {
 			return nil, err
 		}

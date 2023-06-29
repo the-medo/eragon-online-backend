@@ -1588,6 +1588,127 @@
         }
       }
     },
+    "pbDataHistoryPost": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "postId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "postTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deletedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isDraft": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "postTypeName": {
+          "type": "string"
+        },
+        "postTypeDraftable": {
+          "type": "boolean"
+        },
+        "postTypePrivatable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "pbDataPost": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "postTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deletedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isDraft": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        }
+      }
+    },
+    "pbDataPostType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "draftable": {
+          "type": "boolean"
+        },
+        "privatable": {
+          "type": "boolean"
+        }
+      }
+    },
     "pbDeleteChatMessageResponse": {
       "type": "object",
       "properties": {
@@ -1803,49 +1924,11 @@
     "pbHistoryPost": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
+        "post": {
+          "$ref": "#/definitions/pbDataHistoryPost"
         },
-        "postId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "postTypeId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "userId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "title": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "deletedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedUserId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "isDraft": {
-          "type": "boolean"
-        },
-        "isPrivate": {
-          "type": "boolean"
+        "postType": {
+          "$ref": "#/definitions/pbDataPostType"
         }
       }
     },
@@ -1915,45 +1998,11 @@
     "pbPost": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
+        "post": {
+          "$ref": "#/definitions/pbDataPost"
         },
-        "postTypeId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "userId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "title": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "deletedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedUserId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "isDraft": {
-          "type": "boolean"
-        },
-        "isPrivate": {
-          "type": "boolean"
+        "postType": {
+          "$ref": "#/definitions/pbDataPostType"
         }
       }
     },

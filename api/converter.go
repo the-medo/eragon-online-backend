@@ -208,77 +208,142 @@ func convertWorld(world db.ViewWorld) *pb.World {
 	return pbWorld
 }
 
-func convertPost(post db.Post) *pb.Post {
+func convertPostAndPostType(post db.Post, postType db.PostType) *pb.Post {
 	pbPost := &pb.Post{
-		Id:         post.ID,
-		PostTypeId: post.PostTypeID,
-		UserId:     post.UserID,
-		Title:      post.Title,
-		Content:    post.Content,
-		CreatedAt:  timestamppb.New(post.CreatedAt),
+		Post: &pb.DataPost{
+			Id:         post.ID,
+			PostTypeId: post.PostTypeID,
+			UserId:     post.UserID,
+			Title:      post.Title,
+			Content:    post.Content,
+			CreatedAt:  timestamppb.New(post.CreatedAt),
+			IsDraft:    post.IsDraft,
+			IsPrivate:  post.IsPrivate,
+		},
+		PostType: &pb.DataPostType{
+			Id:         postType.ID,
+			Name:       postType.Name,
+			Draftable:  postType.Draftable,
+			Privatable: postType.Privatable,
+		},
 	}
 
 	if post.DeletedAt.Valid == true {
-		pbPost.DeletedAt = timestamppb.New(post.DeletedAt.Time)
+		pbPost.Post.DeletedAt = timestamppb.New(post.DeletedAt.Time)
 	}
 
 	if post.LastUpdatedAt.Valid == true {
-		pbPost.LastUpdatedAt = timestamppb.New(post.LastUpdatedAt.Time)
+		pbPost.Post.LastUpdatedAt = timestamppb.New(post.LastUpdatedAt.Time)
 	}
 
 	if post.LastUpdatedUserID.Valid == true {
-		pbPost.LastUpdatedUserId = post.LastUpdatedUserID.Int32
+		pbPost.Post.LastUpdatedUserId = post.LastUpdatedUserID.Int32
 	}
 
 	return pbPost
 }
 
-func convertHistoryPostWithoutContent(postHistory db.GetPostHistoryByPostIdRow) *pb.HistoryPost {
+func convertViewPost(viewPost db.ViewPost) *pb.Post {
+	pbPost := &pb.Post{
+		Post: &pb.DataPost{
+			Id:         viewPost.ID,
+			PostTypeId: viewPost.PostTypeID,
+			UserId:     viewPost.UserID,
+			Title:      viewPost.Title,
+			Content:    viewPost.Content,
+			CreatedAt:  timestamppb.New(viewPost.CreatedAt),
+			IsDraft:    viewPost.IsDraft,
+			IsPrivate:  viewPost.IsPrivate,
+		},
+		PostType: &pb.DataPostType{
+			Id:         viewPost.PostTypeID,
+			Name:       viewPost.PostTypeName,
+			Draftable:  viewPost.PostTypeDraftable,
+			Privatable: viewPost.PostTypePrivatable,
+		},
+	}
+
+	if viewPost.DeletedAt.Valid == true {
+		pbPost.Post.DeletedAt = timestamppb.New(viewPost.DeletedAt.Time)
+	}
+
+	if viewPost.LastUpdatedAt.Valid == true {
+		pbPost.Post.LastUpdatedAt = timestamppb.New(viewPost.LastUpdatedAt.Time)
+	}
+
+	if viewPost.LastUpdatedUserID.Valid == true {
+		pbPost.Post.LastUpdatedUserId = viewPost.LastUpdatedUserID.Int32
+	}
+
+	return pbPost
+}
+
+func convertHistoryPostWithoutContent(postHistory db.GetPostHistoryByPostIdRow, postType db.PostType) *pb.HistoryPost {
 	pbHistoryPost := &pb.HistoryPost{
-		Id:         postHistory.PostHistoryID,
-		PostId:     postHistory.PostID,
-		PostTypeId: postHistory.PostTypeID,
-		UserId:     postHistory.UserID,
-		Title:      postHistory.Title,
-		CreatedAt:  timestamppb.New(postHistory.CreatedAt),
+		Post: &pb.DataHistoryPost{
+			Id:         postHistory.PostHistoryID,
+			PostId:     postHistory.PostID,
+			PostTypeId: postHistory.PostTypeID,
+			UserId:     postHistory.UserID,
+			Title:      postHistory.Title,
+			CreatedAt:  timestamppb.New(postHistory.CreatedAt),
+			IsDraft:    postHistory.IsDraft,
+			IsPrivate:  postHistory.IsPrivate,
+		},
+		PostType: &pb.DataPostType{
+			Id:         postType.ID,
+			Name:       postType.Name,
+			Draftable:  postType.Draftable,
+			Privatable: postType.Privatable,
+		},
 	}
 
 	if postHistory.DeletedAt.Valid == true {
-		pbHistoryPost.DeletedAt = timestamppb.New(postHistory.DeletedAt.Time)
+		pbHistoryPost.Post.DeletedAt = timestamppb.New(postHistory.DeletedAt.Time)
 	}
 
 	if postHistory.LastUpdatedAt.Valid == true {
-		pbHistoryPost.LastUpdatedAt = timestamppb.New(postHistory.LastUpdatedAt.Time)
+		pbHistoryPost.Post.LastUpdatedAt = timestamppb.New(postHistory.LastUpdatedAt.Time)
 	}
 
 	if postHistory.LastUpdatedUserID.Valid == true {
-		pbHistoryPost.LastUpdatedUserId = postHistory.LastUpdatedUserID.Int32
+		pbHistoryPost.Post.LastUpdatedUserId = postHistory.LastUpdatedUserID.Int32
 	}
 
 	return pbHistoryPost
 }
 
-func convertHistoryPost(postHistory db.GetPostHistoryByIdRow) *pb.HistoryPost {
+func convertHistoryPost(postHistory db.GetPostHistoryByIdRow, postType db.PostType) *pb.HistoryPost {
 	pbHistoryPost := &pb.HistoryPost{
-		Id:         postHistory.PostHistoryID,
-		PostId:     postHistory.PostID,
-		PostTypeId: postHistory.PostTypeID,
-		UserId:     postHistory.UserID,
-		Title:      postHistory.Title,
-		Content:    postHistory.Content,
-		CreatedAt:  timestamppb.New(postHistory.CreatedAt),
+		Post: &pb.DataHistoryPost{
+			Id:         postHistory.PostHistoryID,
+			PostId:     postHistory.PostID,
+			PostTypeId: postHistory.PostTypeID,
+			UserId:     postHistory.UserID,
+			Title:      postHistory.Title,
+			Content:    postHistory.Content,
+			CreatedAt:  timestamppb.New(postHistory.CreatedAt),
+			IsDraft:    postHistory.IsDraft,
+			IsPrivate:  postHistory.IsPrivate,
+		},
+		PostType: &pb.DataPostType{
+			Id:         postType.ID,
+			Name:       postType.Name,
+			Draftable:  postType.Draftable,
+			Privatable: postType.Privatable,
+		},
 	}
 
 	if postHistory.DeletedAt.Valid == true {
-		pbHistoryPost.DeletedAt = timestamppb.New(postHistory.DeletedAt.Time)
+		pbHistoryPost.Post.DeletedAt = timestamppb.New(postHistory.DeletedAt.Time)
 	}
 
 	if postHistory.LastUpdatedAt.Valid == true {
-		pbHistoryPost.LastUpdatedAt = timestamppb.New(postHistory.LastUpdatedAt.Time)
+		pbHistoryPost.Post.LastUpdatedAt = timestamppb.New(postHistory.LastUpdatedAt.Time)
 	}
 
 	if postHistory.LastUpdatedUserID.Valid == true {
-		pbHistoryPost.LastUpdatedUserId = postHistory.LastUpdatedUserID.Int32
+		pbHistoryPost.Post.LastUpdatedUserId = postHistory.LastUpdatedUserID.Int32
 	}
 
 	return pbHistoryPost
