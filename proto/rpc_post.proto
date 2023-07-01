@@ -47,3 +47,7 @@ message DeletePostResponse {
   bool success = 1;
   string message = 2;
 }
+
+message GetPostTypesResponse {
+  repeated DataPostType postType = 1;
+}

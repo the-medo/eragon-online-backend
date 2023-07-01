@@ -398,6 +398,16 @@ service Talebound {
     };
   };
 
+  rpc GetPostTypes(google.protobuf.Empty) returns (GetPostTypesResponse) {
+    option (google.api.http) = {
+      get: "/post_types"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Get post types with info (draftable, privatable)";
+      summary: "Get post types";
+    };
+  };
+
   // ============= WORLD =================
 
   rpc GetWorldsOfCreator(GetWorldsOfCreatorRequest) returns (GetWorldsOfCreatorResponse) {
