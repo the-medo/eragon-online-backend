@@ -657,6 +657,21 @@ func (mr *MockStoreMockRecorder) GetPostTypeById(arg0, arg1 interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostTypeById", reflect.TypeOf((*MockStore)(nil).GetPostTypeById), arg0, arg1)
 }
 
+// GetPostTypes mocks base method.
+func (m *MockStore) GetPostTypes(arg0 context.Context) ([]db.PostType, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPostTypes", arg0)
+	ret0, _ := ret[0].([]db.PostType)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPostTypes indicates an expected call of GetPostTypes.
+func (mr *MockStoreMockRecorder) GetPostTypes(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostTypes", reflect.TypeOf((*MockStore)(nil).GetPostTypes), arg0)
+}
+
 // GetPostsByUserId mocks base method.
 func (m *MockStore) GetPostsByUserId(arg0 context.Context, arg1 db.GetPostsByUserIdParams) ([]db.ViewPost, error) {
 	m.ctrl.T.Helper()
