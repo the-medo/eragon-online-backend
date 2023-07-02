@@ -10,6 +10,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"time"
 )
 
@@ -197,6 +198,24 @@ func (server *Server) GetPostById(ctx context.Context, req *pb.GetPostByIdReques
 	rsp := convertViewPost(post)
 
 	time.Sleep(2 * time.Second)
+
+	return rsp, nil
+}
+
+func (server *Server) GetPostTypes(ctx context.Context, req *emptypb.Empty) (*pb.GetPostTypesResponse, error) {
+
+	postTypes, err := server.store.GetPostTypes(ctx)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get posts: %v", err)
+	}
+
+	rsp := &pb.GetPostTypesResponse{
+		PostTypes: make([]*pb.DataPostType, len(postTypes)),
+	}
+
+	for i, postType := range postTypes {
+		rsp.PostTypes[i] = convertPostType(postType)
+	}
 
 	return rsp, nil
 }

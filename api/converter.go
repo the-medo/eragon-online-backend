@@ -208,6 +208,17 @@ func convertWorld(world db.ViewWorld) *pb.World {
 	return pbWorld
 }
 
+func convertPostType(postType db.PostType) *pb.DataPostType {
+	pbPostType := &pb.DataPostType{
+		Id:         postType.ID,
+		Name:       postType.Name,
+		Draftable:  postType.Draftable,
+		Privatable: postType.Privatable,
+	}
+
+	return pbPostType
+}
+
 func convertPostAndPostType(post db.Post, postType db.PostType) *pb.Post {
 	pbPost := &pb.Post{
 		Post: &pb.DataPost{

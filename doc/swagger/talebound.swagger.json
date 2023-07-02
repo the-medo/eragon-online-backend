@@ -229,6 +229,30 @@
         ]
       }
     },
+    "/post_types": {
+      "get": {
+        "summary": "Get post types",
+        "description": "Get post types with info (draftable, privatable)",
+        "operationId": "Talebound_GetPostTypes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetPostTypesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/posts": {
       "post": {
         "summary": "Create post",
@@ -1869,6 +1893,18 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbHistoryPost"
+          }
+        }
+      }
+    },
+    "pbGetPostTypesResponse": {
+      "type": "object",
+      "properties": {
+        "postTypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbDataPostType"
           }
         }
       }

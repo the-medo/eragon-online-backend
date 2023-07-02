@@ -23,6 +23,9 @@ WHERE
 -- name: GetPostTypeById :one
 SELECT * FROM post_types WHERE id = sqlc.arg(post_type_id);
 
+-- name: GetPostTypes :many
+SELECT * FROM post_types;
+
 -- name: GetPostsByUserId :many
 SELECT
     *
