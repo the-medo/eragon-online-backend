@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"net/url"
 	"path"
 )
 
@@ -170,8 +171,15 @@ func convertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb
 	}
 
 	//format : https://imagedelivery.net/<account_id>/<image_id>/<variant_name>
-	baseUrl := path.Dir(uploadImg.GetVariants()[0]) //removes last part of URL
-	url := path.Join(baseUrl, "/", string(imageType.Variant))
+	u, err := url.Parse(uploadImg.GetVariants()[0])
+	if err != nil {
+		return db.CreateImageParams{}, status.Errorf(codes.Internal, "failed to parse url: %v", err)
+	}
+
+	u.Path = path.Dir(u.Path) //removes last part of URL
+	baseUrl := u.String()
+
+	variantUrl := fmt.Sprintf("%s/%s", baseUrl, imageType.Variant)
 	imgGuid := uuid.MustParse(uploadImg.GetId())
 
 	rsp := db.CreateImageParams{
@@ -184,7 +192,7 @@ func convertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb
 			String: fmt.Sprintf("%s_%s", filename, imgGuid.String()),
 			Valid:  true,
 		},
-		Url:     url,
+		Url:     variantUrl,
 		BaseUrl: baseUrl,
 		UserID:  userId,
 	}

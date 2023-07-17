@@ -302,10 +302,10 @@ service Talebound {
     };
   };
 
-  // ============= FILE UPLOAD ================
-  rpc UploadImage(UploadImageRequest) returns (UploadImageResponse) {
+  // ============= IMAGES ================
+  rpc UploadDefaultImage(UploadImageRequest) returns (Image) {
     option (google.api.http) = {
-      post: "/files/upload"
+      post: "/images"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {

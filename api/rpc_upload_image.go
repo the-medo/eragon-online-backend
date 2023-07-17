@@ -120,3 +120,26 @@ func (server *Server) UploadUserAvatar(ctx context.Context, request *pb.UploadUs
 		Image:  convertImage(dbImg),
 	}, nil
 }
+
+/*
+UploadDefaultImage
+Uploads an image to Cloudflare and inserts it into the DB with image type Default
+  - 1. filename: {request.filename}-{userId}
+  - 2. upload to cloudflare => get cloudflareId
+  - 3. insert into DB `{request.filename}-{userId}_{cloudflareId}`
+*/
+func (server *Server) UploadDefaultImage(ctx context.Context, request *pb.UploadImageRequest) (*pb.Image, error) {
+	authPayload, err := server.authorizeUserCookie(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
+
+	filename := fmt.Sprintf("%s-%d", request.GetFilename(), authPayload.UserId)
+
+	dbImg, err := server.UploadAndInsertToDb(ctx, request.GetData(), ImageTypeIdDefault, filename, authPayload.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertImage(dbImg), nil
+}

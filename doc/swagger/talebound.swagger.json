@@ -195,16 +195,16 @@
         ]
       }
     },
-    "/files/upload": {
+    "/images": {
       "post": {
         "summary": "Upload image",
         "description": "uploads an image file",
-        "operationId": "Talebound_UploadImage",
+        "operationId": "Talebound_UploadDefaultImage",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbUploadImageResponse"
+              "$ref": "#/definitions/pbImage"
             }
           },
           "default": {
@@ -2163,27 +2163,6 @@
         "data": {
           "type": "string",
           "format": "byte"
-        }
-      }
-    },
-    "pbUploadImageResponse": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "filename": {
-          "type": "string"
-        },
-        "variants": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "uploadedAt": {
-          "type": "string",
-          "format": "date-time"
         }
       }
     },
