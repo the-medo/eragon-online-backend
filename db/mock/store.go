@@ -582,6 +582,21 @@ func (mr *MockStoreMockRecorder) GetImageTypeByName(arg0, arg1 interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImageTypeByName", reflect.TypeOf((*MockStore)(nil).GetImageTypeByName), arg0, arg1)
 }
 
+// GetImages mocks base method.
+func (m *MockStore) GetImages(arg0 context.Context, arg1 db.GetImagesParams) ([]db.Image, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetImages", arg0, arg1)
+	ret0, _ := ret[0].([]db.Image)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetImages indicates an expected call of GetImages.
+func (mr *MockStoreMockRecorder) GetImages(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImages", reflect.TypeOf((*MockStore)(nil).GetImages), arg0, arg1)
+}
+
 // GetImagesByImageTypeId mocks base method.
 func (m *MockStore) GetImagesByImageTypeId(arg0 context.Context, arg1 sql.NullInt32) ([]db.Image, error) {
 	m.ctrl.T.Helper()
@@ -595,6 +610,21 @@ func (m *MockStore) GetImagesByImageTypeId(arg0 context.Context, arg1 sql.NullIn
 func (mr *MockStoreMockRecorder) GetImagesByImageTypeId(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImagesByImageTypeId", reflect.TypeOf((*MockStore)(nil).GetImagesByImageTypeId), arg0, arg1)
+}
+
+// GetImagesCount mocks base method.
+func (m *MockStore) GetImagesCount(arg0 context.Context, arg1 db.GetImagesCountParams) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetImagesCount", arg0, arg1)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetImagesCount indicates an expected call of GetImagesCount.
+func (mr *MockStoreMockRecorder) GetImagesCount(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImagesCount", reflect.TypeOf((*MockStore)(nil).GetImagesCount), arg0, arg1)
 }
 
 // GetPostById mocks base method.

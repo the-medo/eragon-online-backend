@@ -196,6 +196,58 @@
       }
     },
     "/images": {
+      "get": {
+        "summary": "Get images",
+        "description": "Get images - paginated, filterable by user and image type",
+        "operationId": "Talebound_GetImages",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetImagesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "imageTypeId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
       "post": {
         "summary": "Upload image",
         "description": "uploads an image file",
@@ -1113,6 +1165,60 @@
         ]
       }
     },
+    "/users/{userId}/images": {
+      "get": {
+        "summary": "Get user images",
+        "description": "Get images of user by userID - filterable by image type",
+        "operationId": "Talebound_GetUserImages",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetImagesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "imageTypeId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/users/{userId}/introduction": {
       "patch": {
         "summary": "Update user introduction",
@@ -1882,6 +1988,22 @@
             "type": "object",
             "$ref": "#/definitions/pbEvaluation"
           }
+        }
+      }
+    },
+    "pbGetImagesResponse": {
+      "type": "object",
+      "properties": {
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbImage"
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

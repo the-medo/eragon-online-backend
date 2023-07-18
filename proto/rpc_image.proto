@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package pb;
+
+import "image.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message GetImagesRequest {
+  optional int32 userId = 1;
+  optional int32 imageTypeId = 2;
+  optional int32 limit = 3;
+  optional int32 offset = 4;
+}
+
+message GetUserImagesRequest {
+  int32 userId = 1;
+  optional int32 imageTypeId = 2;
+  optional int32 limit = 3;
+  optional int32 offset = 4;
+}
+
+message GetImagesResponse {
+  repeated Image images = 1;
+  int32 totalCount = 2;
+}

@@ -36,3 +36,20 @@ RETURNING *;
 
 -- name: DeleteImage :exec
 DELETE FROM images WHERE id = @id;
+
+-- name: GetImages :many
+SELECT
+    *
+FROM
+    images
+WHERE
+    (user_id = COALESCE(sqlc.narg(user_id), user_id)) AND
+    (image_type_id = COALESCE(sqlc.narg(image_type_id), image_type_id))
+ORDER BY id DESC
+LIMIT sqlc.arg(page_limit) OFFSET sqlc.arg(page_offset);
+
+-- name: GetImagesCount :one
+SELECT COUNT(*) FROM images
+WHERE
+    (user_id = COALESCE(sqlc.narg(user_id), user_id)) AND
+    (image_type_id = COALESCE(sqlc.narg(image_type_id), image_type_id));

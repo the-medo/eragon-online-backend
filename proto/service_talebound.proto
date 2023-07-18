@@ -16,6 +16,7 @@ import "rpc_user_evaluations.proto";
 import "rpc_upload_image.proto";
 import "rpc_world.proto";
 import "rpc_post.proto";
+import "rpc_image.proto";
 import "rpc_post_history.proto";
 import "image.proto";
 import "world.proto";
@@ -303,6 +304,25 @@ service Talebound {
   };
 
   // ============= IMAGES ================
+
+  rpc GetImages(GetImagesRequest) returns (GetImagesResponse) {
+    option (google.api.http) = {
+      get: "/images"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Get images - paginated, filterable by user and image type";
+      summary: "Get images";
+    };
+  };
+  rpc GetUserImages(GetUserImagesRequest) returns (GetImagesResponse) {
+    option (google.api.http) = {
+      get: "/users/{userId}/images"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Get images of user by userID - filterable by image type";
+      summary: "Get user images";
+    };
+  };
   rpc UploadDefaultImage(UploadImageRequest) returns (Image) {
     option (google.api.http) = {
       post: "/images"
