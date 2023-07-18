@@ -28,11 +28,11 @@ message ImageType {
 
 message Image {
   int32 id = 1;
-  string img_guid = 2;
-  int32 image_type_id = 3;
+  string imgGuid = 2;
+  int32 imageTypeId = 3;
   string name = 4;
   string url = 5;
-  string base_url = 6;
-  google.protobuf.Timestamp created_at = 7;
-  int32 user_id = 8;
+  string baseUrl = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  int32 userId = 8;
 }
