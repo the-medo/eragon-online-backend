@@ -17,6 +17,9 @@ type Querier interface {
 	AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error)
 	CreateEvaluationVote(ctx context.Context, arg CreateEvaluationVoteParams) (EvaluationVote, error)
 	CreateImage(ctx context.Context, arg CreateImageParams) (Image, error)
+	CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, error)
+	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)
+	CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error)
 	CreatePost(ctx context.Context, arg CreatePostParams) (Post, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
@@ -24,15 +27,20 @@ type Querier interface {
 	CreateWorld(ctx context.Context, arg CreateWorldParams) (World, error)
 	CreateWorldActivity(ctx context.Context, arg CreateWorldActivityParams) error
 	CreateWorldImages(ctx context.Context, worldID int32) error
+	CreateWorldMenu(ctx context.Context, arg CreateWorldMenuParams) (WorldMenu, error)
 	DeleteAllWorldActivity(ctx context.Context, worldID int32) error
 	DeleteChatMessage(ctx context.Context, id int64) error
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
 	DeleteImage(ctx context.Context, id int32) error
+	DeleteMenu(ctx context.Context, id int32) error
+	DeleteMenuItem(ctx context.Context, id int32) error
+	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
 	DeletePost(ctx context.Context, postID int32) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
 	DeleteWorld(ctx context.Context, worldID int32) error
 	DeleteWorldActivityForDate(ctx context.Context, arg DeleteWorldActivityForDateParams) error
 	DeleteWorldImages(ctx context.Context, worldID int32) error
+	DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error
 	GetAdminsOfWorld(ctx context.Context, worldID sql.NullInt32) ([]GetAdminsOfWorldRow, error)
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
@@ -49,6 +57,9 @@ type Querier interface {
 	GetImages(ctx context.Context, arg GetImagesParams) ([]Image, error)
 	GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.NullInt32) ([]Image, error)
 	GetImagesCount(ctx context.Context, arg GetImagesCountParams) (int64, error)
+	GetMenu(ctx context.Context, id int32) (Menu, error)
+	GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams) (MenuItemPost, error)
+	GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, error)
 	GetPostById(ctx context.Context, postID int32) (ViewPost, error)
 	GetPostHistoryById(ctx context.Context, postHistoryID int32) (GetPostHistoryByIdRow, error)
 	GetPostHistoryByPostId(ctx context.Context, postID int32) ([]GetPostHistoryByPostIdRow, error)
@@ -65,6 +76,7 @@ type Querier interface {
 	GetWorldActivity(ctx context.Context, worldID int32) ([]WorldActivity, error)
 	GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error)
 	GetWorldImages(ctx context.Context, worldID int32) (WorldImage, error)
+	GetWorldMenu(ctx context.Context, arg GetWorldMenuParams) (WorldMenu, error)
 	GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWorld, error)
 	GetWorldsOfUser(ctx context.Context, userID sql.NullInt32) ([]GetWorldsOfUserRow, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
@@ -75,6 +87,9 @@ type Querier interface {
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
 	UpdateImage(ctx context.Context, arg UpdateImageParams) (Image, error)
+	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)
+	UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) (MenuItem, error)
+	UpdateMenuItemPost(ctx context.Context, arg UpdateMenuItemPostParams) (MenuItemPost, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)
