@@ -27,7 +27,7 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
-		err = q.CreateWorldStats(ctx, world.ID)
+		err = q.CreateWorldActivity(ctx, world.ID)
 		if err != nil {
 			return err
 		}

@@ -171,6 +171,29 @@ type ImageType struct {
 	Variant ImageVariant `json:"variant"`
 }
 
+type Menu struct {
+	ID              int32         `json:"id"`
+	MenuCode        string        `json:"menu_code"`
+	MenuHeaderImgID sql.NullInt32 `json:"menu_header_img_id"`
+}
+
+type MenuItem struct {
+	ID                int32         `json:"id"`
+	MenuID            int32         `json:"menu_id"`
+	MenuItemCode      string        `json:"menu_item_code"`
+	Name              string        `json:"name"`
+	Position          int32         `json:"position"`
+	ParentItemID      sql.NullInt32 `json:"parent_item_id"`
+	MenuItemImgID     sql.NullInt32 `json:"menu_item_img_id"`
+	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
+}
+
+type MenuItemPost struct {
+	MenuItemID int32 `json:"menu_item_id"`
+	PostID     int32 `json:"post_id"`
+	Position   int32 `json:"position"`
+}
+
 type Post struct {
 	ID                int32         `json:"id"`
 	PostTypeID        int32         `json:"post_type_id"`
@@ -341,15 +364,15 @@ type ViewUser struct {
 }
 
 type ViewWorld struct {
-	ID          int32          `json:"id"`
-	Name        string         `json:"name"`
-	Public      bool           `json:"public"`
-	CreatedAt   time.Time      `json:"created_at"`
-	Description string         `json:"description"`
-	ImageAvatar sql.NullString `json:"image_avatar"`
-	ImageHeader sql.NullString `json:"image_header"`
-	Rating      int32          `json:"rating"`
-	Activity    int32          `json:"activity"`
+	ID             int32          `json:"id"`
+	Name           string         `json:"name"`
+	Public         bool           `json:"public"`
+	CreatedAt      time.Time      `json:"created_at"`
+	Description    string         `json:"description"`
+	BasedOn        string         `json:"based_on"`
+	ImageHeader    sql.NullString `json:"image_header"`
+	ImageThumbnail sql.NullString `json:"image_thumbnail"`
+	ImageAvatar    sql.NullString `json:"image_avatar"`
 }
 
 type World struct {
@@ -358,30 +381,46 @@ type World struct {
 	Public      bool      `json:"public"`
 	CreatedAt   time.Time `json:"created_at"`
 	Description string    `json:"description"`
+	BasedOn     string    `json:"based_on"`
+}
+
+type WorldActivity struct {
+	WorldID       int32         `json:"world_id"`
+	Date          time.Time     `json:"date"`
+	PostCount     sql.NullInt32 `json:"post_count"`
+	QuestCount    sql.NullInt32 `json:"quest_count"`
+	ResourceCount sql.NullInt32 `json:"resource_count"`
 }
 
 type WorldAdmin struct {
-	WorldID   sql.NullInt32 `json:"world_id"`
-	UserID    sql.NullInt32 `json:"user_id"`
-	CreatedAt time.Time     `json:"created_at"`
-	IsMain    bool          `json:"is_main"`
+	WorldID    sql.NullInt32 `json:"world_id"`
+	UserID     sql.NullInt32 `json:"user_id"`
+	CreatedAt  time.Time     `json:"created_at"`
+	SuperAdmin bool          `json:"super_admin"`
+	// 0 = NO, 1 = YES, 2 = PENDING
+	Approved           int32  `json:"approved"`
+	MotivationalLetter string `json:"motivational_letter"`
 }
 
 type WorldImage struct {
-	WorldID     int32         `json:"world_id"`
-	ImageHeader sql.NullInt32 `json:"image_header"`
-	ImageAvatar sql.NullInt32 `json:"image_avatar"`
+	WorldID        int32         `json:"world_id"`
+	HeaderImgID    sql.NullInt32 `json:"header_img_id"`
+	ImageAvatar    sql.NullInt32 `json:"image_avatar"`
+	ThumbnailImgID sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID    sql.NullInt32 `json:"avatar_img_id"`
 }
 
-type WorldStat struct {
-	WorldID            int32 `json:"world_id"`
-	FinalContentRating int32 `json:"final_content_rating"`
-	FinalActivity      int32 `json:"final_activity"`
+type WorldMenu struct {
+	WorldID sql.NullInt32 `json:"world_id"`
+	MenuID  sql.NullInt32 `json:"menu_id"`
 }
 
-type WorldStatsHistory struct {
-	WorldID            sql.NullInt32 `json:"world_id"`
-	FinalContentRating int32         `json:"final_content_rating"`
-	FinalActivity      int32         `json:"final_activity"`
-	CreatedAt          time.Time     `json:"created_at"`
+type WorldTag struct {
+	WorldID sql.NullInt32 `json:"world_id"`
+	TagID   sql.NullInt32 `json:"tag_id"`
+}
+
+type WorldTagsAvailable struct {
+	ID  int32  `json:"id"`
+	Tag string `json:"tag"`
 }
