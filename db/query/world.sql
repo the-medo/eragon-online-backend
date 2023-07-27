@@ -44,7 +44,7 @@ INSERT INTO world_admins (
     super_admin,
     approved,
     motivational_letter
-) VALUES (@world_id, @user_id, @is_main, @approved, @motivational_letter) RETURNING *;
+) VALUES (@world_id, @user_id, @super_admin, @approved, @motivational_letter) RETURNING *;
 
 
 -- name: GetWorldsOfUser :many

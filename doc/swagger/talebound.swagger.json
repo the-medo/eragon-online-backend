@@ -1715,6 +1715,9 @@
         },
         "description": {
           "type": "string"
+        },
+        "basedOn": {
+          "type": "string"
         }
       }
     },
@@ -2424,16 +2427,11 @@
         "imageAvatar": {
           "type": "string"
         },
-        "imageHeader": {
+        "imageThumbnail": {
           "type": "string"
         },
-        "rating": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "activity": {
-          "type": "integer",
-          "format": "int32"
+        "imageHeader": {
+          "type": "string"
         }
       }
     },

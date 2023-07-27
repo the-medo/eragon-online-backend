@@ -13,8 +13,7 @@ message World {
   google.protobuf.Timestamp createdAt = 4;
   string description = 5;
   string imageAvatar = 6;
-  string imageHeader = 7;
-  int32 rating = 8;
-  int32 activity = 9;
+  string imageThumbnail = 7;
+  string imageHeader = 8;
 }
 

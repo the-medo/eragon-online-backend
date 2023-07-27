@@ -27,7 +27,10 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
-		err = q.CreateWorldActivity(ctx, world.ID)
+		err = q.CreateWorldActivity(ctx, CreateWorldActivityParams{
+			WorldID: world.ID,
+			Date:    world.CreatedAt,
+		})
 		if err != nil {
 			return err
 		}
@@ -37,7 +40,7 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
-		_, err = q.CreateWorldAdmin(ctx, CreateWorldAdminParams{
+		_, err = q.InsertWorldAdmin(ctx, InsertWorldAdminParams{
 			WorldID: sql.NullInt32{
 				Int32: world.ID,
 				Valid: true,
@@ -46,7 +49,9 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 				Int32: arg.UserId,
 				Valid: true,
 			},
-			IsMain: true,
+			SuperAdmin:         true,
+			Approved:           1,
+			MotivationalLetter: "Creator of the world!",
 		})
 
 		if err != nil {
@@ -59,6 +64,7 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			Description: world.Description,
 			CreatedAt:   world.CreatedAt,
 			Public:      world.Public,
+			BasedOn:     world.BasedOn,
 		}
 		return nil
 	})

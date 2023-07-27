@@ -26,6 +26,7 @@ func (server *Server) CreateWorld(ctx context.Context, req *pb.CreateWorldReques
 	arg := db.CreateWorldTxParams{
 		CreateWorldParams: db.CreateWorldParams{
 			Name:        req.GetName(),
+			BasedOn:     req.GetBasedOn(),
 			Description: req.GetDescription(),
 		},
 		UserId: authPayload.UserId,

@@ -275,7 +275,7 @@ INSERT INTO world_admins (
 type InsertWorldAdminParams struct {
 	WorldID            sql.NullInt32 `json:"world_id"`
 	UserID             sql.NullInt32 `json:"user_id"`
-	IsMain             bool          `json:"is_main"`
+	SuperAdmin         bool          `json:"super_admin"`
 	Approved           int32         `json:"approved"`
 	MotivationalLetter string        `json:"motivational_letter"`
 }
@@ -284,7 +284,7 @@ func (q *Queries) InsertWorldAdmin(ctx context.Context, arg InsertWorldAdminPara
 	row := q.db.QueryRowContext(ctx, insertWorldAdmin,
 		arg.WorldID,
 		arg.UserID,
-		arg.IsMain,
+		arg.SuperAdmin,
 		arg.Approved,
 		arg.MotivationalLetter,
 	)
