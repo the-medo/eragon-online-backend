@@ -385,18 +385,18 @@ type World struct {
 }
 
 type WorldActivity struct {
-	WorldID       int32         `json:"world_id"`
-	Date          time.Time     `json:"date"`
-	PostCount     sql.NullInt32 `json:"post_count"`
-	QuestCount    sql.NullInt32 `json:"quest_count"`
-	ResourceCount sql.NullInt32 `json:"resource_count"`
+	WorldID       int32     `json:"world_id"`
+	Date          time.Time `json:"date"`
+	PostCount     int32     `json:"post_count"`
+	QuestCount    int32     `json:"quest_count"`
+	ResourceCount int32     `json:"resource_count"`
 }
 
 type WorldAdmin struct {
-	WorldID    sql.NullInt32 `json:"world_id"`
-	UserID     sql.NullInt32 `json:"user_id"`
-	CreatedAt  time.Time     `json:"created_at"`
-	SuperAdmin bool          `json:"super_admin"`
+	WorldID    int32     `json:"world_id"`
+	UserID     int32     `json:"user_id"`
+	CreatedAt  time.Time `json:"created_at"`
+	SuperAdmin bool      `json:"super_admin"`
 	// 0 = NO, 1 = YES, 2 = PENDING
 	Approved           int32  `json:"approved"`
 	MotivationalLetter string `json:"motivational_letter"`
@@ -411,13 +411,13 @@ type WorldImage struct {
 }
 
 type WorldMenu struct {
-	WorldID sql.NullInt32 `json:"world_id"`
-	MenuID  sql.NullInt32 `json:"menu_id"`
+	WorldID int32 `json:"world_id"`
+	MenuID  int32 `json:"menu_id"`
 }
 
 type WorldTag struct {
-	WorldID sql.NullInt32 `json:"world_id"`
-	TagID   sql.NullInt32 `json:"tag_id"`
+	WorldID int32 `json:"world_id"`
+	TagID   int32 `json:"tag_id"`
 }
 
 type WorldTagsAvailable struct {

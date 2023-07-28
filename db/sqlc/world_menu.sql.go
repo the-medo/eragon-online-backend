@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createWorldMenu = `-- name: CreateWorldMenu :one
@@ -17,8 +16,8 @@ RETURNING world_id, menu_id
 `
 
 type CreateWorldMenuParams struct {
-	WorldID sql.NullInt32 `json:"world_id"`
-	MenuID  sql.NullInt32 `json:"menu_id"`
+	WorldID int32 `json:"world_id"`
+	MenuID  int32 `json:"menu_id"`
 }
 
 func (q *Queries) CreateWorldMenu(ctx context.Context, arg CreateWorldMenuParams) (WorldMenu, error) {
@@ -33,8 +32,8 @@ DELETE FROM world_menu WHERE world_id = $1 AND menu_id = $2
 `
 
 type DeleteWorldMenuParams struct {
-	WorldID sql.NullInt32 `json:"world_id"`
-	MenuID  sql.NullInt32 `json:"menu_id"`
+	WorldID int32 `json:"world_id"`
+	MenuID  int32 `json:"menu_id"`
 }
 
 func (q *Queries) DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error {
@@ -47,8 +46,8 @@ SELECT world_id, menu_id FROM world_menu WHERE world_id = $1 AND menu_id = $2
 `
 
 type GetWorldMenuParams struct {
-	WorldID sql.NullInt32 `json:"world_id"`
-	MenuID  sql.NullInt32 `json:"menu_id"`
+	WorldID int32 `json:"world_id"`
+	MenuID  int32 `json:"menu_id"`
 }
 
 func (q *Queries) GetWorldMenu(ctx context.Context, arg GetWorldMenuParams) (WorldMenu, error) {

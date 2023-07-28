@@ -10,6 +10,8 @@ ALTER TABLE worlds ADD COLUMN based_on varchar NOT NULL default '';
 ALTER TABLE world_admins RENAME COLUMN is_main TO super_admin;
 ALTER TABLE world_admins ADD COLUMN approved int NOT NULL default 2;
 ALTER TABLE world_admins ADD COLUMN motivational_letter varchar NOT NULL default '';
+ALTER TABLE world_admins ALTER COLUMN world_id SET NOT NULL;
+ALTER TABLE world_admins ALTER COLUMN user_id SET NOT NULL;
 COMMENT ON COLUMN "world_admins"."approved" IS '0 = NO, 1 = YES, 2 = PENDING';
 
 -- Change fields in `world_images`
@@ -27,21 +29,22 @@ CREATE TABLE world_tags_available (
 
 -- Create new table `world_tags`
 CREATE TABLE world_tags (
-    world_id int,
-    tag_id int
+    "world_id" int NOT NULL,
+    "tag_id" int NOT NULL
 );
 
 ALTER TABLE world_tags ADD CONSTRAINT world_tags_world_id_fkey FOREIGN KEY (world_id) REFERENCES worlds(id);
 ALTER TABLE world_tags ADD CONSTRAINT world_tags_tag_id_fkey FOREIGN KEY (tag_id) REFERENCES world_tags_available(id);
+ALTER TABLE "world_tags" ADD FOREIGN KEY ("tag_id") REFERENCES "world_tags_available" ("id") ON DELETE CASCADE;
 CREATE UNIQUE INDEX world_tags_world_id_tag_id_uindex ON world_tags (world_id, tag_id);
 
 -- Create new table `world_activity`
 CREATE TABLE world_activity (
     world_id int PRIMARY KEY,
     date date NOT NULL,
-    post_count int,
-    quest_count int,
-    resource_count int
+    post_count int NOT NULL,
+    quest_count int NOT NULL,
+    resource_count int NOT NULL
 );
 ALTER TABLE world_activity
     ADD CONSTRAINT world_activity_world_id_fkey FOREIGN KEY (world_id) REFERENCES worlds(id);
@@ -58,8 +61,8 @@ ALTER TABLE menus
 
 -- Create new table `world_menu`
 CREATE TABLE world_menu (
-    world_id int,
-    menu_id int
+    "world_id" int NOT NULL,
+    "menu_id" int NOT NULL
 );
 
 ALTER TABLE "world_menu" ADD FOREIGN KEY ("world_id") REFERENCES "worlds" ("id");

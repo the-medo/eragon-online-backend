@@ -69,14 +69,8 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 		}
 
 		_, err = q.CreateWorldMenu(ctx, CreateWorldMenuParams{
-			WorldID: sql.NullInt32{
-				Int32: world.ID,
-				Valid: true,
-			},
-			MenuID: sql.NullInt32{
-				Int32: menu.ID,
-				Valid: true,
-			},
+			WorldID: world.ID,
+			MenuID:  menu.ID,
 		})
 		if err != nil {
 			return err
@@ -96,14 +90,8 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 		}
 
 		_, err = q.InsertWorldAdmin(ctx, InsertWorldAdminParams{
-			WorldID: sql.NullInt32{
-				Int32: world.ID,
-				Valid: true,
-			},
-			UserID: sql.NullInt32{
-				Int32: arg.UserId,
-				Valid: true,
-			},
+			WorldID:            world.ID,
+			UserID:             arg.UserId,
 			SuperAdmin:         true,
 			Approved:           1,
 			MotivationalLetter: "Creator of the world!",

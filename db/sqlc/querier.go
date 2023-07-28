@@ -28,6 +28,8 @@ type Querier interface {
 	CreateWorldActivity(ctx context.Context, arg CreateWorldActivityParams) error
 	CreateWorldImages(ctx context.Context, worldID int32) error
 	CreateWorldMenu(ctx context.Context, arg CreateWorldMenuParams) (WorldMenu, error)
+	CreateWorldTag(ctx context.Context, arg CreateWorldTagParams) (WorldTag, error)
+	CreateWorldTagAvailable(ctx context.Context, tag string) (WorldTagsAvailable, error)
 	DeleteAllWorldActivity(ctx context.Context, worldID int32) error
 	DeleteChatMessage(ctx context.Context, id int64) error
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
@@ -41,7 +43,9 @@ type Querier interface {
 	DeleteWorldActivityForDate(ctx context.Context, arg DeleteWorldActivityForDateParams) error
 	DeleteWorldImages(ctx context.Context, worldID int32) error
 	DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error
-	GetAdminsOfWorld(ctx context.Context, worldID sql.NullInt32) ([]GetAdminsOfWorldRow, error)
+	DeleteWorldTag(ctx context.Context, arg DeleteWorldTagParams) error
+	DeleteWorldTagAvailable(ctx context.Context, id int32) error
+	GetAdminsOfWorld(ctx context.Context, worldID int32) ([]GetAdminsOfWorldRow, error)
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
 	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
@@ -77,8 +81,11 @@ type Querier interface {
 	GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error)
 	GetWorldImages(ctx context.Context, worldID int32) (WorldImage, error)
 	GetWorldMenu(ctx context.Context, arg GetWorldMenuParams) (WorldMenu, error)
+	GetWorldTag(ctx context.Context, arg GetWorldTagParams) (WorldTag, error)
+	GetWorldTags(ctx context.Context) ([]WorldTag, error)
+	GetWorldTagsAvailable(ctx context.Context) ([]WorldTagsAvailable, error)
 	GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWorld, error)
-	GetWorldsOfUser(ctx context.Context, userID sql.NullInt32) ([]GetWorldsOfUserRow, error)
+	GetWorldsOfUser(ctx context.Context, userID int32) ([]GetWorldsOfUserRow, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
 	InsertPostHistory(ctx context.Context, postID int32) (PostHistory, error)
 	InsertWorldAdmin(ctx context.Context, arg InsertWorldAdminParams) (WorldAdmin, error)
@@ -96,6 +103,7 @@ type Querier interface {
 	UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World, error)
 	UpdateWorldActivity(ctx context.Context, arg UpdateWorldActivityParams) (WorldActivity, error)
 	UpdateWorldImages(ctx context.Context, arg UpdateWorldImagesParams) (WorldImage, error)
+	UpdateWorldTagAvailable(ctx context.Context, arg UpdateWorldTagAvailableParams) (WorldTagsAvailable, error)
 }
 
 var _ Querier = (*Queries)(nil)

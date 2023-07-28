@@ -128,8 +128,8 @@ Table worlds {
 }
 
 Table world_admins {
-  world_id int [ref: > worlds.id]
-  user_id int [ref: > users.id]
+  world_id int [not null, ref: > worlds.id]
+  user_id int [not null, ref: > users.id]
   created_at timestamptz [not null, default: `now()`]
   super_admin boolean [not null, default: false]
   approved int [not null, note: '0 = NO, 1 = YES, 2 = PENDING']
@@ -141,8 +141,8 @@ Table world_admins {
 }
 
 Table world_menu {
-  world_id int [ref: > worlds.id]
-  menu_id int [ref: > menus.id]
+  world_id int [not null, ref: > worlds.id]
+  menu_id int [not null, ref: > menus.id]
 
   indexes {
     (world_id, menu_id) [unique]
@@ -155,13 +155,15 @@ Table world_tags_available {
 }
 
 Table world_tags {
-  world_id int [ref: > worlds.id]
-  tag_id int [ref: > world_tags_available.id]
+  world_id int [not null, ref: > worlds.id]
+  tag_id int [not null]
 
   indexes {
     (world_id, tag_id) [unique]
   }
 }
+
+Ref: world_tags.tag_id > world_tags_available.id [delete: cascade]
 
 Table world_images {
   world_id int [pk, ref: > worlds.id]
@@ -173,9 +175,9 @@ Table world_images {
 Table world_activity {
   world_id int [pk, ref: > worlds.id]
   date date [not null]
-  post_count int
-  quest_count int
-  resource_count int
+  post_count int [not null]
+  quest_count int [not null]
+  resource_count int [not null]
 }
 
 Table races {

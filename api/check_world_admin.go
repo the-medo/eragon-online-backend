@@ -21,14 +21,8 @@ func (server *Server) CheckWorldAdmin(ctx context.Context, worldId int32, needsS
 	}
 
 	isAdmin, err := server.store.IsWorldAdmin(ctx, db.IsWorldAdminParams{
-		UserID: sql.NullInt32{
-			Int32: authPayload.UserId,
-			Valid: true,
-		},
-		WorldID: sql.NullInt32{
-			Int32: worldId,
-			Valid: true,
-		},
+		UserID:  authPayload.UserId,
+		WorldID: worldId,
 	})
 
 	if err != nil {
@@ -42,7 +36,7 @@ func (server *Server) CheckWorldAdmin(ctx context.Context, worldId int32, needsS
 		if isAdmin.SuperAdmin {
 			return nil
 		} else {
-			return fmt.Errorf("MAIN admin role required for this action")
+			return fmt.Errorf("SUPER ADMIN role required for this action")
 		}
 	}
 

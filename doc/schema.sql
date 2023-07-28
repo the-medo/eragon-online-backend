@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-07-27T18:33:21.457Z
+-- Generated at: 2023-07-28T19:16:31.734Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -121,8 +121,8 @@ CREATE TABLE "worlds" (
 );
 
 CREATE TABLE "world_admins" (
-  "world_id" int,
-  "user_id" int,
+  "world_id" int NOT NULL,
+  "user_id" int NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "super_admin" boolean NOT NULL DEFAULT false,
   "approved" int NOT NULL,
@@ -130,8 +130,8 @@ CREATE TABLE "world_admins" (
 );
 
 CREATE TABLE "world_menu" (
-  "world_id" int,
-  "menu_id" int
+  "world_id" int NOT NULL,
+  "menu_id" int NOT NULL
 );
 
 CREATE TABLE "world_tags_available" (
@@ -140,8 +140,8 @@ CREATE TABLE "world_tags_available" (
 );
 
 CREATE TABLE "world_tags" (
-  "world_id" int,
-  "tag_id" int
+  "world_id" int NOT NULL,
+  "tag_id" int NOT NULL
 );
 
 CREATE TABLE "world_images" (
@@ -154,9 +154,9 @@ CREATE TABLE "world_images" (
 CREATE TABLE "world_activity" (
   "world_id" int PRIMARY KEY,
   "date" date NOT NULL,
-  "post_count" int,
-  "quest_count" int,
-  "resource_count" int
+  "post_count" int NOT NULL,
+  "quest_count" int NOT NULL,
+  "resource_count" int NOT NULL
 );
 
 CREATE TABLE "races" (
@@ -354,7 +354,7 @@ ALTER TABLE "world_menu" ADD FOREIGN KEY ("menu_id") REFERENCES "menus" ("id");
 
 ALTER TABLE "world_tags" ADD FOREIGN KEY ("world_id") REFERENCES "worlds" ("id");
 
-ALTER TABLE "world_tags" ADD FOREIGN KEY ("tag_id") REFERENCES "world_tags_available" ("id");
+ALTER TABLE "world_tags" ADD FOREIGN KEY ("tag_id") REFERENCES "world_tags_available" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "world_images" ADD FOREIGN KEY ("world_id") REFERENCES "worlds" ("id");
 

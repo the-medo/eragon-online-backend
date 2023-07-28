@@ -81,7 +81,7 @@ type GetAdminsOfWorldRow struct {
 	SuperAdmin                bool           `json:"super_admin"`
 }
 
-func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID sql.NullInt32) ([]GetAdminsOfWorldRow, error) {
+func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID int32) ([]GetAdminsOfWorldRow, error) {
 	rows, err := q.db.QueryContext(ctx, getAdminsOfWorld, worldID)
 	if err != nil {
 		return nil, err
@@ -227,7 +227,7 @@ type GetWorldsOfUserRow struct {
 	WorldSuperAdmin bool           `json:"world_super_admin"`
 }
 
-func (q *Queries) GetWorldsOfUser(ctx context.Context, userID sql.NullInt32) ([]GetWorldsOfUserRow, error) {
+func (q *Queries) GetWorldsOfUser(ctx context.Context, userID int32) ([]GetWorldsOfUserRow, error) {
 	rows, err := q.db.QueryContext(ctx, getWorldsOfUser, userID)
 	if err != nil {
 		return nil, err
@@ -273,11 +273,11 @@ INSERT INTO world_admins (
 `
 
 type InsertWorldAdminParams struct {
-	WorldID            sql.NullInt32 `json:"world_id"`
-	UserID             sql.NullInt32 `json:"user_id"`
-	SuperAdmin         bool          `json:"super_admin"`
-	Approved           int32         `json:"approved"`
-	MotivationalLetter string        `json:"motivational_letter"`
+	WorldID            int32  `json:"world_id"`
+	UserID             int32  `json:"user_id"`
+	SuperAdmin         bool   `json:"super_admin"`
+	Approved           int32  `json:"approved"`
+	MotivationalLetter string `json:"motivational_letter"`
 }
 
 func (q *Queries) InsertWorldAdmin(ctx context.Context, arg InsertWorldAdminParams) (WorldAdmin, error) {
@@ -305,8 +305,8 @@ SELECT world_id, user_id, created_at, super_admin, approved, motivational_letter
 `
 
 type IsWorldAdminParams struct {
-	UserID  sql.NullInt32 `json:"user_id"`
-	WorldID sql.NullInt32 `json:"world_id"`
+	UserID  int32 `json:"user_id"`
+	WorldID int32 `json:"world_id"`
 }
 
 func (q *Queries) IsWorldAdmin(ctx context.Context, arg IsWorldAdminParams) (WorldAdmin, error) {
@@ -328,8 +328,8 @@ SELECT world_id, user_id, created_at, super_admin, approved, motivational_letter
 `
 
 type IsWorldSuperAdminParams struct {
-	UserID  sql.NullInt32 `json:"user_id"`
-	WorldID sql.NullInt32 `json:"world_id"`
+	UserID  int32 `json:"user_id"`
+	WorldID int32 `json:"world_id"`
 }
 
 func (q *Queries) IsWorldSuperAdmin(ctx context.Context, arg IsWorldSuperAdminParams) (WorldAdmin, error) {
