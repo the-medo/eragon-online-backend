@@ -1499,11 +1499,18 @@
                 "name": {
                   "type": "string"
                 },
-                "description": {
+                "shortDescription": {
                   "type": "string"
                 },
                 "public": {
                   "type": "boolean"
+                },
+                "basedOn": {
+                  "type": "string"
+                },
+                "descriptionPostId": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -1713,7 +1720,7 @@
         "name": {
           "type": "string"
         },
-        "description": {
+        "shortDescription": {
           "type": "string"
         },
         "basedOn": {
@@ -2421,7 +2428,10 @@
           "type": "string",
           "format": "date-time"
         },
-        "description": {
+        "basedOn": {
+          "type": "string"
+        },
+        "shortDescription": {
           "type": "string"
         },
         "imageAvatar": {
@@ -2432,6 +2442,10 @@
         },
         "imageHeader": {
           "type": "string"
+        },
+        "descriptionPostId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -2441,7 +2455,7 @@
         "world": {
           "$ref": "#/definitions/pbWorld"
         },
-        "isMain": {
+        "superAdmin": {
           "type": "boolean"
         }
       }

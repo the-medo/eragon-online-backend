@@ -202,14 +202,18 @@ func convertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb
 
 func convertWorld(world db.ViewWorld) *pb.World {
 	pbWorld := &pb.World{
-		Id:             world.ID,
-		Name:           world.Name,
-		Public:         world.Public,
-		CreatedAt:      timestamppb.New(world.CreatedAt),
-		Description:    world.Description,
-		ImageAvatar:    world.ImageAvatar.String,
-		ImageThumbnail: world.ImageThumbnail.String,
-		ImageHeader:    world.ImageHeader.String,
+		Id:               world.ID,
+		Name:             world.Name,
+		Public:           world.Public,
+		CreatedAt:        timestamppb.New(world.CreatedAt),
+		ShortDescription: world.ShortDescription,
+		ImageAvatar:      world.ImageAvatar.String,
+		ImageThumbnail:   world.ImageThumbnail.String,
+		ImageHeader:      world.ImageHeader.String,
+	}
+
+	if world.DescriptionPostID.Valid == true {
+		pbWorld.DescriptionPostId = &world.DescriptionPostID.Int32
 	}
 
 	return pbWorld

@@ -25,9 +25,9 @@ func (server *Server) CreateWorld(ctx context.Context, req *pb.CreateWorldReques
 
 	arg := db.CreateWorldTxParams{
 		CreateWorldParams: db.CreateWorldParams{
-			Name:        req.GetName(),
-			BasedOn:     req.GetBasedOn(),
-			Description: req.GetDescription(),
+			Name:             req.GetName(),
+			BasedOn:          req.GetBasedOn(),
+			ShortDescription: req.GetShortDescription(),
 		},
 		UserId: authPayload.UserId,
 	}
@@ -65,9 +65,9 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 			String: req.GetName(),
 			Valid:  req.Name != nil,
 		},
-		Description: sql.NullString{
-			String: req.GetDescription(),
-			Valid:  req.Description != nil,
+		ShortDescription: sql.NullString{
+			String: req.GetShortDescription(),
+			Valid:  req.ShortDescription != nil,
 		},
 		Public: sql.NullBool{
 			Bool:  req.GetPublic(),
@@ -95,8 +95,8 @@ func validateCreateWorldRequest(req *pb.CreateWorldRequest) (violations []*errde
 		violations = append(violations, FieldViolation("name", err))
 	}
 
-	if err := validator.ValidateString(req.GetDescription(), 1, 1024); err != nil {
-		violations = append(violations, FieldViolation("description", err))
+	if err := validator.ValidateString(req.GetShortDescription(), 1, 1024); err != nil {
+		violations = append(violations, FieldViolation("short_description", err))
 	}
 
 	return violations
@@ -110,9 +110,9 @@ func validateUpdateWorldRequest(req *pb.UpdateWorldRequest) (violations []*errde
 		}
 	}
 
-	if req.Description != nil {
-		if err := validator.ValidateString(req.GetDescription(), 1, 1024); err != nil {
-			violations = append(violations, FieldViolation("description", err))
+	if req.ShortDescription != nil {
+		if err := validator.ValidateString(req.GetShortDescription(), 1, 1024); err != nil {
+			violations = append(violations, FieldViolation("short_description", err))
 		}
 	}
 
