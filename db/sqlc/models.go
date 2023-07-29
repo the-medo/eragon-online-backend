@@ -67,6 +67,10 @@ const (
 	ImageVariant30x30    ImageVariant = "30x30"
 	ImageVariantPublic   ImageVariant = "public"
 	ImageVariantOriginal ImageVariant = "original"
+	ImageVariant600x400  ImageVariant = "600x400"
+	ImageVariant400x600  ImageVariant = "400x600"
+	ImageVariant300x200  ImageVariant = "300x200"
+	ImageVariant200x300  ImageVariant = "200x300"
 )
 
 func (e *ImageVariant) Scan(src interface{}) error {
@@ -364,24 +368,26 @@ type ViewUser struct {
 }
 
 type ViewWorld struct {
-	ID             int32          `json:"id"`
-	Name           string         `json:"name"`
-	Public         bool           `json:"public"`
-	CreatedAt      time.Time      `json:"created_at"`
-	Description    string         `json:"description"`
-	BasedOn        string         `json:"based_on"`
-	ImageHeader    sql.NullString `json:"image_header"`
-	ImageThumbnail sql.NullString `json:"image_thumbnail"`
-	ImageAvatar    sql.NullString `json:"image_avatar"`
+	ID                int32          `json:"id"`
+	Name              string         `json:"name"`
+	Public            bool           `json:"public"`
+	CreatedAt         time.Time      `json:"created_at"`
+	ShortDescription  string         `json:"short_description"`
+	BasedOn           string         `json:"based_on"`
+	DescriptionPostID sql.NullInt32  `json:"description_post_id"`
+	ImageHeader       sql.NullString `json:"image_header"`
+	ImageThumbnail    sql.NullString `json:"image_thumbnail"`
+	ImageAvatar       sql.NullString `json:"image_avatar"`
 }
 
 type World struct {
-	ID          int32     `json:"id"`
-	Name        string    `json:"name"`
-	Public      bool      `json:"public"`
-	CreatedAt   time.Time `json:"created_at"`
-	Description string    `json:"description"`
-	BasedOn     string    `json:"based_on"`
+	ID                int32         `json:"id"`
+	Name              string        `json:"name"`
+	Public            bool          `json:"public"`
+	CreatedAt         time.Time     `json:"created_at"`
+	ShortDescription  string        `json:"short_description"`
+	BasedOn           string        `json:"based_on"`
+	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
 }
 
 type WorldActivity struct {

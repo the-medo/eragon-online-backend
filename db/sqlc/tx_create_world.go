@@ -102,12 +102,12 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 		}
 
 		result = ViewWorld{
-			ID:          world.ID,
-			Name:        world.Name,
-			Description: world.Description,
-			CreatedAt:   world.CreatedAt,
-			Public:      world.Public,
-			BasedOn:     world.BasedOn,
+			ID:               world.ID,
+			Name:             world.Name,
+			CreatedAt:        world.CreatedAt,
+			Public:           world.Public,
+			BasedOn:          world.BasedOn,
+			ShortDescription: world.ShortDescription,
 		}
 		return nil
 	})

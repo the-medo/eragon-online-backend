@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-07-28T19:16:31.734Z
+-- Generated at: 2023-07-29T13:25:50.553Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -11,7 +11,11 @@ CREATE TYPE "image_variant" AS ENUM (
   '300x300',
   '30x30',
   'original',
-  'public'
+  'public',
+  '600x400',
+  '400x600',
+  '300x200',
+  '200x300'
 );
 
 CREATE TYPE "evaluation_type" AS ENUM (
@@ -117,7 +121,8 @@ CREATE TABLE "worlds" (
   "based_on" varchar NOT NULL,
   "public" boolean NOT NULL DEFAULT false,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
-  "description" varchar NOT NULL DEFAULT ''
+  "short_description" varchar NOT NULL DEFAULT '',
+  "description_post_id" int
 );
 
 CREATE TABLE "world_admins" (
@@ -343,6 +348,8 @@ ALTER TABLE "user_roles" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 ALTER TABLE "user_roles" ADD FOREIGN KEY ("role_id") REFERENCES "roles" ("id");
 
 ALTER TABLE "chat" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+ALTER TABLE "worlds" ADD FOREIGN KEY ("description_post_id") REFERENCES "posts" ("id");
 
 ALTER TABLE "world_admins" ADD FOREIGN KEY ("world_id") REFERENCES "worlds" ("id");
 

@@ -2,9 +2,9 @@
 INSERT INTO worlds (
     name,
     based_on,
-    description
+    short_description
 ) VALUES (
-     @name, @based_on, @description
+     @name, @based_on, @short_description
  ) RETURNING *;
 
 -- name: UpdateWorld :one
@@ -13,7 +13,8 @@ SET
     name = COALESCE(sqlc.narg(name), name),
     based_on = COALESCE(sqlc.narg(based_on), based_on),
     public = COALESCE(sqlc.narg(public), public),
-    description = COALESCE(sqlc.narg(description), description)
+    short_description = COALESCE(sqlc.narg(short_description), short_description),
+    description_post_id = COALESCE(sqlc.narg(description_post_id), description_post_id)
 WHERE
     id = sqlc.arg(world_id)
 RETURNING *;

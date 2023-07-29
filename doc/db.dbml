@@ -11,6 +11,10 @@ enum image_variant {
   30x30
   original
   public
+  600x400
+  400x600
+  300x200
+  200x300
 }
 
 Table image_types {
@@ -124,7 +128,8 @@ Table worlds {
   based_on varchar [not null]
   public boolean [not null, default: false]
   created_at timestamptz [not null, default: `now()`]
-  description varchar [not null, default: '']
+  short_description varchar [not null, default: '']
+  description_post_id int [null, ref: > posts.id]
 }
 
 Table world_admins {

@@ -11,9 +11,11 @@ message World {
   string name = 2;
   bool public = 3;
   google.protobuf.Timestamp createdAt = 4;
-  string description = 5;
-  string imageAvatar = 6;
-  string imageThumbnail = 7;
-  string imageHeader = 8;
+  string basedOn = 5;
+  string shortDescription = 6;
+  string imageAvatar = 7;
+  string imageThumbnail = 8;
+  string imageHeader = 9;
+  optional int32 descriptionPostId = 10;
 }
 

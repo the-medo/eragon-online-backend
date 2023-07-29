@@ -5,6 +5,9 @@ DROP TABLE world_stats;
 
 -- Add `based_on` column to `worlds` table
 ALTER TABLE worlds ADD COLUMN based_on varchar NOT NULL default '';
+ALTER TABLE worlds RENAME COLUMN description TO short_description;
+ALTER TABLE worlds ADD COLUMN description_post_id int;
+ALTER TABLE worlds ADD CONSTRAINT worlds_description_post_id_fkey FOREIGN KEY(description_post_id) REFERENCES posts(id);
 
 -- Add new fields to table `world_admins`
 ALTER TABLE world_admins RENAME COLUMN is_main TO super_admin;
@@ -108,3 +111,9 @@ FROM
     LEFT JOIN images i_thumbnail on wi.thumbnail_img_id = i_thumbnail.id
     LEFT JOIN images i_avatar on wi.avatar_img_id = i_avatar.id
 ;
+
+
+ALTER TYPE "image_variant" ADD VALUE '600x400';
+ALTER TYPE "image_variant" ADD VALUE '400x600';
+ALTER TYPE "image_variant" ADD VALUE '300x200';
+ALTER TYPE "image_variant" ADD VALUE '200x300';
