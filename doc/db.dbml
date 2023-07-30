@@ -178,11 +178,15 @@ Table world_images {
 }
 
 Table world_activity {
-  world_id int [pk, ref: > worlds.id]
+  world_id int [not null, ref: > worlds.id]
   date date [not null]
   post_count int [not null]
   quest_count int [not null]
   resource_count int [not null]
+
+  indexes {
+    (world_id, date) [unique]
+  }
 }
 
 Table races {

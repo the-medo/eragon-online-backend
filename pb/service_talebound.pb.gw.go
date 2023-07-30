@@ -2954,7 +2954,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetWorldsOfCreator", runtime.WithHTTPPathPattern("/users/{userId}/worlds_creator"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetWorldsOfCreator", runtime.WithHTTPPathPattern("/users/{userId}/worlds"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3885,7 +3885,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetWorldsOfCreator", runtime.WithHTTPPathPattern("/users/{userId}/worlds_creator"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetWorldsOfCreator", runtime.WithHTTPPathPattern("/users/{userId}/worlds"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -4043,7 +4043,7 @@ var (
 
 	pattern_Talebound_GetPostTypes_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"post_types"}, ""))
 
-	pattern_Talebound_GetWorldsOfCreator_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"users", "userId", "worlds_creator"}, ""))
+	pattern_Talebound_GetWorldsOfCreator_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"users", "userId", "worlds"}, ""))
 
 	pattern_Talebound_CreateWorld_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"worlds"}, ""))
 

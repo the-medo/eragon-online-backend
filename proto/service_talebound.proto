@@ -432,7 +432,7 @@ service Talebound {
 
   rpc GetWorldsOfCreator(GetWorldsOfCreatorRequest) returns (GetWorldsOfCreatorResponse) {
     option (google.api.http) = {
-      get: "/users/{userId}/worlds_creator"
+      get: "/users/{userId}/worlds"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Get list of worlds that the creator is part of";

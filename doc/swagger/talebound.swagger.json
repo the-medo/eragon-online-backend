@@ -1362,7 +1362,7 @@
         ]
       }
     },
-    "/users/{userId}/worlds_creator": {
+    "/users/{userId}/worlds": {
       "get": {
         "summary": "Get creator's worlds",
         "description": "Get list of worlds that the creator is part of",
@@ -2444,6 +2444,24 @@
           "type": "string"
         },
         "descriptionPostId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "activityPostCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "activityQuestCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "activityResourceCount": {
           "type": "integer",
           "format": "int32"
         }

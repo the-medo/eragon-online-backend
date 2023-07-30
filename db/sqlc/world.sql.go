@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 )
 
 const createWorld = `-- name: CreateWorld :one
@@ -121,7 +122,7 @@ func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID int32) ([]GetAdm
 }
 
 const getWorldByID = `-- name: GetWorldByID :one
-SELECT id, name, public, created_at, short_description, based_on, description_post_id, image_header, image_thumbnail, image_avatar FROM view_worlds WHERE id = $1 LIMIT 1
+SELECT id, name, public, created_at, short_description, based_on, description_post_id, image_header, image_thumbnail, image_avatar, tags, activity_post_count, activity_quest_count, activity_resource_count FROM view_worlds WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error) {
@@ -138,12 +139,16 @@ func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, e
 		&i.ImageHeader,
 		&i.ImageThumbnail,
 		&i.ImageAvatar,
+		pq.Array(&i.Tags),
+		&i.ActivityPostCount,
+		&i.ActivityQuestCount,
+		&i.ActivityResourceCount,
 	)
 	return i, err
 }
 
 const getWorlds = `-- name: GetWorlds :many
-SELECT id, name, public, created_at, short_description, based_on, description_post_id, image_header, image_thumbnail, image_avatar FROM view_worlds
+SELECT id, name, public, created_at, short_description, based_on, description_post_id, image_header, image_thumbnail, image_avatar, tags, activity_post_count, activity_quest_count, activity_resource_count FROM view_worlds
 WHERE ($1::boolean IS NULL OR public = $1)
 ORDER BY
     CASE
@@ -190,6 +195,10 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 			&i.ImageHeader,
 			&i.ImageThumbnail,
 			&i.ImageAvatar,
+			pq.Array(&i.Tags),
+			&i.ActivityPostCount,
+			&i.ActivityQuestCount,
+			&i.ActivityResourceCount,
 		); err != nil {
 			return nil, err
 		}
@@ -206,7 +215,7 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 
 const getWorldsOfUser = `-- name: GetWorldsOfUser :many
 SELECT
-    vw.id, vw.name, vw.public, vw.created_at, vw.short_description, vw.based_on, vw.description_post_id, vw.image_header, vw.image_thumbnail, vw.image_avatar,
+    vw.id, vw.name, vw.public, vw.created_at, vw.short_description, vw.based_on, vw.description_post_id, vw.image_header, vw.image_thumbnail, vw.image_avatar, vw.tags, vw.activity_post_count, vw.activity_quest_count, vw.activity_resource_count,
     1 as world_admin,
     wa.super_admin as world_super_admin
 FROM
@@ -217,18 +226,22 @@ WHERE
 `
 
 type GetWorldsOfUserRow struct {
-	ID                int32          `json:"id"`
-	Name              string         `json:"name"`
-	Public            bool           `json:"public"`
-	CreatedAt         time.Time      `json:"created_at"`
-	ShortDescription  string         `json:"short_description"`
-	BasedOn           string         `json:"based_on"`
-	DescriptionPostID sql.NullInt32  `json:"description_post_id"`
-	ImageHeader       sql.NullString `json:"image_header"`
-	ImageThumbnail    sql.NullString `json:"image_thumbnail"`
-	ImageAvatar       sql.NullString `json:"image_avatar"`
-	WorldAdmin        interface{}    `json:"world_admin"`
-	WorldSuperAdmin   bool           `json:"world_super_admin"`
+	ID                    int32          `json:"id"`
+	Name                  string         `json:"name"`
+	Public                bool           `json:"public"`
+	CreatedAt             time.Time      `json:"created_at"`
+	ShortDescription      string         `json:"short_description"`
+	BasedOn               string         `json:"based_on"`
+	DescriptionPostID     sql.NullInt32  `json:"description_post_id"`
+	ImageHeader           sql.NullString `json:"image_header"`
+	ImageThumbnail        sql.NullString `json:"image_thumbnail"`
+	ImageAvatar           sql.NullString `json:"image_avatar"`
+	Tags                  []string       `json:"tags"`
+	ActivityPostCount     int32          `json:"activity_post_count"`
+	ActivityQuestCount    int32          `json:"activity_quest_count"`
+	ActivityResourceCount int32          `json:"activity_resource_count"`
+	WorldAdmin            interface{}    `json:"world_admin"`
+	WorldSuperAdmin       bool           `json:"world_super_admin"`
 }
 
 func (q *Queries) GetWorldsOfUser(ctx context.Context, userID int32) ([]GetWorldsOfUserRow, error) {
@@ -251,6 +264,10 @@ func (q *Queries) GetWorldsOfUser(ctx context.Context, userID int32) ([]GetWorld
 			&i.ImageHeader,
 			&i.ImageThumbnail,
 			&i.ImageAvatar,
+			pq.Array(&i.Tags),
+			&i.ActivityPostCount,
+			&i.ActivityQuestCount,
+			&i.ActivityResourceCount,
 			&i.WorldAdmin,
 			&i.WorldSuperAdmin,
 		); err != nil {

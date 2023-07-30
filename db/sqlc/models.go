@@ -368,16 +368,20 @@ type ViewUser struct {
 }
 
 type ViewWorld struct {
-	ID                int32          `json:"id"`
-	Name              string         `json:"name"`
-	Public            bool           `json:"public"`
-	CreatedAt         time.Time      `json:"created_at"`
-	ShortDescription  string         `json:"short_description"`
-	BasedOn           string         `json:"based_on"`
-	DescriptionPostID sql.NullInt32  `json:"description_post_id"`
-	ImageHeader       sql.NullString `json:"image_header"`
-	ImageThumbnail    sql.NullString `json:"image_thumbnail"`
-	ImageAvatar       sql.NullString `json:"image_avatar"`
+	ID                    int32          `json:"id"`
+	Name                  string         `json:"name"`
+	Public                bool           `json:"public"`
+	CreatedAt             time.Time      `json:"created_at"`
+	ShortDescription      string         `json:"short_description"`
+	BasedOn               string         `json:"based_on"`
+	DescriptionPostID     sql.NullInt32  `json:"description_post_id"`
+	ImageHeader           sql.NullString `json:"image_header"`
+	ImageThumbnail        sql.NullString `json:"image_thumbnail"`
+	ImageAvatar           sql.NullString `json:"image_avatar"`
+	Tags                  []string       `json:"tags"`
+	ActivityPostCount     int32          `json:"activity_post_count"`
+	ActivityQuestCount    int32          `json:"activity_quest_count"`
+	ActivityResourceCount int32          `json:"activity_resource_count"`
 }
 
 type World struct {

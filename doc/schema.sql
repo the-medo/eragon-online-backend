@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-07-29T13:25:50.553Z
+-- Generated at: 2023-07-30T20:33:58.626Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -157,7 +157,7 @@ CREATE TABLE "world_images" (
 );
 
 CREATE TABLE "world_activity" (
-  "world_id" int PRIMARY KEY,
+  "world_id" int NOT NULL,
   "date" date NOT NULL,
   "post_count" int NOT NULL,
   "quest_count" int NOT NULL,
@@ -306,6 +306,8 @@ CREATE UNIQUE INDEX ON "world_admins" ("world_id", "user_id");
 CREATE UNIQUE INDEX ON "world_menu" ("world_id", "menu_id");
 
 CREATE UNIQUE INDEX ON "world_tags" ("world_id", "tag_id");
+
+CREATE UNIQUE INDEX ON "world_activity" ("world_id", "date");
 
 CREATE UNIQUE INDEX ON "races" ("world_id", "name");
 
