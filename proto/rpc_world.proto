@@ -78,7 +78,9 @@ message CreateWorldAdminRequest {
 message UpdateWorldAdminRequest {
   int32 worldId = 1;
   int32 userId = 2;
-  int32 approved = 3;
+  optional bool superAdmin = 3;
+  optional int32 approved = 4;
+  optional string motivationalLetter = 5;
 }
 
 message DeleteWorldAdminRequest {
@@ -86,21 +88,29 @@ message DeleteWorldAdminRequest {
   int32 userId = 2;
 }
 
-message GetWorldActivityRequest {
-  int32 worldId = 1;
-  google.protobuf.Timestamp dateFrom = 2;
+message GetWorldDailyActivityRequest {
+  optional int32 worldId = 1;
+  optional google.protobuf.Timestamp dateFrom = 2;
 }
 
-message GetWorldActivityResponse {
+message GetWorldDailyActivityResponse {
   repeated WorldActivity activity = 1;
 }
 
-message GetWorldsActivityRequest {
-  google.protobuf.Timestamp dateFrom = 2;
+message GetWorldMonthlyActivityRequest {
+  optional int32 worldId = 1;
+  optional google.protobuf.Timestamp dateFrom = 2;
 }
 
-message GetWorldsActivityResponse {
+message GetWorldMonthlyActivityResponse {
   repeated WorldActivity activity = 1;
+}
+
+message GetWorldsRequest {
+  optional bool public = 1;
+  optional string orderBy = 2;
+  optional int32 limit = 3;
+  optional int32 offset = 4;
 }
 
 message GetWorldsResponse {

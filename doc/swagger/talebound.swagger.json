@@ -1447,6 +1447,34 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "public",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
         "tags": [
           "Talebound"
         ]
@@ -1484,16 +1512,16 @@
         ]
       }
     },
-    "/worlds/activity": {
+    "/worlds/activity/daily": {
       "get": {
-        "summary": "Get worlds activity",
-        "description": "gets multiple worlds activity list",
-        "operationId": "Talebound_GetWorldsActivity",
+        "summary": "Get world(s) daily activity",
+        "description": "gets activity by day",
+        "operationId": "Talebound_GetWorldDailyActivity",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbGetWorldsActivityResponse"
+              "$ref": "#/definitions/pbGetWorldDailyActivityResponse"
             }
           },
           "default": {
@@ -1504,6 +1532,53 @@
           }
         },
         "parameters": [
+          {
+            "name": "worldId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/worlds/activity/monthly": {
+      "get": {
+        "summary": "Get world(s) monthly activity",
+        "description": "gets world activity grouped by month",
+        "operationId": "Talebound_GetWorldMonthlyActivity",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetWorldMonthlyActivityResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
           {
             "name": "dateFrom",
             "in": "query",
@@ -1710,46 +1785,6 @@
         ]
       }
     },
-    "/worlds/{worldId}/activity": {
-      "get": {
-        "summary": "Get world activity",
-        "description": "gets single world activity list",
-        "operationId": "Talebound_GetWorldActivity",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetWorldActivityResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "dateFrom",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
     "/worlds/{worldId}/admin": {
       "delete": {
         "summary": "Delete world admin",
@@ -1871,9 +1906,15 @@
                   "type": "integer",
                   "format": "int32"
                 },
+                "superAdmin": {
+                  "type": "boolean"
+                },
                 "approved": {
                   "type": "integer",
                   "format": "int32"
+                },
+                "motivationalLetter": {
+                  "type": "string"
                 }
               }
             }
@@ -2546,7 +2587,7 @@
         }
       }
     },
-    "pbGetWorldActivityResponse": {
+    "pbGetWorldDailyActivityResponse": {
       "type": "object",
       "properties": {
         "activity": {
@@ -2558,7 +2599,7 @@
         }
       }
     },
-    "pbGetWorldsActivityResponse": {
+    "pbGetWorldMonthlyActivityResponse": {
       "type": "object",
       "properties": {
         "activity": {

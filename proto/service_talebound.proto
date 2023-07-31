@@ -569,27 +569,27 @@ service Talebound {
     };
   };
 
-  rpc GetWorldActivity(GetWorldActivityRequest) returns (GetWorldActivityResponse) {
+  rpc GetWorldDailyActivity(GetWorldDailyActivityRequest) returns (GetWorldDailyActivityResponse) {
     option (google.api.http) = {
-      get: "/worlds/{worldId}/activity"
+      get: "/worlds/activity/daily"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "gets single world activity list";
-      summary: "Get world activity";
+      description: "gets activity by day";
+      summary: "Get world(s) daily activity";
     };
   };
 
-  rpc GetWorldsActivity(GetWorldsActivityRequest) returns (GetWorldsActivityResponse) {
+  rpc GetWorldMonthlyActivity(GetWorldMonthlyActivityRequest) returns (GetWorldMonthlyActivityResponse) {
     option (google.api.http) = {
-      get: "/worlds/activity"
+      get: "/worlds/activity/monthly"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "gets multiple worlds activity list";
-      summary: "Get worlds activity";
+      description: "gets world activity grouped by month";
+      summary: "Get world(s) monthly activity";
     };
   };
 
-  rpc GetWorlds(google.protobuf.Empty) returns (GetWorldsResponse) {
+  rpc GetWorlds(GetWorldsRequest) returns (GetWorldsResponse) {
     option (google.api.http) = {
       get: "/worlds"
     };

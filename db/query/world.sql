@@ -48,6 +48,19 @@ INSERT INTO world_admins (
 ) VALUES (@world_id, @user_id, @super_admin, @approved, @motivational_letter) RETURNING *;
 
 
+-- name: UpdateWorldAdmin :one
+UPDATE world_admins
+SET
+    super_admin = COALESCE(sqlc.narg(super_admin), super_admin),
+    approved = COALESCE(sqlc.narg(approved), approved),
+    motivational_letter = COALESCE(sqlc.narg(motivational_letter), motivational_letter)
+WHERE
+    world_id = sqlc.arg(world_id) AND user_id = sqlc.arg(user_id)
+RETURNING *;
+
+-- name: DeleteWorldAdmin :exec
+DELETE FROM world_admins WHERE world_id = sqlc.arg(world_id) AND user_id = sqlc.arg(user_id);
+
 -- name: GetWorldsOfUser :many
 SELECT
     vw.*,

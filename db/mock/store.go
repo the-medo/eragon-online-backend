@@ -489,6 +489,20 @@ func (mr *MockStoreMockRecorder) DeleteWorldActivityForDate(arg0, arg1 interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorldActivityForDate", reflect.TypeOf((*MockStore)(nil).DeleteWorldActivityForDate), arg0, arg1)
 }
 
+// DeleteWorldAdmin mocks base method.
+func (m *MockStore) DeleteWorldAdmin(arg0 context.Context, arg1 db.DeleteWorldAdminParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteWorldAdmin", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteWorldAdmin indicates an expected call of DeleteWorldAdmin.
+func (mr *MockStoreMockRecorder) DeleteWorldAdmin(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorldAdmin", reflect.TypeOf((*MockStore)(nil).DeleteWorldAdmin), arg0, arg1)
+}
+
 // DeleteWorldImages mocks base method.
 func (m *MockStore) DeleteWorldImages(arg0 context.Context, arg1 int32) error {
 	m.ctrl.T.Helper()
@@ -1025,21 +1039,6 @@ func (mr *MockStoreMockRecorder) GetUsers(arg0, arg1 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUsers", reflect.TypeOf((*MockStore)(nil).GetUsers), arg0, arg1)
 }
 
-// GetWorldActivity mocks base method.
-func (m *MockStore) GetWorldActivity(arg0 context.Context, arg1 int32) ([]db.WorldActivity, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetWorldActivity", arg0, arg1)
-	ret0, _ := ret[0].([]db.WorldActivity)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetWorldActivity indicates an expected call of GetWorldActivity.
-func (mr *MockStoreMockRecorder) GetWorldActivity(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldActivity", reflect.TypeOf((*MockStore)(nil).GetWorldActivity), arg0, arg1)
-}
-
 // GetWorldByID mocks base method.
 func (m *MockStore) GetWorldByID(arg0 context.Context, arg1 int32) (db.ViewWorld, error) {
 	m.ctrl.T.Helper()
@@ -1053,6 +1052,21 @@ func (m *MockStore) GetWorldByID(arg0 context.Context, arg1 int32) (db.ViewWorld
 func (mr *MockStoreMockRecorder) GetWorldByID(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldByID", reflect.TypeOf((*MockStore)(nil).GetWorldByID), arg0, arg1)
+}
+
+// GetWorldDailyActivity mocks base method.
+func (m *MockStore) GetWorldDailyActivity(arg0 context.Context, arg1 db.GetWorldDailyActivityParams) ([]db.WorldActivity, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWorldDailyActivity", arg0, arg1)
+	ret0, _ := ret[0].([]db.WorldActivity)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWorldDailyActivity indicates an expected call of GetWorldDailyActivity.
+func (mr *MockStoreMockRecorder) GetWorldDailyActivity(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldDailyActivity", reflect.TypeOf((*MockStore)(nil).GetWorldDailyActivity), arg0, arg1)
 }
 
 // GetWorldImages mocks base method.
@@ -1085,6 +1099,21 @@ func (mr *MockStoreMockRecorder) GetWorldMenu(arg0, arg1 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldMenu", reflect.TypeOf((*MockStore)(nil).GetWorldMenu), arg0, arg1)
 }
 
+// GetWorldMonthlyActivity mocks base method.
+func (m *MockStore) GetWorldMonthlyActivity(arg0 context.Context, arg1 db.GetWorldMonthlyActivityParams) ([]db.GetWorldMonthlyActivityRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWorldMonthlyActivity", arg0, arg1)
+	ret0, _ := ret[0].([]db.GetWorldMonthlyActivityRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWorldMonthlyActivity indicates an expected call of GetWorldMonthlyActivity.
+func (mr *MockStoreMockRecorder) GetWorldMonthlyActivity(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldMonthlyActivity", reflect.TypeOf((*MockStore)(nil).GetWorldMonthlyActivity), arg0, arg1)
+}
+
 // GetWorldTag mocks base method.
 func (m *MockStore) GetWorldTag(arg0 context.Context, arg1 db.GetWorldTagParams) (db.WorldTag, error) {
 	m.ctrl.T.Helper()
@@ -1098,6 +1127,21 @@ func (m *MockStore) GetWorldTag(arg0 context.Context, arg1 db.GetWorldTagParams)
 func (mr *MockStoreMockRecorder) GetWorldTag(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldTag", reflect.TypeOf((*MockStore)(nil).GetWorldTag), arg0, arg1)
+}
+
+// GetWorldTagAvailable mocks base method.
+func (m *MockStore) GetWorldTagAvailable(arg0 context.Context, arg1 int32) (db.WorldTagsAvailable, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWorldTagAvailable", arg0, arg1)
+	ret0, _ := ret[0].(db.WorldTagsAvailable)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWorldTagAvailable indicates an expected call of GetWorldTagAvailable.
+func (mr *MockStoreMockRecorder) GetWorldTagAvailable(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldTagAvailable", reflect.TypeOf((*MockStore)(nil).GetWorldTagAvailable), arg0, arg1)
 }
 
 // GetWorldTags mocks base method.
@@ -1427,6 +1471,21 @@ func (m *MockStore) UpdateWorldActivity(arg0 context.Context, arg1 db.UpdateWorl
 func (mr *MockStoreMockRecorder) UpdateWorldActivity(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWorldActivity", reflect.TypeOf((*MockStore)(nil).UpdateWorldActivity), arg0, arg1)
+}
+
+// UpdateWorldAdmin mocks base method.
+func (m *MockStore) UpdateWorldAdmin(arg0 context.Context, arg1 db.UpdateWorldAdminParams) (db.WorldAdmin, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateWorldAdmin", arg0, arg1)
+	ret0, _ := ret[0].(db.WorldAdmin)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateWorldAdmin indicates an expected call of UpdateWorldAdmin.
+func (mr *MockStoreMockRecorder) UpdateWorldAdmin(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWorldAdmin", reflect.TypeOf((*MockStore)(nil).UpdateWorldAdmin), arg0, arg1)
 }
 
 // UpdateWorldImages mocks base method.

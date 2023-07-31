@@ -54,6 +54,20 @@ func (q *Queries) DeleteWorld(ctx context.Context, worldID int32) error {
 	return err
 }
 
+const deleteWorldAdmin = `-- name: DeleteWorldAdmin :exec
+DELETE FROM world_admins WHERE world_id = $1 AND user_id = $2
+`
+
+type DeleteWorldAdminParams struct {
+	WorldID int32 `json:"world_id"`
+	UserID  int32 `json:"user_id"`
+}
+
+func (q *Queries) DeleteWorldAdmin(ctx context.Context, arg DeleteWorldAdminParams) error {
+	_, err := q.db.ExecContext(ctx, deleteWorldAdmin, arg.WorldID, arg.UserID)
+	return err
+}
+
 const getAdminsOfWorld = `-- name: GetAdminsOfWorld :many
 SELECT
     vu.id, vu.username, vu.hashed_password, vu.email, vu.img_id, vu.password_changed_at, vu.created_at, vu.is_email_verified, vu.introduction_post_id, vu.avatar_image_id, vu.avatar_image_url, vu.avatar_image_guid, vu.introduction_post_deleted_at,
@@ -408,6 +422,45 @@ func (q *Queries) UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World
 		&i.ShortDescription,
 		&i.BasedOn,
 		&i.DescriptionPostID,
+	)
+	return i, err
+}
+
+const updateWorldAdmin = `-- name: UpdateWorldAdmin :one
+UPDATE world_admins
+SET
+    super_admin = COALESCE($1, super_admin),
+    approved = COALESCE($2, approved),
+    motivational_letter = COALESCE($3, motivational_letter)
+WHERE
+    world_id = $4 AND user_id = $5
+RETURNING world_id, user_id, created_at, super_admin, approved, motivational_letter
+`
+
+type UpdateWorldAdminParams struct {
+	SuperAdmin         sql.NullBool   `json:"super_admin"`
+	Approved           sql.NullInt32  `json:"approved"`
+	MotivationalLetter sql.NullString `json:"motivational_letter"`
+	WorldID            int32          `json:"world_id"`
+	UserID             int32          `json:"user_id"`
+}
+
+func (q *Queries) UpdateWorldAdmin(ctx context.Context, arg UpdateWorldAdminParams) (WorldAdmin, error) {
+	row := q.db.QueryRowContext(ctx, updateWorldAdmin,
+		arg.SuperAdmin,
+		arg.Approved,
+		arg.MotivationalLetter,
+		arg.WorldID,
+		arg.UserID,
+	)
+	var i WorldAdmin
+	err := row.Scan(
+		&i.WorldID,
+		&i.UserID,
+		&i.CreatedAt,
+		&i.SuperAdmin,
+		&i.Approved,
+		&i.MotivationalLetter,
 	)
 	return i, err
 }

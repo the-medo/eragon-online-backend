@@ -41,6 +41,7 @@ type Querier interface {
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
 	DeleteWorld(ctx context.Context, worldID int32) error
 	DeleteWorldActivityForDate(ctx context.Context, arg DeleteWorldActivityForDateParams) error
+	DeleteWorldAdmin(ctx context.Context, arg DeleteWorldAdminParams) error
 	DeleteWorldImages(ctx context.Context, worldID int32) error
 	DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error
 	DeleteWorldTag(ctx context.Context, arg DeleteWorldTagParams) error
@@ -77,11 +78,13 @@ type Querier interface {
 	GetUserPasswordReset(ctx context.Context, code string) (UserPasswordReset, error)
 	GetUserRoles(ctx context.Context, userID int32) ([]GetUserRolesRow, error)
 	GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error)
-	GetWorldActivity(ctx context.Context, worldID int32) ([]WorldActivity, error)
 	GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error)
+	GetWorldDailyActivity(ctx context.Context, arg GetWorldDailyActivityParams) ([]WorldActivity, error)
 	GetWorldImages(ctx context.Context, worldID int32) (WorldImage, error)
 	GetWorldMenu(ctx context.Context, arg GetWorldMenuParams) (WorldMenu, error)
+	GetWorldMonthlyActivity(ctx context.Context, arg GetWorldMonthlyActivityParams) ([]GetWorldMonthlyActivityRow, error)
 	GetWorldTag(ctx context.Context, arg GetWorldTagParams) (WorldTag, error)
+	GetWorldTagAvailable(ctx context.Context, tagID int32) (WorldTagsAvailable, error)
 	GetWorldTags(ctx context.Context) ([]WorldTag, error)
 	GetWorldTagsAvailable(ctx context.Context) ([]WorldTagsAvailable, error)
 	GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWorld, error)
@@ -102,6 +105,7 @@ type Querier interface {
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)
 	UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World, error)
 	UpdateWorldActivity(ctx context.Context, arg UpdateWorldActivityParams) (WorldActivity, error)
+	UpdateWorldAdmin(ctx context.Context, arg UpdateWorldAdminParams) (WorldAdmin, error)
 	UpdateWorldImages(ctx context.Context, arg UpdateWorldImagesParams) (WorldImage, error)
 	UpdateWorldTagAvailable(ctx context.Context, arg UpdateWorldTagAvailableParams) (WorldTagsAvailable, error)
 }

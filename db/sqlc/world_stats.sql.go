@@ -48,12 +48,24 @@ func (q *Queries) DeleteWorldActivityForDate(ctx context.Context, arg DeleteWorl
 	return err
 }
 
-const getWorldActivity = `-- name: GetWorldActivity :many
-SELECT world_id, date, post_count, quest_count, resource_count FROM world_activity WHERE world_id = $1 ORDER BY date DESC LIMIT 30
+const getWorldDailyActivity = `-- name: GetWorldDailyActivity :many
+SELECT
+    world_id, date, post_count, quest_count, resource_count
+FROM
+    world_activity
+WHERE
+    world_id = COALESCE($1, world_id) AND
+    date >= $2
+ORDER BY date DESC
 `
 
-func (q *Queries) GetWorldActivity(ctx context.Context, worldID int32) ([]WorldActivity, error) {
-	rows, err := q.db.QueryContext(ctx, getWorldActivity, worldID)
+type GetWorldDailyActivityParams struct {
+	WorldID  sql.NullInt32 `json:"world_id"`
+	DateFrom time.Time     `json:"date_from"`
+}
+
+func (q *Queries) GetWorldDailyActivity(ctx context.Context, arg GetWorldDailyActivityParams) ([]WorldActivity, error) {
+	rows, err := q.db.QueryContext(ctx, getWorldDailyActivity, arg.WorldID, arg.DateFrom)
 	if err != nil {
 		return nil, err
 	}
@@ -64,6 +76,66 @@ func (q *Queries) GetWorldActivity(ctx context.Context, worldID int32) ([]WorldA
 		if err := rows.Scan(
 			&i.WorldID,
 			&i.Date,
+			&i.PostCount,
+			&i.QuestCount,
+			&i.ResourceCount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getWorldMonthlyActivity = `-- name: GetWorldMonthlyActivity :many
+SELECT
+    cast(date_trunc('month', date) as date) AS month,
+    world_id,
+    cast(SUM(post_count) as integer) AS post_count,
+    cast(SUM(quest_count) as integer) AS quest_count,
+    cast(SUM(resource_count) as integer) AS resource_count
+FROM
+    world_activity
+WHERE
+    world_id = COALESCE($1, world_id) AND
+    date >= $2
+GROUP BY
+    month, world_id
+ORDER BY
+    month DESC
+`
+
+type GetWorldMonthlyActivityParams struct {
+	WorldID  sql.NullInt32 `json:"world_id"`
+	DateFrom time.Time     `json:"date_from"`
+}
+
+type GetWorldMonthlyActivityRow struct {
+	Month         time.Time `json:"month"`
+	WorldID       int32     `json:"world_id"`
+	PostCount     int32     `json:"post_count"`
+	QuestCount    int32     `json:"quest_count"`
+	ResourceCount int32     `json:"resource_count"`
+}
+
+func (q *Queries) GetWorldMonthlyActivity(ctx context.Context, arg GetWorldMonthlyActivityParams) ([]GetWorldMonthlyActivityRow, error) {
+	rows, err := q.db.QueryContext(ctx, getWorldMonthlyActivity, arg.WorldID, arg.DateFrom)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetWorldMonthlyActivityRow{}
+	for rows.Next() {
+		var i GetWorldMonthlyActivityRow
+		if err := rows.Scan(
+			&i.Month,
+			&i.WorldID,
 			&i.PostCount,
 			&i.QuestCount,
 			&i.ResourceCount,

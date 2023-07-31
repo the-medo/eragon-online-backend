@@ -1,6 +1,9 @@
 -- name: GetWorldTagsAvailable :many
 SELECT * FROM world_tags_available;
 
+-- name: GetWorldTagAvailable :one
+SELECT * FROM world_tags_available WHERE id = sqlc.arg(tag_id);
+
 -- name: CreateWorldTagAvailable :one
 INSERT INTO world_tags_available (tag)
 VALUES (sqlc.arg(tag))

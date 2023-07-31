@@ -69,8 +69,8 @@ const (
 	Talebound_CreateWorldAdmin_FullMethodName                   = "/pb.Talebound/CreateWorldAdmin"
 	Talebound_UpdateWorldAdmin_FullMethodName                   = "/pb.Talebound/UpdateWorldAdmin"
 	Talebound_DeleteWorldAdmin_FullMethodName                   = "/pb.Talebound/DeleteWorldAdmin"
-	Talebound_GetWorldActivity_FullMethodName                   = "/pb.Talebound/GetWorldActivity"
-	Talebound_GetWorldsActivity_FullMethodName                  = "/pb.Talebound/GetWorldsActivity"
+	Talebound_GetWorldDailyActivity_FullMethodName              = "/pb.Talebound/GetWorldDailyActivity"
+	Talebound_GetWorldMonthlyActivity_FullMethodName            = "/pb.Talebound/GetWorldMonthlyActivity"
 	Talebound_GetWorlds_FullMethodName                          = "/pb.Talebound/GetWorlds"
 )
 
@@ -131,9 +131,9 @@ type TaleboundClient interface {
 	CreateWorldAdmin(ctx context.Context, in *CreateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error)
 	UpdateWorldAdmin(ctx context.Context, in *UpdateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error)
 	DeleteWorldAdmin(ctx context.Context, in *DeleteWorldAdminRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetWorldActivity(ctx context.Context, in *GetWorldActivityRequest, opts ...grpc.CallOption) (*GetWorldActivityResponse, error)
-	GetWorldsActivity(ctx context.Context, in *GetWorldsActivityRequest, opts ...grpc.CallOption) (*GetWorldsActivityResponse, error)
-	GetWorlds(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetWorldsResponse, error)
+	GetWorldDailyActivity(ctx context.Context, in *GetWorldDailyActivityRequest, opts ...grpc.CallOption) (*GetWorldDailyActivityResponse, error)
+	GetWorldMonthlyActivity(ctx context.Context, in *GetWorldMonthlyActivityRequest, opts ...grpc.CallOption) (*GetWorldMonthlyActivityResponse, error)
+	GetWorlds(ctx context.Context, in *GetWorldsRequest, opts ...grpc.CallOption) (*GetWorldsResponse, error)
 }
 
 type taleboundClient struct {
@@ -585,25 +585,25 @@ func (c *taleboundClient) DeleteWorldAdmin(ctx context.Context, in *DeleteWorldA
 	return out, nil
 }
 
-func (c *taleboundClient) GetWorldActivity(ctx context.Context, in *GetWorldActivityRequest, opts ...grpc.CallOption) (*GetWorldActivityResponse, error) {
-	out := new(GetWorldActivityResponse)
-	err := c.cc.Invoke(ctx, Talebound_GetWorldActivity_FullMethodName, in, out, opts...)
+func (c *taleboundClient) GetWorldDailyActivity(ctx context.Context, in *GetWorldDailyActivityRequest, opts ...grpc.CallOption) (*GetWorldDailyActivityResponse, error) {
+	out := new(GetWorldDailyActivityResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetWorldDailyActivity_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *taleboundClient) GetWorldsActivity(ctx context.Context, in *GetWorldsActivityRequest, opts ...grpc.CallOption) (*GetWorldsActivityResponse, error) {
-	out := new(GetWorldsActivityResponse)
-	err := c.cc.Invoke(ctx, Talebound_GetWorldsActivity_FullMethodName, in, out, opts...)
+func (c *taleboundClient) GetWorldMonthlyActivity(ctx context.Context, in *GetWorldMonthlyActivityRequest, opts ...grpc.CallOption) (*GetWorldMonthlyActivityResponse, error) {
+	out := new(GetWorldMonthlyActivityResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetWorldMonthlyActivity_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *taleboundClient) GetWorlds(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetWorldsResponse, error) {
+func (c *taleboundClient) GetWorlds(ctx context.Context, in *GetWorldsRequest, opts ...grpc.CallOption) (*GetWorldsResponse, error) {
 	out := new(GetWorldsResponse)
 	err := c.cc.Invoke(ctx, Talebound_GetWorlds_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -669,9 +669,9 @@ type TaleboundServer interface {
 	CreateWorldAdmin(context.Context, *CreateWorldAdminRequest) (*WorldAdmin, error)
 	UpdateWorldAdmin(context.Context, *UpdateWorldAdminRequest) (*WorldAdmin, error)
 	DeleteWorldAdmin(context.Context, *DeleteWorldAdminRequest) (*emptypb.Empty, error)
-	GetWorldActivity(context.Context, *GetWorldActivityRequest) (*GetWorldActivityResponse, error)
-	GetWorldsActivity(context.Context, *GetWorldsActivityRequest) (*GetWorldsActivityResponse, error)
-	GetWorlds(context.Context, *emptypb.Empty) (*GetWorldsResponse, error)
+	GetWorldDailyActivity(context.Context, *GetWorldDailyActivityRequest) (*GetWorldDailyActivityResponse, error)
+	GetWorldMonthlyActivity(context.Context, *GetWorldMonthlyActivityRequest) (*GetWorldMonthlyActivityResponse, error)
+	GetWorlds(context.Context, *GetWorldsRequest) (*GetWorldsResponse, error)
 	mustEmbedUnimplementedTaleboundServer()
 }
 
@@ -826,13 +826,13 @@ func (UnimplementedTaleboundServer) UpdateWorldAdmin(context.Context, *UpdateWor
 func (UnimplementedTaleboundServer) DeleteWorldAdmin(context.Context, *DeleteWorldAdminRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteWorldAdmin not implemented")
 }
-func (UnimplementedTaleboundServer) GetWorldActivity(context.Context, *GetWorldActivityRequest) (*GetWorldActivityResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWorldActivity not implemented")
+func (UnimplementedTaleboundServer) GetWorldDailyActivity(context.Context, *GetWorldDailyActivityRequest) (*GetWorldDailyActivityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorldDailyActivity not implemented")
 }
-func (UnimplementedTaleboundServer) GetWorldsActivity(context.Context, *GetWorldsActivityRequest) (*GetWorldsActivityResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWorldsActivity not implemented")
+func (UnimplementedTaleboundServer) GetWorldMonthlyActivity(context.Context, *GetWorldMonthlyActivityRequest) (*GetWorldMonthlyActivityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorldMonthlyActivity not implemented")
 }
-func (UnimplementedTaleboundServer) GetWorlds(context.Context, *emptypb.Empty) (*GetWorldsResponse, error) {
+func (UnimplementedTaleboundServer) GetWorlds(context.Context, *GetWorldsRequest) (*GetWorldsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWorlds not implemented")
 }
 func (UnimplementedTaleboundServer) mustEmbedUnimplementedTaleboundServer() {}
@@ -1730,44 +1730,44 @@ func _Talebound_DeleteWorldAdmin_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Talebound_GetWorldActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetWorldActivityRequest)
+func _Talebound_GetWorldDailyActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorldDailyActivityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TaleboundServer).GetWorldActivity(ctx, in)
+		return srv.(TaleboundServer).GetWorldDailyActivity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Talebound_GetWorldActivity_FullMethodName,
+		FullMethod: Talebound_GetWorldDailyActivity_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaleboundServer).GetWorldActivity(ctx, req.(*GetWorldActivityRequest))
+		return srv.(TaleboundServer).GetWorldDailyActivity(ctx, req.(*GetWorldDailyActivityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Talebound_GetWorldsActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetWorldsActivityRequest)
+func _Talebound_GetWorldMonthlyActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorldMonthlyActivityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TaleboundServer).GetWorldsActivity(ctx, in)
+		return srv.(TaleboundServer).GetWorldMonthlyActivity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Talebound_GetWorldsActivity_FullMethodName,
+		FullMethod: Talebound_GetWorldMonthlyActivity_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaleboundServer).GetWorldsActivity(ctx, req.(*GetWorldsActivityRequest))
+		return srv.(TaleboundServer).GetWorldMonthlyActivity(ctx, req.(*GetWorldMonthlyActivityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Talebound_GetWorlds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+	in := new(GetWorldsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1779,7 +1779,7 @@ func _Talebound_GetWorlds_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: Talebound_GetWorlds_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaleboundServer).GetWorlds(ctx, req.(*emptypb.Empty))
+		return srv.(TaleboundServer).GetWorlds(ctx, req.(*GetWorldsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1988,12 +1988,12 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Talebound_DeleteWorldAdmin_Handler,
 		},
 		{
-			MethodName: "GetWorldActivity",
-			Handler:    _Talebound_GetWorldActivity_Handler,
+			MethodName: "GetWorldDailyActivity",
+			Handler:    _Talebound_GetWorldDailyActivity_Handler,
 		},
 		{
-			MethodName: "GetWorldsActivity",
-			Handler:    _Talebound_GetWorldsActivity_Handler,
+			MethodName: "GetWorldMonthlyActivity",
+			Handler:    _Talebound_GetWorldMonthlyActivity_Handler,
 		},
 		{
 			MethodName: "GetWorlds",

@@ -2557,114 +2557,91 @@ func local_request_Talebound_DeleteWorldAdmin_0(ctx context.Context, marshaler r
 }
 
 var (
-	filter_Talebound_GetWorldActivity_0 = &utilities.DoubleArray{Encoding: map[string]int{"worldId": 0}, Base: []int{1, 2, 0, 0}, Check: []int{0, 1, 2, 2}}
+	filter_Talebound_GetWorldDailyActivity_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_Talebound_GetWorldActivity_0(ctx context.Context, marshaler runtime.Marshaler, client TaleboundClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetWorldActivityRequest
+func request_Talebound_GetWorldDailyActivity_0(ctx context.Context, marshaler runtime.Marshaler, client TaleboundClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetWorldDailyActivityRequest
 	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["worldId"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "worldId")
-	}
-
-	protoReq.WorldId, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "worldId", err)
-	}
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Talebound_GetWorldActivity_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Talebound_GetWorldDailyActivity_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.GetWorldActivity(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetWorldDailyActivity(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Talebound_GetWorldActivity_0(ctx context.Context, marshaler runtime.Marshaler, server TaleboundServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetWorldActivityRequest
+func local_request_Talebound_GetWorldDailyActivity_0(ctx context.Context, marshaler runtime.Marshaler, server TaleboundServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetWorldDailyActivityRequest
 	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["worldId"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "worldId")
-	}
-
-	protoReq.WorldId, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "worldId", err)
-	}
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Talebound_GetWorldActivity_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Talebound_GetWorldDailyActivity_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.GetWorldActivity(ctx, &protoReq)
+	msg, err := server.GetWorldDailyActivity(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
 var (
-	filter_Talebound_GetWorldsActivity_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_Talebound_GetWorldMonthlyActivity_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_Talebound_GetWorldsActivity_0(ctx context.Context, marshaler runtime.Marshaler, client TaleboundClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetWorldsActivityRequest
+func request_Talebound_GetWorldMonthlyActivity_0(ctx context.Context, marshaler runtime.Marshaler, client TaleboundClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetWorldMonthlyActivityRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Talebound_GetWorldsActivity_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Talebound_GetWorldMonthlyActivity_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.GetWorldsActivity(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetWorldMonthlyActivity(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Talebound_GetWorldsActivity_0(ctx context.Context, marshaler runtime.Marshaler, server TaleboundServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetWorldsActivityRequest
+func local_request_Talebound_GetWorldMonthlyActivity_0(ctx context.Context, marshaler runtime.Marshaler, server TaleboundServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetWorldMonthlyActivityRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Talebound_GetWorldsActivity_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Talebound_GetWorldMonthlyActivity_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.GetWorldsActivity(ctx, &protoReq)
+	msg, err := server.GetWorldMonthlyActivity(ctx, &protoReq)
 	return msg, metadata, err
 
 }
+
+var (
+	filter_Talebound_GetWorlds_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
 
 func request_Talebound_GetWorlds_0(ctx context.Context, marshaler runtime.Marshaler, client TaleboundClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq emptypb.Empty
+	var protoReq GetWorldsRequest
 	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Talebound_GetWorlds_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 
 	msg, err := client.GetWorlds(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -2672,8 +2649,15 @@ func request_Talebound_GetWorlds_0(ctx context.Context, marshaler runtime.Marsha
 }
 
 func local_request_Talebound_GetWorlds_0(ctx context.Context, marshaler runtime.Marshaler, server TaleboundServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq emptypb.Empty
+	var protoReq GetWorldsRequest
 	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Talebound_GetWorlds_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 
 	msg, err := server.GetWorlds(ctx, &protoReq)
 	return msg, metadata, err
@@ -3911,7 +3895,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
-	mux.Handle("GET", pattern_Talebound_GetWorldActivity_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Talebound_GetWorldDailyActivity_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3919,12 +3903,12 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetWorldActivity", runtime.WithHTTPPathPattern("/worlds/{worldId}/activity"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetWorldDailyActivity", runtime.WithHTTPPathPattern("/worlds/activity/daily"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Talebound_GetWorldActivity_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Talebound_GetWorldDailyActivity_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3932,11 +3916,11 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 			return
 		}
 
-		forward_Talebound_GetWorldActivity_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Talebound_GetWorldDailyActivity_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Talebound_GetWorldsActivity_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Talebound_GetWorldMonthlyActivity_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3944,12 +3928,12 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetWorldsActivity", runtime.WithHTTPPathPattern("/worlds/activity"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetWorldMonthlyActivity", runtime.WithHTTPPathPattern("/worlds/activity/monthly"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Talebound_GetWorldsActivity_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Talebound_GetWorldMonthlyActivity_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3957,7 +3941,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 			return
 		}
 
-		forward_Talebound_GetWorldsActivity_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Talebound_GetWorldMonthlyActivity_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -5105,47 +5089,47 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
-	mux.Handle("GET", pattern_Talebound_GetWorldActivity_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Talebound_GetWorldDailyActivity_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetWorldActivity", runtime.WithHTTPPathPattern("/worlds/{worldId}/activity"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetWorldDailyActivity", runtime.WithHTTPPathPattern("/worlds/activity/daily"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Talebound_GetWorldActivity_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Talebound_GetWorldDailyActivity_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Talebound_GetWorldActivity_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Talebound_GetWorldDailyActivity_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Talebound_GetWorldsActivity_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Talebound_GetWorldMonthlyActivity_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetWorldsActivity", runtime.WithHTTPPathPattern("/worlds/activity"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetWorldMonthlyActivity", runtime.WithHTTPPathPattern("/worlds/activity/monthly"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Talebound_GetWorldsActivity_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Talebound_GetWorldMonthlyActivity_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Talebound_GetWorldsActivity_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Talebound_GetWorldMonthlyActivity_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -5273,9 +5257,9 @@ var (
 
 	pattern_Talebound_DeleteWorldAdmin_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"worlds", "worldId", "admin"}, ""))
 
-	pattern_Talebound_GetWorldActivity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"worlds", "worldId", "activity"}, ""))
+	pattern_Talebound_GetWorldDailyActivity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"worlds", "activity", "daily"}, ""))
 
-	pattern_Talebound_GetWorldsActivity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"worlds", "activity"}, ""))
+	pattern_Talebound_GetWorldMonthlyActivity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"worlds", "activity", "monthly"}, ""))
 
 	pattern_Talebound_GetWorlds_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"worlds"}, ""))
 )
@@ -5379,9 +5363,9 @@ var (
 
 	forward_Talebound_DeleteWorldAdmin_0 = runtime.ForwardResponseMessage
 
-	forward_Talebound_GetWorldActivity_0 = runtime.ForwardResponseMessage
+	forward_Talebound_GetWorldDailyActivity_0 = runtime.ForwardResponseMessage
 
-	forward_Talebound_GetWorldsActivity_0 = runtime.ForwardResponseMessage
+	forward_Talebound_GetWorldMonthlyActivity_0 = runtime.ForwardResponseMessage
 
 	forward_Talebound_GetWorlds_0 = runtime.ForwardResponseMessage
 )
