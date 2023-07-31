@@ -129,7 +129,7 @@
     "/evaluations/id/{id}": {
       "get": {
         "summary": "Get evaluation by id",
-        "description": "Get evaluation by id",
+        "description": "get evaluation by id",
         "operationId": "Talebound_GetEvaluationById",
         "responses": {
           "200": {
@@ -162,7 +162,7 @@
     "/evaluations/type/{type}": {
       "get": {
         "summary": "Get evaluations by type",
-        "description": "Get evaluations by type",
+        "description": "get evaluations by type",
         "operationId": "Talebound_GetEvaluationsByType",
         "responses": {
           "200": {
@@ -198,7 +198,7 @@
     "/images": {
       "get": {
         "summary": "Get images",
-        "description": "Get images - paginated, filterable by user and image type",
+        "description": "get images - paginated, filterable by user and image type",
         "operationId": "Talebound_GetImages",
         "responses": {
           "200": {
@@ -284,7 +284,7 @@
     "/post_types": {
       "get": {
         "summary": "Get post types",
-        "description": "Get post types with info (draftable, privatable)",
+        "description": "get post types with info (draftable, privatable)",
         "operationId": "Talebound_GetPostTypes",
         "responses": {
           "200": {
@@ -308,7 +308,7 @@
     "/posts": {
       "post": {
         "summary": "Create post",
-        "description": "Create completely new post",
+        "description": "create completely new post",
         "operationId": "Talebound_CreatePost",
         "responses": {
           "200": {
@@ -342,7 +342,7 @@
     "/posts/{postId}": {
       "get": {
         "summary": "Get post by id",
-        "description": "Get content of post by its ID",
+        "description": "get content of post by its ID",
         "operationId": "Talebound_GetPostById",
         "responses": {
           "200": {
@@ -373,7 +373,7 @@
       },
       "delete": {
         "summary": "Delete post",
-        "description": "Deletes post",
+        "description": "deletes post",
         "operationId": "Talebound_DeletePost",
         "responses": {
           "200": {
@@ -404,7 +404,7 @@
       },
       "patch": {
         "summary": "Update post",
-        "description": "Update title or content of the post",
+        "description": "update title or content of the post",
         "operationId": "Talebound_UpdatePost",
         "responses": {
           "200": {
@@ -463,7 +463,7 @@
     "/posts/{postId}/history": {
       "get": {
         "summary": "Get post history",
-        "description": "Get list of history changes of post by its ID - without content",
+        "description": "get list of history changes of post by its ID - without content",
         "operationId": "Talebound_GetPostHistory",
         "responses": {
           "200": {
@@ -496,7 +496,7 @@
     "/posts/{postId}/history/{postHistoryId}/content": {
       "get": {
         "summary": "Get post history content",
-        "description": "Get content of single update iteration of post",
+        "description": "get content of single update iteration of post",
         "operationId": "Talebound_GetPostHistoryById",
         "responses": {
           "200": {
@@ -574,7 +574,7 @@
       },
       "post": {
         "summary": "Create new user",
-        "description": "Use this API to create a new user",
+        "description": "use this API to create a new user",
         "operationId": "Talebound_CreateUser",
         "responses": {
           "200": {
@@ -606,7 +606,7 @@
       },
       "patch": {
         "summary": "Update user",
-        "description": "Use this API to update user",
+        "description": "use this API to update user",
         "operationId": "Talebound_UpdateUser",
         "responses": {
           "200": {
@@ -673,7 +673,7 @@
     "/users/login": {
       "post": {
         "summary": "Login user",
-        "description": "Login user - get user object and set HttpOnly cookies",
+        "description": "login user - get user object and set HttpOnly cookies",
         "operationId": "Talebound_LoginUser",
         "responses": {
           "200": {
@@ -707,7 +707,7 @@
     "/users/logout": {
       "post": {
         "summary": "Logout user",
-        "description": "Logout user - it clears HttpOnly cookies - no request data required",
+        "description": "logout user - it clears HttpOnly cookies - no request data required",
         "operationId": "Talebound_LogoutUser",
         "responses": {
           "200": {
@@ -743,7 +743,7 @@
     "/users/reset/send-code": {
       "post": {
         "summary": "Request password reset",
-        "description": "In case a user forgot their password, they can request a password reset using this endpoint",
+        "description": "in case a user forgot their password, they can request a password reset using this endpoint",
         "operationId": "Talebound_ResetPasswordSendCode",
         "responses": {
           "200": {
@@ -777,7 +777,7 @@
     "/users/reset/verify-code": {
       "post": {
         "summary": "Confirm password reset",
-        "description": "In case a user forgot their password, they can confirm the password reset using this endpoint",
+        "description": "in case a user forgot their password, they can confirm the password reset using this endpoint",
         "operationId": "Talebound_ResetPasswordVerifyCode",
         "responses": {
           "200": {
@@ -811,7 +811,7 @@
     "/users/reset/verify-code-validity": {
       "get": {
         "summary": "Validate reset password secret code",
-        "description": "Validate reset password secret code",
+        "description": "validate reset password secret code",
         "operationId": "Talebound_ResetPasswordVerifyCodeValidity",
         "responses": {
           "200": {
@@ -955,7 +955,7 @@
     "/users/{userId}/evaluation-vote": {
       "get": {
         "summary": "Get evaluation votes by user id",
-        "description": "Get evaluation votes by user id",
+        "description": "get evaluation votes by user id",
         "operationId": "Talebound_GetEvaluationVotesByUserId",
         "responses": {
           "200": {
@@ -986,7 +986,7 @@
       },
       "post": {
         "summary": "Create or update evaluation vote",
-        "description": "Create or update evaluation vote",
+        "description": "create or update evaluation vote",
         "operationId": "Talebound_CreateOrUpdateEvaluationVote",
         "responses": {
           "200": {
@@ -1042,7 +1042,7 @@
     "/users/{userId}/evaluation-vote/type/{type}/average": {
       "get": {
         "summary": "Get average user evaluation",
-        "description": "Get average user evaluation by type",
+        "description": "get average user evaluation by type",
         "operationId": "Talebound_GetAverageUserEvaluationsByType",
         "responses": {
           "200": {
@@ -1081,7 +1081,7 @@
     "/users/{userId}/evaluation-vote/voter/{userIdVoter}": {
       "get": {
         "summary": "Get evaluation votes by user id and voter",
-        "description": "Get evaluation votes by user id and voter",
+        "description": "get evaluation votes by user id and voter",
         "operationId": "Talebound_GetEvaluationVotesByUserIdAndVoter",
         "responses": {
           "200": {
@@ -1121,7 +1121,7 @@
     "/users/{userId}/evaluation-vote/{evaluationId}/voter/{userIdVoter}": {
       "delete": {
         "summary": "Delete evaluation vote",
-        "description": "Delete evaluation vote",
+        "description": "delete evaluation vote",
         "operationId": "Talebound_DeleteEvaluationVote",
         "responses": {
           "200": {
@@ -1168,7 +1168,7 @@
     "/users/{userId}/images": {
       "get": {
         "summary": "Get user images",
-        "description": "Get images of user by userID - filterable by image type",
+        "description": "get images of user by userID - filterable by image type",
         "operationId": "Talebound_GetUserImages",
         "responses": {
           "200": {
@@ -1222,7 +1222,7 @@
     "/users/{userId}/introduction": {
       "patch": {
         "summary": "Update user introduction",
-        "description": "Use this API to update user introduction",
+        "description": "use this API to update user introduction",
         "operationId": "Talebound_UpdateUserIntroduction",
         "responses": {
           "200": {
@@ -1271,7 +1271,7 @@
     "/users/{userId}/posts": {
       "get": {
         "summary": "Get user posts",
-        "description": "Get posts of user by userID",
+        "description": "get posts of user by userID",
         "operationId": "Talebound_GetUserPosts",
         "responses": {
           "200": {
@@ -1362,10 +1362,10 @@
         ]
       }
     },
-    "/users/{userId}/worlds_creator": {
+    "/users/{userId}/worlds": {
       "get": {
         "summary": "Get creator's worlds",
-        "description": "Get list of worlds that the creator is part of",
+        "description": "gets list of worlds that the creator is part of",
         "operationId": "Talebound_GetWorldsOfCreator",
         "responses": {
           "200": {
@@ -1397,7 +1397,7 @@
     "/verify": {
       "post": {
         "summary": "Verify email",
-        "description": "Verify user email",
+        "description": "verify user email",
         "operationId": "Talebound_VerifyEmail",
         "responses": {
           "200": {
@@ -1429,9 +1429,59 @@
       }
     },
     "/worlds": {
+      "get": {
+        "summary": "Get worlds ",
+        "description": "gets list of worlds",
+        "operationId": "Talebound_GetWorlds",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetWorldsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "public",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
       "post": {
         "summary": "Create world",
-        "description": "Create completely new world",
+        "description": "creates completely new world",
         "operationId": "Talebound_CreateWorld",
         "responses": {
           "200": {
@@ -1462,10 +1512,224 @@
         ]
       }
     },
+    "/worlds/activity/daily": {
+      "get": {
+        "summary": "Get world(s) daily activity",
+        "description": "gets activity by day",
+        "operationId": "Talebound_GetWorldDailyActivity",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetWorldDailyActivityResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/worlds/activity/monthly": {
+      "get": {
+        "summary": "Get world(s) monthly activity",
+        "description": "gets world activity grouped by month",
+        "operationId": "Talebound_GetWorldMonthlyActivity",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetWorldMonthlyActivityResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/worlds/tags": {
+      "get": {
+        "summary": "Get available world tags",
+        "description": "gets list of tags, that are usable for worlds",
+        "operationId": "Talebound_GetAvailableWorldTags",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetAvailableWorldTagsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Talebound"
+        ]
+      },
+      "post": {
+        "summary": "Create available world tag",
+        "description": "creates new tag, that can be assigned to worlds",
+        "operationId": "Talebound_CreateAvailableWorldTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTag"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateAvailableWorldTagRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/worlds/tags/{tagId}": {
+      "delete": {
+        "summary": "Delete available world tag",
+        "description": "deletes available world tag and removes all its assignments",
+        "operationId": "Talebound_DeleteAvailableWorldTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tagId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
+      "patch": {
+        "summary": "Update available world tag",
+        "description": "updates world-assignable tag",
+        "operationId": "Talebound_UpdateAvailableWorldTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTag"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tagId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "newTag": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/worlds/{worldId}": {
       "patch": {
         "summary": "Update world",
-        "description": "Update world properties (NO images or stats!)",
+        "description": "updates world properties (NO images or stats!)",
         "operationId": "Talebound_UpdateWorld",
         "responses": {
           "200": {
@@ -1499,11 +1763,158 @@
                 "name": {
                   "type": "string"
                 },
-                "description": {
+                "shortDescription": {
                   "type": "string"
                 },
                 "public": {
                   "type": "boolean"
+                },
+                "basedOn": {
+                  "type": "string"
+                },
+                "descriptionPostId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/worlds/{worldId}/admin": {
+      "delete": {
+        "summary": "Delete world admin",
+        "description": "deletes world admin",
+        "operationId": "Talebound_DeleteWorldAdmin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
+      "post": {
+        "summary": "Create world admin",
+        "description": "adds request to become admin of the world",
+        "operationId": "Talebound_CreateWorldAdmin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbWorldAdmin"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "motivationalLetter": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
+      "patch": {
+        "summary": "Update world admin",
+        "description": "updates world admin request (approve / decline)",
+        "operationId": "Talebound_UpdateWorldAdmin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbWorldAdmin"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "superAdmin": {
+                  "type": "boolean"
+                },
+                "approved": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "motivationalLetter": {
+                  "type": "string"
                 }
               }
             }
@@ -1553,6 +1964,92 @@
                   "format": "byte"
                 },
                 "imageTypeId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/worlds/{worldId}/tags": {
+      "delete": {
+        "summary": "Remove world tag",
+        "description": "removes tag from the world",
+        "operationId": "Talebound_RemoveWorldTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "tagId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
+      "post": {
+        "summary": "Add tag world",
+        "description": "assigns one tag to the world",
+        "operationId": "Talebound_AddWorldTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTag"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tagId": {
                   "type": "integer",
                   "format": "int32"
                 }
@@ -1656,6 +2153,14 @@
         }
       }
     },
+    "pbCreateAvailableWorldTagRequest": {
+      "type": "object",
+      "properties": {
+        "tag": {
+          "type": "string"
+        }
+      }
+    },
     "pbCreateOrUpdateEvaluationVoteResponse": {
       "type": "object",
       "properties": {
@@ -1713,7 +2218,10 @@
         "name": {
           "type": "string"
         },
-        "description": {
+        "shortDescription": {
+          "type": "string"
+        },
+        "basedOn": {
           "type": "string"
         }
       }
@@ -1923,6 +2431,18 @@
         }
       }
     },
+    "pbGetAvailableWorldTagsResponse": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbTag"
+          }
+        }
+      }
+    },
     "pbGetAverageUserEvaluationsByTypeResponse": {
       "type": "object",
       "properties": {
@@ -2067,6 +2587,30 @@
         }
       }
     },
+    "pbGetWorldDailyActivityResponse": {
+      "type": "object",
+      "properties": {
+        "activity": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbWorldActivity"
+          }
+        }
+      }
+    },
+    "pbGetWorldMonthlyActivityResponse": {
+      "type": "object",
+      "properties": {
+        "activity": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbWorldActivity"
+          }
+        }
+      }
+    },
     "pbGetWorldsOfCreatorResponse": {
       "type": "object",
       "properties": {
@@ -2075,6 +2619,18 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbWorldOfCreatorResponse"
+          }
+        }
+      }
+    },
+    "pbGetWorldsResponse": {
+      "type": "object",
+      "properties": {
+        "worlds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbWorld"
           }
         }
       }
@@ -2238,6 +2794,18 @@
           "type": "string"
         },
         "description": {
+          "type": "string"
+        }
+      }
+    },
+    "pbTag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tag": {
           "type": "string"
         }
       }
@@ -2418,22 +2986,94 @@
           "type": "string",
           "format": "date-time"
         },
-        "description": {
+        "basedOn": {
+          "type": "string"
+        },
+        "shortDescription": {
           "type": "string"
         },
         "imageAvatar": {
           "type": "string"
         },
+        "imageThumbnail": {
+          "type": "string"
+        },
         "imageHeader": {
           "type": "string"
         },
-        "rating": {
+        "descriptionPostId": {
           "type": "integer",
           "format": "int32"
         },
-        "activity": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "activityPostCount": {
           "type": "integer",
           "format": "int32"
+        },
+        "activityQuestCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "activityResourceCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbWorldActivity": {
+      "type": "object",
+      "properties": {
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "activityPostCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "activityQuestCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "activityResourceCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbWorldAdmin": {
+      "type": "object",
+      "properties": {
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "superAdmin": {
+          "type": "boolean"
+        },
+        "approved": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "motivationalLetter": {
+          "type": "string"
         }
       }
     },
@@ -2443,7 +3083,7 @@
         "world": {
           "$ref": "#/definitions/pbWorld"
         },
-        "isMain": {
+        "superAdmin": {
           "type": "boolean"
         }
       }

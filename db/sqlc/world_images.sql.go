@@ -29,35 +29,54 @@ func (q *Queries) DeleteWorldImages(ctx context.Context, worldID int32) error {
 }
 
 const getWorldImages = `-- name: GetWorldImages :one
-SELECT world_id, image_header, image_avatar FROM world_images WHERE world_id = $1 LIMIT 1
+SELECT world_id, header_img_id, image_avatar, thumbnail_img_id, avatar_img_id FROM world_images WHERE world_id = $1 LIMIT 1
 `
 
 func (q *Queries) GetWorldImages(ctx context.Context, worldID int32) (WorldImage, error) {
 	row := q.db.QueryRowContext(ctx, getWorldImages, worldID)
 	var i WorldImage
-	err := row.Scan(&i.WorldID, &i.ImageHeader, &i.ImageAvatar)
+	err := row.Scan(
+		&i.WorldID,
+		&i.HeaderImgID,
+		&i.ImageAvatar,
+		&i.ThumbnailImgID,
+		&i.AvatarImgID,
+	)
 	return i, err
 }
 
 const updateWorldImages = `-- name: UpdateWorldImages :one
 UPDATE world_images
 SET
-    image_header = COALESCE($1, image_header),
-    image_avatar = COALESCE($2, image_avatar)
+    header_img_id = COALESCE($1, header_img_id),
+    thumbnail_img_id = COALESCE($2, thumbnail_img_id),
+    avatar_img_id = COALESCE($3, avatar_img_id)
 WHERE
-    world_id = $3
-RETURNING world_id, image_header, image_avatar
+    world_id = $4
+RETURNING world_id, header_img_id, image_avatar, thumbnail_img_id, avatar_img_id
 `
 
 type UpdateWorldImagesParams struct {
-	ImageHeader sql.NullInt32 `json:"image_header"`
-	ImageAvatar sql.NullInt32 `json:"image_avatar"`
-	WorldID     int32         `json:"world_id"`
+	HeaderImgID    sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID    sql.NullInt32 `json:"avatar_img_id"`
+	WorldID        int32         `json:"world_id"`
 }
 
 func (q *Queries) UpdateWorldImages(ctx context.Context, arg UpdateWorldImagesParams) (WorldImage, error) {
-	row := q.db.QueryRowContext(ctx, updateWorldImages, arg.ImageHeader, arg.ImageAvatar, arg.WorldID)
+	row := q.db.QueryRowContext(ctx, updateWorldImages,
+		arg.HeaderImgID,
+		arg.ThumbnailImgID,
+		arg.AvatarImgID,
+		arg.WorldID,
+	)
 	var i WorldImage
-	err := row.Scan(&i.WorldID, &i.ImageHeader, &i.ImageAvatar)
+	err := row.Scan(
+		&i.WorldID,
+		&i.HeaderImgID,
+		&i.ImageAvatar,
+		&i.ThumbnailImgID,
+		&i.AvatarImgID,
+	)
 	return i, err
 }

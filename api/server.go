@@ -9,7 +9,7 @@ import (
 	"github.com/the-medo/talebound-backend/worker"
 )
 
-// Server serves gRPC requests for our banking service.
+// Server serves gRPC requests
 type Server struct {
 	pb.UnimplementedTaleboundServer
 	config          util.Config

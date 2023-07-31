@@ -1,17 +1,20 @@
 -- name: CreateWorld :one
 INSERT INTO worlds (
     name,
-    description
+    based_on,
+    short_description
 ) VALUES (
-     @name, @description
+     @name, @based_on, @short_description
  ) RETURNING *;
 
 -- name: UpdateWorld :one
 UPDATE worlds
 SET
     name = COALESCE(sqlc.narg(name), name),
+    based_on = COALESCE(sqlc.narg(based_on), based_on),
     public = COALESCE(sqlc.narg(public), public),
-    description = COALESCE(sqlc.narg(description), description)
+    short_description = COALESCE(sqlc.narg(short_description), short_description),
+    description_post_id = COALESCE(sqlc.narg(description_post_id), description_post_id)
 WHERE
     id = sqlc.arg(world_id)
 RETURNING *;
@@ -29,40 +32,61 @@ ORDER BY
     CASE
      WHEN @order_result::bool
          THEN @order_by::VARCHAR
-     ELSE 'activity'
+     ELSE 'created_at'
      END
 DESC
 LIMIT @page_limit
 OFFSET @page_offset;
 
--- name: CreateWorldAdmin :one
+-- name: InsertWorldAdmin :one
 INSERT INTO world_admins (
     world_id,
     user_id,
-    is_main
-) VALUES (@world_id, @user_id, @is_main) RETURNING *;
+    super_admin,
+    approved,
+    motivational_letter
+) VALUES (@world_id, @user_id, @super_admin, @approved, @motivational_letter) RETURNING *;
 
+
+-- name: UpdateWorldAdmin :one
+UPDATE world_admins
+SET
+    super_admin = COALESCE(sqlc.narg(super_admin), super_admin),
+    approved = COALESCE(sqlc.narg(approved), approved),
+    motivational_letter = COALESCE(sqlc.narg(motivational_letter), motivational_letter)
+WHERE
+    world_id = sqlc.arg(world_id) AND user_id = sqlc.arg(user_id)
+RETURNING *;
+
+-- name: DeleteWorldAdmin :exec
+DELETE FROM world_admins WHERE world_id = sqlc.arg(world_id) AND user_id = sqlc.arg(user_id);
 
 -- name: GetWorldsOfUser :many
 SELECT
-    vw.*
+    vw.*,
+    1 as world_admin,
+    wa.super_admin as world_super_admin
 FROM
     view_worlds vw
     JOIN world_admins wa ON wa.world_id = vw.id
 WHERE
-    wa.user_id = @user_id
+    wa.user_id = @user_id AND wa.approved = 1
 ;
 
 -- name: GetAdminsOfWorld :many
 SELECT
     vu.*,
-    wa.is_main as is_main
+    wa.super_admin as super_admin
 FROM
     view_users vu
     JOIN world_admins wa on wa.user_id = vu.id
 WHERE
-    wa.world_id = @world_id
+    wa.world_id = @world_id AND
+    wa.approved = 1
 ;
 
 -- name: IsWorldAdmin :one
-SELECT * FROM world_admins WHERE user_id = @user_id AND world_id = @world_id;
+SELECT * FROM world_admins WHERE user_id = @user_id AND world_id = @world_id AND approved = 1;
+
+-- name: IsWorldSuperAdmin :one
+SELECT * FROM world_admins WHERE user_id = @user_id AND world_id = @world_id AND approved = 1 AND super_admin = 1;

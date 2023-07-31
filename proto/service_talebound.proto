@@ -22,6 +22,7 @@ import "image.proto";
 import "world.proto";
 import "post.proto";
 import "user.proto";
+import "tag.proto";
 import "google/protobuf/empty.proto";
 
 
@@ -137,7 +138,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Use this API to create a new user";
+      description: "use this API to create a new user";
       summary: "Create new user";
     };
   };
@@ -148,7 +149,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Use this API to update user";
+      description: "use this API to update user";
       summary: "Update user";
     };
   };
@@ -159,7 +160,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Use this API to update user introduction";
+      description: "use this API to update user introduction";
       summary: "Update user introduction";
     };
   };
@@ -171,7 +172,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Login user - get user object and set HttpOnly cookies";
+      description: "login user - get user object and set HttpOnly cookies";
       summary: "Login user";
     };
   };
@@ -182,7 +183,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Logout user - it clears HttpOnly cookies - no request data required";
+      description: "logout user - it clears HttpOnly cookies - no request data required";
       summary: "Logout user";
     };
   };
@@ -193,7 +194,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "In case a user forgot their password, they can request a password reset using this endpoint";
+      description: "in case a user forgot their password, they can request a password reset using this endpoint";
       summary: "Request password reset";
     };
   };
@@ -204,7 +205,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "In case a user forgot their password, they can confirm the password reset using this endpoint";
+      description: "in case a user forgot their password, they can confirm the password reset using this endpoint";
       summary: "Confirm password reset";
     };
   };
@@ -214,7 +215,7 @@ service Talebound {
       get: "/users/reset/verify-code-validity"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Validate reset password secret code";
+      description: "validate reset password secret code";
       summary: "Validate reset password secret code";
     };
   };
@@ -226,7 +227,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Verify user email";
+      description: "verify user email";
       summary: "Verify email";
     };
   };
@@ -237,7 +238,7 @@ service Talebound {
       get: "/evaluations/id/{id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get evaluation by id";
+      description: "get evaluation by id";
       summary: "Get evaluation by id";
     };
   };
@@ -247,7 +248,7 @@ service Talebound {
       get: "/evaluations/type/{type}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get evaluations by type";
+      description: "get evaluations by type";
       summary: "Get evaluations by type";
     };
   };
@@ -258,7 +259,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Create or update evaluation vote";
+      description: "create or update evaluation vote";
       summary: "Create or update evaluation vote";
     };
   };
@@ -268,7 +269,7 @@ service Talebound {
       get: "/users/{userId}/evaluation-vote"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get evaluation votes by user id";
+      description: "get evaluation votes by user id";
       summary: "Get evaluation votes by user id";
     };
   };
@@ -278,7 +279,7 @@ service Talebound {
       get: "/users/{userId}/evaluation-vote/voter/{userIdVoter}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get evaluation votes by user id and voter";
+      description: "get evaluation votes by user id and voter";
       summary: "Get evaluation votes by user id and voter";
     };
   };
@@ -288,7 +289,7 @@ service Talebound {
       delete: "/users/{userId}/evaluation-vote/{evaluationId}/voter/{userIdVoter}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Delete evaluation vote";
+      description: "delete evaluation vote";
       summary: "Delete evaluation vote";
     };
   };
@@ -298,7 +299,7 @@ service Talebound {
       get: "/users/{userId}/evaluation-vote/type/{type}/average"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get average user evaluation by type";
+      description: "get average user evaluation by type";
       summary: "Get average user evaluation";
     };
   };
@@ -310,7 +311,7 @@ service Talebound {
       get: "/images"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get images - paginated, filterable by user and image type";
+      description: "get images - paginated, filterable by user and image type";
       summary: "Get images";
     };
   };
@@ -319,7 +320,7 @@ service Talebound {
       get: "/users/{userId}/images"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get images of user by userID - filterable by image type";
+      description: "get images of user by userID - filterable by image type";
       summary: "Get user images";
     };
   };
@@ -351,7 +352,7 @@ service Talebound {
       get: "/posts/{postId}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get content of post by its ID";
+      description: "get content of post by its ID";
       summary: "Get post by id";
     };
   };
@@ -361,7 +362,7 @@ service Talebound {
       get: "/users/{userId}/posts"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get posts of user by userID";
+      description: "get posts of user by userID";
       summary: "Get user posts";
     };
   };
@@ -371,7 +372,7 @@ service Talebound {
       get: "/posts/{postId}/history"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get list of history changes of post by its ID - without content";
+      description: "get list of history changes of post by its ID - without content";
       summary: "Get post history";
     };
   };
@@ -381,7 +382,7 @@ service Talebound {
       get: "/posts/{postId}/history/{postHistoryId}/content"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get content of single update iteration of post";
+      description: "get content of single update iteration of post";
       summary: "Get post history content";
     };
   };
@@ -392,7 +393,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Create completely new post";
+      description: "create completely new post";
       summary: "Create post";
     };
   };
@@ -403,7 +404,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Update title or content of the post";
+      description: "update title or content of the post";
       summary: "Update post";
     };
   };
@@ -413,7 +414,7 @@ service Talebound {
       delete: "/posts/{postId}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Deletes post";
+      description: "deletes post";
       summary: "Delete post";
     };
   };
@@ -423,7 +424,7 @@ service Talebound {
       get: "/post_types"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get post types with info (draftable, privatable)";
+      description: "get post types with info (draftable, privatable)";
       summary: "Get post types";
     };
   };
@@ -432,10 +433,10 @@ service Talebound {
 
   rpc GetWorldsOfCreator(GetWorldsOfCreatorRequest) returns (GetWorldsOfCreatorResponse) {
     option (google.api.http) = {
-      get: "/users/{userId}/worlds_creator"
+      get: "/users/{userId}/worlds"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Get list of worlds that the creator is part of";
+      description: "gets list of worlds that the creator is part of";
       summary: "Get creator's worlds";
     };
   };
@@ -446,7 +447,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Create completely new world";
+      description: "creates completely new world";
       summary: "Create world";
     };
   };
@@ -457,7 +458,7 @@ service Talebound {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Update world properties (NO images or stats!)";
+      description: "updates world properties (NO images or stats!)";
       summary: "Update world";
     };
   };
@@ -473,4 +474,128 @@ service Talebound {
     };
   };
 
+  rpc GetAvailableWorldTags(google.protobuf.Empty) returns (GetAvailableWorldTagsResponse) {
+    option (google.api.http) = {
+      get: "/worlds/tags"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of tags, that are usable for worlds";
+      summary: "Get available world tags";
+    };
+  };
+
+  rpc CreateAvailableWorldTag(CreateAvailableWorldTagRequest) returns (Tag) {
+    option (google.api.http) = {
+      post: "/worlds/tags"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates new tag, that can be assigned to worlds";
+      summary: "Create available world tag";
+    };
+  };
+
+  rpc UpdateAvailableWorldTag(UpdateAvailableWorldTagRequest) returns (Tag) {
+    option (google.api.http) = {
+      patch: "/worlds/tags/{tagId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates world-assignable tag";
+      summary: "Update available world tag";
+    };
+  };
+
+  rpc DeleteAvailableWorldTag(DeleteAvailableWorldTagRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/worlds/tags/{tagId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes available world tag and removes all its assignments";
+      summary: "Delete available world tag";
+    };
+  };
+
+  rpc AddWorldTag(AddWorldTagRequest) returns (Tag) {
+    option (google.api.http) = {
+      post: "/worlds/{worldId}/tags"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "assigns one tag to the world";
+      summary: "Add tag world";
+    };
+  };
+
+  rpc RemoveWorldTag(RemoveWorldTagRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/worlds/{worldId}/tags"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "removes tag from the world";
+      summary: "Remove world tag";
+    };
+  };
+
+  rpc CreateWorldAdmin(CreateWorldAdminRequest) returns (WorldAdmin) {
+    option (google.api.http) = {
+      post: "/worlds/{worldId}/admin"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "adds request to become admin of the world";
+      summary: "Create world admin";
+    };
+  };
+
+  rpc UpdateWorldAdmin(UpdateWorldAdminRequest) returns (WorldAdmin) {
+    option (google.api.http) = {
+      patch: "/worlds/{worldId}/admin"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates world admin request (approve / decline)";
+      summary: "Update world admin";
+    };
+  };
+
+  rpc DeleteWorldAdmin(DeleteWorldAdminRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/worlds/{worldId}/admin"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes world admin";
+      summary: "Delete world admin";
+    };
+  };
+
+  rpc GetWorldDailyActivity(GetWorldDailyActivityRequest) returns (GetWorldDailyActivityResponse) {
+    option (google.api.http) = {
+      get: "/worlds/activity/daily"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets activity by day";
+      summary: "Get world(s) daily activity";
+    };
+  };
+
+  rpc GetWorldMonthlyActivity(GetWorldMonthlyActivityRequest) returns (GetWorldMonthlyActivityResponse) {
+    option (google.api.http) = {
+      get: "/worlds/activity/monthly"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets world activity grouped by month";
+      summary: "Get world(s) monthly activity";
+    };
+  };
+
+  rpc GetWorlds(GetWorldsRequest) returns (GetWorldsResponse) {
+    option (google.api.http) = {
+      get: "/worlds"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of worlds";
+      summary: "Get worlds ";
+    };
+  };
 }

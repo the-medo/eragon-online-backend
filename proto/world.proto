@@ -11,10 +11,31 @@ message World {
   string name = 2;
   bool public = 3;
   google.protobuf.Timestamp createdAt = 4;
-  string description = 5;
-  string imageAvatar = 6;
-  string imageHeader = 7;
-  int32 rating = 8;
-  int32 activity = 9;
+  string basedOn = 5;
+  string shortDescription = 6;
+  string imageAvatar = 7;
+  string imageThumbnail = 8;
+  string imageHeader = 9;
+  optional int32 descriptionPostId = 10;
+  repeated string tags = 11;
+  int32 activityPostCount = 12;
+  int32 activityQuestCount = 13;
+  int32 activityResourceCount = 14;
 }
 
+message WorldActivity {
+  int32 worldId = 1;
+  google.protobuf.Timestamp date = 2;
+  int32 activityPostCount = 3;
+  int32 activityQuestCount = 4;
+  int32 activityResourceCount = 5;
+}
+
+message WorldAdmin {
+  int32 worldId = 1;
+  int32 userId = 2;
+  google.protobuf.Timestamp createdAt = 3;
+  bool superAdmin = 4;
+  int32 approved = 5;
+  string motivationalLetter = 6;
+}

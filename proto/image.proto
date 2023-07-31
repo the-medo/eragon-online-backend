@@ -17,6 +17,11 @@ enum ImageTypeVariant {
   v1200x800 = 6;
   v1920x200 = 7;
   public = 8;
+  original = 9;
+  v600x400 = 10;
+  v400x600 = 11;
+  v300x200 = 12;
+  v200x300 = 13;
 }
 
 message ImageType {

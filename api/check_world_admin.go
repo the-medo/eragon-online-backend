@@ -8,7 +8,7 @@ import (
 	"github.com/the-medo/talebound-backend/pb"
 )
 
-func (server *Server) CheckWorldAdmin(ctx context.Context, worldId int32, needsMain bool) error {
+func (server *Server) CheckWorldAdmin(ctx context.Context, worldId int32, needsSuperAdmin bool) error {
 
 	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
 	if err == nil {
@@ -21,14 +21,8 @@ func (server *Server) CheckWorldAdmin(ctx context.Context, worldId int32, needsM
 	}
 
 	isAdmin, err := server.store.IsWorldAdmin(ctx, db.IsWorldAdminParams{
-		UserID: sql.NullInt32{
-			Int32: authPayload.UserId,
-			Valid: true,
-		},
-		WorldID: sql.NullInt32{
-			Int32: worldId,
-			Valid: true,
-		},
+		UserID:  authPayload.UserId,
+		WorldID: worldId,
 	})
 
 	if err != nil {
@@ -38,11 +32,11 @@ func (server *Server) CheckWorldAdmin(ctx context.Context, worldId int32, needsM
 		return fmt.Errorf("failed to authorize world admin: %w", err)
 	}
 
-	if needsMain {
-		if isAdmin.IsMain {
+	if needsSuperAdmin {
+		if isAdmin.SuperAdmin {
 			return nil
 		} else {
-			return fmt.Errorf("MAIN admin role required for this action")
+			return fmt.Errorf("SUPER ADMIN role required for this action")
 		}
 	}
 

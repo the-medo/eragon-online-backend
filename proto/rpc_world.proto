@@ -3,13 +3,15 @@ syntax = "proto3";
 package pb;
 
 import "world.proto";
+import "tag.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 
 message WorldOfCreatorResponse {
   World world = 1;
-  bool isMain = 2;
+  bool superAdmin = 2;
 }
 
 message GetWorldsOfCreatorRequest {
@@ -22,18 +24,95 @@ message GetWorldsOfCreatorResponse {
 
 message CreateWorldRequest {
   string name = 1;
-  string description = 2;
+  string shortDescription = 2;
+  string basedOn = 3;
 }
 
 message UpdateWorldRequest {
   int32 worldId = 1;
   optional string name = 2;
-  optional string description = 3;
+  optional string shortDescription = 3;
   optional bool public = 4;
+  optional string basedOn = 5;
+  optional int32 descriptionPostId = 6;
 }
 
 message UploadWorldImageRequest {
   int32 worldId = 1;
   bytes data = 2;
   int32 imageTypeId = 3;
+}
+
+message GetAvailableWorldTagsResponse {
+  repeated Tag tags = 1;
+}
+
+message CreateAvailableWorldTagRequest {
+  string tag = 1;
+}
+
+message UpdateAvailableWorldTagRequest {
+  int32 tagId = 1;
+  string newTag = 2;
+}
+
+message DeleteAvailableWorldTagRequest {
+  int32 tagId = 1;
+}
+
+message AddWorldTagRequest {
+  int32 worldId = 1;
+  int32 tagId = 2;
+}
+
+message RemoveWorldTagRequest {
+  int32 worldId = 1;
+  int32 tagId = 2;
+}
+
+message CreateWorldAdminRequest {
+  int32 worldId = 1;
+  string motivationalLetter = 2;
+}
+
+message UpdateWorldAdminRequest {
+  int32 worldId = 1;
+  int32 userId = 2;
+  optional bool superAdmin = 3;
+  optional int32 approved = 4;
+  optional string motivationalLetter = 5;
+}
+
+message DeleteWorldAdminRequest {
+  int32 worldId = 1;
+  int32 userId = 2;
+}
+
+message GetWorldDailyActivityRequest {
+  optional int32 worldId = 1;
+  optional google.protobuf.Timestamp dateFrom = 2;
+}
+
+message GetWorldDailyActivityResponse {
+  repeated WorldActivity activity = 1;
+}
+
+message GetWorldMonthlyActivityRequest {
+  optional int32 worldId = 1;
+  optional google.protobuf.Timestamp dateFrom = 2;
+}
+
+message GetWorldMonthlyActivityResponse {
+  repeated WorldActivity activity = 1;
+}
+
+message GetWorldsRequest {
+  optional bool public = 1;
+  optional string orderBy = 2;
+  optional int32 limit = 3;
+  optional int32 offset = 4;
+}
+
+message GetWorldsResponse {
+  repeated World worlds = 1;
 }

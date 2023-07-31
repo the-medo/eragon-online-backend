@@ -25,8 +25,9 @@ func (server *Server) CreateWorld(ctx context.Context, req *pb.CreateWorldReques
 
 	arg := db.CreateWorldTxParams{
 		CreateWorldParams: db.CreateWorldParams{
-			Name:        req.GetName(),
-			Description: req.GetDescription(),
+			Name:             req.GetName(),
+			BasedOn:          req.GetBasedOn(),
+			ShortDescription: req.GetShortDescription(),
 		},
 		UserId: authPayload.UserId,
 	}
@@ -64,13 +65,21 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 			String: req.GetName(),
 			Valid:  req.Name != nil,
 		},
-		Description: sql.NullString{
-			String: req.GetDescription(),
-			Valid:  req.Description != nil,
+		BasedOn: sql.NullString{
+			String: req.GetBasedOn(),
+			Valid:  req.BasedOn != nil,
+		},
+		ShortDescription: sql.NullString{
+			String: req.GetShortDescription(),
+			Valid:  req.ShortDescription != nil,
 		},
 		Public: sql.NullBool{
 			Bool:  req.GetPublic(),
 			Valid: req.Public != nil,
+		},
+		DescriptionPostID: sql.NullInt32{
+			Int32: req.GetDescriptionPostId(),
+			Valid: req.DescriptionPostId != nil,
 		},
 	}
 
@@ -94,8 +103,12 @@ func validateCreateWorldRequest(req *pb.CreateWorldRequest) (violations []*errde
 		violations = append(violations, FieldViolation("name", err))
 	}
 
-	if err := validator.ValidateString(req.GetDescription(), 1, 1024); err != nil {
-		violations = append(violations, FieldViolation("description", err))
+	if err := validator.ValidateString(req.GetShortDescription(), 1, 1024); err != nil {
+		violations = append(violations, FieldViolation("short_description", err))
+	}
+
+	if err := validator.ValidateString(req.GetBasedOn(), 0, 100); err != nil {
+		violations = append(violations, FieldViolation("based_on", err))
 	}
 
 	return violations
@@ -109,9 +122,15 @@ func validateUpdateWorldRequest(req *pb.UpdateWorldRequest) (violations []*errde
 		}
 	}
 
-	if req.Description != nil {
-		if err := validator.ValidateString(req.GetDescription(), 1, 1024); err != nil {
-			violations = append(violations, FieldViolation("description", err))
+	if req.ShortDescription != nil {
+		if err := validator.ValidateString(req.GetShortDescription(), 1, 1024); err != nil {
+			violations = append(violations, FieldViolation("short_description", err))
+		}
+	}
+
+	if req.BasedOn != nil {
+		if err := validator.ValidateString(req.GetBasedOn(), 0, 100); err != nil {
+			violations = append(violations, FieldViolation("based_on", err))
 		}
 	}
 

@@ -1,17 +1,40 @@
 CREATE VIEW view_worlds AS
 SELECT
     w.*,
-    i_avatar.url as image_avatar,
     i_header.url as image_header,
-    ws.final_content_rating as rating,
-    ws.final_activity as activity
+    i_thumbnail.url as image_thumbnail,
+    i_avatar.url as image_avatar,
+    tags.tags AS tags,
+    activity.activity_post_count AS activity_post_count,
+    activity.activity_quest_count AS activity_quest_count,
+    activity.activity_resource_count AS activity_resource_count
 FROM
     worlds w
-    JOIN world_images wi ON w.id = wi.world_id
-    JOIN world_stats ws ON w.id = wi.world_id
-    LEFT JOIN images i_avatar on wi.image_avatar = i_avatar.id
-    LEFT JOIN images i_header on wi.image_header = i_header.id
-;
+        JOIN world_images wi ON w.id = wi.world_id
+        LEFT JOIN (
+        SELECT
+            wa.world_id,
+            cast(sum(wa.post_count) as integer) AS activity_post_count,
+            cast(sum(wa.quest_count) as integer) AS activity_quest_count,
+            cast(sum(wa.resource_count) as integer) AS activity_resource_count
+        FROM
+            world_activity wa
+        WHERE
+                wa.date >= (now() - interval '30 days')
+        GROUP BY wa.world_id
+    ) activity ON activity.world_id = w.id
+        LEFT JOIN (
+        SELECT
+            wt.world_id,
+            cast(array_agg(t.tag) as varchar[]) AS tags
+        FROM
+            world_tags wt
+                LEFT JOIN world_tags_available t ON t.id = wt.tag_id
+        GROUP BY wt.world_id
+    ) tags ON tags.world_id = w.id
+        LEFT JOIN images i_header on wi.header_img_id = i_header.id
+        LEFT JOIN images i_thumbnail on wi.thumbnail_img_id = i_thumbnail.id
+        LEFT JOIN images i_avatar on wi.avatar_img_id = i_avatar.id;
 
 CREATE VIEW view_users AS
 SELECT

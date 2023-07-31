@@ -11,57 +11,36 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 )
 
 const createWorld = `-- name: CreateWorld :one
 INSERT INTO worlds (
     name,
-    description
+    based_on,
+    short_description
 ) VALUES (
-     $1, $2
- ) RETURNING id, name, public, created_at, description
+     $1, $2, $3
+ ) RETURNING id, name, public, created_at, short_description, based_on, description_post_id
 `
 
 type CreateWorldParams struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
+	Name             string `json:"name"`
+	BasedOn          string `json:"based_on"`
+	ShortDescription string `json:"short_description"`
 }
 
 func (q *Queries) CreateWorld(ctx context.Context, arg CreateWorldParams) (World, error) {
-	row := q.db.QueryRowContext(ctx, createWorld, arg.Name, arg.Description)
+	row := q.db.QueryRowContext(ctx, createWorld, arg.Name, arg.BasedOn, arg.ShortDescription)
 	var i World
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
 		&i.Public,
 		&i.CreatedAt,
-		&i.Description,
-	)
-	return i, err
-}
-
-const createWorldAdmin = `-- name: CreateWorldAdmin :one
-INSERT INTO world_admins (
-    world_id,
-    user_id,
-    is_main
-) VALUES ($1, $2, $3) RETURNING world_id, user_id, created_at, is_main
-`
-
-type CreateWorldAdminParams struct {
-	WorldID sql.NullInt32 `json:"world_id"`
-	UserID  sql.NullInt32 `json:"user_id"`
-	IsMain  bool          `json:"is_main"`
-}
-
-func (q *Queries) CreateWorldAdmin(ctx context.Context, arg CreateWorldAdminParams) (WorldAdmin, error) {
-	row := q.db.QueryRowContext(ctx, createWorldAdmin, arg.WorldID, arg.UserID, arg.IsMain)
-	var i WorldAdmin
-	err := row.Scan(
-		&i.WorldID,
-		&i.UserID,
-		&i.CreatedAt,
-		&i.IsMain,
+		&i.ShortDescription,
+		&i.BasedOn,
+		&i.DescriptionPostID,
 	)
 	return i, err
 }
@@ -75,15 +54,30 @@ func (q *Queries) DeleteWorld(ctx context.Context, worldID int32) error {
 	return err
 }
 
+const deleteWorldAdmin = `-- name: DeleteWorldAdmin :exec
+DELETE FROM world_admins WHERE world_id = $1 AND user_id = $2
+`
+
+type DeleteWorldAdminParams struct {
+	WorldID int32 `json:"world_id"`
+	UserID  int32 `json:"user_id"`
+}
+
+func (q *Queries) DeleteWorldAdmin(ctx context.Context, arg DeleteWorldAdminParams) error {
+	_, err := q.db.ExecContext(ctx, deleteWorldAdmin, arg.WorldID, arg.UserID)
+	return err
+}
+
 const getAdminsOfWorld = `-- name: GetAdminsOfWorld :many
 SELECT
     vu.id, vu.username, vu.hashed_password, vu.email, vu.img_id, vu.password_changed_at, vu.created_at, vu.is_email_verified, vu.introduction_post_id, vu.avatar_image_id, vu.avatar_image_url, vu.avatar_image_guid, vu.introduction_post_deleted_at,
-    wa.is_main as is_main
+    wa.super_admin as super_admin
 FROM
     view_users vu
     JOIN world_admins wa on wa.user_id = vu.id
 WHERE
-    wa.world_id = $1
+    wa.world_id = $1 AND
+    wa.approved = 1
 `
 
 type GetAdminsOfWorldRow struct {
@@ -100,10 +94,10 @@ type GetAdminsOfWorldRow struct {
 	AvatarImageUrl            sql.NullString `json:"avatar_image_url"`
 	AvatarImageGuid           uuid.NullUUID  `json:"avatar_image_guid"`
 	IntroductionPostDeletedAt sql.NullTime   `json:"introduction_post_deleted_at"`
-	IsMain                    bool           `json:"is_main"`
+	SuperAdmin                bool           `json:"super_admin"`
 }
 
-func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID sql.NullInt32) ([]GetAdminsOfWorldRow, error) {
+func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID int32) ([]GetAdminsOfWorldRow, error) {
 	rows, err := q.db.QueryContext(ctx, getAdminsOfWorld, worldID)
 	if err != nil {
 		return nil, err
@@ -126,7 +120,7 @@ func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID sql.NullInt32) (
 			&i.AvatarImageUrl,
 			&i.AvatarImageGuid,
 			&i.IntroductionPostDeletedAt,
-			&i.IsMain,
+			&i.SuperAdmin,
 		); err != nil {
 			return nil, err
 		}
@@ -142,7 +136,7 @@ func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID sql.NullInt32) (
 }
 
 const getWorldByID = `-- name: GetWorldByID :one
-SELECT id, name, public, created_at, description, image_avatar, image_header, rating, activity FROM view_worlds WHERE id = $1 LIMIT 1
+SELECT id, name, public, created_at, short_description, based_on, description_post_id, image_header, image_thumbnail, image_avatar, tags, activity_post_count, activity_quest_count, activity_resource_count FROM view_worlds WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error) {
@@ -153,23 +147,28 @@ func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, e
 		&i.Name,
 		&i.Public,
 		&i.CreatedAt,
-		&i.Description,
-		&i.ImageAvatar,
+		&i.ShortDescription,
+		&i.BasedOn,
+		&i.DescriptionPostID,
 		&i.ImageHeader,
-		&i.Rating,
-		&i.Activity,
+		&i.ImageThumbnail,
+		&i.ImageAvatar,
+		pq.Array(&i.Tags),
+		&i.ActivityPostCount,
+		&i.ActivityQuestCount,
+		&i.ActivityResourceCount,
 	)
 	return i, err
 }
 
 const getWorlds = `-- name: GetWorlds :many
-SELECT id, name, public, created_at, description, image_avatar, image_header, rating, activity FROM view_worlds
+SELECT id, name, public, created_at, short_description, based_on, description_post_id, image_header, image_thumbnail, image_avatar, tags, activity_post_count, activity_quest_count, activity_resource_count FROM view_worlds
 WHERE ($1::boolean IS NULL OR public = $1)
 ORDER BY
     CASE
      WHEN $2::bool
          THEN $3::VARCHAR
-     ELSE 'activity'
+     ELSE 'created_at'
      END
 DESC
 LIMIT $5
@@ -204,11 +203,16 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 			&i.Name,
 			&i.Public,
 			&i.CreatedAt,
-			&i.Description,
-			&i.ImageAvatar,
+			&i.ShortDescription,
+			&i.BasedOn,
+			&i.DescriptionPostID,
 			&i.ImageHeader,
-			&i.Rating,
-			&i.Activity,
+			&i.ImageThumbnail,
+			&i.ImageAvatar,
+			pq.Array(&i.Tags),
+			&i.ActivityPostCount,
+			&i.ActivityQuestCount,
+			&i.ActivityResourceCount,
 		); err != nil {
 			return nil, err
 		}
@@ -225,33 +229,61 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 
 const getWorldsOfUser = `-- name: GetWorldsOfUser :many
 SELECT
-    vw.id, vw.name, vw.public, vw.created_at, vw.description, vw.image_avatar, vw.image_header, vw.rating, vw.activity
+    vw.id, vw.name, vw.public, vw.created_at, vw.short_description, vw.based_on, vw.description_post_id, vw.image_header, vw.image_thumbnail, vw.image_avatar, vw.tags, vw.activity_post_count, vw.activity_quest_count, vw.activity_resource_count,
+    1 as world_admin,
+    wa.super_admin as world_super_admin
 FROM
     view_worlds vw
     JOIN world_admins wa ON wa.world_id = vw.id
 WHERE
-    wa.user_id = $1
+    wa.user_id = $1 AND wa.approved = 1
 `
 
-func (q *Queries) GetWorldsOfUser(ctx context.Context, userID sql.NullInt32) ([]ViewWorld, error) {
+type GetWorldsOfUserRow struct {
+	ID                    int32          `json:"id"`
+	Name                  string         `json:"name"`
+	Public                bool           `json:"public"`
+	CreatedAt             time.Time      `json:"created_at"`
+	ShortDescription      string         `json:"short_description"`
+	BasedOn               string         `json:"based_on"`
+	DescriptionPostID     sql.NullInt32  `json:"description_post_id"`
+	ImageHeader           sql.NullString `json:"image_header"`
+	ImageThumbnail        sql.NullString `json:"image_thumbnail"`
+	ImageAvatar           sql.NullString `json:"image_avatar"`
+	Tags                  []string       `json:"tags"`
+	ActivityPostCount     int32          `json:"activity_post_count"`
+	ActivityQuestCount    int32          `json:"activity_quest_count"`
+	ActivityResourceCount int32          `json:"activity_resource_count"`
+	WorldAdmin            interface{}    `json:"world_admin"`
+	WorldSuperAdmin       bool           `json:"world_super_admin"`
+}
+
+func (q *Queries) GetWorldsOfUser(ctx context.Context, userID int32) ([]GetWorldsOfUserRow, error) {
 	rows, err := q.db.QueryContext(ctx, getWorldsOfUser, userID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []ViewWorld{}
+	items := []GetWorldsOfUserRow{}
 	for rows.Next() {
-		var i ViewWorld
+		var i GetWorldsOfUserRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
 			&i.Public,
 			&i.CreatedAt,
-			&i.Description,
-			&i.ImageAvatar,
+			&i.ShortDescription,
+			&i.BasedOn,
+			&i.DescriptionPostID,
 			&i.ImageHeader,
-			&i.Rating,
-			&i.Activity,
+			&i.ImageThumbnail,
+			&i.ImageAvatar,
+			pq.Array(&i.Tags),
+			&i.ActivityPostCount,
+			&i.ActivityQuestCount,
+			&i.ActivityResourceCount,
+			&i.WorldAdmin,
+			&i.WorldSuperAdmin,
 		); err != nil {
 			return nil, err
 		}
@@ -266,13 +298,51 @@ func (q *Queries) GetWorldsOfUser(ctx context.Context, userID sql.NullInt32) ([]
 	return items, nil
 }
 
+const insertWorldAdmin = `-- name: InsertWorldAdmin :one
+INSERT INTO world_admins (
+    world_id,
+    user_id,
+    super_admin,
+    approved,
+    motivational_letter
+) VALUES ($1, $2, $3, $4, $5) RETURNING world_id, user_id, created_at, super_admin, approved, motivational_letter
+`
+
+type InsertWorldAdminParams struct {
+	WorldID            int32  `json:"world_id"`
+	UserID             int32  `json:"user_id"`
+	SuperAdmin         bool   `json:"super_admin"`
+	Approved           int32  `json:"approved"`
+	MotivationalLetter string `json:"motivational_letter"`
+}
+
+func (q *Queries) InsertWorldAdmin(ctx context.Context, arg InsertWorldAdminParams) (WorldAdmin, error) {
+	row := q.db.QueryRowContext(ctx, insertWorldAdmin,
+		arg.WorldID,
+		arg.UserID,
+		arg.SuperAdmin,
+		arg.Approved,
+		arg.MotivationalLetter,
+	)
+	var i WorldAdmin
+	err := row.Scan(
+		&i.WorldID,
+		&i.UserID,
+		&i.CreatedAt,
+		&i.SuperAdmin,
+		&i.Approved,
+		&i.MotivationalLetter,
+	)
+	return i, err
+}
+
 const isWorldAdmin = `-- name: IsWorldAdmin :one
-SELECT world_id, user_id, created_at, is_main FROM world_admins WHERE user_id = $1 AND world_id = $2
+SELECT world_id, user_id, created_at, super_admin, approved, motivational_letter FROM world_admins WHERE user_id = $1 AND world_id = $2 AND approved = 1
 `
 
 type IsWorldAdminParams struct {
-	UserID  sql.NullInt32 `json:"user_id"`
-	WorldID sql.NullInt32 `json:"world_id"`
+	UserID  int32 `json:"user_id"`
+	WorldID int32 `json:"world_id"`
 }
 
 func (q *Queries) IsWorldAdmin(ctx context.Context, arg IsWorldAdminParams) (WorldAdmin, error) {
@@ -282,7 +352,32 @@ func (q *Queries) IsWorldAdmin(ctx context.Context, arg IsWorldAdminParams) (Wor
 		&i.WorldID,
 		&i.UserID,
 		&i.CreatedAt,
-		&i.IsMain,
+		&i.SuperAdmin,
+		&i.Approved,
+		&i.MotivationalLetter,
+	)
+	return i, err
+}
+
+const isWorldSuperAdmin = `-- name: IsWorldSuperAdmin :one
+SELECT world_id, user_id, created_at, super_admin, approved, motivational_letter FROM world_admins WHERE user_id = $1 AND world_id = $2 AND approved = 1 AND super_admin = 1
+`
+
+type IsWorldSuperAdminParams struct {
+	UserID  int32 `json:"user_id"`
+	WorldID int32 `json:"world_id"`
+}
+
+func (q *Queries) IsWorldSuperAdmin(ctx context.Context, arg IsWorldSuperAdminParams) (WorldAdmin, error) {
+	row := q.db.QueryRowContext(ctx, isWorldSuperAdmin, arg.UserID, arg.WorldID)
+	var i WorldAdmin
+	err := row.Scan(
+		&i.WorldID,
+		&i.UserID,
+		&i.CreatedAt,
+		&i.SuperAdmin,
+		&i.Approved,
+		&i.MotivationalLetter,
 	)
 	return i, err
 }
@@ -291,25 +386,31 @@ const updateWorld = `-- name: UpdateWorld :one
 UPDATE worlds
 SET
     name = COALESCE($1, name),
-    public = COALESCE($2, public),
-    description = COALESCE($3, description)
+    based_on = COALESCE($2, based_on),
+    public = COALESCE($3, public),
+    short_description = COALESCE($4, short_description),
+    description_post_id = COALESCE($5, description_post_id)
 WHERE
-    id = $4
-RETURNING id, name, public, created_at, description
+    id = $6
+RETURNING id, name, public, created_at, short_description, based_on, description_post_id
 `
 
 type UpdateWorldParams struct {
-	Name        sql.NullString `json:"name"`
-	Public      sql.NullBool   `json:"public"`
-	Description sql.NullString `json:"description"`
-	WorldID     int32          `json:"world_id"`
+	Name              sql.NullString `json:"name"`
+	BasedOn           sql.NullString `json:"based_on"`
+	Public            sql.NullBool   `json:"public"`
+	ShortDescription  sql.NullString `json:"short_description"`
+	DescriptionPostID sql.NullInt32  `json:"description_post_id"`
+	WorldID           int32          `json:"world_id"`
 }
 
 func (q *Queries) UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World, error) {
 	row := q.db.QueryRowContext(ctx, updateWorld,
 		arg.Name,
+		arg.BasedOn,
 		arg.Public,
-		arg.Description,
+		arg.ShortDescription,
+		arg.DescriptionPostID,
 		arg.WorldID,
 	)
 	var i World
@@ -318,7 +419,48 @@ func (q *Queries) UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World
 		&i.Name,
 		&i.Public,
 		&i.CreatedAt,
-		&i.Description,
+		&i.ShortDescription,
+		&i.BasedOn,
+		&i.DescriptionPostID,
+	)
+	return i, err
+}
+
+const updateWorldAdmin = `-- name: UpdateWorldAdmin :one
+UPDATE world_admins
+SET
+    super_admin = COALESCE($1, super_admin),
+    approved = COALESCE($2, approved),
+    motivational_letter = COALESCE($3, motivational_letter)
+WHERE
+    world_id = $4 AND user_id = $5
+RETURNING world_id, user_id, created_at, super_admin, approved, motivational_letter
+`
+
+type UpdateWorldAdminParams struct {
+	SuperAdmin         sql.NullBool   `json:"super_admin"`
+	Approved           sql.NullInt32  `json:"approved"`
+	MotivationalLetter sql.NullString `json:"motivational_letter"`
+	WorldID            int32          `json:"world_id"`
+	UserID             int32          `json:"user_id"`
+}
+
+func (q *Queries) UpdateWorldAdmin(ctx context.Context, arg UpdateWorldAdminParams) (WorldAdmin, error) {
+	row := q.db.QueryRowContext(ctx, updateWorldAdmin,
+		arg.SuperAdmin,
+		arg.Approved,
+		arg.MotivationalLetter,
+		arg.WorldID,
+		arg.UserID,
+	)
+	var i WorldAdmin
+	err := row.Scan(
+		&i.WorldID,
+		&i.UserID,
+		&i.CreatedAt,
+		&i.SuperAdmin,
+		&i.Approved,
+		&i.MotivationalLetter,
 	)
 	return i, err
 }

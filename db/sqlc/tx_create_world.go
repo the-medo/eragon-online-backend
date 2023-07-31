@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"database/sql"
+	"fmt"
 )
 
 type CreateWorldTxParams struct {
@@ -27,7 +28,58 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
-		err = q.CreateWorldStats(ctx, world.ID)
+		menu, err := q.CreateMenu(ctx, CreateMenuParams{
+			MenuCode: "world-" + fmt.Sprint(world.ID),
+			MenuHeaderImgID: sql.NullInt32{
+				Int32: 0,
+				Valid: false,
+			},
+		})
+		if err != nil {
+			return err
+		}
+
+		resourcesMenuItem, err := q.CreateMenuItem(ctx, CreateMenuItemParams{
+			MenuID:            menu.ID,
+			MenuItemCode:      "resources",
+			Name:              "Resources",
+			Position:          1,
+			ParentItemID:      sql.NullInt32{},
+			MenuItemImgID:     sql.NullInt32{},
+			DescriptionPostID: sql.NullInt32{},
+		})
+		if err != nil {
+			return err
+		}
+
+		_, err = q.CreateMenuItem(ctx, CreateMenuItemParams{
+			MenuID:       menu.ID,
+			MenuItemCode: "introduction",
+			Name:         "Introduction",
+			Position:     2,
+			ParentItemID: sql.NullInt32{
+				Int32: resourcesMenuItem.ID,
+				Valid: true,
+			},
+			MenuItemImgID:     sql.NullInt32{},
+			DescriptionPostID: sql.NullInt32{},
+		})
+		if err != nil {
+			return err
+		}
+
+		_, err = q.CreateWorldMenu(ctx, CreateWorldMenuParams{
+			WorldID: world.ID,
+			MenuID:  menu.ID,
+		})
+		if err != nil {
+			return err
+		}
+
+		err = q.CreateWorldActivity(ctx, CreateWorldActivityParams{
+			WorldID: world.ID,
+			Date:    world.CreatedAt,
+		})
 		if err != nil {
 			return err
 		}
@@ -37,16 +89,12 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
-		_, err = q.CreateWorldAdmin(ctx, CreateWorldAdminParams{
-			WorldID: sql.NullInt32{
-				Int32: world.ID,
-				Valid: true,
-			},
-			UserID: sql.NullInt32{
-				Int32: arg.UserId,
-				Valid: true,
-			},
-			IsMain: true,
+		_, err = q.InsertWorldAdmin(ctx, InsertWorldAdminParams{
+			WorldID:            world.ID,
+			UserID:             arg.UserId,
+			SuperAdmin:         true,
+			Approved:           1,
+			MotivationalLetter: "Creator of the world!",
 		})
 
 		if err != nil {
@@ -54,11 +102,12 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 		}
 
 		result = ViewWorld{
-			ID:          world.ID,
-			Name:        world.Name,
-			Description: world.Description,
-			CreatedAt:   world.CreatedAt,
-			Public:      world.Public,
+			ID:               world.ID,
+			Name:             world.Name,
+			CreatedAt:        world.CreatedAt,
+			Public:           world.Public,
+			BasedOn:          world.BasedOn,
+			ShortDescription: world.ShortDescription,
 		}
 		return nil
 	})

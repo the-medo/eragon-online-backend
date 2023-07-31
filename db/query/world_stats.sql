@@ -1,38 +1,47 @@
 
--- name: CreateWorldStats :exec
-INSERT INTO world_stats ( world_id ) VALUES ( @world_id );
+-- name: CreateWorldActivity :exec
+INSERT INTO world_activity ( world_id, date, post_count, quest_count, resource_count ) VALUES ( @world_id, @date, 0, 0, 0 );
 
--- name: UpdateWorldStats :one
-UPDATE world_stats
+-- name: UpdateWorldActivity :one
+UPDATE world_activity
 SET
-    final_content_rating = COALESCE(sqlc.arg(final_content_rating), final_content_rating),
-    final_activity = COALESCE(sqlc.arg(final_activity), final_activity)
+    post_count = COALESCE(sqlc.narg(post_count), post_count),
+    quest_count = COALESCE(sqlc.narg(quest_count), quest_count),
+    resource_count = COALESCE(sqlc.narg(resource_count), resource_count)
 WHERE
-        world_id = sqlc.arg(world_id)
+    world_id = sqlc.arg(world_id) AND
+    date = sqlc.arg(date)
 RETURNING *;
 
--- name: DeleteWorldStats :exec
-DELETE FROM world_stats
-WHERE world_id = $1;
+-- name: DeleteAllWorldActivity :exec
+DELETE FROM world_activity WHERE world_id = @world_id;
 
--- name: GetWorldStats :one
-SELECT * FROM world_stats WHERE world_id = @world_id LIMIT 1;
+-- name: DeleteWorldActivityForDate :exec
+DELETE FROM world_activity WHERE world_id = @world_id AND date = @date;
 
--- name: InsertWorldStatsHistory :one
-INSERT INTO world_stats_history
-(
+-- name: GetWorldDailyActivity :many
+SELECT
+    *
+FROM
+    world_activity
+WHERE
+    world_id = COALESCE(sqlc.narg(world_id), world_id) AND
+    date >= sqlc.arg(date_from)
+ORDER BY date DESC;
+
+-- name: GetWorldMonthlyActivity :many
+SELECT
+    cast(date_trunc('month', date) as date) AS month,
     world_id,
-    final_content_rating,
-    final_activity
-)
-VALUES
-    (@world_id, @final_content_rating, @final_activity)
-RETURNING *;
-
--- name: DeleteWorldStatsHistory :exec
-DELETE FROM world_stats_history WHERE world_id = @world_id;
-
--- name: GetWorldStatsHistory :many
-SELECT * FROM world_stats_history
-WHERE created_at >= @start_date
-ORDER BY created_at DESC;
+    cast(SUM(post_count) as integer) AS post_count,
+    cast(SUM(quest_count) as integer) AS quest_count,
+    cast(SUM(resource_count) as integer) AS resource_count
+FROM
+    world_activity
+WHERE
+    world_id = COALESCE(sqlc.narg(world_id), world_id) AND
+    date >= sqlc.arg(date_from)
+GROUP BY
+    month, world_id
+ORDER BY
+    month DESC;

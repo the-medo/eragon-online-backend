@@ -11,6 +11,10 @@ enum image_variant {
   30x30
   original
   public
+  600x400
+  400x600
+  300x200
+  200x300
 }
 
 Table image_types {
@@ -121,47 +125,67 @@ Table chat {
 Table worlds {
   id int [pk, increment]
   name varchar [not null, unique]
+  based_on varchar [not null]
   public boolean [not null, default: false]
   created_at timestamptz [not null, default: `now()`]
-  description varchar [not null, default: '']
+  short_description varchar [not null, default: '']
+  description_post_id int [null, ref: > posts.id]
 }
 
 Table world_admins {
-  world_id int [ref: > worlds.id]
-  user_id int [ref: > users.id]
+  world_id int [not null, ref: > worlds.id]
+  user_id int [not null, ref: > users.id]
   created_at timestamptz [not null, default: `now()`]
-  is_main boolean [not null, default: false]
+  super_admin boolean [not null, default: false]
+  approved int [not null, note: '0 = NO, 1 = YES, 2 = PENDING']
+  motivational_letter varchar [not null]
 
   indexes {
     (world_id, user_id) [unique]
   }
 }
 
-Table world_images {
-  world_id int [pk, ref: > worlds.id]
-  image_header int [ref: > images.id]
-  image_avatar int [ref: > images.id]
-}
-
-Table world_stats {
-  world_id int [pk, ref: > worlds.id]
-  final_content_rating int [not null, default: 0]
-  final_activity int [not null, default: 0]
+Table world_menu {
+  world_id int [not null, ref: > worlds.id]
+  menu_id int [not null, ref: > menus.id]
 
   indexes {
-    final_content_rating [type: btree]
-    final_activity [type: btree]
+    (world_id, menu_id) [unique]
   }
 }
 
-Table world_stats_history {
-  world_id int [ref: > worlds.id]
-  final_content_rating int [not null, default: 0]
-  final_activity int [not null, default: 0]
-  created_at timestamptz [not null, default: `now()`]
+Table world_tags_available {
+  id int [pk, increment]
+  tag varchar [not null, unique]
+}
+
+Table world_tags {
+  world_id int [not null, ref: > worlds.id]
+  tag_id int [not null]
 
   indexes {
-    created_at [type: btree]
+    (world_id, tag_id) [unique]
+  }
+}
+
+Ref: world_tags.tag_id > world_tags_available.id [delete: cascade]
+
+Table world_images {
+  world_id int [pk, ref: > worlds.id]
+  header_img_id int [ref: > images.id]
+  thumbnail_img_id int [ref: > images.id]
+  avatar_img_id int [ref: > images.id]
+}
+
+Table world_activity {
+  world_id int [not null, ref: > worlds.id]
+  date date [not null]
+  post_count int [not null]
+  quest_count int [not null]
+  resource_count int [not null]
+
+  indexes {
+    (world_id, date) [unique]
   }
 }
 
@@ -296,6 +320,33 @@ Table post_history {
   is_private bool [not null]
 }
 
+Table menus {
+  id int [pk, increment]
+  menu_code varchar [not null, unique]
+  menu_header_img_id int [null, ref: > images.id]
+}
+
+Table menu_items {
+  id int [pk, increment]
+  menu_id int [not null, ref: > menus.id]
+  menu_item_code varchar [not null]
+  name varchar [not null]
+  position int [not null]
+  parent_item_id int [null, ref: > menu_items.id]
+  menu_item_img_id int [null, ref: > images.id]
+  description_post_id int [null, ref: > posts.id]
+}
+
+Table menu_item_posts {
+  menu_item_id int [not null, ref: > menu_items.id]
+  post_id int [not null, ref: > posts.id]
+  position int [not null]
+
+  indexes {
+    (menu_item_id, post_id) [unique]
+  }
+}
+
 TableGroup Evaluations {
   evaluations
   evaluation_votes
@@ -318,15 +369,23 @@ TableGroup UserStuff {
 TableGroup Worlds {
   worlds
   world_images
-  world_stats
-  world_stats_history
+  world_activity
   world_admins
+  world_tags_available
+  world_tags
+  world_menu
 }
 
 TableGroup Posts {
   posts
   post_types
   post_history
+}
+
+TableGroup Menus {
+  menus
+  menu_items
+  menu_item_posts
 }
 
 

@@ -11,65 +11,74 @@ import (
 	"time"
 )
 
-const createWorldStats = `-- name: CreateWorldStats :exec
-INSERT INTO world_stats ( world_id ) VALUES ( $1 )
+const createWorldActivity = `-- name: CreateWorldActivity :exec
+INSERT INTO world_activity ( world_id, date, post_count, quest_count, resource_count ) VALUES ( $1, $2, 0, 0, 0 )
 `
 
-func (q *Queries) CreateWorldStats(ctx context.Context, worldID int32) error {
-	_, err := q.db.ExecContext(ctx, createWorldStats, worldID)
+type CreateWorldActivityParams struct {
+	WorldID int32     `json:"world_id"`
+	Date    time.Time `json:"date"`
+}
+
+func (q *Queries) CreateWorldActivity(ctx context.Context, arg CreateWorldActivityParams) error {
+	_, err := q.db.ExecContext(ctx, createWorldActivity, arg.WorldID, arg.Date)
 	return err
 }
 
-const deleteWorldStats = `-- name: DeleteWorldStats :exec
-DELETE FROM world_stats
-WHERE world_id = $1
+const deleteAllWorldActivity = `-- name: DeleteAllWorldActivity :exec
+DELETE FROM world_activity WHERE world_id = $1
 `
 
-func (q *Queries) DeleteWorldStats(ctx context.Context, worldID int32) error {
-	_, err := q.db.ExecContext(ctx, deleteWorldStats, worldID)
+func (q *Queries) DeleteAllWorldActivity(ctx context.Context, worldID int32) error {
+	_, err := q.db.ExecContext(ctx, deleteAllWorldActivity, worldID)
 	return err
 }
 
-const deleteWorldStatsHistory = `-- name: DeleteWorldStatsHistory :exec
-DELETE FROM world_stats_history WHERE world_id = $1
+const deleteWorldActivityForDate = `-- name: DeleteWorldActivityForDate :exec
+DELETE FROM world_activity WHERE world_id = $1 AND date = $2
 `
 
-func (q *Queries) DeleteWorldStatsHistory(ctx context.Context, worldID sql.NullInt32) error {
-	_, err := q.db.ExecContext(ctx, deleteWorldStatsHistory, worldID)
+type DeleteWorldActivityForDateParams struct {
+	WorldID int32     `json:"world_id"`
+	Date    time.Time `json:"date"`
+}
+
+func (q *Queries) DeleteWorldActivityForDate(ctx context.Context, arg DeleteWorldActivityForDateParams) error {
+	_, err := q.db.ExecContext(ctx, deleteWorldActivityForDate, arg.WorldID, arg.Date)
 	return err
 }
 
-const getWorldStats = `-- name: GetWorldStats :one
-SELECT world_id, final_content_rating, final_activity FROM world_stats WHERE world_id = $1 LIMIT 1
+const getWorldDailyActivity = `-- name: GetWorldDailyActivity :many
+SELECT
+    world_id, date, post_count, quest_count, resource_count
+FROM
+    world_activity
+WHERE
+    world_id = COALESCE($1, world_id) AND
+    date >= $2
+ORDER BY date DESC
 `
 
-func (q *Queries) GetWorldStats(ctx context.Context, worldID int32) (WorldStat, error) {
-	row := q.db.QueryRowContext(ctx, getWorldStats, worldID)
-	var i WorldStat
-	err := row.Scan(&i.WorldID, &i.FinalContentRating, &i.FinalActivity)
-	return i, err
+type GetWorldDailyActivityParams struct {
+	WorldID  sql.NullInt32 `json:"world_id"`
+	DateFrom time.Time     `json:"date_from"`
 }
 
-const getWorldStatsHistory = `-- name: GetWorldStatsHistory :many
-SELECT world_id, final_content_rating, final_activity, created_at FROM world_stats_history
-WHERE created_at >= $1
-ORDER BY created_at DESC
-`
-
-func (q *Queries) GetWorldStatsHistory(ctx context.Context, startDate time.Time) ([]WorldStatsHistory, error) {
-	rows, err := q.db.QueryContext(ctx, getWorldStatsHistory, startDate)
+func (q *Queries) GetWorldDailyActivity(ctx context.Context, arg GetWorldDailyActivityParams) ([]WorldActivity, error) {
+	rows, err := q.db.QueryContext(ctx, getWorldDailyActivity, arg.WorldID, arg.DateFrom)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []WorldStatsHistory{}
+	items := []WorldActivity{}
 	for rows.Next() {
-		var i WorldStatsHistory
+		var i WorldActivity
 		if err := rows.Scan(
 			&i.WorldID,
-			&i.FinalContentRating,
-			&i.FinalActivity,
-			&i.CreatedAt,
+			&i.Date,
+			&i.PostCount,
+			&i.QuestCount,
+			&i.ResourceCount,
 		); err != nil {
 			return nil, err
 		}
@@ -84,55 +93,101 @@ func (q *Queries) GetWorldStatsHistory(ctx context.Context, startDate time.Time)
 	return items, nil
 }
 
-const insertWorldStatsHistory = `-- name: InsertWorldStatsHistory :one
-INSERT INTO world_stats_history
-(
+const getWorldMonthlyActivity = `-- name: GetWorldMonthlyActivity :many
+SELECT
+    cast(date_trunc('month', date) as date) AS month,
     world_id,
-    final_content_rating,
-    final_activity
-)
-VALUES
-    ($1, $2, $3)
-RETURNING world_id, final_content_rating, final_activity, created_at
+    cast(SUM(post_count) as integer) AS post_count,
+    cast(SUM(quest_count) as integer) AS quest_count,
+    cast(SUM(resource_count) as integer) AS resource_count
+FROM
+    world_activity
+WHERE
+    world_id = COALESCE($1, world_id) AND
+    date >= $2
+GROUP BY
+    month, world_id
+ORDER BY
+    month DESC
 `
 
-type InsertWorldStatsHistoryParams struct {
-	WorldID            sql.NullInt32 `json:"world_id"`
-	FinalContentRating int32         `json:"final_content_rating"`
-	FinalActivity      int32         `json:"final_activity"`
+type GetWorldMonthlyActivityParams struct {
+	WorldID  sql.NullInt32 `json:"world_id"`
+	DateFrom time.Time     `json:"date_from"`
 }
 
-func (q *Queries) InsertWorldStatsHistory(ctx context.Context, arg InsertWorldStatsHistoryParams) (WorldStatsHistory, error) {
-	row := q.db.QueryRowContext(ctx, insertWorldStatsHistory, arg.WorldID, arg.FinalContentRating, arg.FinalActivity)
-	var i WorldStatsHistory
+type GetWorldMonthlyActivityRow struct {
+	Month         time.Time `json:"month"`
+	WorldID       int32     `json:"world_id"`
+	PostCount     int32     `json:"post_count"`
+	QuestCount    int32     `json:"quest_count"`
+	ResourceCount int32     `json:"resource_count"`
+}
+
+func (q *Queries) GetWorldMonthlyActivity(ctx context.Context, arg GetWorldMonthlyActivityParams) ([]GetWorldMonthlyActivityRow, error) {
+	rows, err := q.db.QueryContext(ctx, getWorldMonthlyActivity, arg.WorldID, arg.DateFrom)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetWorldMonthlyActivityRow{}
+	for rows.Next() {
+		var i GetWorldMonthlyActivityRow
+		if err := rows.Scan(
+			&i.Month,
+			&i.WorldID,
+			&i.PostCount,
+			&i.QuestCount,
+			&i.ResourceCount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const updateWorldActivity = `-- name: UpdateWorldActivity :one
+UPDATE world_activity
+SET
+    post_count = COALESCE($1, post_count),
+    quest_count = COALESCE($2, quest_count),
+    resource_count = COALESCE($3, resource_count)
+WHERE
+    world_id = $4 AND
+    date = $5
+RETURNING world_id, date, post_count, quest_count, resource_count
+`
+
+type UpdateWorldActivityParams struct {
+	PostCount     sql.NullInt32 `json:"post_count"`
+	QuestCount    sql.NullInt32 `json:"quest_count"`
+	ResourceCount sql.NullInt32 `json:"resource_count"`
+	WorldID       int32         `json:"world_id"`
+	Date          time.Time     `json:"date"`
+}
+
+func (q *Queries) UpdateWorldActivity(ctx context.Context, arg UpdateWorldActivityParams) (WorldActivity, error) {
+	row := q.db.QueryRowContext(ctx, updateWorldActivity,
+		arg.PostCount,
+		arg.QuestCount,
+		arg.ResourceCount,
+		arg.WorldID,
+		arg.Date,
+	)
+	var i WorldActivity
 	err := row.Scan(
 		&i.WorldID,
-		&i.FinalContentRating,
-		&i.FinalActivity,
-		&i.CreatedAt,
+		&i.Date,
+		&i.PostCount,
+		&i.QuestCount,
+		&i.ResourceCount,
 	)
-	return i, err
-}
-
-const updateWorldStats = `-- name: UpdateWorldStats :one
-UPDATE world_stats
-SET
-    final_content_rating = COALESCE($1, final_content_rating),
-    final_activity = COALESCE($2, final_activity)
-WHERE
-        world_id = $3
-RETURNING world_id, final_content_rating, final_activity
-`
-
-type UpdateWorldStatsParams struct {
-	FinalContentRating int32 `json:"final_content_rating"`
-	FinalActivity      int32 `json:"final_activity"`
-	WorldID            int32 `json:"world_id"`
-}
-
-func (q *Queries) UpdateWorldStats(ctx context.Context, arg UpdateWorldStatsParams) (WorldStat, error) {
-	row := q.db.QueryRowContext(ctx, updateWorldStats, arg.FinalContentRating, arg.FinalActivity, arg.WorldID)
-	var i WorldStat
-	err := row.Scan(&i.WorldID, &i.FinalContentRating, &i.FinalActivity)
 	return i, err
 }
