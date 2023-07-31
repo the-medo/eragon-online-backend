@@ -3,6 +3,8 @@ syntax = "proto3";
 package pb;
 
 import "world.proto";
+import "tag.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -39,4 +41,68 @@ message UploadWorldImageRequest {
   int32 worldId = 1;
   bytes data = 2;
   int32 imageTypeId = 3;
+}
+
+message GetAvailableWorldTagsResponse {
+  repeated Tag tags = 1;
+}
+
+message CreateAvailableWorldTagRequest {
+  string tag = 1;
+}
+
+message UpdateAvailableWorldTagRequest {
+  int32 tagId = 1;
+  string newTag = 2;
+}
+
+message DeleteAvailableWorldTagRequest {
+  int32 tagId = 1;
+}
+
+message AddWorldTagRequest {
+  int32 worldId = 1;
+  int32 tagId = 2;
+}
+
+message RemoveWorldTagRequest {
+  int32 worldId = 1;
+  int32 tagId = 2;
+}
+
+message CreateWorldAdminRequest {
+  int32 worldId = 1;
+  string motivationalLetter = 2;
+}
+
+message UpdateWorldAdminRequest {
+  int32 worldId = 1;
+  int32 userId = 2;
+  int32 approved = 3;
+}
+
+message DeleteWorldAdminRequest {
+  int32 worldId = 1;
+  int32 userId = 2;
+}
+
+message GetWorldActivityRequest {
+  int32 worldId = 1;
+  google.protobuf.Timestamp dateFrom = 2;
+}
+
+message GetWorldActivityResponse {
+  repeated WorldActivity activity = 1;
+}
+
+message GetWorldsActivityRequest {
+  google.protobuf.Timestamp dateFrom = 2;
+}
+
+message GetWorldsActivityResponse {
+  repeated WorldActivity activity = 1;
+}
+
+message GetWorldsResponse {
+  repeated World worlds = 1;
 }

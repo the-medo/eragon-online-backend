@@ -65,6 +65,10 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 			String: req.GetName(),
 			Valid:  req.Name != nil,
 		},
+		BasedOn: sql.NullString{
+			String: req.GetBasedOn(),
+			Valid:  req.BasedOn != nil,
+		},
 		ShortDescription: sql.NullString{
 			String: req.GetShortDescription(),
 			Valid:  req.ShortDescription != nil,
@@ -72,6 +76,10 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 		Public: sql.NullBool{
 			Bool:  req.GetPublic(),
 			Valid: req.Public != nil,
+		},
+		DescriptionPostID: sql.NullInt32{
+			Int32: req.GetDescriptionPostId(),
+			Valid: req.DescriptionPostId != nil,
 		},
 	}
 
@@ -99,6 +107,10 @@ func validateCreateWorldRequest(req *pb.CreateWorldRequest) (violations []*errde
 		violations = append(violations, FieldViolation("short_description", err))
 	}
 
+	if err := validator.ValidateString(req.GetBasedOn(), 0, 100); err != nil {
+		violations = append(violations, FieldViolation("based_on", err))
+	}
+
 	return violations
 }
 
@@ -113,6 +125,12 @@ func validateUpdateWorldRequest(req *pb.UpdateWorldRequest) (violations []*errde
 	if req.ShortDescription != nil {
 		if err := validator.ValidateString(req.GetShortDescription(), 1, 1024); err != nil {
 			violations = append(violations, FieldViolation("short_description", err))
+		}
+	}
+
+	if req.BasedOn != nil {
+		if err := validator.ValidateString(req.GetBasedOn(), 0, 100); err != nil {
+			violations = append(violations, FieldViolation("based_on", err))
 		}
 	}
 

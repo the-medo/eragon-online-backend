@@ -23,3 +23,19 @@ message World {
   int32 activityResourceCount = 14;
 }
 
+message WorldActivity {
+  int32 worldId = 1;
+  google.protobuf.Timestamp date = 2;
+  int32 activityPostCount = 3;
+  int32 activityQuestCount = 4;
+  int32 activityResourceCount = 5;
+}
+
+message WorldAdmin {
+  int32 worldId = 1;
+  int32 userId = 2;
+  google.protobuf.Timestamp createdAt = 3;
+  bool superAdmin = 4;
+  int32 approved = 5;
+  string motivationalLetter = 6;
+}

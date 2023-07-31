@@ -60,6 +60,18 @@ const (
 	Talebound_CreateWorld_FullMethodName                        = "/pb.Talebound/CreateWorld"
 	Talebound_UpdateWorld_FullMethodName                        = "/pb.Talebound/UpdateWorld"
 	Talebound_UploadWorldImage_FullMethodName                   = "/pb.Talebound/UploadWorldImage"
+	Talebound_GetAvailableWorldTags_FullMethodName              = "/pb.Talebound/GetAvailableWorldTags"
+	Talebound_CreateAvailableWorldTag_FullMethodName            = "/pb.Talebound/CreateAvailableWorldTag"
+	Talebound_UpdateAvailableWorldTag_FullMethodName            = "/pb.Talebound/UpdateAvailableWorldTag"
+	Talebound_DeleteAvailableWorldTag_FullMethodName            = "/pb.Talebound/DeleteAvailableWorldTag"
+	Talebound_AddWorldTag_FullMethodName                        = "/pb.Talebound/AddWorldTag"
+	Talebound_RemoveWorldTag_FullMethodName                     = "/pb.Talebound/RemoveWorldTag"
+	Talebound_CreateWorldAdmin_FullMethodName                   = "/pb.Talebound/CreateWorldAdmin"
+	Talebound_UpdateWorldAdmin_FullMethodName                   = "/pb.Talebound/UpdateWorldAdmin"
+	Talebound_DeleteWorldAdmin_FullMethodName                   = "/pb.Talebound/DeleteWorldAdmin"
+	Talebound_GetWorldActivity_FullMethodName                   = "/pb.Talebound/GetWorldActivity"
+	Talebound_GetWorldsActivity_FullMethodName                  = "/pb.Talebound/GetWorldsActivity"
+	Talebound_GetWorlds_FullMethodName                          = "/pb.Talebound/GetWorlds"
 )
 
 // TaleboundClient is the client API for Talebound service.
@@ -110,6 +122,18 @@ type TaleboundClient interface {
 	CreateWorld(ctx context.Context, in *CreateWorldRequest, opts ...grpc.CallOption) (*World, error)
 	UpdateWorld(ctx context.Context, in *UpdateWorldRequest, opts ...grpc.CallOption) (*World, error)
 	UploadWorldImage(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error)
+	GetAvailableWorldTags(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAvailableWorldTagsResponse, error)
+	CreateAvailableWorldTag(ctx context.Context, in *CreateAvailableWorldTagRequest, opts ...grpc.CallOption) (*Tag, error)
+	UpdateAvailableWorldTag(ctx context.Context, in *UpdateAvailableWorldTagRequest, opts ...grpc.CallOption) (*Tag, error)
+	DeleteAvailableWorldTag(ctx context.Context, in *DeleteAvailableWorldTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	AddWorldTag(ctx context.Context, in *AddWorldTagRequest, opts ...grpc.CallOption) (*Tag, error)
+	RemoveWorldTag(ctx context.Context, in *RemoveWorldTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateWorldAdmin(ctx context.Context, in *CreateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error)
+	UpdateWorldAdmin(ctx context.Context, in *UpdateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error)
+	DeleteWorldAdmin(ctx context.Context, in *DeleteWorldAdminRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetWorldActivity(ctx context.Context, in *GetWorldActivityRequest, opts ...grpc.CallOption) (*GetWorldActivityResponse, error)
+	GetWorldsActivity(ctx context.Context, in *GetWorldsActivityRequest, opts ...grpc.CallOption) (*GetWorldsActivityResponse, error)
+	GetWorlds(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetWorldsResponse, error)
 }
 
 type taleboundClient struct {
@@ -480,6 +504,114 @@ func (c *taleboundClient) UploadWorldImage(ctx context.Context, in *UploadWorldI
 	return out, nil
 }
 
+func (c *taleboundClient) GetAvailableWorldTags(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAvailableWorldTagsResponse, error) {
+	out := new(GetAvailableWorldTagsResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetAvailableWorldTags_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) CreateAvailableWorldTag(ctx context.Context, in *CreateAvailableWorldTagRequest, opts ...grpc.CallOption) (*Tag, error) {
+	out := new(Tag)
+	err := c.cc.Invoke(ctx, Talebound_CreateAvailableWorldTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) UpdateAvailableWorldTag(ctx context.Context, in *UpdateAvailableWorldTagRequest, opts ...grpc.CallOption) (*Tag, error) {
+	out := new(Tag)
+	err := c.cc.Invoke(ctx, Talebound_UpdateAvailableWorldTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) DeleteAvailableWorldTag(ctx context.Context, in *DeleteAvailableWorldTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Talebound_DeleteAvailableWorldTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) AddWorldTag(ctx context.Context, in *AddWorldTagRequest, opts ...grpc.CallOption) (*Tag, error) {
+	out := new(Tag)
+	err := c.cc.Invoke(ctx, Talebound_AddWorldTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) RemoveWorldTag(ctx context.Context, in *RemoveWorldTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Talebound_RemoveWorldTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) CreateWorldAdmin(ctx context.Context, in *CreateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error) {
+	out := new(WorldAdmin)
+	err := c.cc.Invoke(ctx, Talebound_CreateWorldAdmin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) UpdateWorldAdmin(ctx context.Context, in *UpdateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error) {
+	out := new(WorldAdmin)
+	err := c.cc.Invoke(ctx, Talebound_UpdateWorldAdmin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) DeleteWorldAdmin(ctx context.Context, in *DeleteWorldAdminRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Talebound_DeleteWorldAdmin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetWorldActivity(ctx context.Context, in *GetWorldActivityRequest, opts ...grpc.CallOption) (*GetWorldActivityResponse, error) {
+	out := new(GetWorldActivityResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetWorldActivity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetWorldsActivity(ctx context.Context, in *GetWorldsActivityRequest, opts ...grpc.CallOption) (*GetWorldsActivityResponse, error) {
+	out := new(GetWorldsActivityResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetWorldsActivity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetWorlds(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetWorldsResponse, error) {
+	out := new(GetWorldsResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetWorlds_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TaleboundServer is the server API for Talebound service.
 // All implementations must embed UnimplementedTaleboundServer
 // for forward compatibility
@@ -528,6 +660,18 @@ type TaleboundServer interface {
 	CreateWorld(context.Context, *CreateWorldRequest) (*World, error)
 	UpdateWorld(context.Context, *UpdateWorldRequest) (*World, error)
 	UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error)
+	GetAvailableWorldTags(context.Context, *emptypb.Empty) (*GetAvailableWorldTagsResponse, error)
+	CreateAvailableWorldTag(context.Context, *CreateAvailableWorldTagRequest) (*Tag, error)
+	UpdateAvailableWorldTag(context.Context, *UpdateAvailableWorldTagRequest) (*Tag, error)
+	DeleteAvailableWorldTag(context.Context, *DeleteAvailableWorldTagRequest) (*emptypb.Empty, error)
+	AddWorldTag(context.Context, *AddWorldTagRequest) (*Tag, error)
+	RemoveWorldTag(context.Context, *RemoveWorldTagRequest) (*emptypb.Empty, error)
+	CreateWorldAdmin(context.Context, *CreateWorldAdminRequest) (*WorldAdmin, error)
+	UpdateWorldAdmin(context.Context, *UpdateWorldAdminRequest) (*WorldAdmin, error)
+	DeleteWorldAdmin(context.Context, *DeleteWorldAdminRequest) (*emptypb.Empty, error)
+	GetWorldActivity(context.Context, *GetWorldActivityRequest) (*GetWorldActivityResponse, error)
+	GetWorldsActivity(context.Context, *GetWorldsActivityRequest) (*GetWorldsActivityResponse, error)
+	GetWorlds(context.Context, *emptypb.Empty) (*GetWorldsResponse, error)
 	mustEmbedUnimplementedTaleboundServer()
 }
 
@@ -654,6 +798,42 @@ func (UnimplementedTaleboundServer) UpdateWorld(context.Context, *UpdateWorldReq
 }
 func (UnimplementedTaleboundServer) UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadWorldImage not implemented")
+}
+func (UnimplementedTaleboundServer) GetAvailableWorldTags(context.Context, *emptypb.Empty) (*GetAvailableWorldTagsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAvailableWorldTags not implemented")
+}
+func (UnimplementedTaleboundServer) CreateAvailableWorldTag(context.Context, *CreateAvailableWorldTagRequest) (*Tag, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAvailableWorldTag not implemented")
+}
+func (UnimplementedTaleboundServer) UpdateAvailableWorldTag(context.Context, *UpdateAvailableWorldTagRequest) (*Tag, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAvailableWorldTag not implemented")
+}
+func (UnimplementedTaleboundServer) DeleteAvailableWorldTag(context.Context, *DeleteAvailableWorldTagRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAvailableWorldTag not implemented")
+}
+func (UnimplementedTaleboundServer) AddWorldTag(context.Context, *AddWorldTagRequest) (*Tag, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddWorldTag not implemented")
+}
+func (UnimplementedTaleboundServer) RemoveWorldTag(context.Context, *RemoveWorldTagRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveWorldTag not implemented")
+}
+func (UnimplementedTaleboundServer) CreateWorldAdmin(context.Context, *CreateWorldAdminRequest) (*WorldAdmin, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateWorldAdmin not implemented")
+}
+func (UnimplementedTaleboundServer) UpdateWorldAdmin(context.Context, *UpdateWorldAdminRequest) (*WorldAdmin, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateWorldAdmin not implemented")
+}
+func (UnimplementedTaleboundServer) DeleteWorldAdmin(context.Context, *DeleteWorldAdminRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteWorldAdmin not implemented")
+}
+func (UnimplementedTaleboundServer) GetWorldActivity(context.Context, *GetWorldActivityRequest) (*GetWorldActivityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorldActivity not implemented")
+}
+func (UnimplementedTaleboundServer) GetWorldsActivity(context.Context, *GetWorldsActivityRequest) (*GetWorldsActivityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorldsActivity not implemented")
+}
+func (UnimplementedTaleboundServer) GetWorlds(context.Context, *emptypb.Empty) (*GetWorldsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorlds not implemented")
 }
 func (UnimplementedTaleboundServer) mustEmbedUnimplementedTaleboundServer() {}
 
@@ -1388,6 +1568,222 @@ func _Talebound_UploadWorldImage_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_GetAvailableWorldTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetAvailableWorldTags(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetAvailableWorldTags_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetAvailableWorldTags(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_CreateAvailableWorldTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAvailableWorldTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).CreateAvailableWorldTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_CreateAvailableWorldTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).CreateAvailableWorldTag(ctx, req.(*CreateAvailableWorldTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_UpdateAvailableWorldTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAvailableWorldTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).UpdateAvailableWorldTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_UpdateAvailableWorldTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).UpdateAvailableWorldTag(ctx, req.(*UpdateAvailableWorldTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_DeleteAvailableWorldTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAvailableWorldTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).DeleteAvailableWorldTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_DeleteAvailableWorldTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).DeleteAvailableWorldTag(ctx, req.(*DeleteAvailableWorldTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_AddWorldTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddWorldTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).AddWorldTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_AddWorldTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).AddWorldTag(ctx, req.(*AddWorldTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_RemoveWorldTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveWorldTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).RemoveWorldTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_RemoveWorldTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).RemoveWorldTag(ctx, req.(*RemoveWorldTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_CreateWorldAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateWorldAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).CreateWorldAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_CreateWorldAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).CreateWorldAdmin(ctx, req.(*CreateWorldAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_UpdateWorldAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateWorldAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).UpdateWorldAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_UpdateWorldAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).UpdateWorldAdmin(ctx, req.(*UpdateWorldAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_DeleteWorldAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteWorldAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).DeleteWorldAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_DeleteWorldAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).DeleteWorldAdmin(ctx, req.(*DeleteWorldAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetWorldActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorldActivityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetWorldActivity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetWorldActivity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetWorldActivity(ctx, req.(*GetWorldActivityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetWorldsActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorldsActivityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetWorldsActivity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetWorldsActivity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetWorldsActivity(ctx, req.(*GetWorldsActivityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetWorlds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetWorlds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetWorlds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetWorlds(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Talebound_ServiceDesc is the grpc.ServiceDesc for Talebound service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1554,6 +1950,54 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UploadWorldImage",
 			Handler:    _Talebound_UploadWorldImage_Handler,
+		},
+		{
+			MethodName: "GetAvailableWorldTags",
+			Handler:    _Talebound_GetAvailableWorldTags_Handler,
+		},
+		{
+			MethodName: "CreateAvailableWorldTag",
+			Handler:    _Talebound_CreateAvailableWorldTag_Handler,
+		},
+		{
+			MethodName: "UpdateAvailableWorldTag",
+			Handler:    _Talebound_UpdateAvailableWorldTag_Handler,
+		},
+		{
+			MethodName: "DeleteAvailableWorldTag",
+			Handler:    _Talebound_DeleteAvailableWorldTag_Handler,
+		},
+		{
+			MethodName: "AddWorldTag",
+			Handler:    _Talebound_AddWorldTag_Handler,
+		},
+		{
+			MethodName: "RemoveWorldTag",
+			Handler:    _Talebound_RemoveWorldTag_Handler,
+		},
+		{
+			MethodName: "CreateWorldAdmin",
+			Handler:    _Talebound_CreateWorldAdmin_Handler,
+		},
+		{
+			MethodName: "UpdateWorldAdmin",
+			Handler:    _Talebound_UpdateWorldAdmin_Handler,
+		},
+		{
+			MethodName: "DeleteWorldAdmin",
+			Handler:    _Talebound_DeleteWorldAdmin_Handler,
+		},
+		{
+			MethodName: "GetWorldActivity",
+			Handler:    _Talebound_GetWorldActivity_Handler,
+		},
+		{
+			MethodName: "GetWorldsActivity",
+			Handler:    _Talebound_GetWorldsActivity_Handler,
+		},
+		{
+			MethodName: "GetWorlds",
+			Handler:    _Talebound_GetWorlds_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
