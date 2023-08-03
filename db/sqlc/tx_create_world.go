@@ -11,11 +11,25 @@ type CreateWorldTxParams struct {
 	CreateWorldParams
 }
 
-//
-//// CreateUserTxResult is the result of the transfer transaction
-//type CreateWorldTxResult struct {
-//	world ViewWorld `json:"world"`
-//}
+func insertSubMenuItem(ctx context.Context, q *Queries, menuId int32, position int32, code string, name string, parentItemId int32) error {
+
+	_, err := q.CreateMenuItem(ctx, CreateMenuItemParams{
+		MenuID:       menuId,
+		MenuItemCode: code,
+		Name:         name,
+		Position:     position,
+		ParentItemID: sql.NullInt32{
+			Int32: parentItemId,
+			Valid: true,
+		},
+		MenuItemImgID:     sql.NullInt32{},
+		DescriptionPostID: sql.NullInt32{},
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParams) (ViewWorld, error) {
 	var result ViewWorld
@@ -39,10 +53,10 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
-		resourcesMenuItem, err := q.CreateMenuItem(ctx, CreateMenuItemParams{
+		overviewMenuItem, err := q.CreateMenuItem(ctx, CreateMenuItemParams{
 			MenuID:            menu.ID,
-			MenuItemCode:      "resources",
-			Name:              "Resources",
+			MenuItemCode:      "overview",
+			Name:              "Overview",
 			Position:          1,
 			ParentItemID:      sql.NullInt32{},
 			MenuItemImgID:     sql.NullInt32{},
@@ -52,18 +66,27 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
-		_, err = q.CreateMenuItem(ctx, CreateMenuItemParams{
-			MenuID:       menu.ID,
-			MenuItemCode: "introduction",
-			Name:         "Introduction",
-			Position:     2,
-			ParentItemID: sql.NullInt32{
-				Int32: resourcesMenuItem.ID,
-				Valid: true,
-			},
-			MenuItemImgID:     sql.NullInt32{},
-			DescriptionPostID: sql.NullInt32{},
-		})
+		err = insertSubMenuItem(ctx, q, menu.ID, 2, "races", "Races", overviewMenuItem.ID)
+		if err != nil {
+			return err
+		}
+
+		err = insertSubMenuItem(ctx, q, menu.ID, 3, "flora-and-fauna", "Flora & Fauna", overviewMenuItem.ID)
+		if err != nil {
+			return err
+		}
+
+		err = insertSubMenuItem(ctx, q, menu.ID, 4, "magic", "Magic", overviewMenuItem.ID)
+		if err != nil {
+			return err
+		}
+
+		err = insertSubMenuItem(ctx, q, menu.ID, 5, "science-and-technology", "Science & Technology", overviewMenuItem.ID)
+		if err != nil {
+			return err
+		}
+
+		err = insertSubMenuItem(ctx, q, menu.ID, 6, "history", "History", overviewMenuItem.ID)
 		if err != nil {
 			return err
 		}

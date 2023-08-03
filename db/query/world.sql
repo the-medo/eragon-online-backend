@@ -38,6 +38,11 @@ DESC
 LIMIT @page_limit
 OFFSET @page_offset;
 
+
+-- name: GetWorldsCount :one
+SELECT COUNT(*) FROM view_worlds
+WHERE (@is_public::boolean IS NULL OR public = @is_public);
+
 -- name: InsertWorldAdmin :one
 INSERT INTO world_admins (
     world_id,

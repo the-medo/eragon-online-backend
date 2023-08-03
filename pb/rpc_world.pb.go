@@ -1158,7 +1158,8 @@ type GetWorldsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Worlds []*World `protobuf:"bytes,1,rep,name=worlds,proto3" json:"worlds,omitempty"`
+	Worlds     []*World `protobuf:"bytes,1,rep,name=worlds,proto3" json:"worlds,omitempty"`
+	TotalCount int32    `protobuf:"varint,2,opt,name=totalCount,proto3" json:"totalCount,omitempty"`
 }
 
 func (x *GetWorldsResponse) Reset() {
@@ -1198,6 +1199,60 @@ func (x *GetWorldsResponse) GetWorlds() []*World {
 		return x.Worlds
 	}
 	return nil
+}
+
+func (x *GetWorldsResponse) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+type GetWorldByIdRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	WorldId int32 `protobuf:"varint,1,opt,name=worldId,proto3" json:"worldId,omitempty"`
+}
+
+func (x *GetWorldByIdRequest) Reset() {
+	*x = GetWorldByIdRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_rpc_world_proto_msgTypes[21]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetWorldByIdRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWorldByIdRequest) ProtoMessage() {}
+
+func (x *GetWorldByIdRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_rpc_world_proto_msgTypes[21]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWorldByIdRequest.ProtoReflect.Descriptor instead.
+func (*GetWorldByIdRequest) Descriptor() ([]byte, []int) {
+	return file_rpc_world_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *GetWorldByIdRequest) GetWorldId() int32 {
+	if x != nil {
+		return x.WorldId
+	}
+	return 0
 }
 
 var File_rpc_world_proto protoreflect.FileDescriptor
@@ -1346,14 +1401,19 @@ var file_rpc_world_proto_rawDesc = []byte{
 	0x01, 0x28, 0x05, 0x48, 0x03, 0x52, 0x06, 0x6f, 0x66, 0x66, 0x73, 0x65, 0x74, 0x88, 0x01, 0x01,
 	0x42, 0x09, 0x0a, 0x07, 0x5f, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x42, 0x0a, 0x0a, 0x08, 0x5f,
 	0x6f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x79, 0x42, 0x08, 0x0a, 0x06, 0x5f, 0x6c, 0x69, 0x6d, 0x69,
-	0x74, 0x42, 0x09, 0x0a, 0x07, 0x5f, 0x6f, 0x66, 0x66, 0x73, 0x65, 0x74, 0x22, 0x36, 0x0a, 0x11,
+	0x74, 0x42, 0x09, 0x0a, 0x07, 0x5f, 0x6f, 0x66, 0x66, 0x73, 0x65, 0x74, 0x22, 0x56, 0x0a, 0x11,
 	0x47, 0x65, 0x74, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
 	0x65, 0x12, 0x21, 0x0a, 0x06, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
 	0x0b, 0x32, 0x09, 0x2e, 0x70, 0x62, 0x2e, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x52, 0x06, 0x77, 0x6f,
-	0x72, 0x6c, 0x64, 0x73, 0x42, 0x2a, 0x5a, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
-	0x6f, 0x6d, 0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c, 0x65,
-	0x62, 0x6f, 0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70, 0x62,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x72, 0x6c, 0x64, 0x73, 0x12, 0x1e, 0x0a, 0x0a, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x43, 0x6f, 0x75,
+	0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0a, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x43,
+	0x6f, 0x75, 0x6e, 0x74, 0x22, 0x2f, 0x0a, 0x13, 0x47, 0x65, 0x74, 0x57, 0x6f, 0x72, 0x6c, 0x64,
+	0x42, 0x79, 0x49, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x77,
+	0x6f, 0x72, 0x6c, 0x64, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x77, 0x6f,
+	0x72, 0x6c, 0x64, 0x49, 0x64, 0x42, 0x2a, 0x5a, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
+	0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c,
+	0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70,
+	0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1368,7 +1428,7 @@ func file_rpc_world_proto_rawDescGZIP() []byte {
 	return file_rpc_world_proto_rawDescData
 }
 
-var file_rpc_world_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
+var file_rpc_world_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
 var file_rpc_world_proto_goTypes = []interface{}{
 	(*WorldOfCreatorResponse)(nil),          // 0: pb.WorldOfCreatorResponse
 	(*GetWorldsOfCreatorRequest)(nil),       // 1: pb.GetWorldsOfCreatorRequest
@@ -1391,20 +1451,21 @@ var file_rpc_world_proto_goTypes = []interface{}{
 	(*GetWorldMonthlyActivityResponse)(nil), // 18: pb.GetWorldMonthlyActivityResponse
 	(*GetWorldsRequest)(nil),                // 19: pb.GetWorldsRequest
 	(*GetWorldsResponse)(nil),               // 20: pb.GetWorldsResponse
-	(*World)(nil),                           // 21: pb.World
-	(*Tag)(nil),                             // 22: pb.Tag
-	(*timestamppb.Timestamp)(nil),           // 23: google.protobuf.Timestamp
-	(*WorldActivity)(nil),                   // 24: pb.WorldActivity
+	(*GetWorldByIdRequest)(nil),             // 21: pb.GetWorldByIdRequest
+	(*World)(nil),                           // 22: pb.World
+	(*Tag)(nil),                             // 23: pb.Tag
+	(*timestamppb.Timestamp)(nil),           // 24: google.protobuf.Timestamp
+	(*WorldActivity)(nil),                   // 25: pb.WorldActivity
 }
 var file_rpc_world_proto_depIdxs = []int32{
-	21, // 0: pb.WorldOfCreatorResponse.world:type_name -> pb.World
+	22, // 0: pb.WorldOfCreatorResponse.world:type_name -> pb.World
 	0,  // 1: pb.GetWorldsOfCreatorResponse.worlds:type_name -> pb.WorldOfCreatorResponse
-	22, // 2: pb.GetAvailableWorldTagsResponse.tags:type_name -> pb.Tag
-	23, // 3: pb.GetWorldDailyActivityRequest.dateFrom:type_name -> google.protobuf.Timestamp
-	24, // 4: pb.GetWorldDailyActivityResponse.activity:type_name -> pb.WorldActivity
-	23, // 5: pb.GetWorldMonthlyActivityRequest.dateFrom:type_name -> google.protobuf.Timestamp
-	24, // 6: pb.GetWorldMonthlyActivityResponse.activity:type_name -> pb.WorldActivity
-	21, // 7: pb.GetWorldsResponse.worlds:type_name -> pb.World
+	23, // 2: pb.GetAvailableWorldTagsResponse.tags:type_name -> pb.Tag
+	24, // 3: pb.GetWorldDailyActivityRequest.dateFrom:type_name -> google.protobuf.Timestamp
+	25, // 4: pb.GetWorldDailyActivityResponse.activity:type_name -> pb.WorldActivity
+	24, // 5: pb.GetWorldMonthlyActivityRequest.dateFrom:type_name -> google.protobuf.Timestamp
+	25, // 6: pb.GetWorldMonthlyActivityResponse.activity:type_name -> pb.WorldActivity
+	22, // 7: pb.GetWorldsResponse.worlds:type_name -> pb.World
 	8,  // [8:8] is the sub-list for method output_type
 	8,  // [8:8] is the sub-list for method input_type
 	8,  // [8:8] is the sub-list for extension type_name
@@ -1672,6 +1733,18 @@ func file_rpc_world_proto_init() {
 				return nil
 			}
 		}
+		file_rpc_world_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetWorldByIdRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_rpc_world_proto_msgTypes[4].OneofWrappers = []interface{}{}
 	file_rpc_world_proto_msgTypes[13].OneofWrappers = []interface{}{}
@@ -1684,7 +1757,7 @@ func file_rpc_world_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_rpc_world_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   21,
+			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

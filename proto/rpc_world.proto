@@ -115,4 +115,9 @@ message GetWorldsRequest {
 
 message GetWorldsResponse {
   repeated World worlds = 1;
+  int32 totalCount = 2;
+}
+
+message GetWorldByIdRequest {
+  int32 worldId = 1;
 }

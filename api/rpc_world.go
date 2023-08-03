@@ -99,11 +99,11 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 }
 
 func validateCreateWorldRequest(req *pb.CreateWorldRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateString(req.GetName(), 3, 32); err != nil {
+	if err := validator.ValidateString(req.GetName(), 3, 64); err != nil {
 		violations = append(violations, FieldViolation("name", err))
 	}
 
-	if err := validator.ValidateString(req.GetShortDescription(), 1, 1024); err != nil {
+	if err := validator.ValidateString(req.GetShortDescription(), 0, 1024); err != nil {
 		violations = append(violations, FieldViolation("short_description", err))
 	}
 

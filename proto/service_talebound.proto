@@ -598,4 +598,14 @@ service Talebound {
       summary: "Get worlds ";
     };
   };
+
+  rpc GetWorldById(GetWorldByIdRequest) returns (World) {
+    option (google.api.http) = {
+      get: "/worlds/{worldId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets world by ID";
+      summary: "Get world by ID ";
+    };
+  };
 }

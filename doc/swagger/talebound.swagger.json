@@ -1727,6 +1727,37 @@
       }
     },
     "/worlds/{worldId}": {
+      "get": {
+        "summary": "Get world by ID ",
+        "description": "gets world by ID",
+        "operationId": "Talebound_GetWorldById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbWorld"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
       "patch": {
         "summary": "Update world",
         "description": "updates world properties (NO images or stats!)",
@@ -2632,6 +2663,10 @@
             "type": "object",
             "$ref": "#/definitions/pbWorld"
           }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

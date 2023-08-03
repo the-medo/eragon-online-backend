@@ -227,6 +227,18 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 	return items, nil
 }
 
+const getWorldsCount = `-- name: GetWorldsCount :one
+SELECT COUNT(*) FROM view_worlds
+WHERE ($1::boolean IS NULL OR public = $1)
+`
+
+func (q *Queries) GetWorldsCount(ctx context.Context, isPublic bool) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getWorldsCount, isPublic)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const getWorldsOfUser = `-- name: GetWorldsOfUser :many
 SELECT
     vw.id, vw.name, vw.public, vw.created_at, vw.short_description, vw.based_on, vw.description_post_id, vw.image_header, vw.image_thumbnail, vw.image_avatar, vw.tags, vw.activity_post_count, vw.activity_quest_count, vw.activity_resource_count,

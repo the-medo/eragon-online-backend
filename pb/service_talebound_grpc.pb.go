@@ -72,6 +72,7 @@ const (
 	Talebound_GetWorldDailyActivity_FullMethodName              = "/pb.Talebound/GetWorldDailyActivity"
 	Talebound_GetWorldMonthlyActivity_FullMethodName            = "/pb.Talebound/GetWorldMonthlyActivity"
 	Talebound_GetWorlds_FullMethodName                          = "/pb.Talebound/GetWorlds"
+	Talebound_GetWorldById_FullMethodName                       = "/pb.Talebound/GetWorldById"
 )
 
 // TaleboundClient is the client API for Talebound service.
@@ -134,6 +135,7 @@ type TaleboundClient interface {
 	GetWorldDailyActivity(ctx context.Context, in *GetWorldDailyActivityRequest, opts ...grpc.CallOption) (*GetWorldDailyActivityResponse, error)
 	GetWorldMonthlyActivity(ctx context.Context, in *GetWorldMonthlyActivityRequest, opts ...grpc.CallOption) (*GetWorldMonthlyActivityResponse, error)
 	GetWorlds(ctx context.Context, in *GetWorldsRequest, opts ...grpc.CallOption) (*GetWorldsResponse, error)
+	GetWorldById(ctx context.Context, in *GetWorldByIdRequest, opts ...grpc.CallOption) (*World, error)
 }
 
 type taleboundClient struct {
@@ -612,6 +614,15 @@ func (c *taleboundClient) GetWorlds(ctx context.Context, in *GetWorldsRequest, o
 	return out, nil
 }
 
+func (c *taleboundClient) GetWorldById(ctx context.Context, in *GetWorldByIdRequest, opts ...grpc.CallOption) (*World, error) {
+	out := new(World)
+	err := c.cc.Invoke(ctx, Talebound_GetWorldById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TaleboundServer is the server API for Talebound service.
 // All implementations must embed UnimplementedTaleboundServer
 // for forward compatibility
@@ -672,6 +683,7 @@ type TaleboundServer interface {
 	GetWorldDailyActivity(context.Context, *GetWorldDailyActivityRequest) (*GetWorldDailyActivityResponse, error)
 	GetWorldMonthlyActivity(context.Context, *GetWorldMonthlyActivityRequest) (*GetWorldMonthlyActivityResponse, error)
 	GetWorlds(context.Context, *GetWorldsRequest) (*GetWorldsResponse, error)
+	GetWorldById(context.Context, *GetWorldByIdRequest) (*World, error)
 	mustEmbedUnimplementedTaleboundServer()
 }
 
@@ -834,6 +846,9 @@ func (UnimplementedTaleboundServer) GetWorldMonthlyActivity(context.Context, *Ge
 }
 func (UnimplementedTaleboundServer) GetWorlds(context.Context, *GetWorldsRequest) (*GetWorldsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWorlds not implemented")
+}
+func (UnimplementedTaleboundServer) GetWorldById(context.Context, *GetWorldByIdRequest) (*World, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorldById not implemented")
 }
 func (UnimplementedTaleboundServer) mustEmbedUnimplementedTaleboundServer() {}
 
@@ -1784,6 +1799,24 @@ func _Talebound_GetWorlds_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_GetWorldById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorldByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetWorldById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetWorldById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetWorldById(ctx, req.(*GetWorldByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Talebound_ServiceDesc is the grpc.ServiceDesc for Talebound service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1998,6 +2031,10 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetWorlds",
 			Handler:    _Talebound_GetWorlds_Handler,
+		},
+		{
+			MethodName: "GetWorldById",
+			Handler:    _Talebound_GetWorldById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

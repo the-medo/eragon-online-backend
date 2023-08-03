@@ -10,6 +10,10 @@ import (
 )
 
 func (server *Server) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (*pb.GetWorldsResponse, error) {
+	violations := validateGetWorlds(req)
+	if violations != nil {
+		return nil, invalidArgumentError(violations)
+	}
 
 	limit, offset := GetDefaultQueryBoundaries(req.GetLimit(), req.GetOffset())
 
@@ -20,6 +24,8 @@ func (server *Server) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (
 
 	if req.Public != nil {
 		arg.IsPublic = req.GetPublic()
+	} else {
+		arg.IsPublic = true
 	}
 
 	if req.OrderBy != nil {
@@ -32,8 +38,14 @@ func (server *Server) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (
 		return nil, err
 	}
 
+	totalCount, err := server.store.GetWorldsCount(ctx, arg.IsPublic)
+	if err != nil {
+		return nil, err
+	}
+
 	rsp := &pb.GetWorldsResponse{
-		Worlds: make([]*pb.World, len(worlds)),
+		Worlds:     make([]*pb.World, len(worlds)),
+		TotalCount: int32(totalCount),
 	}
 
 	for i, world := range worlds {
