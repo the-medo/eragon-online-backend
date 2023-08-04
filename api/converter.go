@@ -207,6 +207,7 @@ func convertWorld(world db.ViewWorld) *pb.World {
 		Public:                world.Public,
 		CreatedAt:             timestamppb.New(world.CreatedAt),
 		ShortDescription:      world.ShortDescription,
+		BasedOn:               world.BasedOn,
 		ImageAvatar:           world.ImageAvatar.String,
 		ImageThumbnail:        world.ImageThumbnail.String,
 		ImageHeader:           world.ImageHeader.String,
