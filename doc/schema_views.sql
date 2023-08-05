@@ -5,9 +5,9 @@ SELECT
     i_thumbnail.url as image_thumbnail,
     i_avatar.url as image_avatar,
     tags.tags AS tags,
-    activity.activity_post_count AS activity_post_count,
-    activity.activity_quest_count AS activity_quest_count,
-    activity.activity_resource_count AS activity_resource_count
+    COALESCE(activity.activity_post_count, 0) AS activity_post_count,
+    COALESCE(activity.activity_quest_count, 0) AS activity_quest_count,
+    COALESCE(activity.activity_resource_count, 0) AS activity_resource_count
 FROM
     worlds w
         JOIN world_images wi ON w.id = wi.world_id

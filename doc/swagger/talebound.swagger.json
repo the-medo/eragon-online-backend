@@ -2900,6 +2900,10 @@
         "data": {
           "type": "string",
           "format": "byte"
+        },
+        "imageTypeId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

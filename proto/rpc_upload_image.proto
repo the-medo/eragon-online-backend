@@ -10,6 +10,7 @@ option go_package = "github.com/the-medo/talebound-backend/pb";
 message UploadImageRequest {
   string filename = 1;
   bytes data = 2;
+  int32 imageTypeId = 3;
 }
 
 message UploadImageResponse {

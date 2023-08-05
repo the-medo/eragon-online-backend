@@ -136,7 +136,7 @@ func (server *Server) UploadDefaultImage(ctx context.Context, request *pb.Upload
 
 	filename := fmt.Sprintf("%s-%d", request.GetFilename(), authPayload.UserId)
 
-	dbImg, err := server.UploadAndInsertToDb(ctx, request.GetData(), ImageTypeIdDefault, filename, authPayload.UserId)
+	dbImg, err := server.UploadAndInsertToDb(ctx, request.GetData(), ImageTypeIds(request.GetImageTypeId()), filename, authPayload.UserId)
 	if err != nil {
 		return nil, err
 	}

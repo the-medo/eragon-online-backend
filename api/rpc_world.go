@@ -84,7 +84,6 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 	}
 
 	changesMade := arg.Name.Valid || arg.BasedOn.Valid || arg.ShortDescription.Valid || arg.Public.Valid || arg.DescriptionPostID.Valid
-
 	if changesMade {
 		_, err = server.store.UpdateWorld(ctx, arg)
 		if err != nil {
@@ -132,7 +131,7 @@ func validateCreateWorldRequest(req *pb.CreateWorldRequest) (violations []*errde
 		violations = append(violations, FieldViolation("name", err))
 	}
 
-	if err := validator.ValidateString(req.GetShortDescription(), 0, 1024); err != nil {
+	if err := validator.ValidateString(req.GetShortDescription(), 0, 1000); err != nil {
 		violations = append(violations, FieldViolation("short_description", err))
 	}
 
@@ -146,13 +145,13 @@ func validateCreateWorldRequest(req *pb.CreateWorldRequest) (violations []*errde
 func validateUpdateWorldRequest(req *pb.UpdateWorldRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if req.Name != nil {
-		if err := validator.ValidateString(req.GetName(), 3, 32); err != nil {
+		if err := validator.ValidateString(req.GetName(), 3, 64); err != nil {
 			violations = append(violations, FieldViolation("name", err))
 		}
 	}
 
 	if req.ShortDescription != nil {
-		if err := validator.ValidateString(req.GetShortDescription(), 1, 1024); err != nil {
+		if err := validator.ValidateString(req.GetShortDescription(), 0, 1000); err != nil {
 			violations = append(violations, FieldViolation("short_description", err))
 		}
 	}
