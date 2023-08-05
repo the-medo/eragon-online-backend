@@ -83,9 +83,38 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 		},
 	}
 
-	_, err = server.store.UpdateWorld(ctx, arg)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to update world: %v", err)
+	changesMade := arg.Name.Valid || arg.BasedOn.Valid || arg.ShortDescription.Valid || arg.Public.Valid || arg.DescriptionPostID.Valid
+
+	if changesMade {
+		_, err = server.store.UpdateWorld(ctx, arg)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to update world: %v", err)
+		}
+	}
+
+	argImages := db.UpdateWorldImagesParams{
+		WorldID: req.GetWorldId(),
+		ThumbnailImgID: sql.NullInt32{
+			Int32: req.GetImageThumbnailId(),
+			Valid: req.ImageThumbnailId != nil,
+		},
+		HeaderImgID: sql.NullInt32{
+			Int32: req.GetImageHeaderId(),
+			Valid: req.ImageHeaderId != nil,
+		},
+		AvatarImgID: sql.NullInt32{
+			Int32: req.GetImageAvatarId(),
+			Valid: req.ImageAvatarId != nil,
+		},
+	}
+
+	changesMade = argImages.ThumbnailImgID.Valid || argImages.HeaderImgID.Valid || argImages.AvatarImgID.Valid
+
+	if changesMade {
+		_, err = server.store.UpdateWorldImages(ctx, argImages)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to update world: %v", err)
+		}
 	}
 
 	world, err := server.store.GetWorldByID(ctx, req.GetWorldId())

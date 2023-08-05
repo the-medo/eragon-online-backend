@@ -35,6 +35,9 @@ message UpdateWorldRequest {
   optional bool public = 4;
   optional string basedOn = 5;
   optional int32 descriptionPostId = 6;
+  optional int32 imageAvatarId = 7;
+  optional int32 imageThumbnailId = 8;
+  optional int32 imageHeaderId = 9;
 }
 
 message UploadWorldImageRequest {
