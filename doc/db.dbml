@@ -15,6 +15,7 @@ enum image_variant {
   400x600
   300x200
   200x300
+  250x50
 }
 
 Table image_types {

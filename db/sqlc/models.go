@@ -71,6 +71,7 @@ const (
 	ImageVariant400x600  ImageVariant = "400x600"
 	ImageVariant300x200  ImageVariant = "300x200"
 	ImageVariant200x300  ImageVariant = "200x300"
+	ImageVariant250x50   ImageVariant = "250x50"
 )
 
 func (e *ImageVariant) Scan(src interface{}) error {

@@ -1,4 +1,6 @@
 
+DELETE FROM "image_types" WHERE id IN (1200, 1300);
+
 -- ========= Overcomplicated removal of "original" image_variant ============
 -- Step 1: Change "original" to "public" in "image_types" table
 -- UPDATE image_types SET variant = '1200x800' WHERE variant IN ('300x200', '600x400');

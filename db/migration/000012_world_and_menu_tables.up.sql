@@ -143,3 +143,8 @@ ALTER TYPE "image_variant" ADD VALUE '600x400';
 ALTER TYPE "image_variant" ADD VALUE '400x600';
 ALTER TYPE "image_variant" ADD VALUE '300x200';
 ALTER TYPE "image_variant" ADD VALUE '200x300';
+ALTER TYPE "image_variant" ADD VALUE '250x50';
+
+
+INSERT INTO "image_types" ("id", "name", "variant", "description") VALUES (1200, 'World thumbnail', '600x400', 'Image used as thumbnail for world');
+INSERT INTO "image_types" ("id", "name", "variant", "description") VALUES (1300, 'Menu header', '250x50', 'Image used as header of menu section');
