@@ -41,7 +41,7 @@ ALTER TABLE "images" RENAME COLUMN "address" TO "url";
 COMMENT ON COLUMN "image_types"."variant" IS 'Variant name from cloudflare. ';
 
 UPDATE "image_types" SET id = 200, variant = '200x200' WHERE name = 'User avatar';
-UPDATE "image_types" SET id = 300, variant = '1920x200' WHERE name = 'World Header';
+UPDATE "image_types" SET id = 300, variant = '1920x300' WHERE name = 'World Header';
 UPDATE "image_types" SET id = 400, variant = '200x200' WHERE name = 'World Avatar';
 UPDATE "image_types" SET id = 500, variant = 'public' WHERE name = 'Location Image';
 UPDATE "image_types" SET id = 600, variant = '300x300' WHERE name = 'Race Image';

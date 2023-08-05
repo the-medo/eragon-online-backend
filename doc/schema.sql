@@ -1,12 +1,12 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-08-05T13:08:28.803Z
+-- Generated at: 2023-08-05T14:22:40.600Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
   '1200x800',
   '150x150',
-  '1920x200',
+  '1920x300',
   '200x200',
   '300x300',
   '30x30',

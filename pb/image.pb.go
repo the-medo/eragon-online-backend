@@ -31,7 +31,7 @@ const (
 	ImageTypeVariant_v200x200                ImageTypeVariant = 4
 	ImageTypeVariant_v300x300                ImageTypeVariant = 5
 	ImageTypeVariant_v1200x800               ImageTypeVariant = 6
-	ImageTypeVariant_v1920x200               ImageTypeVariant = 7
+	ImageTypeVariant_v1920x300               ImageTypeVariant = 7
 	ImageTypeVariant_public                  ImageTypeVariant = 8
 	ImageTypeVariant_original                ImageTypeVariant = 9
 	ImageTypeVariant_v600x400                ImageTypeVariant = 10
@@ -50,7 +50,7 @@ var (
 		4:  "v200x200",
 		5:  "v300x300",
 		6:  "v1200x800",
-		7:  "v1920x200",
+		7:  "v1920x300",
 		8:  "public",
 		9:  "original",
 		10: "v600x400",
@@ -66,7 +66,7 @@ var (
 		"v200x200":                4,
 		"v300x300":                5,
 		"v1200x800":               6,
-		"v1920x200":               7,
+		"v1920x300":               7,
 		"public":                  8,
 		"original":                9,
 		"v600x400":                10,

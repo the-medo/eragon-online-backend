@@ -15,7 +15,7 @@ enum ImageTypeVariant {
   v200x200 = 4;
   v300x300 = 5;
   v1200x800 = 6;
-  v1920x200 = 7;
+  v1920x300 = 7;
   public = 8;
   original = 9;
   v600x400 = 10;
