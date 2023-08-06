@@ -30,4 +30,8 @@ VALUES (sqlc.arg(world_id), sqlc.arg(tag_id))
 RETURNING *;
 
 -- name: DeleteWorldTag :exec
-DELETE FROM world_tags WHERE world_id = sqlc.arg(world_id) AND tag_id = sqlc.arg(tag_id);
+DELETE FROM world_tags
+WHERE
+    world_id = COALESCE(sqlc.narg(world_id), world_id) AND
+    tag_id = COALESCE(sqlc.narg(tag_id), tag_id) AND
+    (NOT (sqlc.narg(world_id) IS NULL AND sqlc.narg(tag_id) IS NULL));

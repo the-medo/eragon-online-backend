@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"database/sql"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/grpc/codes"
@@ -16,8 +17,14 @@ func (server *Server) RemoveWorldTag(ctx context.Context, req *pb.RemoveWorldTag
 	}
 
 	arg := db.DeleteWorldTagParams{
-		WorldID: req.GetWorldId(),
-		TagID:   req.GetTagId(),
+		TagID: sql.NullInt32{
+			Int32: req.GetTagId(),
+			Valid: true,
+		},
+		WorldID: sql.NullInt32{
+			Int32: req.GetWorldId(),
+			Valid: true,
+		},
 	}
 
 	err = server.store.DeleteWorldTag(ctx, arg)

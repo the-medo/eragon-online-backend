@@ -2,6 +2,8 @@ package api
 
 import (
 	"context"
+	"database/sql"
+	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -12,6 +14,18 @@ func (server *Server) DeleteAvailableWorldTag(ctx context.Context, request *pb.D
 	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "can not delete tag - you are not admin: %v", err)
+	}
+
+	arg := db.DeleteWorldTagParams{
+		TagID: sql.NullInt32{
+			Int32: request.GetTagId(),
+			Valid: true,
+		},
+	}
+
+	err = server.store.DeleteWorldTag(ctx, arg)
+	if err != nil {
+		return nil, err
 	}
 
 	err = server.store.DeleteWorldTagAvailable(ctx, request.GetTagId())

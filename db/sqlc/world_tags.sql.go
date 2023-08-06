@@ -7,6 +7,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 )
 
 const createWorldTag = `-- name: CreateWorldTag :one
@@ -41,12 +42,16 @@ func (q *Queries) CreateWorldTagAvailable(ctx context.Context, tag string) (Worl
 }
 
 const deleteWorldTag = `-- name: DeleteWorldTag :exec
-DELETE FROM world_tags WHERE world_id = $1 AND tag_id = $2
+DELETE FROM world_tags
+WHERE
+    world_id = COALESCE($1, world_id) AND
+    tag_id = COALESCE($2, tag_id) AND
+    (NOT ($1 IS NULL AND $2 IS NULL))
 `
 
 type DeleteWorldTagParams struct {
-	WorldID int32 `json:"world_id"`
-	TagID   int32 `json:"tag_id"`
+	WorldID sql.NullInt32 `json:"world_id"`
+	TagID   sql.NullInt32 `json:"tag_id"`
 }
 
 func (q *Queries) DeleteWorldTag(ctx context.Context, arg DeleteWorldTagParams) error {
