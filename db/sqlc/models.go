@@ -61,7 +61,7 @@ const (
 	ImageVariant100x100  ImageVariant = "100x100"
 	ImageVariant1200x800 ImageVariant = "1200x800"
 	ImageVariant150x150  ImageVariant = "150x150"
-	ImageVariant1920x200 ImageVariant = "1920x200"
+	ImageVariant1920x300 ImageVariant = "1920x300"
 	ImageVariant200x200  ImageVariant = "200x200"
 	ImageVariant300x300  ImageVariant = "300x300"
 	ImageVariant30x30    ImageVariant = "30x30"
