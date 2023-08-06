@@ -3730,7 +3730,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetAvailableWorldTags", runtime.WithHTTPPathPattern("/worlds/tags"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/GetAvailableWorldTags", runtime.WithHTTPPathPattern("/tags/worlds"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3755,7 +3755,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/CreateAvailableWorldTag", runtime.WithHTTPPathPattern("/worlds/tags"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/CreateAvailableWorldTag", runtime.WithHTTPPathPattern("/tags/worlds"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3780,7 +3780,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/UpdateAvailableWorldTag", runtime.WithHTTPPathPattern("/worlds/tags/{tagId}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/UpdateAvailableWorldTag", runtime.WithHTTPPathPattern("/tags/worlds/{tagId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3805,7 +3805,7 @@ func RegisterTaleboundHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/DeleteAvailableWorldTag", runtime.WithHTTPPathPattern("/worlds/tags/{tagId}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Talebound/DeleteAvailableWorldTag", runtime.WithHTTPPathPattern("/tags/worlds/{tagId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -4974,7 +4974,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetAvailableWorldTags", runtime.WithHTTPPathPattern("/worlds/tags"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/GetAvailableWorldTags", runtime.WithHTTPPathPattern("/tags/worlds"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -4996,7 +4996,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/CreateAvailableWorldTag", runtime.WithHTTPPathPattern("/worlds/tags"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/CreateAvailableWorldTag", runtime.WithHTTPPathPattern("/tags/worlds"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -5018,7 +5018,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/UpdateAvailableWorldTag", runtime.WithHTTPPathPattern("/worlds/tags/{tagId}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/UpdateAvailableWorldTag", runtime.WithHTTPPathPattern("/tags/worlds/{tagId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -5040,7 +5040,7 @@ func RegisterTaleboundHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/DeleteAvailableWorldTag", runtime.WithHTTPPathPattern("/worlds/tags/{tagId}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Talebound/DeleteAvailableWorldTag", runtime.WithHTTPPathPattern("/tags/worlds/{tagId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -5338,13 +5338,13 @@ var (
 
 	pattern_Talebound_UploadWorldImage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"worlds", "worldId", "images"}, ""))
 
-	pattern_Talebound_GetAvailableWorldTags_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"worlds", "tags"}, ""))
+	pattern_Talebound_GetAvailableWorldTags_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"tags", "worlds"}, ""))
 
-	pattern_Talebound_CreateAvailableWorldTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"worlds", "tags"}, ""))
+	pattern_Talebound_CreateAvailableWorldTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"tags", "worlds"}, ""))
 
-	pattern_Talebound_UpdateAvailableWorldTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"worlds", "tags", "tagId"}, ""))
+	pattern_Talebound_UpdateAvailableWorldTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"tags", "worlds", "tagId"}, ""))
 
-	pattern_Talebound_DeleteAvailableWorldTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"worlds", "tags", "tagId"}, ""))
+	pattern_Talebound_DeleteAvailableWorldTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"tags", "worlds", "tagId"}, ""))
 
 	pattern_Talebound_AddWorldTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"worlds", "worldId", "tags"}, ""))
 

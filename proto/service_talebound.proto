@@ -476,7 +476,7 @@ service Talebound {
 
   rpc GetAvailableWorldTags(google.protobuf.Empty) returns (GetAvailableWorldTagsResponse) {
     option (google.api.http) = {
-      get: "/worlds/tags"
+      get: "/tags/worlds"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "gets list of tags, that are usable for worlds";
@@ -486,7 +486,7 @@ service Talebound {
 
   rpc CreateAvailableWorldTag(CreateAvailableWorldTagRequest) returns (Tag) {
     option (google.api.http) = {
-      post: "/worlds/tags"
+      post: "/tags/worlds"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -497,7 +497,7 @@ service Talebound {
 
   rpc UpdateAvailableWorldTag(UpdateAvailableWorldTagRequest) returns (Tag) {
     option (google.api.http) = {
-      patch: "/worlds/tags/{tagId}"
+      patch: "/tags/worlds/{tagId}"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -508,7 +508,7 @@ service Talebound {
 
   rpc DeleteAvailableWorldTag(DeleteAvailableWorldTagRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/worlds/tags/{tagId}"
+      delete: "/tags/worlds/{tagId}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "deletes available world tag and removes all its assignments";
