@@ -1520,7 +1520,8 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "tags": [

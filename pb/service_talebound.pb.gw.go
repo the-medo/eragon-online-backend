@@ -1834,7 +1834,7 @@ func request_Talebound_GetWorldsOfCreator_0(ctx context.Context, marshaler runti
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
-	protoReq.UserId, err = runtime.String(val)
+	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}
@@ -1860,7 +1860,7 @@ func local_request_Talebound_GetWorldsOfCreator_0(ctx context.Context, marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "userId")
 	}
 
-	protoReq.UserId, err = runtime.String(val)
+	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "userId", err)
 	}

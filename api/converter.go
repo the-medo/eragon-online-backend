@@ -224,6 +224,30 @@ func convertWorld(world db.ViewWorld) *pb.World {
 	return pbWorld
 }
 
+func convertWorldOfUser(world db.GetWorldsOfUserRow) *pb.World {
+	pbWorld := &pb.World{
+		Id:                    world.ID,
+		Name:                  world.Name,
+		Public:                world.Public,
+		CreatedAt:             timestamppb.New(world.CreatedAt),
+		ShortDescription:      world.ShortDescription,
+		BasedOn:               world.BasedOn,
+		ImageAvatar:           world.ImageAvatar.String,
+		ImageThumbnail:        world.ImageThumbnail.String,
+		ImageHeader:           world.ImageHeader.String,
+		Tags:                  world.Tags,
+		ActivityPostCount:     world.ActivityPostCount,
+		ActivityQuestCount:    world.ActivityQuestCount,
+		ActivityResourceCount: world.ActivityResourceCount,
+	}
+
+	if world.DescriptionPostID.Valid == true {
+		pbWorld.DescriptionPostId = &world.DescriptionPostID.Int32
+	}
+
+	return pbWorld
+}
+
 func convertPostType(postType db.PostType) *pb.DataPostType {
 	pbPostType := &pb.DataPostType{
 		Id:         postType.ID,
