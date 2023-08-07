@@ -608,4 +608,16 @@ service Talebound {
       summary: "Get world by ID ";
     };
   };
+
+  rpc UpdateWorldIntroduction(UpdateWorldIntroductionRequest) returns (Post) {
+    option (google.api.http) = {
+      patch: "/worlds/{worldId}/introduction"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates/updates world introduction";
+      summary: "Update world introduction";
+    };
+  };
+
 }

@@ -1279,6 +1279,61 @@ func (x *GetWorldByIdRequest) GetWorldId() int32 {
 	return 0
 }
 
+type UpdateWorldIntroductionRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	WorldId int32  `protobuf:"varint,1,opt,name=worldId,proto3" json:"worldId,omitempty"`
+	Content string `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
+}
+
+func (x *UpdateWorldIntroductionRequest) Reset() {
+	*x = UpdateWorldIntroductionRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_rpc_world_proto_msgTypes[22]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateWorldIntroductionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateWorldIntroductionRequest) ProtoMessage() {}
+
+func (x *UpdateWorldIntroductionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_rpc_world_proto_msgTypes[22]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateWorldIntroductionRequest.ProtoReflect.Descriptor instead.
+func (*UpdateWorldIntroductionRequest) Descriptor() ([]byte, []int) {
+	return file_rpc_world_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *UpdateWorldIntroductionRequest) GetWorldId() int32 {
+	if x != nil {
+		return x.WorldId
+	}
+	return 0
+}
+
+func (x *UpdateWorldIntroductionRequest) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
 var File_rpc_world_proto protoreflect.FileDescriptor
 
 var file_rpc_world_proto_rawDesc = []byte{
@@ -1446,10 +1501,15 @@ var file_rpc_world_proto_rawDesc = []byte{
 	0x6f, 0x75, 0x6e, 0x74, 0x22, 0x2f, 0x0a, 0x13, 0x47, 0x65, 0x74, 0x57, 0x6f, 0x72, 0x6c, 0x64,
 	0x42, 0x79, 0x49, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x77,
 	0x6f, 0x72, 0x6c, 0x64, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x77, 0x6f,
-	0x72, 0x6c, 0x64, 0x49, 0x64, 0x42, 0x2a, 0x5a, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
-	0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c,
-	0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70,
-	0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x72, 0x6c, 0x64, 0x49, 0x64, 0x22, 0x54, 0x0a, 0x1e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x57,
+	0x6f, 0x72, 0x6c, 0x64, 0x49, 0x6e, 0x74, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x77, 0x6f, 0x72, 0x6c, 0x64,
+	0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x49,
+	0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x42, 0x2a, 0x5a, 0x28, 0x67,
+	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d, 0x65,
+	0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61, 0x63,
+	0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1464,7 +1524,7 @@ func file_rpc_world_proto_rawDescGZIP() []byte {
 	return file_rpc_world_proto_rawDescData
 }
 
-var file_rpc_world_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_rpc_world_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_rpc_world_proto_goTypes = []interface{}{
 	(*WorldOfCreatorResponse)(nil),          // 0: pb.WorldOfCreatorResponse
 	(*GetWorldsOfCreatorRequest)(nil),       // 1: pb.GetWorldsOfCreatorRequest
@@ -1488,20 +1548,21 @@ var file_rpc_world_proto_goTypes = []interface{}{
 	(*GetWorldsRequest)(nil),                // 19: pb.GetWorldsRequest
 	(*GetWorldsResponse)(nil),               // 20: pb.GetWorldsResponse
 	(*GetWorldByIdRequest)(nil),             // 21: pb.GetWorldByIdRequest
-	(*World)(nil),                           // 22: pb.World
-	(*Tag)(nil),                             // 23: pb.Tag
-	(*timestamppb.Timestamp)(nil),           // 24: google.protobuf.Timestamp
-	(*WorldActivity)(nil),                   // 25: pb.WorldActivity
+	(*UpdateWorldIntroductionRequest)(nil),  // 22: pb.UpdateWorldIntroductionRequest
+	(*World)(nil),                           // 23: pb.World
+	(*Tag)(nil),                             // 24: pb.Tag
+	(*timestamppb.Timestamp)(nil),           // 25: google.protobuf.Timestamp
+	(*WorldActivity)(nil),                   // 26: pb.WorldActivity
 }
 var file_rpc_world_proto_depIdxs = []int32{
-	22, // 0: pb.WorldOfCreatorResponse.world:type_name -> pb.World
+	23, // 0: pb.WorldOfCreatorResponse.world:type_name -> pb.World
 	0,  // 1: pb.GetWorldsOfCreatorResponse.worlds:type_name -> pb.WorldOfCreatorResponse
-	23, // 2: pb.GetAvailableWorldTagsResponse.tags:type_name -> pb.Tag
-	24, // 3: pb.GetWorldDailyActivityRequest.dateFrom:type_name -> google.protobuf.Timestamp
-	25, // 4: pb.GetWorldDailyActivityResponse.activity:type_name -> pb.WorldActivity
-	24, // 5: pb.GetWorldMonthlyActivityRequest.dateFrom:type_name -> google.protobuf.Timestamp
-	25, // 6: pb.GetWorldMonthlyActivityResponse.activity:type_name -> pb.WorldActivity
-	22, // 7: pb.GetWorldsResponse.worlds:type_name -> pb.World
+	24, // 2: pb.GetAvailableWorldTagsResponse.tags:type_name -> pb.Tag
+	25, // 3: pb.GetWorldDailyActivityRequest.dateFrom:type_name -> google.protobuf.Timestamp
+	26, // 4: pb.GetWorldDailyActivityResponse.activity:type_name -> pb.WorldActivity
+	25, // 5: pb.GetWorldMonthlyActivityRequest.dateFrom:type_name -> google.protobuf.Timestamp
+	26, // 6: pb.GetWorldMonthlyActivityResponse.activity:type_name -> pb.WorldActivity
+	23, // 7: pb.GetWorldsResponse.worlds:type_name -> pb.World
 	8,  // [8:8] is the sub-list for method output_type
 	8,  // [8:8] is the sub-list for method input_type
 	8,  // [8:8] is the sub-list for extension type_name
@@ -1781,6 +1842,18 @@ func file_rpc_world_proto_init() {
 				return nil
 			}
 		}
+		file_rpc_world_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateWorldIntroductionRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_rpc_world_proto_msgTypes[4].OneofWrappers = []interface{}{}
 	file_rpc_world_proto_msgTypes[13].OneofWrappers = []interface{}{}
@@ -1793,7 +1866,7 @@ func file_rpc_world_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_rpc_world_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   22,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -124,3 +124,8 @@ message GetWorldsResponse {
 message GetWorldByIdRequest {
   int32 worldId = 1;
 }
+
+message UpdateWorldIntroductionRequest {
+  int32 worldId = 1;
+  string content = 2;
+}

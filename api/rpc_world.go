@@ -54,7 +54,7 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 		return nil, invalidArgumentError(violations)
 	}
 
-	err := server.CheckWorldAdmin(ctx, req.GetWorldId(), true)
+	_, err := server.CheckWorldAdmin(ctx, req.GetWorldId(), true)
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed to update world: %v", err)
 	}

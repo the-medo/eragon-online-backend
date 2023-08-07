@@ -11,7 +11,7 @@ import (
 )
 
 func (server *Server) RemoveWorldTag(ctx context.Context, req *pb.RemoveWorldTagRequest) (*emptypb.Empty, error) {
-	err := server.CheckWorldAdmin(ctx, req.GetWorldId(), false)
+	_, err := server.CheckWorldAdmin(ctx, req.GetWorldId(), false)
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed to remove world tag: %v", err)
 	}

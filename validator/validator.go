@@ -102,6 +102,13 @@ func ValidateUserId(value int32) error {
 	return nil
 }
 
+func ValidateWorldId(value int32) error {
+	if value < 1 {
+		return fmt.Errorf("must be a positive integer")
+	}
+	return nil
+}
+
 func ValidateImgId(value int32) error {
 	if value < 1 {
 		return fmt.Errorf("must be a positive integer")

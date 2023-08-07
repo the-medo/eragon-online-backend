@@ -11,7 +11,7 @@ import (
 
 func (server *Server) AddWorldTag(ctx context.Context, req *pb.AddWorldTagRequest) (*pb.Tag, error) {
 
-	err := server.CheckWorldAdmin(ctx, req.GetWorldId(), false)
+	_, err := server.CheckWorldAdmin(ctx, req.GetWorldId(), false)
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed to add world tag: %v", err)
 	}

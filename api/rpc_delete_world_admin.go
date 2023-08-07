@@ -17,7 +17,7 @@ func (server *Server) DeleteWorldAdmin(ctx context.Context, req *pb.DeleteWorldA
 		return nil, invalidArgumentError(violations)
 	}
 
-	err := server.CheckWorldAdmin(ctx, req.GetWorldId(), true)
+	_, err := server.CheckWorldAdmin(ctx, req.GetWorldId(), true)
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed to delete world admin: %v", err)
 	}
