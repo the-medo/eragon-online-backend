@@ -537,6 +537,16 @@ service Talebound {
     };
   };
 
+  rpc GetWorldAdmins(GetWorldAdminsRequest) returns (GetWorldAdminsResponse) {
+    option (google.api.http) = {
+      get: "/worlds/{worldId}/admin"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns admins and admin requests for world";
+      summary: "Get world admins";
+    };
+  };
+
   rpc CreateWorldAdmin(CreateWorldAdminRequest) returns (WorldAdmin) {
     option (google.api.http) = {
       post: "/worlds/{worldId}/admin"

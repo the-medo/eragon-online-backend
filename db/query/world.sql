@@ -89,6 +89,8 @@ WHERE
     wa.world_id = @world_id AND
     wa.approved = 1
 ;
+-- name: GetWorldAdmins :many
+SELECT * FROM world_admins WHERE world_id = @world_id;
 
 -- name: IsWorldAdmin :one
 SELECT * FROM world_admins WHERE user_id = @user_id AND world_id = @world_id AND approved = 1;

@@ -73,6 +73,14 @@ message RemoveWorldTagRequest {
   int32 tagId = 2;
 }
 
+message GetWorldAdminsRequest {
+  int32 worldId = 1;
+}
+
+message GetWorldAdminsResponse {
+  repeated WorldAdmin worldAdmins = 1;
+}
+
 message CreateWorldAdminRequest {
   int32 worldId = 1;
   string motivationalLetter = 2;

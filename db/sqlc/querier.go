@@ -78,6 +78,7 @@ type Querier interface {
 	GetUserPasswordReset(ctx context.Context, code string) (UserPasswordReset, error)
 	GetUserRoles(ctx context.Context, userID int32) ([]GetUserRolesRow, error)
 	GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error)
+	GetWorldAdmins(ctx context.Context, worldID int32) ([]WorldAdmin, error)
 	GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error)
 	GetWorldDailyActivity(ctx context.Context, arg GetWorldDailyActivityParams) ([]WorldActivity, error)
 	GetWorldImages(ctx context.Context, worldID int32) (WorldImage, error)

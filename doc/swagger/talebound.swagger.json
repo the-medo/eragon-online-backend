@@ -1830,6 +1830,37 @@
       }
     },
     "/worlds/{worldId}/admin": {
+      "get": {
+        "summary": "Get world admins",
+        "description": "returns admins and admin requests for world",
+        "operationId": "Talebound_GetWorldAdmins",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetWorldAdminsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      },
       "delete": {
         "summary": "Delete world admin",
         "description": "deletes world admin",
@@ -2673,6 +2704,18 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbUser"
+          }
+        }
+      }
+    },
+    "pbGetWorldAdminsResponse": {
+      "type": "object",
+      "properties": {
+        "worldAdmins": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbWorldAdmin"
           }
         }
       }

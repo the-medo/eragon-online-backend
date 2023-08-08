@@ -135,6 +135,40 @@ func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID int32) ([]GetAdm
 	return items, nil
 }
 
+const getWorldAdmins = `-- name: GetWorldAdmins :many
+SELECT world_id, user_id, created_at, super_admin, approved, motivational_letter FROM world_admins WHERE world_id = $1
+`
+
+func (q *Queries) GetWorldAdmins(ctx context.Context, worldID int32) ([]WorldAdmin, error) {
+	rows, err := q.db.QueryContext(ctx, getWorldAdmins, worldID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []WorldAdmin{}
+	for rows.Next() {
+		var i WorldAdmin
+		if err := rows.Scan(
+			&i.WorldID,
+			&i.UserID,
+			&i.CreatedAt,
+			&i.SuperAdmin,
+			&i.Approved,
+			&i.MotivationalLetter,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getWorldByID = `-- name: GetWorldByID :one
 SELECT id, name, public, created_at, short_description, based_on, description_post_id, image_header, image_thumbnail, image_avatar, tags, activity_post_count, activity_quest_count, activity_resource_count FROM view_worlds WHERE id = $1 LIMIT 1
 `

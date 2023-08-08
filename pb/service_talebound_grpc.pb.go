@@ -66,6 +66,7 @@ const (
 	Talebound_DeleteAvailableWorldTag_FullMethodName            = "/pb.Talebound/DeleteAvailableWorldTag"
 	Talebound_AddWorldTag_FullMethodName                        = "/pb.Talebound/AddWorldTag"
 	Talebound_RemoveWorldTag_FullMethodName                     = "/pb.Talebound/RemoveWorldTag"
+	Talebound_GetWorldAdmins_FullMethodName                     = "/pb.Talebound/GetWorldAdmins"
 	Talebound_CreateWorldAdmin_FullMethodName                   = "/pb.Talebound/CreateWorldAdmin"
 	Talebound_UpdateWorldAdmin_FullMethodName                   = "/pb.Talebound/UpdateWorldAdmin"
 	Talebound_DeleteWorldAdmin_FullMethodName                   = "/pb.Talebound/DeleteWorldAdmin"
@@ -130,6 +131,7 @@ type TaleboundClient interface {
 	DeleteAvailableWorldTag(ctx context.Context, in *DeleteAvailableWorldTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	AddWorldTag(ctx context.Context, in *AddWorldTagRequest, opts ...grpc.CallOption) (*Tag, error)
 	RemoveWorldTag(ctx context.Context, in *RemoveWorldTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetWorldAdmins(ctx context.Context, in *GetWorldAdminsRequest, opts ...grpc.CallOption) (*GetWorldAdminsResponse, error)
 	CreateWorldAdmin(ctx context.Context, in *CreateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error)
 	UpdateWorldAdmin(ctx context.Context, in *UpdateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error)
 	DeleteWorldAdmin(ctx context.Context, in *DeleteWorldAdminRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -562,6 +564,15 @@ func (c *taleboundClient) RemoveWorldTag(ctx context.Context, in *RemoveWorldTag
 	return out, nil
 }
 
+func (c *taleboundClient) GetWorldAdmins(ctx context.Context, in *GetWorldAdminsRequest, opts ...grpc.CallOption) (*GetWorldAdminsResponse, error) {
+	out := new(GetWorldAdminsResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetWorldAdmins_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *taleboundClient) CreateWorldAdmin(ctx context.Context, in *CreateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error) {
 	out := new(WorldAdmin)
 	err := c.cc.Invoke(ctx, Talebound_CreateWorldAdmin_FullMethodName, in, out, opts...)
@@ -688,6 +699,7 @@ type TaleboundServer interface {
 	DeleteAvailableWorldTag(context.Context, *DeleteAvailableWorldTagRequest) (*emptypb.Empty, error)
 	AddWorldTag(context.Context, *AddWorldTagRequest) (*Tag, error)
 	RemoveWorldTag(context.Context, *RemoveWorldTagRequest) (*emptypb.Empty, error)
+	GetWorldAdmins(context.Context, *GetWorldAdminsRequest) (*GetWorldAdminsResponse, error)
 	CreateWorldAdmin(context.Context, *CreateWorldAdminRequest) (*WorldAdmin, error)
 	UpdateWorldAdmin(context.Context, *UpdateWorldAdminRequest) (*WorldAdmin, error)
 	DeleteWorldAdmin(context.Context, *DeleteWorldAdminRequest) (*emptypb.Empty, error)
@@ -840,6 +852,9 @@ func (UnimplementedTaleboundServer) AddWorldTag(context.Context, *AddWorldTagReq
 }
 func (UnimplementedTaleboundServer) RemoveWorldTag(context.Context, *RemoveWorldTagRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveWorldTag not implemented")
+}
+func (UnimplementedTaleboundServer) GetWorldAdmins(context.Context, *GetWorldAdminsRequest) (*GetWorldAdminsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorldAdmins not implemented")
 }
 func (UnimplementedTaleboundServer) CreateWorldAdmin(context.Context, *CreateWorldAdminRequest) (*WorldAdmin, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateWorldAdmin not implemented")
@@ -1706,6 +1721,24 @@ func _Talebound_RemoveWorldTag_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_GetWorldAdmins_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorldAdminsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetWorldAdmins(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetWorldAdmins_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetWorldAdmins(ctx, req.(*GetWorldAdminsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Talebound_CreateWorldAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateWorldAdminRequest)
 	if err := dec(in); err != nil {
@@ -2040,6 +2073,10 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveWorldTag",
 			Handler:    _Talebound_RemoveWorldTag_Handler,
+		},
+		{
+			MethodName: "GetWorldAdmins",
+			Handler:    _Talebound_GetWorldAdmins_Handler,
 		},
 		{
 			MethodName: "CreateWorldAdmin",

@@ -1039,6 +1039,21 @@ func (mr *MockStoreMockRecorder) GetUsers(arg0, arg1 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUsers", reflect.TypeOf((*MockStore)(nil).GetUsers), arg0, arg1)
 }
 
+// GetWorldAdmins mocks base method.
+func (m *MockStore) GetWorldAdmins(arg0 context.Context, arg1 int32) ([]db.WorldAdmin, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWorldAdmins", arg0, arg1)
+	ret0, _ := ret[0].([]db.WorldAdmin)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWorldAdmins indicates an expected call of GetWorldAdmins.
+func (mr *MockStoreMockRecorder) GetWorldAdmins(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldAdmins", reflect.TypeOf((*MockStore)(nil).GetWorldAdmins), arg0, arg1)
+}
+
 // GetWorldByID mocks base method.
 func (m *MockStore) GetWorldByID(arg0 context.Context, arg1 int32) (db.ViewWorld, error) {
 	m.ctrl.T.Helper()
