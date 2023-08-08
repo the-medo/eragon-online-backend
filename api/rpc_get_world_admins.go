@@ -14,17 +14,17 @@ func (server *Server) GetWorldAdmins(ctx context.Context, request *pb.GetWorldAd
 		return nil, invalidArgumentError(violations)
 	}
 
-	worldAdmins, err := server.store.GetWorldAdmins(ctx, request.GetWorldId())
+	worldAdminRows, err := server.store.GetWorldAdmins(ctx, request.GetWorldId())
 	if err != nil {
 		return nil, err
 	}
 
 	rsp := &pb.GetWorldAdminsResponse{
-		WorldAdmins: make([]*pb.WorldAdmin, len(worldAdmins)),
+		WorldAdmins: make([]*pb.WorldAdmin, len(worldAdminRows)),
 	}
 
-	for i, world := range worldAdmins {
-		rsp.WorldAdmins[i] = converters.ConvertWorldAdmin(world)
+	for i, worldAdminRow := range worldAdminRows {
+		rsp.WorldAdmins[i] = converters.ConvertWorldAdminRow(worldAdminRow)
 	}
 
 	return rsp, nil

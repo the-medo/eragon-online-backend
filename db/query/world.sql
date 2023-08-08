@@ -78,19 +78,20 @@ WHERE
     wa.user_id = @user_id AND wa.approved = 1
 ;
 
--- name: GetAdminsOfWorld :many
+-- name: GetWorldAdmins :many
 SELECT
     vu.*,
-    wa.super_admin as super_admin
+    wa.world_id as world_id,
+    wa.created_at as world_admin_created_at,
+    wa.super_admin as world_admin_super_admin,
+    wa.approved as world_admin_approved,
+    wa.motivational_letter as world_admin_motivational_letter
 FROM
     view_users vu
     JOIN world_admins wa on wa.user_id = vu.id
 WHERE
-    wa.world_id = @world_id AND
-    wa.approved = 1
+    wa.world_id = sqlc.arg(world_id)
 ;
--- name: GetWorldAdmins :many
-SELECT * FROM world_admins WHERE world_id = @world_id;
 
 -- name: IsWorldAdmin :one
 SELECT * FROM world_admins WHERE user_id = @user_id AND world_id = @world_id AND approved = 1;

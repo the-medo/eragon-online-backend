@@ -3,6 +3,7 @@ syntax = "proto3";
 package pb;
 
 import "google/protobuf/timestamp.proto";
+import "user.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -34,8 +35,9 @@ message WorldActivity {
 message WorldAdmin {
   int32 worldId = 1;
   int32 userId = 2;
-  google.protobuf.Timestamp createdAt = 3;
-  bool superAdmin = 4;
-  int32 approved = 5;
-  string motivationalLetter = 6;
+  ViewUser user = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  bool superAdmin = 5;
+  int32 approved = 6;
+  string motivationalLetter = 7;
 }

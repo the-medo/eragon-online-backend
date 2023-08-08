@@ -6,10 +6,11 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func ConvertWorldAdmin(dbWorldAdmin db.WorldAdmin) *pb.WorldAdmin {
+func ConvertWorldAdmin(dbWorldAdmin db.WorldAdmin, dbViewUser db.ViewUser) *pb.WorldAdmin {
 	pbWorldAdmin := &pb.WorldAdmin{
 		WorldId:            dbWorldAdmin.WorldID,
 		UserId:             dbWorldAdmin.UserID,
+		User:               ConvertViewUser(dbViewUser),
 		CreatedAt:          timestamppb.New(dbWorldAdmin.CreatedAt),
 		SuperAdmin:         dbWorldAdmin.SuperAdmin,
 		Approved:           dbWorldAdmin.Approved,

@@ -33,7 +33,9 @@ func (server *Server) CreateWorldAdmin(ctx context.Context, request *pb.CreateWo
 		return nil, err
 	}
 
-	rsp := converters.ConvertWorldAdmin(worldAdmin)
+	user, err := server.store.GetUserById(ctx, authPayload.UserId)
+
+	rsp := converters.ConvertWorldAdmin(worldAdmin, user)
 
 	return rsp, nil
 }

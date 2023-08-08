@@ -46,7 +46,6 @@ type Querier interface {
 	DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error
 	DeleteWorldTag(ctx context.Context, arg DeleteWorldTagParams) error
 	DeleteWorldTagAvailable(ctx context.Context, id int32) error
-	GetAdminsOfWorld(ctx context.Context, worldID int32) ([]GetAdminsOfWorldRow, error)
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
 	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
@@ -78,7 +77,7 @@ type Querier interface {
 	GetUserPasswordReset(ctx context.Context, code string) (UserPasswordReset, error)
 	GetUserRoles(ctx context.Context, userID int32) ([]GetUserRolesRow, error)
 	GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error)
-	GetWorldAdmins(ctx context.Context, worldID int32) ([]WorldAdmin, error)
+	GetWorldAdmins(ctx context.Context, worldID int32) ([]GetWorldAdminsRow, error)
 	GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error)
 	GetWorldDailyActivity(ctx context.Context, arg GetWorldDailyActivityParams) ([]WorldActivity, error)
 	GetWorldImages(ctx context.Context, worldID int32) (WorldImage, error)

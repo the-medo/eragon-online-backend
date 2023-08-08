@@ -41,7 +41,7 @@ func (server *Server) UpdateWorldAdmin(ctx context.Context, req *pb.UpdateWorldA
 
 	arg := db.UpdateWorldAdminParams{
 		WorldID: req.GetWorldId(),
-		UserID:  authPayload.UserId,
+		UserID:  req.GetUserId(),
 
 		SuperAdmin: sql.NullBool{
 			Bool:  req.GetSuperAdmin(),
@@ -62,7 +62,9 @@ func (server *Server) UpdateWorldAdmin(ctx context.Context, req *pb.UpdateWorldA
 		return nil, err
 	}
 
-	rsp := converters.ConvertWorldAdmin(worldAdmin)
+	user, err := server.store.GetUserById(ctx, req.GetUserId())
+
+	rsp := converters.ConvertWorldAdmin(worldAdmin, user)
 
 	return rsp, nil
 }

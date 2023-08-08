@@ -559,21 +559,6 @@ func (mr *MockStoreMockRecorder) DeleteWorldTagAvailable(arg0, arg1 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorldTagAvailable", reflect.TypeOf((*MockStore)(nil).DeleteWorldTagAvailable), arg0, arg1)
 }
 
-// GetAdminsOfWorld mocks base method.
-func (m *MockStore) GetAdminsOfWorld(arg0 context.Context, arg1 int32) ([]db.GetAdminsOfWorldRow, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAdminsOfWorld", arg0, arg1)
-	ret0, _ := ret[0].([]db.GetAdminsOfWorldRow)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetAdminsOfWorld indicates an expected call of GetAdminsOfWorld.
-func (mr *MockStoreMockRecorder) GetAdminsOfWorld(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAdminsOfWorld", reflect.TypeOf((*MockStore)(nil).GetAdminsOfWorld), arg0, arg1)
-}
-
 // GetAverageUserEvaluationsByType mocks base method.
 func (m *MockStore) GetAverageUserEvaluationsByType(arg0 context.Context, arg1 db.GetAverageUserEvaluationsByTypeParams) ([]db.GetAverageUserEvaluationsByTypeRow, error) {
 	m.ctrl.T.Helper()
@@ -1040,10 +1025,10 @@ func (mr *MockStoreMockRecorder) GetUsers(arg0, arg1 interface{}) *gomock.Call {
 }
 
 // GetWorldAdmins mocks base method.
-func (m *MockStore) GetWorldAdmins(arg0 context.Context, arg1 int32) ([]db.WorldAdmin, error) {
+func (m *MockStore) GetWorldAdmins(arg0 context.Context, arg1 int32) ([]db.GetWorldAdminsRow, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWorldAdmins", arg0, arg1)
-	ret0, _ := ret[0].([]db.WorldAdmin)
+	ret0, _ := ret[0].([]db.GetWorldAdminsRow)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

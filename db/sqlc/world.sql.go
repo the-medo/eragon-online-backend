@@ -68,44 +68,51 @@ func (q *Queries) DeleteWorldAdmin(ctx context.Context, arg DeleteWorldAdminPara
 	return err
 }
 
-const getAdminsOfWorld = `-- name: GetAdminsOfWorld :many
+const getWorldAdmins = `-- name: GetWorldAdmins :many
 SELECT
     vu.id, vu.username, vu.hashed_password, vu.email, vu.img_id, vu.password_changed_at, vu.created_at, vu.is_email_verified, vu.introduction_post_id, vu.avatar_image_id, vu.avatar_image_url, vu.avatar_image_guid, vu.introduction_post_deleted_at,
-    wa.super_admin as super_admin
+    wa.world_id as world_id,
+    wa.created_at as world_admin_created_at,
+    wa.super_admin as world_admin_super_admin,
+    wa.approved as world_admin_approved,
+    wa.motivational_letter as world_admin_motivational_letter
 FROM
     view_users vu
     JOIN world_admins wa on wa.user_id = vu.id
 WHERE
-    wa.world_id = $1 AND
-    wa.approved = 1
+    wa.world_id = $1
 `
 
-type GetAdminsOfWorldRow struct {
-	ID                        int32          `json:"id"`
-	Username                  string         `json:"username"`
-	HashedPassword            string         `json:"hashed_password"`
-	Email                     string         `json:"email"`
-	ImgID                     sql.NullInt32  `json:"img_id"`
-	PasswordChangedAt         time.Time      `json:"password_changed_at"`
-	CreatedAt                 time.Time      `json:"created_at"`
-	IsEmailVerified           bool           `json:"is_email_verified"`
-	IntroductionPostID        sql.NullInt32  `json:"introduction_post_id"`
-	AvatarImageID             sql.NullInt32  `json:"avatar_image_id"`
-	AvatarImageUrl            sql.NullString `json:"avatar_image_url"`
-	AvatarImageGuid           uuid.NullUUID  `json:"avatar_image_guid"`
-	IntroductionPostDeletedAt sql.NullTime   `json:"introduction_post_deleted_at"`
-	SuperAdmin                bool           `json:"super_admin"`
+type GetWorldAdminsRow struct {
+	ID                           int32          `json:"id"`
+	Username                     string         `json:"username"`
+	HashedPassword               string         `json:"hashed_password"`
+	Email                        string         `json:"email"`
+	ImgID                        sql.NullInt32  `json:"img_id"`
+	PasswordChangedAt            time.Time      `json:"password_changed_at"`
+	CreatedAt                    time.Time      `json:"created_at"`
+	IsEmailVerified              bool           `json:"is_email_verified"`
+	IntroductionPostID           sql.NullInt32  `json:"introduction_post_id"`
+	AvatarImageID                sql.NullInt32  `json:"avatar_image_id"`
+	AvatarImageUrl               sql.NullString `json:"avatar_image_url"`
+	AvatarImageGuid              uuid.NullUUID  `json:"avatar_image_guid"`
+	IntroductionPostDeletedAt    sql.NullTime   `json:"introduction_post_deleted_at"`
+	WorldID                      int32          `json:"world_id"`
+	WorldAdminCreatedAt          time.Time      `json:"world_admin_created_at"`
+	WorldAdminSuperAdmin         bool           `json:"world_admin_super_admin"`
+	WorldAdminApproved           int32          `json:"world_admin_approved"`
+	WorldAdminMotivationalLetter string         `json:"world_admin_motivational_letter"`
 }
 
-func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID int32) ([]GetAdminsOfWorldRow, error) {
-	rows, err := q.db.QueryContext(ctx, getAdminsOfWorld, worldID)
+func (q *Queries) GetWorldAdmins(ctx context.Context, worldID int32) ([]GetWorldAdminsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getWorldAdmins, worldID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []GetAdminsOfWorldRow{}
+	items := []GetWorldAdminsRow{}
 	for rows.Next() {
-		var i GetAdminsOfWorldRow
+		var i GetWorldAdminsRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.Username,
@@ -120,41 +127,11 @@ func (q *Queries) GetAdminsOfWorld(ctx context.Context, worldID int32) ([]GetAdm
 			&i.AvatarImageUrl,
 			&i.AvatarImageGuid,
 			&i.IntroductionPostDeletedAt,
-			&i.SuperAdmin,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const getWorldAdmins = `-- name: GetWorldAdmins :many
-SELECT world_id, user_id, created_at, super_admin, approved, motivational_letter FROM world_admins WHERE world_id = $1
-`
-
-func (q *Queries) GetWorldAdmins(ctx context.Context, worldID int32) ([]WorldAdmin, error) {
-	rows, err := q.db.QueryContext(ctx, getWorldAdmins, worldID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []WorldAdmin{}
-	for rows.Next() {
-		var i WorldAdmin
-		if err := rows.Scan(
 			&i.WorldID,
-			&i.UserID,
-			&i.CreatedAt,
-			&i.SuperAdmin,
-			&i.Approved,
-			&i.MotivationalLetter,
+			&i.WorldAdminCreatedAt,
+			&i.WorldAdminSuperAdmin,
+			&i.WorldAdminApproved,
+			&i.WorldAdminMotivationalLetter,
 		); err != nil {
 			return nil, err
 		}
