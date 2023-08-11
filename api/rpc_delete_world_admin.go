@@ -17,7 +17,13 @@ func (server *Server) DeleteWorldAdmin(ctx context.Context, req *pb.DeleteWorldA
 		return nil, invalidArgumentError(violations)
 	}
 
-	_, err := server.CheckWorldAdmin(ctx, req.GetWorldId(), true)
+	authPayload, err := server.authorizeUserCookie(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
+
+	//user can remove himself from world admin even if he is not super admin
+	_, err = server.CheckWorldAdmin(ctx, req.GetWorldId(), req.GetUserId() != authPayload.UserId)
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed to delete world admin: %v", err)
 	}

@@ -334,7 +334,6 @@ Table menu_items {
   name varchar [not null]
   position int [not null]
   parent_item_id int [null, ref: > menu_items.id]
-  menu_item_img_id int [null, ref: > images.id]
   description_post_id int [null, ref: > posts.id]
 }
 

@@ -189,7 +189,6 @@ type MenuItem struct {
 	Name              string        `json:"name"`
 	Position          int32         `json:"position"`
 	ParentItemID      sql.NullInt32 `json:"parent_item_id"`
-	MenuItemImgID     sql.NullInt32 `json:"menu_item_img_id"`
 	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
 }
 
@@ -383,6 +382,7 @@ type ViewWorld struct {
 	ActivityPostCount     int32          `json:"activity_post_count"`
 	ActivityQuestCount    int32          `json:"activity_quest_count"`
 	ActivityResourceCount int32          `json:"activity_resource_count"`
+	WorldMenuID           int32          `json:"world_menu_id"`
 }
 
 type World struct {

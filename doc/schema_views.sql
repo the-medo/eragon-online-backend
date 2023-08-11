@@ -7,10 +7,12 @@ SELECT
     tags.tags AS tags,
     COALESCE(activity.activity_post_count, 0) AS activity_post_count,
     COALESCE(activity.activity_quest_count, 0) AS activity_quest_count,
-    COALESCE(activity.activity_resource_count, 0) AS activity_resource_count
+    COALESCE(activity.activity_resource_count, 0) AS activity_resource_count,
+    wm.menu_id as world_menu_id
 FROM
     worlds w
         JOIN world_images wi ON w.id = wi.world_id
+        JOIN world_menu wm ON w.id = wm.world_id
         LEFT JOIN (
         SELECT
             wa.world_id,
@@ -34,7 +36,8 @@ FROM
     ) tags ON tags.world_id = w.id
         LEFT JOIN images i_header on wi.header_img_id = i_header.id
         LEFT JOIN images i_thumbnail on wi.thumbnail_img_id = i_thumbnail.id
-        LEFT JOIN images i_avatar on wi.avatar_img_id = i_avatar.id;
+        LEFT JOIN images i_avatar on wi.avatar_img_id = i_avatar.id
+;
 
 CREATE VIEW view_users AS
 SELECT

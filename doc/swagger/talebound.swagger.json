@@ -3163,6 +3163,10 @@
         "activityResourceCount": {
           "type": "integer",
           "format": "int32"
+        },
+        "worldMenuId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

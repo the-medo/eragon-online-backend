@@ -22,7 +22,6 @@ func insertSubMenuItem(ctx context.Context, q *Queries, menuId int32, position i
 			Int32: parentItemId,
 			Valid: true,
 		},
-		MenuItemImgID:     sql.NullInt32{},
 		DescriptionPostID: sql.NullInt32{},
 	})
 	if err != nil {
@@ -59,7 +58,6 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			Name:              "Overview",
 			Position:          1,
 			ParentItemID:      sql.NullInt32{},
-			MenuItemImgID:     sql.NullInt32{},
 			DescriptionPostID: sql.NullInt32{},
 		})
 		if err != nil {

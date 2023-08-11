@@ -17,8 +17,8 @@ DELETE FROM menus WHERE id = sqlc.arg(id);
 SELECT * FROM menus WHERE id = sqlc.arg(id);
 
 -- name: CreateMenuItem :one
-INSERT INTO menu_items (menu_id, menu_item_code, name, position, parent_item_id, menu_item_img_id, description_post_id)
-VALUES (sqlc.arg(menu_id), sqlc.arg(menu_item_code), sqlc.arg(name), sqlc.arg(position), sqlc.narg(parent_item_id), sqlc.narg(menu_item_img_id), sqlc.narg(description_post_id))
+INSERT INTO menu_items (menu_id, menu_item_code, name, position, parent_item_id, description_post_id)
+VALUES (sqlc.arg(menu_id), sqlc.arg(menu_item_code), sqlc.arg(name), sqlc.arg(position), sqlc.narg(parent_item_id), sqlc.narg(description_post_id))
 RETURNING *;
 
 -- name: UpdateMenuItem :one
@@ -28,7 +28,6 @@ SET
     name = COALESCE(sqlc.narg(name), name),
     position = COALESCE(sqlc.narg(position), position),
     parent_item_id = COALESCE(sqlc.narg(parent_item_id), parent_item_id),
-    menu_item_img_id = COALESCE(sqlc.narg(menu_item_img_id), menu_item_img_id),
     description_post_id = COALESCE(sqlc.narg(description_post_id), description_post_id)
 WHERE id = sqlc.arg(id)
 RETURNING *;

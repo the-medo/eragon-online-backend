@@ -29,9 +29,9 @@ func (q *Queries) CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, e
 }
 
 const createMenuItem = `-- name: CreateMenuItem :one
-INSERT INTO menu_items (menu_id, menu_item_code, name, position, parent_item_id, menu_item_img_id, description_post_id)
-VALUES ($1, $2, $3, $4, $5, $6, $7)
-RETURNING id, menu_id, menu_item_code, name, position, parent_item_id, menu_item_img_id, description_post_id
+INSERT INTO menu_items (menu_id, menu_item_code, name, position, parent_item_id, description_post_id)
+VALUES ($1, $2, $3, $4, $5, $6)
+RETURNING id, menu_id, menu_item_code, name, position, parent_item_id, description_post_id
 `
 
 type CreateMenuItemParams struct {
@@ -40,7 +40,6 @@ type CreateMenuItemParams struct {
 	Name              string        `json:"name"`
 	Position          int32         `json:"position"`
 	ParentItemID      sql.NullInt32 `json:"parent_item_id"`
-	MenuItemImgID     sql.NullInt32 `json:"menu_item_img_id"`
 	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
 }
 
@@ -51,7 +50,6 @@ func (q *Queries) CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) 
 		arg.Name,
 		arg.Position,
 		arg.ParentItemID,
-		arg.MenuItemImgID,
 		arg.DescriptionPostID,
 	)
 	var i MenuItem
@@ -62,7 +60,6 @@ func (q *Queries) CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) 
 		&i.Name,
 		&i.Position,
 		&i.ParentItemID,
-		&i.MenuItemImgID,
 		&i.DescriptionPostID,
 	)
 	return i, err
@@ -147,7 +144,7 @@ func (q *Queries) GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams
 }
 
 const getMenuItems = `-- name: GetMenuItems :many
-SELECT id, menu_id, menu_item_code, name, position, parent_item_id, menu_item_img_id, description_post_id FROM menu_items WHERE menu_id = $1
+SELECT id, menu_id, menu_item_code, name, position, parent_item_id, description_post_id FROM menu_items WHERE menu_id = $1
 `
 
 func (q *Queries) GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, error) {
@@ -166,7 +163,6 @@ func (q *Queries) GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, e
 			&i.Name,
 			&i.Position,
 			&i.ParentItemID,
-			&i.MenuItemImgID,
 			&i.DescriptionPostID,
 		); err != nil {
 			return nil, err
@@ -210,10 +206,9 @@ SET
     name = COALESCE($2, name),
     position = COALESCE($3, position),
     parent_item_id = COALESCE($4, parent_item_id),
-    menu_item_img_id = COALESCE($5, menu_item_img_id),
-    description_post_id = COALESCE($6, description_post_id)
-WHERE id = $7
-RETURNING id, menu_id, menu_item_code, name, position, parent_item_id, menu_item_img_id, description_post_id
+    description_post_id = COALESCE($5, description_post_id)
+WHERE id = $6
+RETURNING id, menu_id, menu_item_code, name, position, parent_item_id, description_post_id
 `
 
 type UpdateMenuItemParams struct {
@@ -221,7 +216,6 @@ type UpdateMenuItemParams struct {
 	Name              sql.NullString `json:"name"`
 	Position          sql.NullInt32  `json:"position"`
 	ParentItemID      sql.NullInt32  `json:"parent_item_id"`
-	MenuItemImgID     sql.NullInt32  `json:"menu_item_img_id"`
 	DescriptionPostID sql.NullInt32  `json:"description_post_id"`
 	ID                int32          `json:"id"`
 }
@@ -232,7 +226,6 @@ func (q *Queries) UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) 
 		arg.Name,
 		arg.Position,
 		arg.ParentItemID,
-		arg.MenuItemImgID,
 		arg.DescriptionPostID,
 		arg.ID,
 	)
@@ -244,7 +237,6 @@ func (q *Queries) UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) 
 		&i.Name,
 		&i.Position,
 		&i.ParentItemID,
-		&i.MenuItemImgID,
 		&i.DescriptionPostID,
 	)
 	return i, err

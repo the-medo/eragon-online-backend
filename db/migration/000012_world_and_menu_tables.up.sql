@@ -80,13 +80,11 @@ CREATE TABLE menu_items (
     name varchar NOT NULL,
     position int NOT NULL,
     parent_item_id int,
-    menu_item_img_id int,
     description_post_id int
 );
 
 ALTER TABLE menu_items ADD CONSTRAINT menu_items_menu_id_fkey FOREIGN KEY(menu_id) REFERENCES menus(id);
 ALTER TABLE menu_items ADD CONSTRAINT menu_items_parent_item_id_fkey FOREIGN KEY(parent_item_id) REFERENCES menu_items(id);
-ALTER TABLE menu_items ADD CONSTRAINT menu_items_menu_item_img_id_fkey FOREIGN KEY(menu_item_img_id) REFERENCES images(id);
 ALTER TABLE menu_items ADD CONSTRAINT menu_items_description_post_id_fkey FOREIGN KEY(description_post_id) REFERENCES posts(id);
 
 CREATE TABLE menu_item_posts (
@@ -108,11 +106,13 @@ SELECT
     tags.tags AS tags,
     COALESCE(activity.activity_post_count, 0) AS activity_post_count,
     COALESCE(activity.activity_quest_count, 0) AS activity_quest_count,
-    COALESCE(activity.activity_resource_count, 0) AS activity_resource_count
+    COALESCE(activity.activity_resource_count, 0) AS activity_resource_count,
+    wm.menu_id as world_menu_id
 FROM
     worlds w
-        JOIN world_images wi ON w.id = wi.world_id
-        LEFT JOIN (
+    JOIN world_images wi ON w.id = wi.world_id
+    JOIN world_menu wm ON w.id = wm.world_id
+    LEFT JOIN (
         SELECT
             wa.world_id,
             cast(sum(wa.post_count) as integer) AS activity_post_count,
@@ -130,7 +130,7 @@ FROM
             cast(array_agg(t.tag) as varchar[]) AS tags
         FROM
             world_tags wt
-                LEFT JOIN world_tags_available t ON t.id = wt.tag_id
+            LEFT JOIN world_tags_available t ON t.id = wt.tag_id
         GROUP BY wt.world_id
     ) tags ON tags.world_id = w.id
         LEFT JOIN images i_header on wi.header_img_id = i_header.id

@@ -215,6 +215,7 @@ func convertWorld(world db.ViewWorld) *pb.World {
 		ActivityPostCount:     world.ActivityPostCount,
 		ActivityQuestCount:    world.ActivityQuestCount,
 		ActivityResourceCount: world.ActivityResourceCount,
+		WorldMenuId:           world.WorldMenuID,
 	}
 
 	if world.DescriptionPostID.Valid == true {
