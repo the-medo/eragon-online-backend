@@ -75,6 +75,16 @@ const (
 	Talebound_GetWorlds_FullMethodName                          = "/pb.Talebound/GetWorlds"
 	Talebound_GetWorldById_FullMethodName                       = "/pb.Talebound/GetWorldById"
 	Talebound_UpdateWorldIntroduction_FullMethodName            = "/pb.Talebound/UpdateWorldIntroduction"
+	Talebound_UpdateMenu_FullMethodName                         = "/pb.Talebound/UpdateMenu"
+	Talebound_GetMenu_FullMethodName                            = "/pb.Talebound/GetMenu"
+	Talebound_CreateMenuItem_FullMethodName                     = "/pb.Talebound/CreateMenuItem"
+	Talebound_UpdateMenuItem_FullMethodName                     = "/pb.Talebound/UpdateMenuItem"
+	Talebound_DeleteMenuItem_FullMethodName                     = "/pb.Talebound/DeleteMenuItem"
+	Talebound_GetMenuItems_FullMethodName                       = "/pb.Talebound/GetMenuItems"
+	Talebound_CreateMenuItemPost_FullMethodName                 = "/pb.Talebound/CreateMenuItemPost"
+	Talebound_UpdateMenuItemPost_FullMethodName                 = "/pb.Talebound/UpdateMenuItemPost"
+	Talebound_DeleteMenuItemPost_FullMethodName                 = "/pb.Talebound/DeleteMenuItemPost"
+	Talebound_GetMenuItemPosts_FullMethodName                   = "/pb.Talebound/GetMenuItemPosts"
 )
 
 // TaleboundClient is the client API for Talebound service.
@@ -140,6 +150,16 @@ type TaleboundClient interface {
 	GetWorlds(ctx context.Context, in *GetWorldsRequest, opts ...grpc.CallOption) (*GetWorldsResponse, error)
 	GetWorldById(ctx context.Context, in *GetWorldByIdRequest, opts ...grpc.CallOption) (*World, error)
 	UpdateWorldIntroduction(ctx context.Context, in *UpdateWorldIntroductionRequest, opts ...grpc.CallOption) (*Post, error)
+	UpdateMenu(ctx context.Context, in *UpdateMenuRequest, opts ...grpc.CallOption) (*Menu, error)
+	GetMenu(ctx context.Context, in *GetMenuRequest, opts ...grpc.CallOption) (*Menu, error)
+	CreateMenuItem(ctx context.Context, in *CreateMenuItemRequest, opts ...grpc.CallOption) (*MenuItem, error)
+	UpdateMenuItem(ctx context.Context, in *UpdateMenuItemRequest, opts ...grpc.CallOption) (*MenuItem, error)
+	DeleteMenuItem(ctx context.Context, in *DeleteMenuItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetMenuItems(ctx context.Context, in *GetMenuItemsRequest, opts ...grpc.CallOption) (*GetMenuItemsResponse, error)
+	CreateMenuItemPost(ctx context.Context, in *CreateMenuItemPostRequest, opts ...grpc.CallOption) (*MenuItemPost, error)
+	UpdateMenuItemPost(ctx context.Context, in *UpdateMenuItemPostRequest, opts ...grpc.CallOption) (*MenuItemPost, error)
+	DeleteMenuItemPost(ctx context.Context, in *DeleteMenuItemPostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetMenuItemPosts(ctx context.Context, in *GetMenuItemPostsRequest, opts ...grpc.CallOption) (*GetMenuItemPostsResponse, error)
 }
 
 type taleboundClient struct {
@@ -645,6 +665,96 @@ func (c *taleboundClient) UpdateWorldIntroduction(ctx context.Context, in *Updat
 	return out, nil
 }
 
+func (c *taleboundClient) UpdateMenu(ctx context.Context, in *UpdateMenuRequest, opts ...grpc.CallOption) (*Menu, error) {
+	out := new(Menu)
+	err := c.cc.Invoke(ctx, Talebound_UpdateMenu_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetMenu(ctx context.Context, in *GetMenuRequest, opts ...grpc.CallOption) (*Menu, error) {
+	out := new(Menu)
+	err := c.cc.Invoke(ctx, Talebound_GetMenu_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) CreateMenuItem(ctx context.Context, in *CreateMenuItemRequest, opts ...grpc.CallOption) (*MenuItem, error) {
+	out := new(MenuItem)
+	err := c.cc.Invoke(ctx, Talebound_CreateMenuItem_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) UpdateMenuItem(ctx context.Context, in *UpdateMenuItemRequest, opts ...grpc.CallOption) (*MenuItem, error) {
+	out := new(MenuItem)
+	err := c.cc.Invoke(ctx, Talebound_UpdateMenuItem_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) DeleteMenuItem(ctx context.Context, in *DeleteMenuItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Talebound_DeleteMenuItem_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetMenuItems(ctx context.Context, in *GetMenuItemsRequest, opts ...grpc.CallOption) (*GetMenuItemsResponse, error) {
+	out := new(GetMenuItemsResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetMenuItems_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) CreateMenuItemPost(ctx context.Context, in *CreateMenuItemPostRequest, opts ...grpc.CallOption) (*MenuItemPost, error) {
+	out := new(MenuItemPost)
+	err := c.cc.Invoke(ctx, Talebound_CreateMenuItemPost_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) UpdateMenuItemPost(ctx context.Context, in *UpdateMenuItemPostRequest, opts ...grpc.CallOption) (*MenuItemPost, error) {
+	out := new(MenuItemPost)
+	err := c.cc.Invoke(ctx, Talebound_UpdateMenuItemPost_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) DeleteMenuItemPost(ctx context.Context, in *DeleteMenuItemPostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Talebound_DeleteMenuItemPost_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taleboundClient) GetMenuItemPosts(ctx context.Context, in *GetMenuItemPostsRequest, opts ...grpc.CallOption) (*GetMenuItemPostsResponse, error) {
+	out := new(GetMenuItemPostsResponse)
+	err := c.cc.Invoke(ctx, Talebound_GetMenuItemPosts_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TaleboundServer is the server API for Talebound service.
 // All implementations must embed UnimplementedTaleboundServer
 // for forward compatibility
@@ -708,6 +818,16 @@ type TaleboundServer interface {
 	GetWorlds(context.Context, *GetWorldsRequest) (*GetWorldsResponse, error)
 	GetWorldById(context.Context, *GetWorldByIdRequest) (*World, error)
 	UpdateWorldIntroduction(context.Context, *UpdateWorldIntroductionRequest) (*Post, error)
+	UpdateMenu(context.Context, *UpdateMenuRequest) (*Menu, error)
+	GetMenu(context.Context, *GetMenuRequest) (*Menu, error)
+	CreateMenuItem(context.Context, *CreateMenuItemRequest) (*MenuItem, error)
+	UpdateMenuItem(context.Context, *UpdateMenuItemRequest) (*MenuItem, error)
+	DeleteMenuItem(context.Context, *DeleteMenuItemRequest) (*emptypb.Empty, error)
+	GetMenuItems(context.Context, *GetMenuItemsRequest) (*GetMenuItemsResponse, error)
+	CreateMenuItemPost(context.Context, *CreateMenuItemPostRequest) (*MenuItemPost, error)
+	UpdateMenuItemPost(context.Context, *UpdateMenuItemPostRequest) (*MenuItemPost, error)
+	DeleteMenuItemPost(context.Context, *DeleteMenuItemPostRequest) (*emptypb.Empty, error)
+	GetMenuItemPosts(context.Context, *GetMenuItemPostsRequest) (*GetMenuItemPostsResponse, error)
 	mustEmbedUnimplementedTaleboundServer()
 }
 
@@ -879,6 +999,36 @@ func (UnimplementedTaleboundServer) GetWorldById(context.Context, *GetWorldByIdR
 }
 func (UnimplementedTaleboundServer) UpdateWorldIntroduction(context.Context, *UpdateWorldIntroductionRequest) (*Post, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateWorldIntroduction not implemented")
+}
+func (UnimplementedTaleboundServer) UpdateMenu(context.Context, *UpdateMenuRequest) (*Menu, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenu not implemented")
+}
+func (UnimplementedTaleboundServer) GetMenu(context.Context, *GetMenuRequest) (*Menu, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMenu not implemented")
+}
+func (UnimplementedTaleboundServer) CreateMenuItem(context.Context, *CreateMenuItemRequest) (*MenuItem, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMenuItem not implemented")
+}
+func (UnimplementedTaleboundServer) UpdateMenuItem(context.Context, *UpdateMenuItemRequest) (*MenuItem, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenuItem not implemented")
+}
+func (UnimplementedTaleboundServer) DeleteMenuItem(context.Context, *DeleteMenuItemRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMenuItem not implemented")
+}
+func (UnimplementedTaleboundServer) GetMenuItems(context.Context, *GetMenuItemsRequest) (*GetMenuItemsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMenuItems not implemented")
+}
+func (UnimplementedTaleboundServer) CreateMenuItemPost(context.Context, *CreateMenuItemPostRequest) (*MenuItemPost, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMenuItemPost not implemented")
+}
+func (UnimplementedTaleboundServer) UpdateMenuItemPost(context.Context, *UpdateMenuItemPostRequest) (*MenuItemPost, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenuItemPost not implemented")
+}
+func (UnimplementedTaleboundServer) DeleteMenuItemPost(context.Context, *DeleteMenuItemPostRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMenuItemPost not implemented")
+}
+func (UnimplementedTaleboundServer) GetMenuItemPosts(context.Context, *GetMenuItemPostsRequest) (*GetMenuItemPostsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMenuItemPosts not implemented")
 }
 func (UnimplementedTaleboundServer) mustEmbedUnimplementedTaleboundServer() {}
 
@@ -1883,6 +2033,186 @@ func _Talebound_UpdateWorldIntroduction_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_UpdateMenu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMenuRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).UpdateMenu(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_UpdateMenu_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).UpdateMenu(ctx, req.(*UpdateMenuRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetMenu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMenuRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetMenu(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetMenu_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetMenu(ctx, req.(*GetMenuRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_CreateMenuItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMenuItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).CreateMenuItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_CreateMenuItem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).CreateMenuItem(ctx, req.(*CreateMenuItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_UpdateMenuItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMenuItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).UpdateMenuItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_UpdateMenuItem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).UpdateMenuItem(ctx, req.(*UpdateMenuItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_DeleteMenuItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMenuItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).DeleteMenuItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_DeleteMenuItem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).DeleteMenuItem(ctx, req.(*DeleteMenuItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetMenuItems_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMenuItemsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetMenuItems(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetMenuItems_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetMenuItems(ctx, req.(*GetMenuItemsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_CreateMenuItemPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMenuItemPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).CreateMenuItemPost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_CreateMenuItemPost_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).CreateMenuItemPost(ctx, req.(*CreateMenuItemPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_UpdateMenuItemPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMenuItemPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).UpdateMenuItemPost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_UpdateMenuItemPost_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).UpdateMenuItemPost(ctx, req.(*UpdateMenuItemPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_DeleteMenuItemPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMenuItemPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).DeleteMenuItemPost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_DeleteMenuItemPost_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).DeleteMenuItemPost(ctx, req.(*DeleteMenuItemPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Talebound_GetMenuItemPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMenuItemPostsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).GetMenuItemPosts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_GetMenuItemPosts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).GetMenuItemPosts(ctx, req.(*GetMenuItemPostsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Talebound_ServiceDesc is the grpc.ServiceDesc for Talebound service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2109,6 +2439,46 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateWorldIntroduction",
 			Handler:    _Talebound_UpdateWorldIntroduction_Handler,
+		},
+		{
+			MethodName: "UpdateMenu",
+			Handler:    _Talebound_UpdateMenu_Handler,
+		},
+		{
+			MethodName: "GetMenu",
+			Handler:    _Talebound_GetMenu_Handler,
+		},
+		{
+			MethodName: "CreateMenuItem",
+			Handler:    _Talebound_CreateMenuItem_Handler,
+		},
+		{
+			MethodName: "UpdateMenuItem",
+			Handler:    _Talebound_UpdateMenuItem_Handler,
+		},
+		{
+			MethodName: "DeleteMenuItem",
+			Handler:    _Talebound_DeleteMenuItem_Handler,
+		},
+		{
+			MethodName: "GetMenuItems",
+			Handler:    _Talebound_GetMenuItems_Handler,
+		},
+		{
+			MethodName: "CreateMenuItemPost",
+			Handler:    _Talebound_CreateMenuItemPost_Handler,
+		},
+		{
+			MethodName: "UpdateMenuItemPost",
+			Handler:    _Talebound_UpdateMenuItemPost_Handler,
+		},
+		{
+			MethodName: "DeleteMenuItemPost",
+			Handler:    _Talebound_DeleteMenuItemPost_Handler,
+		},
+		{
+			MethodName: "GetMenuItemPosts",
+			Handler:    _Talebound_GetMenuItemPosts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

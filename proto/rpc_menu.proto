@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package pb;
+
+import "menu.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+//UpdateMenuRequest
+
+message UpdateMenuRequest {
+    int32 menuId = 1;
+    optional string code = 2;
+    optional int32 headerImgId = 3;
+}
+
+message GetMenuRequest {
+    int32 menuId = 1;
+}
+
+//========== Menu Items ==========
+
+message CreateMenuItemRequest {
+    int32 menuId = 1;
+    string code = 2;
+    string name = 3;
+    optional int32 position = 4;
+    optional int32 parentItemId = 5;
+}
+
+message UpdateMenuItemRequest {
+    int32 menuId = 1;
+    int32 menuItemId = 2;
+    optional string code = 3;
+    optional string name = 4;
+    optional int32 position = 5;
+    optional int32 parentItemId = 6;
+    optional int32 descriptionPostId = 7;
+}
+
+message DeleteMenuItemRequest {
+    int32 menuId = 1;
+    int32 menuItemId = 2;
+}
+
+message GetMenuItemsRequest {
+    int32 menuId = 1;
+}
+
+message GetMenuItemsResponse {
+    repeated MenuItem menuItems = 1;
+}
+
+//========== Menu Item Posts ==========
+
+message CreateMenuItemPostRequest {
+  int32 menuId = 1;
+  int32 menuItemId = 2;
+  int32 postId = 3;
+  optional int32 position = 4;
+}
+
+message UpdateMenuItemPostRequest {
+  int32 menuId = 1;
+  int32 menuItemId = 2;
+  int32 postId = 3;
+  optional int32 position = 4;
+}
+
+message DeleteMenuItemPostRequest {
+  int32 menuId = 1;
+  int32 menuItemId = 2;
+  int32 postId = 3;
+}
+
+message GetMenuItemPostsRequest {
+  int32 menuId = 1;
+  int32 menuItemId = 2;
+}
+
+message GetMenuItemPostsResponse {
+  repeated MenuItemPost menuItemPosts = 1;
+}
