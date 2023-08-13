@@ -9,3 +9,6 @@ DELETE FROM world_menu WHERE world_id = sqlc.arg(world_id) AND menu_id = sqlc.ar
 
 -- name: GetWorldMenu :one
 SELECT * FROM world_menu WHERE world_id = sqlc.arg(world_id) AND menu_id = sqlc.arg(menu_id);
+
+-- name: GetWorldMenuByMenuId :one
+SELECT * FROM world_menu WHERE menu_id = sqlc.arg(menu_id) LIMIT 1;

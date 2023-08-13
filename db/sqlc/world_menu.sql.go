@@ -56,3 +56,14 @@ func (q *Queries) GetWorldMenu(ctx context.Context, arg GetWorldMenuParams) (Wor
 	err := row.Scan(&i.WorldID, &i.MenuID)
 	return i, err
 }
+
+const getWorldMenuByMenuId = `-- name: GetWorldMenuByMenuId :one
+SELECT world_id, menu_id FROM world_menu WHERE menu_id = $1 LIMIT 1
+`
+
+func (q *Queries) GetWorldMenuByMenuId(ctx context.Context, menuID int32) (WorldMenu, error) {
+	row := q.db.QueryRowContext(ctx, getWorldMenuByMenuId, menuID)
+	var i WorldMenu
+	err := row.Scan(&i.WorldID, &i.MenuID)
+	return i, err
+}

@@ -82,6 +82,7 @@ type Querier interface {
 	GetWorldDailyActivity(ctx context.Context, arg GetWorldDailyActivityParams) ([]WorldActivity, error)
 	GetWorldImages(ctx context.Context, worldID int32) (WorldImage, error)
 	GetWorldMenu(ctx context.Context, arg GetWorldMenuParams) (WorldMenu, error)
+	GetWorldMenuByMenuId(ctx context.Context, menuID int32) (WorldMenu, error)
 	GetWorldMonthlyActivity(ctx context.Context, arg GetWorldMonthlyActivityParams) ([]GetWorldMonthlyActivityRow, error)
 	GetWorldTag(ctx context.Context, arg GetWorldTagParams) (WorldTag, error)
 	GetWorldTagAvailable(ctx context.Context, tagID int32) (WorldTagsAvailable, error)

@@ -1099,6 +1099,21 @@ func (mr *MockStoreMockRecorder) GetWorldMenu(arg0, arg1 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldMenu", reflect.TypeOf((*MockStore)(nil).GetWorldMenu), arg0, arg1)
 }
 
+// GetWorldMenuByMenuId mocks base method.
+func (m *MockStore) GetWorldMenuByMenuId(arg0 context.Context, arg1 int32) (db.WorldMenu, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWorldMenuByMenuId", arg0, arg1)
+	ret0, _ := ret[0].(db.WorldMenu)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWorldMenuByMenuId indicates an expected call of GetWorldMenuByMenuId.
+func (mr *MockStoreMockRecorder) GetWorldMenuByMenuId(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldMenuByMenuId", reflect.TypeOf((*MockStore)(nil).GetWorldMenuByMenuId), arg0, arg1)
+}
+
 // GetWorldMonthlyActivity mocks base method.
 func (m *MockStore) GetWorldMonthlyActivity(arg0 context.Context, arg1 db.GetWorldMonthlyActivityParams) ([]db.GetWorldMonthlyActivityRow, error) {
 	m.ctrl.T.Helper()
