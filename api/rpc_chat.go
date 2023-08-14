@@ -107,10 +107,10 @@ func (server *Server) DeleteChatMessage(ctx context.Context, req *pb.DeleteChatM
 }
 
 func validateGetChatMessages(req *pb.GetChatMessagesRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateLimitOrOffset(req.GetLimit(), 1000); err != nil {
+	if err := validator.ValidateLimit(req.GetLimit()); err != nil {
 		violations = append(violations, FieldViolation("limit", err))
 	}
-	if err := validator.ValidateLimitOrOffset(req.GetOffset()); err != nil {
+	if err := validator.ValidateOffset(req.GetOffset()); err != nil {
 		violations = append(violations, FieldViolation("offset", err))
 	}
 

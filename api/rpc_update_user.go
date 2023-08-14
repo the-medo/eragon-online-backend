@@ -184,7 +184,7 @@ func validateUpdateUserRequest(req *pb.UpdateUserRequest) (violations []*errdeta
 	}
 
 	if req.ImgId != nil {
-		if err := validator.ValidateImgId(req.GetImgId()); err != nil {
+		if err := validator.ValidateImageId(req.GetImgId()); err != nil {
 			violations = append(violations, FieldViolation("img_id", err))
 		}
 	}
