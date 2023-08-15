@@ -41,11 +41,11 @@ func (server *Server) CreateWorldAdmin(ctx context.Context, request *pb.CreateWo
 }
 
 func validateCreateWorldAdmin(req *pb.CreateWorldAdminRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateInt(req.GetWorldId(), 1, 4098); err != nil {
+	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
 		violations = append(violations, FieldViolation("world_id", err))
 	}
 
-	if err := validator.ValidateString(req.GetMotivationalLetter(), 0, 2000); err != nil {
+	if err := validator.ValidateWorldAdminMotivationalLetter(req.GetMotivationalLetter()); err != nil {
 		violations = append(violations, FieldViolation("motivational_letter", err))
 	}
 

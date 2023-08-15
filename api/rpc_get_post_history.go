@@ -53,53 +53,9 @@ func (server *Server) GetPostHistory(ctx context.Context, req *pb.GetPostHistory
 	return rsp, nil
 }
 
-func (server *Server) GetPostHistoryById(ctx context.Context, req *pb.GetPostHistoryByIdRequest) (*pb.HistoryPost, error) {
-	violations := validateGetPostHistoryByIdRequest(req)
-	if violations != nil {
-		return nil, invalidArgumentError(violations)
-	}
-
-	authPayload, err := server.authorizeUserCookie(ctx)
-	if err != nil {
-		return nil, unauthenticatedError(err)
-	}
-
-	post, err := server.store.GetPostHistoryById(ctx, req.GetPostHistoryId())
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get post history: %v", err)
-	}
-
-	if post.UserID != authPayload.UserId {
-		err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
-		if err != nil {
-			return nil, status.Errorf(codes.PermissionDenied, "can not get post history - you are not creator or admin: %v", err)
-		}
-	}
-
-	postType, err := server.store.GetPostTypeById(ctx, post.PostTypeID)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
-	}
-
-	rsp := convertHistoryPost(post, postType)
-
-	return rsp, nil
-}
-
 func validateGetPostHistoryRequest(req *pb.GetPostHistoryRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidatePostId(req.GetPostId()); err != nil {
 		violations = append(violations, FieldViolation("post_id", err))
-	}
-
-	return violations
-}
-
-func validateGetPostHistoryByIdRequest(req *pb.GetPostHistoryByIdRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidatePostId(req.GetPostId()); err != nil {
-		violations = append(violations, FieldViolation("post_id", err))
-	}
-	if err := validator.ValidatePostHistoryId(req.GetPostHistoryId()); err != nil {
-		violations = append(violations, FieldViolation("post_history_id", err))
 	}
 
 	return violations

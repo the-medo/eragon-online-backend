@@ -25,7 +25,7 @@ func (server *Server) GetMenu(ctx context.Context, req *pb.GetMenuRequest) (*pb.
 }
 
 func validateGetMenuRequest(req *pb.GetMenuRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateInt(req.GetMenuId(), 1, 4000); err != nil {
+	if err := validator.ValidateMenuId(req.GetMenuId()); err != nil {
 		violations = append(violations, FieldViolation("menu_id", err))
 	}
 

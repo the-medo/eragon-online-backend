@@ -13,7 +13,7 @@ import (
 )
 
 func (server *Server) UpdateMenu(ctx context.Context, req *pb.UpdateMenuRequest) (*pb.Menu, error) {
-	violations := validateUpdateMenuRequest(req)
+	violations := validateUpdateMenu(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
 	}
@@ -48,9 +48,21 @@ func (server *Server) UpdateMenu(ctx context.Context, req *pb.UpdateMenuRequest)
 	return rsp, nil
 }
 
-func validateUpdateMenuRequest(req *pb.UpdateMenuRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateInt(req.GetMenuId(), 1, 4000); err != nil {
+func validateUpdateMenu(req *pb.UpdateMenuRequest) (violations []*errdetails.BadRequest_FieldViolation) {
+	if err := validator.ValidateMenuId(req.GetMenuId()); err != nil {
 		violations = append(violations, FieldViolation("menu_id", err))
+	}
+
+	if req.Code != nil {
+		if err := validator.ValidateMenuCode(req.GetCode()); err != nil {
+			violations = append(violations, FieldViolation("code", err))
+		}
+	}
+
+	if req.HeaderImgId != nil {
+		if err := validator.ValidateImageId(req.GetHeaderImgId()); err != nil {
+			violations = append(violations, FieldViolation("header_img_id", err))
+		}
 	}
 
 	return violations

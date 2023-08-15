@@ -8,13 +8,13 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *Server) GetWorldAdmins(ctx context.Context, request *pb.GetWorldAdminsRequest) (*pb.GetWorldAdminsResponse, error) {
-	violations := validateGetWorldAdmins(request)
+func (server *Server) GetWorldAdmins(ctx context.Context, req *pb.GetWorldAdminsRequest) (*pb.GetWorldAdminsResponse, error) {
+	violations := validateGetWorldAdmins(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
 	}
 
-	worldAdminRows, err := server.store.GetWorldAdmins(ctx, request.GetWorldId())
+	worldAdminRows, err := server.store.GetWorldAdmins(ctx, req.GetWorldId())
 	if err != nil {
 		return nil, err
 	}

@@ -3,11 +3,10 @@ package api
 import (
 	"bytes"
 	"context"
-	"database/sql"
-	"fmt"
 	cloudflareGo "github.com/cloudflare/cloudflare-go"
-	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
+	"github.com/the-medo/talebound-backend/validator"
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -15,6 +14,11 @@ import (
 )
 
 func (server *Server) UploadImage(ctx context.Context, request *pb.UploadImageRequest) (*pb.UploadImageResponse, error) {
+	violations := validateUploadImageRequest(request)
+	if violations != nil {
+		return nil, invalidArgumentError(violations)
+	}
+
 	cloudflare, err := cloudflareGo.NewWithAPIToken(server.config.CloudflareApiToken)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create cloudflare client: %v", err)
@@ -50,96 +54,14 @@ func (server *Server) UploadImage(ctx context.Context, request *pb.UploadImageRe
 	return rsp, nil
 }
 
-func (server *Server) UploadAndInsertToDb(ctx context.Context, data []byte, imgTypeId ImageTypeIds, filename string, userId int32) (*db.Image, error) {
-
-	//upload image to cloudflare
-	uploadRequest := &pb.UploadImageRequest{
-		Filename: filename,
-		Data:     data,
+func validateUploadImageRequest(req *pb.UploadImageRequest) (violations []*errdetails.BadRequest_FieldViolation) {
+	if err := validator.ValidateFilename(req.GetFilename()); err != nil {
+		violations = append(violations, FieldViolation("filename", err))
 	}
 
-	uploadImg, err := server.UploadImage(ctx, uploadRequest)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to upload user avatar: %v", err)
+	if err := validator.ValidateImageTypeId(req.GetImageTypeId()); err != nil {
+		violations = append(violations, FieldViolation("image_type_id", err))
 	}
 
-	createImageParams, err := convertCloudflareImgToDb(server, ctx, uploadImg, imgTypeId, filename, userId)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to convert Cloudflare image to DB: %v", err)
-	}
-
-	//insert img into DB "images" table
-	dbImg, err := server.store.CreateImage(ctx, createImageParams)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to insert image into DB: %v", err)
-	}
-
-	return &dbImg, nil
-}
-
-/*
-UploadUserAvatar
-Uploads a user avatar image to Cloudflare and inserts it into the DB
-  - 1. filename: avatar-{userId}
-  - 2. upload to cloudflare => get cloudflareId
-  - 3. insert into DB `avatar-{userId}_{cloudflareId}`
-  - 4. update user imgId in DB
-*/
-func (server *Server) UploadUserAvatar(ctx context.Context, request *pb.UploadUserAvatarRequest) (*pb.UploadUserAvatarResponse, error) {
-	authPayload, err := server.authorizeUserCookie(ctx)
-	if err != nil {
-		return nil, unauthenticatedError(err)
-	}
-
-	if authPayload.UserId != request.GetUserId() {
-		return nil, status.Errorf(codes.PermissionDenied, "you are not allowed to update this user")
-	}
-
-	filename := fmt.Sprintf("avatar-%d", request.GetUserId())
-
-	dbImg, err := server.UploadAndInsertToDb(ctx, request.GetData(), ImageTypeIdUserAvatar, filename, request.GetUserId())
-	if err != nil {
-		return nil, err
-	}
-
-	//update user imgID in DB
-	_, err = server.store.UpdateUser(ctx, db.UpdateUserParams{
-		ID: request.GetUserId(),
-		ImgID: sql.NullInt32{
-			Int32: dbImg.ID,
-			Valid: true,
-		},
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &pb.UploadUserAvatarResponse{
-		UserId: request.GetUserId(),
-		Image:  convertImage(dbImg),
-	}, nil
-}
-
-/*
-UploadDefaultImage
-Uploads an image to Cloudflare and inserts it into the DB with image type Default
-  - 1. filename: {request.filename}-{userId}
-  - 2. upload to cloudflare => get cloudflareId
-  - 3. insert into DB `{request.filename}-{userId}_{cloudflareId}`
-*/
-func (server *Server) UploadDefaultImage(ctx context.Context, request *pb.UploadImageRequest) (*pb.Image, error) {
-	authPayload, err := server.authorizeUserCookie(ctx)
-	if err != nil {
-		return nil, unauthenticatedError(err)
-	}
-
-	filename := fmt.Sprintf("%s-%d", request.GetFilename(), authPayload.UserId)
-
-	dbImg, err := server.UploadAndInsertToDb(ctx, request.GetData(), ImageTypeIds(request.GetImageTypeId()), filename, authPayload.UserId)
-	if err != nil {
-		return nil, err
-	}
-
-	return convertImage(dbImg), nil
+	return violations
 }

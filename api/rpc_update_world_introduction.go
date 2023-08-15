@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/consts"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -27,7 +28,7 @@ func (server *Server) UpdateWorldIntroduction(ctx context.Context, req *pb.Updat
 		return nil, status.Errorf(codes.NotFound, "unable to save changes - world not found: %s", err)
 	}
 
-	postType, err := server.store.GetPostTypeById(ctx, PostTypeWorldDescription)
+	postType, err := server.store.GetPostTypeById(ctx, consts.PostTypeWorldDescription)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
 	}
@@ -37,7 +38,7 @@ func (server *Server) UpdateWorldIntroduction(ctx context.Context, req *pb.Updat
 		createPostArg := db.CreatePostParams{
 			UserID:     authPayload.UserId,
 			Title:      "World introduction",
-			PostTypeID: PostTypeWorldDescription,
+			PostTypeID: consts.PostTypeWorldDescription,
 			Content:    req.GetContent(),
 			IsDraft:    false,
 			IsPrivate:  false,
@@ -84,6 +85,10 @@ func (server *Server) UpdateWorldIntroduction(ctx context.Context, req *pb.Updat
 func validateUpdateWorldIntroductionRequest(req *pb.UpdateWorldIntroductionRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
 		violations = append(violations, FieldViolation("world_id", err))
+	}
+
+	if err := validator.ValidatePostContent(req.GetContent()); err != nil {
+		violations = append(violations, FieldViolation("content", err))
 	}
 
 	return violations

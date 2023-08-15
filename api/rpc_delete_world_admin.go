@@ -47,7 +47,7 @@ func validateDeleteWorldAdmin(req *pb.DeleteWorldAdminRequest) (violations []*er
 		violations = append(violations, FieldViolation("user_id", err))
 	}
 
-	if err := validator.ValidateInt(req.GetWorldId(), 1, 4098); err != nil {
+	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
 		violations = append(violations, FieldViolation("world_id", err))
 	}
 

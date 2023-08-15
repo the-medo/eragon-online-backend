@@ -58,12 +58,42 @@ func (server *Server) UpdateMenuItem(ctx context.Context, req *pb.UpdateMenuItem
 }
 
 func validateUpdateMenuItemRequest(req *pb.UpdateMenuItemRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateInt(req.GetMenuId(), 1, 4000); err != nil {
+	if err := validator.ValidateMenuId(req.GetMenuId()); err != nil {
 		violations = append(violations, FieldViolation("menu_id", err))
 	}
 
-	if err := validator.ValidateInt(req.GetMenuItemId(), 1, 10000); err != nil {
+	if err := validator.ValidateMenuItemId(req.GetMenuItemId()); err != nil {
 		violations = append(violations, FieldViolation("menu_item_id", err))
+	}
+
+	if req.Code != nil {
+		if err := validator.ValidateMenuItemCode(req.GetCode()); err != nil {
+			violations = append(violations, FieldViolation("code", err))
+		}
+	}
+
+	if req.Name != nil {
+		if err := validator.ValidateMenuItemName(req.GetName()); err != nil {
+			violations = append(violations, FieldViolation("name", err))
+		}
+	}
+
+	if req.Position != nil {
+		if err := validator.ValidateMenuItemPosition(req.GetPosition()); err != nil {
+			violations = append(violations, FieldViolation("position", err))
+		}
+	}
+
+	if req.ParentItemId != nil {
+		if err := validator.ValidateMenuItemParentItemId(req.GetParentItemId()); err != nil {
+			violations = append(violations, FieldViolation("parent_item_id", err))
+		}
+	}
+
+	if req.DescriptionPostId != nil {
+		if err := validator.ValidatePostId(req.GetDescriptionPostId()); err != nil {
+			violations = append(violations, FieldViolation("description_post_id", err))
+		}
 	}
 
 	return violations

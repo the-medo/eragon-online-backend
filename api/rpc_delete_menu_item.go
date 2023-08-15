@@ -30,11 +30,11 @@ func (server *Server) DeleteMenuItem(ctx context.Context, req *pb.DeleteMenuItem
 }
 
 func validateDeleteMenuItemRequest(req *pb.DeleteMenuItemRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateInt(req.GetMenuId(), 1, 4000); err != nil {
+	if err := validator.ValidateMenuId(req.GetMenuId()); err != nil {
 		violations = append(violations, FieldViolation("menu_id", err))
 	}
 
-	if err := validator.ValidateInt(req.GetMenuItemId(), 1, 10000); err != nil {
+	if err := validator.ValidateMenuItemId(req.GetMenuItemId()); err != nil {
 		violations = append(violations, FieldViolation("menu_item_id", err))
 	}
 

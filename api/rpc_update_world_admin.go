@@ -75,18 +75,18 @@ func validateUpdateWorldAdmin(req *pb.UpdateWorldAdminRequest) (violations []*er
 		violations = append(violations, FieldViolation("user_id", err))
 	}
 
-	if err := validator.ValidateInt(req.GetWorldId(), 1, 4098); err != nil {
+	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
 		violations = append(violations, FieldViolation("world_id", err))
 	}
 
 	if req.Approved != nil {
-		if err := validator.ValidateInt(req.GetApproved(), 0, 2); err != nil {
+		if err := validator.ValidateWorldAdminApproved(req.GetApproved()); err != nil {
 			violations = append(violations, FieldViolation("approved", err))
 		}
 	}
 
 	if req.MotivationalLetter != nil {
-		if err := validator.ValidateString(req.GetMotivationalLetter(), 0, 2000); err != nil {
+		if err := validator.ValidateWorldAdminMotivationalLetter(req.GetMotivationalLetter()); err != nil {
 			violations = append(violations, FieldViolation("motivational_letter", err))
 		}
 	}

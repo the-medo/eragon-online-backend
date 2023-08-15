@@ -24,7 +24,7 @@ func (server *Server) GetWorldById(ctx context.Context, req *pb.GetWorldByIdRequ
 }
 
 func validateGetWorldById(req *pb.GetWorldByIdRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateInt(req.GetWorldId(), 1, 4098); err != nil {
+	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
 		violations = append(violations, FieldViolation("world_id", err))
 	}
 

@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"database/sql"
-	"github.com/lib/pq"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -11,42 +10,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
-
-func (server *Server) CreateWorld(ctx context.Context, req *pb.CreateWorldRequest) (*pb.World, error) {
-	violations := validateCreateWorldRequest(req)
-	if violations != nil {
-		return nil, invalidArgumentError(violations)
-	}
-
-	authPayload, err := server.authorizeUserCookie(ctx)
-	if err != nil {
-		return nil, unauthenticatedError(err)
-	}
-
-	arg := db.CreateWorldTxParams{
-		CreateWorldParams: db.CreateWorldParams{
-			Name:             req.GetName(),
-			BasedOn:          req.GetBasedOn(),
-			ShortDescription: req.GetShortDescription(),
-		},
-		UserId: authPayload.UserId,
-	}
-
-	txResult, err := server.store.CreateWorldTx(ctx, arg)
-	if err != nil {
-		if pqErr, ok := err.(*pq.Error); ok {
-			switch pqErr.Code.Name() {
-			case "unique_violation":
-				return nil, status.Errorf(codes.AlreadyExists, "name already exists: %s", err)
-			}
-		}
-		return nil, status.Errorf(codes.Internal, "failed to create world: %s", err)
-	}
-
-	rsp := convertWorld(txResult)
-
-	return rsp, nil
-}
 
 func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldRequest) (*pb.World, error) {
 	violations := validateUpdateWorldRequest(req)
@@ -126,39 +89,51 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 	return rsp, nil
 }
 
-func validateCreateWorldRequest(req *pb.CreateWorldRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateString(req.GetName(), 3, 64); err != nil {
-		violations = append(violations, FieldViolation("name", err))
-	}
-
-	if err := validator.ValidateString(req.GetShortDescription(), 0, 1000); err != nil {
-		violations = append(violations, FieldViolation("short_description", err))
-	}
-
-	if err := validator.ValidateString(req.GetBasedOn(), 0, 100); err != nil {
-		violations = append(violations, FieldViolation("based_on", err))
-	}
-
-	return violations
-}
-
 func validateUpdateWorldRequest(req *pb.UpdateWorldRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
+	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
+		violations = append(violations, FieldViolation("world_id", err))
+	}
+
 	if req.Name != nil {
-		if err := validator.ValidateString(req.GetName(), 3, 64); err != nil {
+		if err := validator.ValidateWorldName(req.GetName()); err != nil {
 			violations = append(violations, FieldViolation("name", err))
 		}
 	}
 
 	if req.ShortDescription != nil {
-		if err := validator.ValidateString(req.GetShortDescription(), 0, 1000); err != nil {
+		if err := validator.ValidateWorldShortDescription(req.GetShortDescription()); err != nil {
 			violations = append(violations, FieldViolation("short_description", err))
 		}
 	}
 
 	if req.BasedOn != nil {
-		if err := validator.ValidateString(req.GetBasedOn(), 0, 100); err != nil {
+		if err := validator.ValidateWorldBasedOn(req.GetBasedOn()); err != nil {
 			violations = append(violations, FieldViolation("based_on", err))
+		}
+	}
+
+	if req.DescriptionPostId != nil {
+		if err := validator.ValidatePostId(req.GetDescriptionPostId()); err != nil {
+			violations = append(violations, FieldViolation("description_post_id", err))
+		}
+	}
+
+	if req.ImageAvatarId != nil {
+		if err := validator.ValidateImageId(req.GetImageAvatarId()); err != nil {
+			violations = append(violations, FieldViolation("image_avatar_id", err))
+		}
+	}
+
+	if req.ImageThumbnailId != nil {
+		if err := validator.ValidateImageId(req.GetImageThumbnailId()); err != nil {
+			violations = append(violations, FieldViolation("image_thumbnail_id", err))
+		}
+	}
+
+	if req.ImageHeaderId != nil {
+		if err := validator.ValidateImageId(req.GetImageHeaderId()); err != nil {
+			violations = append(violations, FieldViolation("image_header_id", err))
 		}
 	}
 

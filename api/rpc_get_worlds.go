@@ -64,5 +64,17 @@ func validateGetWorlds(req *pb.GetWorldsRequest) (violations []*errdetails.BadRe
 		}
 	}
 
+	if req.Limit != nil {
+		if err := validator.ValidateLimit(req.GetLimit()); err != nil {
+			violations = append(violations, FieldViolation("limit", err))
+		}
+	}
+
+	if req.Offset != nil {
+		if err := validator.ValidateOffset(req.GetOffset()); err != nil {
+			violations = append(violations, FieldViolation("offset", err))
+		}
+	}
+
 	return violations
 }
