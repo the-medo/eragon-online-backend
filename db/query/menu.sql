@@ -38,6 +38,12 @@ DELETE FROM menu_items WHERE id = sqlc.arg(id);
 -- name: GetMenuItems :many
 SELECT * FROM menu_items WHERE menu_id = sqlc.arg(menu_id);
 
+-- name: MenuItemChangePositions :exec
+UPDATE menu_items SET position = position + sqlc.arg(amount) WHERE menu_id = sqlc.arg(menu_id) AND position >= sqlc.arg(position);
+
+--name: MenuItemGetNextMainItemPosition :one
+SELECT position FROM menu_items WHERE position >= sqlc.arg(position) AND parent_item_id IS NULL AND menu_id = sqlc.arg(menu_id) ORDER BY position ASC LIMIT 1;
+
 -- name: CreateMenuItemPost :one
 INSERT INTO menu_item_posts (menu_item_id, post_id, position)
 VALUES (sqlc.arg(menu_item_id), sqlc.arg(post_id), sqlc.arg(position))
