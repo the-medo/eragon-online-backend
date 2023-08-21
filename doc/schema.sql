@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-08-11T20:00:44.605Z
+-- Generated at: 2023-08-20T21:36:43.182Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -287,7 +287,7 @@ CREATE TABLE "menu_items" (
   "menu_item_code" varchar NOT NULL,
   "name" varchar NOT NULL,
   "position" int NOT NULL,
-  "parent_item_id" int,
+  "is_main" bool NOT NULL DEFAULT false,
   "description_post_id" int
 );
 
@@ -434,8 +434,6 @@ ALTER TABLE "post_history" ADD FOREIGN KEY ("last_updated_user_id") REFERENCES "
 ALTER TABLE "menus" ADD FOREIGN KEY ("menu_header_img_id") REFERENCES "images" ("id");
 
 ALTER TABLE "menu_items" ADD FOREIGN KEY ("menu_id") REFERENCES "menus" ("id");
-
-ALTER TABLE "menu_items" ADD FOREIGN KEY ("parent_item_id") REFERENCES "menu_items" ("id");
 
 ALTER TABLE "menu_items" ADD FOREIGN KEY ("description_post_id") REFERENCES "posts" ("id");
 

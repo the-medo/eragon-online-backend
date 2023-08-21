@@ -11,15 +11,15 @@ type CreateWorldTxParams struct {
 	CreateWorldParams
 }
 
-func insertSubMenuItem(ctx context.Context, q *Queries, menuId int32, position int32, code string, name string, parentItemId int32) error {
+func insertSubMenuItem(ctx context.Context, q *Queries, menuId int32, position int32, code string, name string, isMain bool) error {
 
 	_, err := q.CreateMenuItem(ctx, CreateMenuItemParams{
 		MenuID:       menuId,
 		MenuItemCode: code,
 		Name:         name,
 		Position:     position,
-		ParentItemID: sql.NullInt32{
-			Int32: parentItemId,
+		IsMain: sql.NullBool{
+			Bool:  isMain,
 			Valid: true,
 		},
 		DescriptionPostID: sql.NullInt32{},
@@ -52,39 +52,42 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
-		overviewMenuItem, err := q.CreateMenuItem(ctx, CreateMenuItemParams{
-			MenuID:            menu.ID,
-			MenuItemCode:      "overview",
-			Name:              "Overview",
-			Position:          1,
-			ParentItemID:      sql.NullInt32{},
+		_, err = q.CreateMenuItem(ctx, CreateMenuItemParams{
+			MenuID:       menu.ID,
+			MenuItemCode: "overview",
+			Name:         "Overview",
+			Position:     1,
+			IsMain: sql.NullBool{
+				Bool:  true,
+				Valid: true,
+			},
 			DescriptionPostID: sql.NullInt32{},
 		})
 		if err != nil {
 			return err
 		}
 
-		err = insertSubMenuItem(ctx, q, menu.ID, 2, "races", "Races", overviewMenuItem.ID)
+		err = insertSubMenuItem(ctx, q, menu.ID, 2, "races", "Races", false)
 		if err != nil {
 			return err
 		}
 
-		err = insertSubMenuItem(ctx, q, menu.ID, 3, "flora-and-fauna", "Flora & Fauna", overviewMenuItem.ID)
+		err = insertSubMenuItem(ctx, q, menu.ID, 3, "flora-and-fauna", "Flora & Fauna", false)
 		if err != nil {
 			return err
 		}
 
-		err = insertSubMenuItem(ctx, q, menu.ID, 4, "magic", "Magic", overviewMenuItem.ID)
+		err = insertSubMenuItem(ctx, q, menu.ID, 4, "magic", "Magic", false)
 		if err != nil {
 			return err
 		}
 
-		err = insertSubMenuItem(ctx, q, menu.ID, 5, "science-and-technology", "Science & Technology", overviewMenuItem.ID)
+		err = insertSubMenuItem(ctx, q, menu.ID, 5, "science-and-technology", "Science & Technology", false)
 		if err != nil {
 			return err
 		}
 
-		err = insertSubMenuItem(ctx, q, menu.ID, 6, "history", "History", overviewMenuItem.ID)
+		err = insertSubMenuItem(ctx, q, menu.ID, 6, "history", "History", false)
 		if err != nil {
 			return err
 		}

@@ -188,7 +188,7 @@ type MenuItem struct {
 	MenuItemCode      string        `json:"menu_item_code"`
 	Name              string        `json:"name"`
 	Position          int32         `json:"position"`
-	ParentItemID      sql.NullInt32 `json:"parent_item_id"`
+	IsMain            bool          `json:"is_main"`
 	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
 }
 

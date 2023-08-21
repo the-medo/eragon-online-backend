@@ -1309,6 +1309,35 @@ func (mr *MockStoreMockRecorder) IsWorldSuperAdmin(arg0, arg1 interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsWorldSuperAdmin", reflect.TypeOf((*MockStore)(nil).IsWorldSuperAdmin), arg0, arg1)
 }
 
+// MenuItemChangePositions mocks base method.
+func (m *MockStore) MenuItemChangePositions(arg0 context.Context, arg1 db.MenuItemChangePositionsParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "MenuItemChangePositions", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// MenuItemChangePositions indicates an expected call of MenuItemChangePositions.
+func (mr *MockStoreMockRecorder) MenuItemChangePositions(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MenuItemChangePositions", reflect.TypeOf((*MockStore)(nil).MenuItemChangePositions), arg0, arg1)
+}
+
+// MenuItemGetNextMainItemPosition mocks base method.
+func (m *MockStore) MenuItemGetNextMainItemPosition(arg0 context.Context, arg1 db.MenuItemGetNextMainItemPositionParams) (int32, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "MenuItemGetNextMainItemPosition", arg0, arg1)
+	ret0, _ := ret[0].(int32)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// MenuItemGetNextMainItemPosition indicates an expected call of MenuItemGetNextMainItemPosition.
+func (mr *MockStoreMockRecorder) MenuItemGetNextMainItemPosition(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MenuItemGetNextMainItemPosition", reflect.TypeOf((*MockStore)(nil).MenuItemGetNextMainItemPosition), arg0, arg1)
+}
+
 // RemoveUserRole mocks base method.
 func (m *MockStore) RemoveUserRole(arg0 context.Context, arg1 db.RemoveUserRoleParams) error {
 	m.ctrl.T.Helper()

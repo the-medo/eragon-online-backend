@@ -96,6 +96,8 @@ type Querier interface {
 	InsertWorldAdmin(ctx context.Context, arg InsertWorldAdminParams) (WorldAdmin, error)
 	IsWorldAdmin(ctx context.Context, arg IsWorldAdminParams) (WorldAdmin, error)
 	IsWorldSuperAdmin(ctx context.Context, arg IsWorldSuperAdminParams) (WorldAdmin, error)
+	MenuItemChangePositions(ctx context.Context, arg MenuItemChangePositionsParams) error
+	MenuItemGetNextMainItemPosition(ctx context.Context, arg MenuItemGetNextMainItemPositionParams) (int32, error)
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
 	UpdateImage(ctx context.Context, arg UpdateImageParams) (Image, error)

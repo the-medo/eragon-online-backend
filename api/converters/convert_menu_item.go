@@ -12,10 +12,7 @@ func ConvertMenuItem(menuItem db.MenuItem) *pb.MenuItem {
 		Code:     menuItem.MenuItemCode,
 		Name:     menuItem.Name,
 		Position: menuItem.Position,
-	}
-
-	if menuItem.ParentItemID.Valid == true {
-		pbMenuItem.ParentItemId = &menuItem.ParentItemID.Int32
+		IsMain:   &menuItem.IsMain,
 	}
 
 	if menuItem.DescriptionPostID.Valid == true {

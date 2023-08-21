@@ -28,9 +28,9 @@ func (server *Server) CreateMenuItem(ctx context.Context, req *pb.CreateMenuItem
 		MenuItemCode: req.GetCode(),
 		Name:         req.GetName(),
 		Position:     req.GetPosition(),
-		ParentItemID: sql.NullInt32{
-			Int32: req.GetParentItemId(),
-			Valid: req.ParentItemId != nil,
+		IsMain: sql.NullBool{
+			Bool:  req.GetIsMain(),
+			Valid: req.IsMain != nil,
 		},
 	}
 
@@ -60,12 +60,6 @@ func validateCreateMenuItemRequest(req *pb.CreateMenuItemRequest) (violations []
 	if req.Position != nil {
 		if err := validator.ValidateMenuItemPosition(req.GetPosition()); err != nil {
 			violations = append(violations, FieldViolation("position", err))
-		}
-	}
-
-	if req.ParentItemId != nil {
-		if err := validator.ValidateMenuItemParentItemId(req.GetParentItemId()); err != nil {
-			violations = append(violations, FieldViolation("parent_item_id", err))
 		}
 	}
 

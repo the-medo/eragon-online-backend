@@ -437,9 +437,8 @@
                   "type": "integer",
                   "format": "int32"
                 },
-                "parentItemId": {
-                  "type": "integer",
-                  "format": "int32"
+                "isMain": {
+                  "type": "boolean"
                 }
               }
             }
@@ -540,9 +539,8 @@
                   "type": "integer",
                   "format": "int32"
                 },
-                "parentItemId": {
-                  "type": "integer",
-                  "format": "int32"
+                "isMain": {
+                  "type": "boolean"
                 },
                 "descriptionPostId": {
                   "type": "integer",
@@ -3386,9 +3384,8 @@
           "type": "integer",
           "format": "int32"
         },
-        "parentItemId": {
-          "type": "integer",
-          "format": "int32"
+        "isMain": {
+          "type": "boolean"
         },
         "descriptionPostId": {
           "type": "integer",

@@ -333,7 +333,7 @@ Table menu_items {
   menu_item_code varchar [not null]
   name varchar [not null]
   position int [not null]
-  parent_item_id int [null, ref: > menu_items.id]
+  is_main bool [not null, default: false]
   description_post_id int [null, ref: > posts.id]
 }
 

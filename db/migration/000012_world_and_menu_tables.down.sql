@@ -1,3 +1,5 @@
+DROP PROCEDURE IF EXISTS move_menu_item(INT, INT);
+DROP PROCEDURE IF EXISTS move_group_up(INT);
 
 DELETE FROM "image_types" WHERE id IN (1200, 1300);
 

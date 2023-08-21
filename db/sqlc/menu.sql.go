@@ -29,9 +29,9 @@ func (q *Queries) CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, e
 }
 
 const createMenuItem = `-- name: CreateMenuItem :one
-INSERT INTO menu_items (menu_id, menu_item_code, name, position, parent_item_id, description_post_id)
+INSERT INTO menu_items (menu_id, menu_item_code, name, position, is_main, description_post_id)
 VALUES ($1, $2, $3, $4, $5, $6)
-RETURNING id, menu_id, menu_item_code, name, position, parent_item_id, description_post_id
+RETURNING id, menu_id, menu_item_code, name, position, is_main, description_post_id
 `
 
 type CreateMenuItemParams struct {
@@ -39,7 +39,7 @@ type CreateMenuItemParams struct {
 	MenuItemCode      string        `json:"menu_item_code"`
 	Name              string        `json:"name"`
 	Position          int32         `json:"position"`
-	ParentItemID      sql.NullInt32 `json:"parent_item_id"`
+	IsMain            sql.NullBool  `json:"is_main"`
 	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
 }
 
@@ -49,7 +49,7 @@ func (q *Queries) CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) 
 		arg.MenuItemCode,
 		arg.Name,
 		arg.Position,
-		arg.ParentItemID,
+		arg.IsMain,
 		arg.DescriptionPostID,
 	)
 	var i MenuItem
@@ -59,7 +59,7 @@ func (q *Queries) CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) 
 		&i.MenuItemCode,
 		&i.Name,
 		&i.Position,
-		&i.ParentItemID,
+		&i.IsMain,
 		&i.DescriptionPostID,
 	)
 	return i, err
@@ -144,7 +144,7 @@ func (q *Queries) GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams
 }
 
 const getMenuItems = `-- name: GetMenuItems :many
-SELECT id, menu_id, menu_item_code, name, position, parent_item_id, description_post_id FROM menu_items WHERE menu_id = $1
+SELECT id, menu_id, menu_item_code, name, position, is_main, description_post_id FROM menu_items WHERE menu_id = $1
 `
 
 func (q *Queries) GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, error) {
@@ -162,7 +162,7 @@ func (q *Queries) GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, e
 			&i.MenuItemCode,
 			&i.Name,
 			&i.Position,
-			&i.ParentItemID,
+			&i.IsMain,
 			&i.DescriptionPostID,
 		); err != nil {
 			return nil, err
@@ -176,6 +176,37 @@ func (q *Queries) GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, e
 		return nil, err
 	}
 	return items, nil
+}
+
+const menuItemChangePositions = `-- name: MenuItemChangePositions :exec
+UPDATE menu_items SET position = position + $1 WHERE menu_id = $2 AND position >= $3
+`
+
+type MenuItemChangePositionsParams struct {
+	Amount   int32 `json:"amount"`
+	MenuID   int32 `json:"menu_id"`
+	Position int32 `json:"position"`
+}
+
+func (q *Queries) MenuItemChangePositions(ctx context.Context, arg MenuItemChangePositionsParams) error {
+	_, err := q.db.ExecContext(ctx, menuItemChangePositions, arg.Amount, arg.MenuID, arg.Position)
+	return err
+}
+
+const menuItemGetNextMainItemPosition = `-- name: MenuItemGetNextMainItemPosition :one
+SELECT position FROM menu_items WHERE position >= $1 AND is_main = 1 AND menu_id = $2 ORDER BY position ASC LIMIT 1
+`
+
+type MenuItemGetNextMainItemPositionParams struct {
+	Position int32 `json:"position"`
+	MenuID   int32 `json:"menu_id"`
+}
+
+func (q *Queries) MenuItemGetNextMainItemPosition(ctx context.Context, arg MenuItemGetNextMainItemPositionParams) (int32, error) {
+	row := q.db.QueryRowContext(ctx, menuItemGetNextMainItemPosition, arg.Position, arg.MenuID)
+	var position int32
+	err := row.Scan(&position)
+	return position, err
 }
 
 const updateMenu = `-- name: UpdateMenu :one
@@ -205,17 +236,17 @@ SET
     menu_item_code = COALESCE($1, menu_item_code),
     name = COALESCE($2, name),
     position = COALESCE($3, position),
-    parent_item_id = COALESCE($4, parent_item_id),
+    is_main = COALESCE($4, is_main),
     description_post_id = COALESCE($5, description_post_id)
 WHERE id = $6
-RETURNING id, menu_id, menu_item_code, name, position, parent_item_id, description_post_id
+RETURNING id, menu_id, menu_item_code, name, position, is_main, description_post_id
 `
 
 type UpdateMenuItemParams struct {
 	MenuItemCode      sql.NullString `json:"menu_item_code"`
 	Name              sql.NullString `json:"name"`
 	Position          sql.NullInt32  `json:"position"`
-	ParentItemID      sql.NullInt32  `json:"parent_item_id"`
+	IsMain            sql.NullBool   `json:"is_main"`
 	DescriptionPostID sql.NullInt32  `json:"description_post_id"`
 	ID                int32          `json:"id"`
 }
@@ -225,7 +256,7 @@ func (q *Queries) UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) 
 		arg.MenuItemCode,
 		arg.Name,
 		arg.Position,
-		arg.ParentItemID,
+		arg.IsMain,
 		arg.DescriptionPostID,
 		arg.ID,
 	)
@@ -236,7 +267,7 @@ func (q *Queries) UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) 
 		&i.MenuItemCode,
 		&i.Name,
 		&i.Position,
-		&i.ParentItemID,
+		&i.IsMain,
 		&i.DescriptionPostID,
 	)
 	return i, err

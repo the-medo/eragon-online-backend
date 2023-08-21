@@ -17,8 +17,8 @@ DELETE FROM menus WHERE id = sqlc.arg(id);
 SELECT * FROM menus WHERE id = sqlc.arg(id);
 
 -- name: CreateMenuItem :one
-INSERT INTO menu_items (menu_id, menu_item_code, name, position, parent_item_id, description_post_id)
-VALUES (sqlc.arg(menu_id), sqlc.arg(menu_item_code), sqlc.arg(name), sqlc.arg(position), sqlc.narg(parent_item_id), sqlc.narg(description_post_id))
+INSERT INTO menu_items (menu_id, menu_item_code, name, position, is_main, description_post_id)
+VALUES (sqlc.arg(menu_id), sqlc.arg(menu_item_code), sqlc.arg(name), sqlc.arg(position), sqlc.narg(is_main), sqlc.narg(description_post_id))
 RETURNING *;
 
 -- name: UpdateMenuItem :one
@@ -27,7 +27,7 @@ SET
     menu_item_code = COALESCE(sqlc.narg(menu_item_code), menu_item_code),
     name = COALESCE(sqlc.narg(name), name),
     position = COALESCE(sqlc.narg(position), position),
-    parent_item_id = COALESCE(sqlc.narg(parent_item_id), parent_item_id),
+    is_main = COALESCE(sqlc.narg(is_main), is_main),
     description_post_id = COALESCE(sqlc.narg(description_post_id), description_post_id)
 WHERE id = sqlc.arg(id)
 RETURNING *;
@@ -41,8 +41,8 @@ SELECT * FROM menu_items WHERE menu_id = sqlc.arg(menu_id);
 -- name: MenuItemChangePositions :exec
 UPDATE menu_items SET position = position + sqlc.arg(amount) WHERE menu_id = sqlc.arg(menu_id) AND position >= sqlc.arg(position);
 
---name: MenuItemGetNextMainItemPosition :one
-SELECT position FROM menu_items WHERE position >= sqlc.arg(position) AND parent_item_id IS NULL AND menu_id = sqlc.arg(menu_id) ORDER BY position ASC LIMIT 1;
+-- name: MenuItemGetNextMainItemPosition :one
+SELECT position FROM menu_items WHERE position >= sqlc.arg(position) AND is_main = 1 AND menu_id = sqlc.arg(menu_id) ORDER BY position ASC LIMIT 1;
 
 -- name: CreateMenuItemPost :one
 INSERT INTO menu_item_posts (menu_item_id, post_id, position)
