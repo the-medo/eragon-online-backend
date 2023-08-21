@@ -62,6 +62,7 @@ type Querier interface {
 	GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.NullInt32) ([]Image, error)
 	GetImagesCount(ctx context.Context, arg GetImagesCountParams) (int64, error)
 	GetMenu(ctx context.Context, id int32) (Menu, error)
+	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)
 	GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams) (MenuItemPost, error)
 	GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, error)
 	GetPostById(ctx context.Context, postID int32) (ViewPost, error)
@@ -97,7 +98,7 @@ type Querier interface {
 	IsWorldAdmin(ctx context.Context, arg IsWorldAdminParams) (WorldAdmin, error)
 	IsWorldSuperAdmin(ctx context.Context, arg IsWorldSuperAdminParams) (WorldAdmin, error)
 	MenuItemChangePositions(ctx context.Context, arg MenuItemChangePositionsParams) error
-	MenuItemGetNextMainItemPosition(ctx context.Context, arg MenuItemGetNextMainItemPositionParams) (int32, error)
+	MenuItemMoveGroupUp(ctx context.Context, menuItemID int32) error
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
 	UpdateImage(ctx context.Context, arg UpdateImageParams) (Image, error)

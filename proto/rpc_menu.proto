@@ -38,6 +38,11 @@ message UpdateMenuItemRequest {
     optional int32 descriptionPostId = 7;
 }
 
+message UpdateMenuItemMoveGroupUpRequest {
+    int32 menuId = 1;
+    int32 menuItemId = 2;
+}
+
 message DeleteMenuItemRequest {
     int32 menuId = 1;
     int32 menuItemId = 2;

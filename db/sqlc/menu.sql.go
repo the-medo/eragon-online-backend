@@ -127,6 +127,25 @@ func (q *Queries) GetMenu(ctx context.Context, id int32) (Menu, error) {
 	return i, err
 }
 
+const getMenuItemById = `-- name: GetMenuItemById :one
+SELECT id, menu_id, menu_item_code, name, position, is_main, description_post_id FROM menu_items WHERE id = $1
+`
+
+func (q *Queries) GetMenuItemById(ctx context.Context, id int32) (MenuItem, error) {
+	row := q.db.QueryRowContext(ctx, getMenuItemById, id)
+	var i MenuItem
+	err := row.Scan(
+		&i.ID,
+		&i.MenuID,
+		&i.MenuItemCode,
+		&i.Name,
+		&i.Position,
+		&i.IsMain,
+		&i.DescriptionPostID,
+	)
+	return i, err
+}
+
 const getMenuItemPost = `-- name: GetMenuItemPost :one
 SELECT menu_item_id, post_id, position FROM menu_item_posts WHERE menu_item_id = $1 AND post_id = $2
 `
@@ -179,34 +198,26 @@ func (q *Queries) GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, e
 }
 
 const menuItemChangePositions = `-- name: MenuItemChangePositions :exec
-UPDATE menu_items SET position = position + $1 WHERE menu_id = $2 AND position >= $3
+CALL move_menu_item($1, $2)
 `
 
 type MenuItemChangePositionsParams struct {
-	Amount   int32 `json:"amount"`
-	MenuID   int32 `json:"menu_id"`
-	Position int32 `json:"position"`
+	MenuItemID     int32 `json:"menu_item_id"`
+	TargetPosition int32 `json:"target_position"`
 }
 
 func (q *Queries) MenuItemChangePositions(ctx context.Context, arg MenuItemChangePositionsParams) error {
-	_, err := q.db.ExecContext(ctx, menuItemChangePositions, arg.Amount, arg.MenuID, arg.Position)
+	_, err := q.db.ExecContext(ctx, menuItemChangePositions, arg.MenuItemID, arg.TargetPosition)
 	return err
 }
 
-const menuItemGetNextMainItemPosition = `-- name: MenuItemGetNextMainItemPosition :one
-SELECT position FROM menu_items WHERE position >= $1 AND is_main = 1 AND menu_id = $2 ORDER BY position ASC LIMIT 1
+const menuItemMoveGroupUp = `-- name: MenuItemMoveGroupUp :exec
+CALL move_group_up($1)
 `
 
-type MenuItemGetNextMainItemPositionParams struct {
-	Position int32 `json:"position"`
-	MenuID   int32 `json:"menu_id"`
-}
-
-func (q *Queries) MenuItemGetNextMainItemPosition(ctx context.Context, arg MenuItemGetNextMainItemPositionParams) (int32, error) {
-	row := q.db.QueryRowContext(ctx, menuItemGetNextMainItemPosition, arg.Position, arg.MenuID)
-	var position int32
-	err := row.Scan(&position)
-	return position, err
+func (q *Queries) MenuItemMoveGroupUp(ctx context.Context, menuItemID int32) error {
+	_, err := q.db.ExecContext(ctx, menuItemMoveGroupUp, menuItemID)
+	return err
 }
 
 const updateMenu = `-- name: UpdateMenu :one
@@ -235,17 +246,16 @@ UPDATE menu_items
 SET
     menu_item_code = COALESCE($1, menu_item_code),
     name = COALESCE($2, name),
-    position = COALESCE($3, position),
-    is_main = COALESCE($4, is_main),
-    description_post_id = COALESCE($5, description_post_id)
-WHERE id = $6
+    -- position = COALESCE(sqlc.narg(position), position),
+    is_main = COALESCE($3, is_main),
+    description_post_id = COALESCE($4, description_post_id)
+WHERE id = $5
 RETURNING id, menu_id, menu_item_code, name, position, is_main, description_post_id
 `
 
 type UpdateMenuItemParams struct {
 	MenuItemCode      sql.NullString `json:"menu_item_code"`
 	Name              sql.NullString `json:"name"`
-	Position          sql.NullInt32  `json:"position"`
 	IsMain            sql.NullBool   `json:"is_main"`
 	DescriptionPostID sql.NullInt32  `json:"description_post_id"`
 	ID                int32          `json:"id"`
@@ -255,7 +265,6 @@ func (q *Queries) UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) 
 	row := q.db.QueryRowContext(ctx, updateMenuItem,
 		arg.MenuItemCode,
 		arg.Name,
-		arg.Position,
 		arg.IsMain,
 		arg.DescriptionPostID,
 		arg.ID,

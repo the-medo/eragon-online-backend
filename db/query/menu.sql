@@ -26,7 +26,7 @@ UPDATE menu_items
 SET
     menu_item_code = COALESCE(sqlc.narg(menu_item_code), menu_item_code),
     name = COALESCE(sqlc.narg(name), name),
-    position = COALESCE(sqlc.narg(position), position),
+    -- position = COALESCE(sqlc.narg(position), position),
     is_main = COALESCE(sqlc.narg(is_main), is_main),
     description_post_id = COALESCE(sqlc.narg(description_post_id), description_post_id)
 WHERE id = sqlc.arg(id)
@@ -38,11 +38,14 @@ DELETE FROM menu_items WHERE id = sqlc.arg(id);
 -- name: GetMenuItems :many
 SELECT * FROM menu_items WHERE menu_id = sqlc.arg(menu_id);
 
--- name: MenuItemChangePositions :exec
-UPDATE menu_items SET position = position + sqlc.arg(amount) WHERE menu_id = sqlc.arg(menu_id) AND position >= sqlc.arg(position);
+-- name: GetMenuItemById :one
+SELECT * FROM menu_items WHERE id = sqlc.arg(id);
 
--- name: MenuItemGetNextMainItemPosition :one
-SELECT position FROM menu_items WHERE position >= sqlc.arg(position) AND is_main = 1 AND menu_id = sqlc.arg(menu_id) ORDER BY position ASC LIMIT 1;
+-- name: MenuItemChangePositions :exec
+CALL move_menu_item(sqlc.arg(menu_item_id), sqlc.arg(target_position));
+
+-- name: MenuItemMoveGroupUp :exec
+CALL move_group_up(sqlc.arg(menu_item_id));
 
 -- name: CreateMenuItemPost :one
 INSERT INTO menu_item_posts (menu_item_id, post_id, position)

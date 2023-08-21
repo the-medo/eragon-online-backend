@@ -675,6 +675,17 @@ service Talebound {
     };
   };
 
+  rpc UpdateMenuItemMoveGroupUp(UpdateMenuItemMoveGroupUpRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      patch: "/menus/{menuId}/groups/{menuItemId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "move menu item group up";
+      summary: "Move menu item group up";
+    };
+  };
+
   rpc DeleteMenuItem(DeleteMenuItemRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       delete: "/menus/{menuId}/items/{menuItemId}"

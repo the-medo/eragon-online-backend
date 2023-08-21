@@ -23,6 +23,19 @@ func (server *Server) UpdateMenuItem(ctx context.Context, req *pb.UpdateMenuItem
 		return nil, status.Errorf(codes.PermissionDenied, "failed update menu: %v", err)
 	}
 
+	// if position is set, move the menu item to that position
+	if req.Position != nil {
+		positionChangeArg := db.MenuItemChangePositionsParams{
+			MenuItemID:     req.GetMenuItemId(),
+			TargetPosition: req.GetPosition(),
+		}
+		err = server.store.MenuItemChangePositions(ctx, positionChangeArg)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to change menu item position: %s", err)
+		}
+	}
+
+	// update the rest of the menu item
 	arg := db.UpdateMenuItemParams{
 		ID: req.GetMenuItemId(),
 		MenuItemCode: sql.NullString{
@@ -32,10 +45,6 @@ func (server *Server) UpdateMenuItem(ctx context.Context, req *pb.UpdateMenuItem
 		Name: sql.NullString{
 			String: req.GetName(),
 			Valid:  req.Name != nil,
-		},
-		Position: sql.NullInt32{
-			Int32: req.GetPosition(),
-			Valid: req.Position != nil,
 		},
 		IsMain: sql.NullBool{
 			Bool:  req.GetIsMain(),

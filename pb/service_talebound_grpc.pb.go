@@ -79,6 +79,7 @@ const (
 	Talebound_GetMenu_FullMethodName                            = "/pb.Talebound/GetMenu"
 	Talebound_CreateMenuItem_FullMethodName                     = "/pb.Talebound/CreateMenuItem"
 	Talebound_UpdateMenuItem_FullMethodName                     = "/pb.Talebound/UpdateMenuItem"
+	Talebound_UpdateMenuItemMoveGroupUp_FullMethodName          = "/pb.Talebound/UpdateMenuItemMoveGroupUp"
 	Talebound_DeleteMenuItem_FullMethodName                     = "/pb.Talebound/DeleteMenuItem"
 	Talebound_GetMenuItems_FullMethodName                       = "/pb.Talebound/GetMenuItems"
 	Talebound_CreateMenuItemPost_FullMethodName                 = "/pb.Talebound/CreateMenuItemPost"
@@ -154,6 +155,7 @@ type TaleboundClient interface {
 	GetMenu(ctx context.Context, in *GetMenuRequest, opts ...grpc.CallOption) (*Menu, error)
 	CreateMenuItem(ctx context.Context, in *CreateMenuItemRequest, opts ...grpc.CallOption) (*MenuItem, error)
 	UpdateMenuItem(ctx context.Context, in *UpdateMenuItemRequest, opts ...grpc.CallOption) (*MenuItem, error)
+	UpdateMenuItemMoveGroupUp(ctx context.Context, in *UpdateMenuItemMoveGroupUpRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteMenuItem(ctx context.Context, in *DeleteMenuItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetMenuItems(ctx context.Context, in *GetMenuItemsRequest, opts ...grpc.CallOption) (*GetMenuItemsResponse, error)
 	CreateMenuItemPost(ctx context.Context, in *CreateMenuItemPostRequest, opts ...grpc.CallOption) (*MenuItemPost, error)
@@ -701,6 +703,15 @@ func (c *taleboundClient) UpdateMenuItem(ctx context.Context, in *UpdateMenuItem
 	return out, nil
 }
 
+func (c *taleboundClient) UpdateMenuItemMoveGroupUp(ctx context.Context, in *UpdateMenuItemMoveGroupUpRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Talebound_UpdateMenuItemMoveGroupUp_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *taleboundClient) DeleteMenuItem(ctx context.Context, in *DeleteMenuItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, Talebound_DeleteMenuItem_FullMethodName, in, out, opts...)
@@ -822,6 +833,7 @@ type TaleboundServer interface {
 	GetMenu(context.Context, *GetMenuRequest) (*Menu, error)
 	CreateMenuItem(context.Context, *CreateMenuItemRequest) (*MenuItem, error)
 	UpdateMenuItem(context.Context, *UpdateMenuItemRequest) (*MenuItem, error)
+	UpdateMenuItemMoveGroupUp(context.Context, *UpdateMenuItemMoveGroupUpRequest) (*emptypb.Empty, error)
 	DeleteMenuItem(context.Context, *DeleteMenuItemRequest) (*emptypb.Empty, error)
 	GetMenuItems(context.Context, *GetMenuItemsRequest) (*GetMenuItemsResponse, error)
 	CreateMenuItemPost(context.Context, *CreateMenuItemPostRequest) (*MenuItemPost, error)
@@ -1011,6 +1023,9 @@ func (UnimplementedTaleboundServer) CreateMenuItem(context.Context, *CreateMenuI
 }
 func (UnimplementedTaleboundServer) UpdateMenuItem(context.Context, *UpdateMenuItemRequest) (*MenuItem, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenuItem not implemented")
+}
+func (UnimplementedTaleboundServer) UpdateMenuItemMoveGroupUp(context.Context, *UpdateMenuItemMoveGroupUpRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenuItemMoveGroupUp not implemented")
 }
 func (UnimplementedTaleboundServer) DeleteMenuItem(context.Context, *DeleteMenuItemRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteMenuItem not implemented")
@@ -2105,6 +2120,24 @@ func _Talebound_UpdateMenuItem_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_UpdateMenuItemMoveGroupUp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMenuItemMoveGroupUpRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).UpdateMenuItemMoveGroupUp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_UpdateMenuItemMoveGroupUp_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).UpdateMenuItemMoveGroupUp(ctx, req.(*UpdateMenuItemMoveGroupUpRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Talebound_DeleteMenuItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteMenuItemRequest)
 	if err := dec(in); err != nil {
@@ -2455,6 +2488,10 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateMenuItem",
 			Handler:    _Talebound_UpdateMenuItem_Handler,
+		},
+		{
+			MethodName: "UpdateMenuItemMoveGroupUp",
+			Handler:    _Talebound_UpdateMenuItemMoveGroupUp_Handler,
 		},
 		{
 			MethodName: "DeleteMenuItem",

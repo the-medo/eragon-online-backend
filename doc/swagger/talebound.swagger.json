@@ -362,6 +362,55 @@
         ]
       }
     },
+    "/menus/{menuId}/groups/{menuItemId}": {
+      "patch": {
+        "summary": "Move menu item group up",
+        "description": "move menu item group up",
+        "operationId": "Talebound_UpdateMenuItemMoveGroupUp",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "menuItemId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
     "/menus/{menuId}/items": {
       "get": {
         "summary": "Get menu items",

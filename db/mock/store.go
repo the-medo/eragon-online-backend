@@ -799,6 +799,21 @@ func (mr *MockStoreMockRecorder) GetMenu(arg0, arg1 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenu", reflect.TypeOf((*MockStore)(nil).GetMenu), arg0, arg1)
 }
 
+// GetMenuItemById mocks base method.
+func (m *MockStore) GetMenuItemById(arg0 context.Context, arg1 int32) (db.MenuItem, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMenuItemById", arg0, arg1)
+	ret0, _ := ret[0].(db.MenuItem)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMenuItemById indicates an expected call of GetMenuItemById.
+func (mr *MockStoreMockRecorder) GetMenuItemById(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenuItemById", reflect.TypeOf((*MockStore)(nil).GetMenuItemById), arg0, arg1)
+}
+
 // GetMenuItemPost mocks base method.
 func (m *MockStore) GetMenuItemPost(arg0 context.Context, arg1 db.GetMenuItemPostParams) (db.MenuItemPost, error) {
 	m.ctrl.T.Helper()
@@ -1323,19 +1338,18 @@ func (mr *MockStoreMockRecorder) MenuItemChangePositions(arg0, arg1 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MenuItemChangePositions", reflect.TypeOf((*MockStore)(nil).MenuItemChangePositions), arg0, arg1)
 }
 
-// MenuItemGetNextMainItemPosition mocks base method.
-func (m *MockStore) MenuItemGetNextMainItemPosition(arg0 context.Context, arg1 db.MenuItemGetNextMainItemPositionParams) (int32, error) {
+// MenuItemMoveGroupUp mocks base method.
+func (m *MockStore) MenuItemMoveGroupUp(arg0 context.Context, arg1 int32) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MenuItemGetNextMainItemPosition", arg0, arg1)
-	ret0, _ := ret[0].(int32)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret := m.ctrl.Call(m, "MenuItemMoveGroupUp", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
-// MenuItemGetNextMainItemPosition indicates an expected call of MenuItemGetNextMainItemPosition.
-func (mr *MockStoreMockRecorder) MenuItemGetNextMainItemPosition(arg0, arg1 interface{}) *gomock.Call {
+// MenuItemMoveGroupUp indicates an expected call of MenuItemMoveGroupUp.
+func (mr *MockStoreMockRecorder) MenuItemMoveGroupUp(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MenuItemGetNextMainItemPosition", reflect.TypeOf((*MockStore)(nil).MenuItemGetNextMainItemPosition), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MenuItemMoveGroupUp", reflect.TypeOf((*MockStore)(nil).MenuItemMoveGroupUp), arg0, arg1)
 }
 
 // RemoveUserRole mocks base method.
