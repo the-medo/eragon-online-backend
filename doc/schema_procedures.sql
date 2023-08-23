@@ -62,7 +62,11 @@ BEGIN
     WHERE "id" = p_id;
 
     -- Find the end position of the target group
-    SELECT COALESCE(MIN("position"), v_target_group_start) - 1 INTO v_target_group_end
+    SELECT
+            COALESCE(
+                    MIN("position"),
+                    (SELECT MAX(position) + 1 FROM menu_items WHERE menu_id = 2)
+                ) - 1 INTO v_target_group_end
     FROM "menu_items"
     WHERE "menu_id" = v_menu_id
       AND "position" > v_target_group_start
@@ -81,11 +85,18 @@ BEGIN
     END IF;
 
     -- Find the start position of the previous group
-    SELECT COALESCE(MAX("position"), 1) INTO v_prev_group_start
+    SELECT COALESCE(MAX("position"), 0) INTO v_prev_group_start
     FROM "menu_items"
     WHERE "menu_id" = v_menu_id
-      AND "position" < v_prev_group_end
+      AND "position" <= v_prev_group_end
       AND "is_main" = true;
+
+
+    -- If there's no group for previous item, exit the procedure
+    IF v_prev_group_start = 0 THEN
+        RAISE NOTICE 'Previous item has no group';
+        RETURN;
+    END IF;
 
     -- Calculate the size of both groups
     v_target_group_size := v_target_group_end - v_target_group_start + 1;
