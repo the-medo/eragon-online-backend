@@ -396,14 +396,6 @@
             "required": true,
             "type": "integer",
             "format": "int32"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object"
-            }
           }
         ],
         "tags": [
