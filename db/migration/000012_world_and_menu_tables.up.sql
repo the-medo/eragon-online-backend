@@ -86,10 +86,11 @@ CREATE TABLE menu_items (
 ALTER TABLE menu_items ADD CONSTRAINT menu_items_menu_id_fkey FOREIGN KEY(menu_id) REFERENCES menus(id);
 ALTER TABLE menu_items ADD CONSTRAINT menu_items_description_post_id_fkey FOREIGN KEY(description_post_id) REFERENCES posts(id);
 
-CREATE TABLE menu_item_posts (
-     menu_item_id int NOT NULL,
-     post_id int NOT NULL,
-     position int NOT NULL
+CREATE TABLE "menu_item_posts" (
+   "menu_id" int NOT NULL,
+   "menu_item_id" int,
+   "post_id" int NOT NULL,
+   "position" int NOT NULL
 );
 
 ALTER TABLE menu_item_posts ADD CONSTRAINT menu_item_posts_menu_item_id_fkey FOREIGN KEY(menu_item_id) REFERENCES menu_items(id);

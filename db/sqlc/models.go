@@ -193,9 +193,10 @@ type MenuItem struct {
 }
 
 type MenuItemPost struct {
-	MenuItemID int32 `json:"menu_item_id"`
-	PostID     int32 `json:"post_id"`
-	Position   int32 `json:"position"`
+	MenuID     int32         `json:"menu_id"`
+	MenuItemID sql.NullInt32 `json:"menu_item_id"`
+	PostID     int32         `json:"post_id"`
+	Position   int32         `json:"position"`
 }
 
 type Post struct {
