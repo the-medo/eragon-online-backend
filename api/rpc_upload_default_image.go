@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"github.com/rs/zerolog/log"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -27,6 +28,8 @@ func (server *Server) UploadDefaultImage(ctx context.Context, request *pb.Upload
 	}
 
 	filename := fmt.Sprintf("%s-%d", request.GetFilename(), authPayload.UserId)
+
+	log.Info().Int32("ImageTypeId", request.GetImageTypeId()).Str("filename", request.GetFilename()).Msgf("Uploading default image: %s", filename)
 
 	dbImg, err := server.UploadAndInsertToDb(ctx, request.GetData(), ImageTypeIds(request.GetImageTypeId()), filename, authPayload.UserId)
 	if err != nil {

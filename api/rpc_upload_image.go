@@ -34,12 +34,18 @@ func (server *Server) UploadImage(ctx context.Context, request *pb.UploadImageRe
 		}
 	}(readCloser)
 
-	uploadRequest := cloudflareGo.ImageUploadRequest{
+	uploadRequest := cloudflareGo.UploadImageParams{
 		File: readCloser,
 		Name: request.GetFilename(),
 	}
 
-	img, err := cloudflare.UploadImage(ctx, server.config.CloudflareAccountId, uploadRequest)
+	resourceContainer := cloudflareGo.ResourceContainer{
+		Level:      cloudflareGo.AccountRouteLevel,
+		Identifier: server.config.CloudflareAccountId,
+		Type:       cloudflareGo.AccountType,
+	}
+
+	img, err := cloudflare.UploadImage(ctx, &resourceContainer, uploadRequest)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to upload image: %v", err)
 	}

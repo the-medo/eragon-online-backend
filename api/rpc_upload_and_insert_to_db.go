@@ -12,13 +12,14 @@ func (server *Server) UploadAndInsertToDb(ctx context.Context, data []byte, imgT
 
 	//upload image to cloudflare
 	uploadRequest := &pb.UploadImageRequest{
-		Filename: filename,
-		Data:     data,
+		Filename:    filename,
+		Data:        data,
+		ImageTypeId: int32(imgTypeId),
 	}
 
 	uploadImg, err := server.UploadImage(ctx, uploadRequest)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to upload user avatar: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to upload image: %v", err)
 	}
 
 	createImageParams, err := convertCloudflareImgToDb(server, ctx, uploadImg, imgTypeId, filename, userId)
