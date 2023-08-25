@@ -99,11 +99,19 @@ func (q *Queries) DeleteMenu(ctx context.Context, id int32) error {
 }
 
 const deleteMenuItem = `-- name: DeleteMenuItem :exec
-DELETE FROM menu_items WHERE id = $1
+WITH deleted_item AS (
+    DELETE FROM "menu_items" d
+        WHERE d.id = $1
+        RETURNING id, menu_id, menu_item_code, name, position, is_main, description_post_id
+)
+UPDATE "menu_items"
+SET "position" = "position" - 1
+WHERE "menu_id" = (SELECT menu_id FROM deleted_item)
+  AND "position" > (SELECT position FROM deleted_item)
 `
 
-func (q *Queries) DeleteMenuItem(ctx context.Context, id int32) error {
-	_, err := q.db.ExecContext(ctx, deleteMenuItem, id)
+func (q *Queries) DeleteMenuItem(ctx context.Context, menuItemID int32) error {
+	_, err := q.db.ExecContext(ctx, deleteMenuItem, menuItemID)
 	return err
 }
 

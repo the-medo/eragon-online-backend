@@ -33,7 +33,15 @@ WHERE id = sqlc.arg(id)
 RETURNING *;
 
 -- name: DeleteMenuItem :exec
-DELETE FROM menu_items WHERE id = sqlc.arg(id);
+WITH deleted_item AS (
+    DELETE FROM "menu_items" d
+        WHERE d.id = sqlc.arg(menu_item_id)
+        RETURNING *
+)
+UPDATE "menu_items"
+SET "position" = "position" - 1
+WHERE "menu_id" = (SELECT menu_id FROM deleted_item)
+  AND "position" > (SELECT position FROM deleted_item);
 
 -- name: GetMenuItems :many
 SELECT * FROM menu_items WHERE menu_id = sqlc.arg(menu_id);

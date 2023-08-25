@@ -35,7 +35,7 @@ type Querier interface {
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
 	DeleteImage(ctx context.Context, id int32) error
 	DeleteMenu(ctx context.Context, id int32) error
-	DeleteMenuItem(ctx context.Context, id int32) error
+	DeleteMenuItem(ctx context.Context, menuItemID int32) error
 	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
 	DeletePost(ctx context.Context, postID int32) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
