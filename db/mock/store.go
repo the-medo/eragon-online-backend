@@ -1427,10 +1427,10 @@ func (mr *MockStoreMockRecorder) UpdateImage(arg0, arg1 interface{}) *gomock.Cal
 }
 
 // UpdateMenu mocks base method.
-func (m *MockStore) UpdateMenu(arg0 context.Context, arg1 db.UpdateMenuParams) (db.ViewMenu, error) {
+func (m *MockStore) UpdateMenu(arg0 context.Context, arg1 db.UpdateMenuParams) (db.Menu, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateMenu", arg0, arg1)
-	ret0, _ := ret[0].(db.ViewMenu)
+	ret0, _ := ret[0].(db.Menu)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
