@@ -8,7 +8,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *Server) GetMenu(ctx context.Context, req *pb.GetMenuRequest) (*pb.Menu, error) {
+func (server *Server) GetMenu(ctx context.Context, req *pb.GetMenuRequest) (*pb.ViewMenu, error) {
 	violations := validateGetMenuRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
@@ -19,7 +19,7 @@ func (server *Server) GetMenu(ctx context.Context, req *pb.GetMenuRequest) (*pb.
 		return nil, err
 	}
 
-	rsp := converters.ConvertMenu(menu)
+	rsp := converters.ConvertViewMenu(menu)
 
 	return rsp, nil
 }

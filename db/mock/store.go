@@ -785,10 +785,10 @@ func (mr *MockStoreMockRecorder) GetImagesCount(arg0, arg1 interface{}) *gomock.
 }
 
 // GetMenu mocks base method.
-func (m *MockStore) GetMenu(arg0 context.Context, arg1 int32) (db.Menu, error) {
+func (m *MockStore) GetMenu(arg0 context.Context, arg1 int32) (db.ViewMenu, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMenu", arg0, arg1)
-	ret0, _ := ret[0].(db.Menu)
+	ret0, _ := ret[0].(db.ViewMenu)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1427,10 +1427,10 @@ func (mr *MockStoreMockRecorder) UpdateImage(arg0, arg1 interface{}) *gomock.Cal
 }
 
 // UpdateMenu mocks base method.
-func (m *MockStore) UpdateMenu(arg0 context.Context, arg1 db.UpdateMenuParams) (db.Menu, error) {
+func (m *MockStore) UpdateMenu(arg0 context.Context, arg1 db.UpdateMenuParams) (db.ViewMenu, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateMenu", arg0, arg1)
-	ret0, _ := ret[0].(db.Menu)
+	ret0, _ := ret[0].(db.ViewMenu)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

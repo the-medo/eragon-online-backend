@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS view_menus;
 DROP PROCEDURE IF EXISTS move_menu_item(INT, INT);
 DROP PROCEDURE IF EXISTS move_group_up(INT);
 

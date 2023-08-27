@@ -151,8 +151,8 @@ type TaleboundClient interface {
 	GetWorlds(ctx context.Context, in *GetWorldsRequest, opts ...grpc.CallOption) (*GetWorldsResponse, error)
 	GetWorldById(ctx context.Context, in *GetWorldByIdRequest, opts ...grpc.CallOption) (*World, error)
 	UpdateWorldIntroduction(ctx context.Context, in *UpdateWorldIntroductionRequest, opts ...grpc.CallOption) (*Post, error)
-	UpdateMenu(ctx context.Context, in *UpdateMenuRequest, opts ...grpc.CallOption) (*Menu, error)
-	GetMenu(ctx context.Context, in *GetMenuRequest, opts ...grpc.CallOption) (*Menu, error)
+	UpdateMenu(ctx context.Context, in *UpdateMenuRequest, opts ...grpc.CallOption) (*ViewMenu, error)
+	GetMenu(ctx context.Context, in *GetMenuRequest, opts ...grpc.CallOption) (*ViewMenu, error)
 	CreateMenuItem(ctx context.Context, in *CreateMenuItemRequest, opts ...grpc.CallOption) (*MenuItem, error)
 	UpdateMenuItem(ctx context.Context, in *UpdateMenuItemRequest, opts ...grpc.CallOption) (*MenuItem, error)
 	UpdateMenuItemMoveGroupUp(ctx context.Context, in *UpdateMenuItemMoveGroupUpRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -667,8 +667,8 @@ func (c *taleboundClient) UpdateWorldIntroduction(ctx context.Context, in *Updat
 	return out, nil
 }
 
-func (c *taleboundClient) UpdateMenu(ctx context.Context, in *UpdateMenuRequest, opts ...grpc.CallOption) (*Menu, error) {
-	out := new(Menu)
+func (c *taleboundClient) UpdateMenu(ctx context.Context, in *UpdateMenuRequest, opts ...grpc.CallOption) (*ViewMenu, error) {
+	out := new(ViewMenu)
 	err := c.cc.Invoke(ctx, Talebound_UpdateMenu_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -676,8 +676,8 @@ func (c *taleboundClient) UpdateMenu(ctx context.Context, in *UpdateMenuRequest,
 	return out, nil
 }
 
-func (c *taleboundClient) GetMenu(ctx context.Context, in *GetMenuRequest, opts ...grpc.CallOption) (*Menu, error) {
-	out := new(Menu)
+func (c *taleboundClient) GetMenu(ctx context.Context, in *GetMenuRequest, opts ...grpc.CallOption) (*ViewMenu, error) {
+	out := new(ViewMenu)
 	err := c.cc.Invoke(ctx, Talebound_GetMenu_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -829,8 +829,8 @@ type TaleboundServer interface {
 	GetWorlds(context.Context, *GetWorldsRequest) (*GetWorldsResponse, error)
 	GetWorldById(context.Context, *GetWorldByIdRequest) (*World, error)
 	UpdateWorldIntroduction(context.Context, *UpdateWorldIntroductionRequest) (*Post, error)
-	UpdateMenu(context.Context, *UpdateMenuRequest) (*Menu, error)
-	GetMenu(context.Context, *GetMenuRequest) (*Menu, error)
+	UpdateMenu(context.Context, *UpdateMenuRequest) (*ViewMenu, error)
+	GetMenu(context.Context, *GetMenuRequest) (*ViewMenu, error)
 	CreateMenuItem(context.Context, *CreateMenuItemRequest) (*MenuItem, error)
 	UpdateMenuItem(context.Context, *UpdateMenuItemRequest) (*MenuItem, error)
 	UpdateMenuItemMoveGroupUp(context.Context, *UpdateMenuItemMoveGroupUpRequest) (*emptypb.Empty, error)
@@ -1012,10 +1012,10 @@ func (UnimplementedTaleboundServer) GetWorldById(context.Context, *GetWorldByIdR
 func (UnimplementedTaleboundServer) UpdateWorldIntroduction(context.Context, *UpdateWorldIntroductionRequest) (*Post, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateWorldIntroduction not implemented")
 }
-func (UnimplementedTaleboundServer) UpdateMenu(context.Context, *UpdateMenuRequest) (*Menu, error) {
+func (UnimplementedTaleboundServer) UpdateMenu(context.Context, *UpdateMenuRequest) (*ViewMenu, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenu not implemented")
 }
-func (UnimplementedTaleboundServer) GetMenu(context.Context, *GetMenuRequest) (*Menu, error) {
+func (UnimplementedTaleboundServer) GetMenu(context.Context, *GetMenuRequest) (*ViewMenu, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMenu not implemented")
 }
 func (UnimplementedTaleboundServer) CreateMenuItem(context.Context, *CreateMenuItemRequest) (*MenuItem, error) {

@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *Server) UpdateMenu(ctx context.Context, req *pb.UpdateMenuRequest) (*pb.Menu, error) {
+func (server *Server) UpdateMenu(ctx context.Context, req *pb.UpdateMenuRequest) (*pb.ViewMenu, error) {
 	violations := validateUpdateMenu(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
@@ -35,7 +35,7 @@ func (server *Server) UpdateMenu(ctx context.Context, req *pb.UpdateMenuRequest)
 		},
 	}
 
-	menu, err := server.store.UpdateMenu(ctx, arg)
+	_, err = server.store.UpdateMenu(ctx, arg)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, status.Errorf(codes.NotFound, "user not found: %s", err)
@@ -43,7 +43,12 @@ func (server *Server) UpdateMenu(ctx context.Context, req *pb.UpdateMenuRequest)
 		return nil, status.Errorf(codes.Internal, "failed to update menu: %s", err)
 	}
 
-	rsp := converters.ConvertMenu(menu)
+	menu, err := server.store.GetMenu(ctx, req.GetMenuId())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get menu: %s", err)
+	}
+
+	rsp := converters.ConvertViewMenu(menu)
 
 	return rsp, nil
 }

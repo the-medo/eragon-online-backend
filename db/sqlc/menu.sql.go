@@ -130,13 +130,18 @@ func (q *Queries) DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPost
 }
 
 const getMenu = `-- name: GetMenu :one
-SELECT id, menu_code, menu_header_img_id FROM menus WHERE id = $1
+SELECT id, menu_code, menu_header_img_id, header_image_url FROM view_menus WHERE id = $1
 `
 
-func (q *Queries) GetMenu(ctx context.Context, id int32) (Menu, error) {
+func (q *Queries) GetMenu(ctx context.Context, id int32) (ViewMenu, error) {
 	row := q.db.QueryRowContext(ctx, getMenu, id)
-	var i Menu
-	err := row.Scan(&i.ID, &i.MenuCode, &i.MenuHeaderImgID)
+	var i ViewMenu
+	err := row.Scan(
+		&i.ID,
+		&i.MenuCode,
+		&i.MenuHeaderImgID,
+		&i.HeaderImageUrl,
+	)
 	return i, err
 }
 
@@ -242,7 +247,7 @@ const updateMenu = `-- name: UpdateMenu :one
 UPDATE menus
 SET menu_code = COALESCE($1, menu_code),
     menu_header_img_id = COALESCE($2, menu_header_img_id)
-WHERE id = $3
+WHERE menus.id = $3
 RETURNING id, menu_code, menu_header_img_id
 `
 

@@ -61,7 +61,7 @@ type Querier interface {
 	GetImages(ctx context.Context, arg GetImagesParams) ([]Image, error)
 	GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.NullInt32) ([]Image, error)
 	GetImagesCount(ctx context.Context, arg GetImagesCountParams) (int64, error)
-	GetMenu(ctx context.Context, id int32) (Menu, error)
+	GetMenu(ctx context.Context, id int32) (ViewMenu, error)
 	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)
 	GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams) (MenuItemPost, error)
 	GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, error)

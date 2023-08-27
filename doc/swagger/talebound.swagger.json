@@ -290,7 +290,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbMenu"
+              "$ref": "#/definitions/pbViewMenu"
             }
           },
           "default": {
@@ -321,7 +321,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbMenu"
+              "$ref": "#/definitions/pbViewMenu"
             }
           },
           "default": {
@@ -3388,22 +3388,6 @@
         }
       }
     },
-    "pbMenu": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "code": {
-          "type": "string"
-        },
-        "headerImageId": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
     "pbMenuItem": {
       "type": "object",
       "properties": {
@@ -3667,6 +3651,25 @@
       "properties": {
         "isVerified": {
           "type": "boolean"
+        }
+      }
+    },
+    "pbViewMenu": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "code": {
+          "type": "string"
+        },
+        "headerImageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "headerImageUrl": {
+          "type": "string"
         }
       }
     },

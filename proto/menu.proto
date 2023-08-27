@@ -12,6 +12,13 @@ message Menu {
   optional int32 headerImageId = 3;
 }
 
+message ViewMenu {
+  int32 id = 1;
+  string code = 2;
+  optional int32 headerImageId = 3;
+  optional string headerImageUrl = 4;
+}
+
 message MenuItem {
   int32 id = 1;
   int32 menuId = 2;

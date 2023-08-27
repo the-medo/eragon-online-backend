@@ -7,14 +7,15 @@ RETURNING *;
 UPDATE menus
 SET menu_code = COALESCE(sqlc.narg(menu_code), menu_code),
     menu_header_img_id = COALESCE(sqlc.narg(menu_header_img_id), menu_header_img_id)
-WHERE id = sqlc.arg(id)
-RETURNING *;
+WHERE menus.id = sqlc.arg(id)
+RETURNING *
+;
 
 -- name: DeleteMenu :exec
 DELETE FROM menus WHERE id = sqlc.arg(id);
 
 -- name: GetMenu :one
-SELECT * FROM menus WHERE id = sqlc.arg(id);
+SELECT * FROM view_menus WHERE id = sqlc.arg(id);
 
 -- name: CreateMenuItem :one
 INSERT INTO menu_items (menu_id, menu_item_code, name, position, is_main, description_post_id)

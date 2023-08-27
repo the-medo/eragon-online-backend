@@ -335,6 +335,13 @@ type VerifyEmail struct {
 	ExpiredAt  time.Time `json:"expired_at"`
 }
 
+type ViewMenu struct {
+	ID              int32          `json:"id"`
+	MenuCode        string         `json:"menu_code"`
+	MenuHeaderImgID sql.NullInt32  `json:"menu_header_img_id"`
+	HeaderImageUrl  sql.NullString `json:"header_image_url"`
+}
+
 type ViewPost struct {
 	ID                 int32         `json:"id"`
 	PostTypeID         int32         `json:"post_type_id"`

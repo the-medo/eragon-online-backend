@@ -632,7 +632,7 @@ service Talebound {
     };
   };
 
-  rpc UpdateMenu(UpdateMenuRequest) returns (Menu) {
+  rpc UpdateMenu(UpdateMenuRequest) returns (ViewMenu) {
     option (google.api.http) = {
       patch: "/menus/{menuId}"
       body: "*"
@@ -643,7 +643,7 @@ service Talebound {
     };
   };
 
-  rpc GetMenu(GetMenuRequest) returns (Menu) {
+  rpc GetMenu(GetMenuRequest) returns (ViewMenu) {
     option (google.api.http) = {
       get: "/menus/{menuId}"
     };
