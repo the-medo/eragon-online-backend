@@ -36,6 +36,10 @@ func (server *Server) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest)
 			String: req.GetContent(),
 			Valid:  req.Title != nil,
 		},
+		Description: sql.NullString{
+			String: req.GetDescription(),
+			Valid:  req.Description != nil,
+		},
 		PostTypeID: sql.NullInt32{
 			Int32: req.GetPostTypeId(),
 			Valid: req.PostTypeId != nil,
@@ -51,6 +55,10 @@ func (server *Server) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest)
 		IsPrivate: sql.NullBool{
 			Bool:  req.GetIsPrivate(),
 			Valid: req.IsPrivate != nil,
+		},
+		ThumbnailImgID: sql.NullInt32{
+			Int32: req.GetImageThumbnailId(),
+			Valid: req.ImageThumbnailId != nil,
 		},
 	}
 
@@ -80,6 +88,12 @@ func validateUpdatePostRequest(req *pb.UpdatePostRequest) (violations []*errdeta
 		}
 	}
 
+	if req.Description != nil {
+		if err := validator.ValidatePostDescription(req.GetDescription()); err != nil {
+			violations = append(violations, FieldViolation("description", err))
+		}
+	}
+
 	if req.Content != nil {
 		if err := validator.ValidatePostContent(req.GetContent()); err != nil {
 			violations = append(violations, FieldViolation("content", err))
@@ -89,6 +103,12 @@ func validateUpdatePostRequest(req *pb.UpdatePostRequest) (violations []*errdeta
 	if req.PostTypeId != nil {
 		if err := validator.ValidatePostTypeId(req.GetPostTypeId()); err != nil {
 			violations = append(violations, FieldViolation("post_type_id", err))
+		}
+	}
+
+	if req.ImageThumbnailId != nil {
+		if err := validator.ValidateImageId(req.GetImageThumbnailId()); err != nil {
+			violations = append(violations, FieldViolation("image_thumbnail_id", err))
 		}
 	}
 

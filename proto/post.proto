@@ -12,12 +12,15 @@ message DataPost {
   int32 userId = 3;
   string title = 4;
   string content = 5;
-  google.protobuf.Timestamp createdAt = 6;
-  google.protobuf.Timestamp deletedAt = 7;
-  google.protobuf.Timestamp lastUpdatedAt = 8;
-  int32 lastUpdatedUserId = 9;
-  bool isDraft = 10;
-  bool isPrivate = 11;
+  string description = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  google.protobuf.Timestamp deletedAt = 8;
+  google.protobuf.Timestamp lastUpdatedAt = 9;
+  int32 lastUpdatedUserId = 10;
+  bool isDraft = 11;
+  bool isPrivate = 12;
+  int32 imageThumbnailId = 13;
+  string imageThumbnailUrl = 14;
 }
 
 message DataPostType {
@@ -34,15 +37,17 @@ message DataHistoryPost {
   int32 userId = 4;
   string title = 5;
   string content = 6;
-  google.protobuf.Timestamp createdAt = 7;
-  google.protobuf.Timestamp deletedAt = 8;
-  google.protobuf.Timestamp lastUpdatedAt = 9;
-  int32 lastUpdatedUserId = 10;
-  bool isDraft = 11;
-  bool isPrivate = 12;
-  string postTypeName = 13;
-  bool postTypeDraftable = 14;
-  bool postTypePrivatable = 15;
+  string description = 7;
+  google.protobuf.Timestamp createdAt = 8;
+  google.protobuf.Timestamp deletedAt = 9;
+  google.protobuf.Timestamp lastUpdatedAt = 10;
+  int32 lastUpdatedUserId = 11;
+  bool isDraft = 12;
+  bool isPrivate = 13;
+  string postTypeName = 14;
+  bool postTypeDraftable = 15;
+  bool postTypePrivatable = 16;
+  int32 imageThumbnailId = 17;
 }
 
 message Post {

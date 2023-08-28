@@ -34,9 +34,11 @@ message UpdatePostRequest {
   int32 postId = 1;
   optional string title = 2;
   optional string content = 3;
-  optional int32 postTypeId = 4;
-  optional bool isDraft = 5;
-  optional bool isPrivate = 6;
+  optional string description = 4;
+  optional int32 postTypeId = 5;
+  optional bool isDraft = 6;
+  optional bool isPrivate = 7;
+  optional int32 imageThumbnailId = 8;
 }
 
 message DeletePostRequest {

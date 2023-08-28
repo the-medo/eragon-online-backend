@@ -18,21 +18,25 @@ INSERT INTO posts
     title,
     post_type_id,
     content,
+    description,
     is_draft,
-    is_private
+    is_private,
+    thumbnail_img_id
 )
 VALUES
-    ($1, $2, $3, $4, $5, $6)
-RETURNING id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private
+    ($1, $2, $3, $4, $5, $6, $7, $8)
+RETURNING id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id
 `
 
 type CreatePostParams struct {
-	UserID     int32  `json:"user_id"`
-	Title      string `json:"title"`
-	PostTypeID int32  `json:"post_type_id"`
-	Content    string `json:"content"`
-	IsDraft    bool   `json:"is_draft"`
-	IsPrivate  bool   `json:"is_private"`
+	UserID         int32          `json:"user_id"`
+	Title          string         `json:"title"`
+	PostTypeID     int32          `json:"post_type_id"`
+	Content        string         `json:"content"`
+	Description    sql.NullString `json:"description"`
+	IsDraft        bool           `json:"is_draft"`
+	IsPrivate      bool           `json:"is_private"`
+	ThumbnailImgID sql.NullInt32  `json:"thumbnail_img_id"`
 }
 
 func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, error) {
@@ -41,8 +45,10 @@ func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, e
 		arg.Title,
 		arg.PostTypeID,
 		arg.Content,
+		arg.Description,
 		arg.IsDraft,
 		arg.IsPrivate,
+		arg.ThumbnailImgID,
 	)
 	var i Post
 	err := row.Scan(
@@ -57,6 +63,8 @@ func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, e
 		&i.LastUpdatedUserID,
 		&i.IsDraft,
 		&i.IsPrivate,
+		&i.Description,
+		&i.ThumbnailImgID,
 	)
 	return i, err
 }
@@ -76,7 +84,7 @@ func (q *Queries) DeletePost(ctx context.Context, postID int32) error {
 
 const getPostById = `-- name: GetPostById :one
 SELECT
-    id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, post_type_name, post_type_draftable, post_type_privatable
+    id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url
 FROM
     view_posts
 WHERE
@@ -98,9 +106,12 @@ func (q *Queries) GetPostById(ctx context.Context, postID int32) (ViewPost, erro
 		&i.LastUpdatedUserID,
 		&i.IsDraft,
 		&i.IsPrivate,
+		&i.Description,
+		&i.ThumbnailImgID,
 		&i.PostTypeName,
 		&i.PostTypeDraftable,
 		&i.PostTypePrivatable,
+		&i.ThumbnailImgUrl,
 	)
 	return i, err
 }
@@ -118,23 +129,27 @@ SELECT
     last_updated_at,
     last_updated_user_id,
     is_draft,
-    is_private
+    is_private,
+    description,
+    thumbnail_img_id
 FROM post_history WHERE id = $1
 `
 
 type GetPostHistoryByIdRow struct {
-	PostHistoryID     int32         `json:"post_history_id"`
-	PostID            int32         `json:"post_id"`
-	PostTypeID        int32         `json:"post_type_id"`
-	UserID            int32         `json:"user_id"`
-	Title             string        `json:"title"`
-	Content           string        `json:"content"`
-	CreatedAt         time.Time     `json:"created_at"`
-	DeletedAt         sql.NullTime  `json:"deleted_at"`
-	LastUpdatedAt     sql.NullTime  `json:"last_updated_at"`
-	LastUpdatedUserID sql.NullInt32 `json:"last_updated_user_id"`
-	IsDraft           bool          `json:"is_draft"`
-	IsPrivate         bool          `json:"is_private"`
+	PostHistoryID     int32          `json:"post_history_id"`
+	PostID            int32          `json:"post_id"`
+	PostTypeID        int32          `json:"post_type_id"`
+	UserID            int32          `json:"user_id"`
+	Title             string         `json:"title"`
+	Content           string         `json:"content"`
+	CreatedAt         time.Time      `json:"created_at"`
+	DeletedAt         sql.NullTime   `json:"deleted_at"`
+	LastUpdatedAt     sql.NullTime   `json:"last_updated_at"`
+	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
+	IsDraft           bool           `json:"is_draft"`
+	IsPrivate         bool           `json:"is_private"`
+	Description       sql.NullString `json:"description"`
+	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
 }
 
 func (q *Queries) GetPostHistoryById(ctx context.Context, postHistoryID int32) (GetPostHistoryByIdRow, error) {
@@ -153,6 +168,8 @@ func (q *Queries) GetPostHistoryById(ctx context.Context, postHistoryID int32) (
 		&i.LastUpdatedUserID,
 		&i.IsDraft,
 		&i.IsPrivate,
+		&i.Description,
+		&i.ThumbnailImgID,
 	)
 	return i, err
 }
@@ -169,22 +186,26 @@ SELECT
     last_updated_at,
     last_updated_user_id,
     is_draft,
-    is_private
+    is_private,
+    description,
+    thumbnail_img_id
 FROM post_history WHERE post_id = $1 ORDER BY created_at DESC
 `
 
 type GetPostHistoryByPostIdRow struct {
-	PostHistoryID     int32         `json:"post_history_id"`
-	PostID            int32         `json:"post_id"`
-	PostTypeID        int32         `json:"post_type_id"`
-	UserID            int32         `json:"user_id"`
-	Title             string        `json:"title"`
-	CreatedAt         time.Time     `json:"created_at"`
-	DeletedAt         sql.NullTime  `json:"deleted_at"`
-	LastUpdatedAt     sql.NullTime  `json:"last_updated_at"`
-	LastUpdatedUserID sql.NullInt32 `json:"last_updated_user_id"`
-	IsDraft           bool          `json:"is_draft"`
-	IsPrivate         bool          `json:"is_private"`
+	PostHistoryID     int32          `json:"post_history_id"`
+	PostID            int32          `json:"post_id"`
+	PostTypeID        int32          `json:"post_type_id"`
+	UserID            int32          `json:"user_id"`
+	Title             string         `json:"title"`
+	CreatedAt         time.Time      `json:"created_at"`
+	DeletedAt         sql.NullTime   `json:"deleted_at"`
+	LastUpdatedAt     sql.NullTime   `json:"last_updated_at"`
+	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
+	IsDraft           bool           `json:"is_draft"`
+	IsPrivate         bool           `json:"is_private"`
+	Description       sql.NullString `json:"description"`
+	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
 }
 
 func (q *Queries) GetPostHistoryByPostId(ctx context.Context, postID int32) ([]GetPostHistoryByPostIdRow, error) {
@@ -208,6 +229,8 @@ func (q *Queries) GetPostHistoryByPostId(ctx context.Context, postID int32) ([]G
 			&i.LastUpdatedUserID,
 			&i.IsDraft,
 			&i.IsPrivate,
+			&i.Description,
+			&i.ThumbnailImgID,
 		); err != nil {
 			return nil, err
 		}
@@ -272,7 +295,7 @@ func (q *Queries) GetPostTypes(ctx context.Context) ([]PostType, error) {
 
 const getPostsByUserId = `-- name: GetPostsByUserId :many
 SELECT
-    id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, post_type_name, post_type_draftable, post_type_privatable
+    id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url
 FROM
     view_posts
 WHERE
@@ -317,9 +340,12 @@ func (q *Queries) GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdPara
 			&i.LastUpdatedUserID,
 			&i.IsDraft,
 			&i.IsPrivate,
+			&i.Description,
+			&i.ThumbnailImgID,
 			&i.PostTypeName,
 			&i.PostTypeDraftable,
 			&i.PostTypePrivatable,
+			&i.ThumbnailImgUrl,
 		); err != nil {
 			return nil, err
 		}
@@ -346,7 +372,9 @@ INSERT INTO post_history (
     last_updated_at,
     last_updated_user_id,
     is_draft,
-    is_private
+    is_private,
+    description,
+    thumbnail_img_id
 )
 SELECT
     id,
@@ -359,12 +387,14 @@ SELECT
     last_updated_at,
     last_updated_user_id,
     is_draft,
-    is_private
+    is_private,
+    description,
+    thumbnail_img_id
 FROM
     posts
 WHERE
     posts.id = $1
-RETURNING id, post_id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private
+RETURNING id, post_id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id
 `
 
 func (q *Queries) InsertPostHistory(ctx context.Context, postID int32) (PostHistory, error) {
@@ -383,6 +413,8 @@ func (q *Queries) InsertPostHistory(ctx context.Context, postID int32) (PostHist
 		&i.LastUpdatedUserID,
 		&i.IsDraft,
 		&i.IsPrivate,
+		&i.Description,
+		&i.ThumbnailImgID,
 	)
 	return i, err
 }
@@ -392,23 +424,27 @@ UPDATE posts
 SET
     title = COALESCE($1, title),
     content = COALESCE($2, content),
-    post_type_id = COALESCE($3, post_type_id),
-    is_draft = COALESCE($4, is_draft),
-    is_private = COALESCE($5, is_private),
-    last_updated_user_id = $6,
-    last_updated_at = now()
+    description = COALESCE($3, description),
+    post_type_id = COALESCE($4, post_type_id),
+    is_draft = COALESCE($5, is_draft),
+    is_private = COALESCE($6, is_private),
+    last_updated_user_id = $7,
+    last_updated_at = now(),
+    thumbnail_img_id = COALESCE($8, thumbnail_img_id)
 WHERE
-    id = $7
-RETURNING id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private
+        id = $9
+RETURNING id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id
 `
 
 type UpdatePostParams struct {
 	Title             sql.NullString `json:"title"`
 	Content           sql.NullString `json:"content"`
+	Description       sql.NullString `json:"description"`
 	PostTypeID        sql.NullInt32  `json:"post_type_id"`
 	IsDraft           sql.NullBool   `json:"is_draft"`
 	IsPrivate         sql.NullBool   `json:"is_private"`
 	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
+	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
 	PostID            int32          `json:"post_id"`
 }
 
@@ -416,10 +452,12 @@ func (q *Queries) UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, e
 	row := q.db.QueryRowContext(ctx, updatePost,
 		arg.Title,
 		arg.Content,
+		arg.Description,
 		arg.PostTypeID,
 		arg.IsDraft,
 		arg.IsPrivate,
 		arg.LastUpdatedUserID,
+		arg.ThumbnailImgID,
 		arg.PostID,
 	)
 	var i Post
@@ -435,6 +473,8 @@ func (q *Queries) UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, e
 		&i.LastUpdatedUserID,
 		&i.IsDraft,
 		&i.IsPrivate,
+		&i.Description,
+		&i.ThumbnailImgID,
 	)
 	return i, err
 }

@@ -5,11 +5,13 @@ INSERT INTO posts
     title,
     post_type_id,
     content,
+    description,
     is_draft,
-    is_private
+    is_private,
+    thumbnail_img_id
 )
 VALUES
-    (sqlc.arg(user_id), sqlc.arg(title), sqlc.arg(post_type_id), sqlc.arg(content), sqlc.arg(is_draft), sqlc.arg(is_private))
+    (sqlc.arg(user_id), sqlc.arg(title), sqlc.arg(post_type_id), sqlc.arg(content), sqlc.arg(description), sqlc.arg(is_draft), sqlc.arg(is_private), sqlc.arg(thumbnail_img_id))
 RETURNING *;
 
 -- name: GetPostById :one
@@ -44,13 +46,15 @@ UPDATE posts
 SET
     title = COALESCE(sqlc.narg(title), title),
     content = COALESCE(sqlc.narg(content), content),
+    description = COALESCE(sqlc.narg(description), description),
     post_type_id = COALESCE(sqlc.narg(post_type_id), post_type_id),
     is_draft = COALESCE(sqlc.narg(is_draft), is_draft),
     is_private = COALESCE(sqlc.narg(is_private), is_private),
     last_updated_user_id = sqlc.arg(last_updated_user_id),
-    last_updated_at = now()
+    last_updated_at = now(),
+    thumbnail_img_id = COALESCE(sqlc.narg(thumbnail_img_id), thumbnail_img_id)
 WHERE
-    id = sqlc.arg(post_id)
+        id = sqlc.arg(post_id)
 RETURNING *;
 
 -- name: DeletePost :exec
@@ -72,7 +76,9 @@ INSERT INTO post_history (
     last_updated_at,
     last_updated_user_id,
     is_draft,
-    is_private
+    is_private,
+    description,
+    thumbnail_img_id
 )
 SELECT
     id,
@@ -85,7 +91,9 @@ SELECT
     last_updated_at,
     last_updated_user_id,
     is_draft,
-    is_private
+    is_private,
+    description,
+    thumbnail_img_id
 FROM
     posts
 WHERE
@@ -104,7 +112,9 @@ SELECT
     last_updated_at,
     last_updated_user_id,
     is_draft,
-    is_private
+    is_private,
+    description,
+    thumbnail_img_id
 FROM post_history WHERE post_id = sqlc.arg(post_id) ORDER BY created_at DESC;
 
 -- name: GetPostHistoryById :one
@@ -120,5 +130,7 @@ SELECT
     last_updated_at,
     last_updated_user_id,
     is_draft,
-    is_private
+    is_private,
+    description,
+    thumbnail_img_id
 FROM post_history WHERE id = sqlc.arg(post_history_id);

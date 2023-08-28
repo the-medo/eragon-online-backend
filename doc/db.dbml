@@ -290,6 +290,7 @@ Table posts {
   post_type_id int [not null, ref: > post_types.id]
   user_id int [not null, ref: > users.id]
   title varchar [not null]
+  description varchar
   content varchar [not null]
   created_at timestamptz [not null, default: `now()`]
   deleted_at timestamptz
@@ -297,6 +298,7 @@ Table posts {
   last_updated_user_id int [ref: > users.id]
   is_draft bool [not null]
   is_private bool [not null]
+  thumbnail_img_id int [ref: > images.id]
 }
 
 Table post_types {
@@ -312,6 +314,7 @@ Table post_history {
   post_type_id int [not null, ref: > post_types.id]
   user_id int [not null, ref: > users.id]
   title varchar [not null]
+  description varchar
   content varchar [not null]
   created_at timestamptz [not null, default: `now()`]
   deleted_at timestamptz
@@ -319,6 +322,7 @@ Table post_history {
   last_updated_user_id int [ref: > users.id]
   is_draft bool [not null]
   is_private bool [not null]
+  thumbnail_img_id int [ref: > images.id]
 }
 
 Table menus {

@@ -285,3 +285,34 @@ FROM
     menus m
     LEFT JOIN images i ON m.menu_header_img_id = i.id
 ;
+
+-- Alter the `posts` table
+ALTER TABLE "posts"
+    ADD COLUMN "description" varchar,
+    ADD COLUMN "thumbnail_img_id" int;
+
+-- Add foreign key constraint for `posts` table
+ALTER TABLE "posts" ADD FOREIGN KEY ("thumbnail_img_id") REFERENCES "images" ("id");
+
+-- Alter the `post_history` table
+ALTER TABLE "post_history"
+    ADD COLUMN "description" varchar,
+    ADD COLUMN "thumbnail_img_id" int;
+
+-- Add foreign key constraint for `post_history` table
+ALTER TABLE "post_history" ADD FOREIGN KEY ("thumbnail_img_id") REFERENCES "images" ("id");
+
+DROP VIEW view_posts;
+
+CREATE VIEW view_posts AS
+SELECT
+    p.*,
+    pt.name as post_type_name,
+    pt.draftable as post_type_draftable,
+    pt.privatable as post_type_privatable,
+    i.url as thumbnail_img_url
+FROM
+    posts p
+    JOIN post_types pt ON p.post_type_id = pt.id
+    LEFT JOIN images i ON p.thumbnail_img_id = i.id
+;

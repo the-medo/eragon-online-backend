@@ -292,6 +292,14 @@ func convertPostAndPostType(post db.Post, postType db.PostType) *pb.Post {
 		pbPost.Post.LastUpdatedUserId = post.LastUpdatedUserID.Int32
 	}
 
+	if post.Description.Valid == true {
+		pbPost.Post.Description = post.Description.String
+	}
+
+	if post.ThumbnailImgID.Valid == true {
+		pbPost.Post.ImageThumbnailId = post.ThumbnailImgID.Int32
+	}
+
 	return pbPost
 }
 
@@ -325,6 +333,18 @@ func convertViewPost(viewPost db.ViewPost) *pb.Post {
 
 	if viewPost.LastUpdatedUserID.Valid == true {
 		pbPost.Post.LastUpdatedUserId = viewPost.LastUpdatedUserID.Int32
+	}
+
+	if viewPost.Description.Valid == true {
+		pbPost.Post.Description = viewPost.Description.String
+	}
+
+	if viewPost.ThumbnailImgID.Valid == true {
+		pbPost.Post.ImageThumbnailId = viewPost.ThumbnailImgID.Int32
+	}
+
+	if viewPost.ThumbnailImgUrl.Valid == true {
+		pbPost.Post.ImageThumbnailUrl = viewPost.ThumbnailImgUrl.String
 	}
 
 	return pbPost
@@ -362,6 +382,14 @@ func convertHistoryPostWithoutContent(postHistory db.GetPostHistoryByPostIdRow, 
 		pbHistoryPost.Post.LastUpdatedUserId = postHistory.LastUpdatedUserID.Int32
 	}
 
+	if postHistory.Description.Valid == true {
+		pbHistoryPost.Post.Description = postHistory.Description.String
+	}
+
+	if postHistory.ThumbnailImgID.Valid == true {
+		pbHistoryPost.Post.ImageThumbnailId = postHistory.ThumbnailImgID.Int32
+	}
+
 	return pbHistoryPost
 }
 
@@ -396,6 +424,14 @@ func convertHistoryPost(postHistory db.GetPostHistoryByIdRow, postType db.PostTy
 
 	if postHistory.LastUpdatedUserID.Valid == true {
 		pbHistoryPost.Post.LastUpdatedUserId = postHistory.LastUpdatedUserID.Int32
+	}
+
+	if postHistory.Description.Valid == true {
+		pbHistoryPost.Post.Description = postHistory.Description.String
+	}
+
+	if postHistory.ThumbnailImgID.Valid == true {
+		pbHistoryPost.Post.ImageThumbnailId = postHistory.ThumbnailImgID.Int32
 	}
 
 	return pbHistoryPost

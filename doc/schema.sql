@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-08-24T19:27:02.841Z
+-- Generated at: 2023-08-28T20:14:40.729Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -244,13 +244,15 @@ CREATE TABLE "posts" (
   "post_type_id" int NOT NULL,
   "user_id" int NOT NULL,
   "title" varchar NOT NULL,
+  "description" varchar,
   "content" varchar NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "deleted_at" timestamptz,
   "last_updated_at" timestamptz,
   "last_updated_user_id" int,
   "is_draft" bool NOT NULL,
-  "is_private" bool NOT NULL
+  "is_private" bool NOT NULL,
+  "thumbnail_img_id" int
 );
 
 CREATE TABLE "post_types" (
@@ -266,13 +268,15 @@ CREATE TABLE "post_history" (
   "post_type_id" int NOT NULL,
   "user_id" int NOT NULL,
   "title" varchar NOT NULL,
+  "description" varchar,
   "content" varchar NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "deleted_at" timestamptz,
   "last_updated_at" timestamptz,
   "last_updated_user_id" int,
   "is_draft" bool NOT NULL,
-  "is_private" bool NOT NULL
+  "is_private" bool NOT NULL,
+  "thumbnail_img_id" int
 );
 
 CREATE TABLE "menus" (
@@ -424,6 +428,8 @@ ALTER TABLE "posts" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "posts" ADD FOREIGN KEY ("last_updated_user_id") REFERENCES "users" ("id");
 
+ALTER TABLE "posts" ADD FOREIGN KEY ("thumbnail_img_id") REFERENCES "images" ("id");
+
 ALTER TABLE "post_history" ADD FOREIGN KEY ("post_id") REFERENCES "posts" ("id");
 
 ALTER TABLE "post_history" ADD FOREIGN KEY ("post_type_id") REFERENCES "post_types" ("id");
@@ -431,6 +437,8 @@ ALTER TABLE "post_history" ADD FOREIGN KEY ("post_type_id") REFERENCES "post_typ
 ALTER TABLE "post_history" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "post_history" ADD FOREIGN KEY ("last_updated_user_id") REFERENCES "users" ("id");
+
+ALTER TABLE "post_history" ADD FOREIGN KEY ("thumbnail_img_id") REFERENCES "images" ("id");
 
 ALTER TABLE "menus" ADD FOREIGN KEY ("menu_header_img_id") REFERENCES "images" ("id");
 

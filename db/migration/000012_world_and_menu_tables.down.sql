@@ -1,3 +1,25 @@
+DROP VIEW view_posts;
+CREATE VIEW view_posts AS
+SELECT
+    p.*,
+    pt.name as post_type_name,
+    pt.draftable as post_type_draftable,
+    pt.privatable as post_type_privatable
+FROM
+    posts p
+    JOIN post_types pt ON p.post_type_id = pt.id
+;
+
+-- Alter the `post_history` table
+ALTER TABLE "post_history"
+    DROP COLUMN "description",
+    DROP COLUMN "thumbnail_img_id";
+
+-- Alter the `posts` table
+ALTER TABLE "posts"
+    DROP COLUMN "description",
+    DROP COLUMN "thumbnail_img_id";
+
 DROP VIEW IF EXISTS view_menus;
 DROP PROCEDURE IF EXISTS move_menu_item(INT, INT);
 DROP PROCEDURE IF EXISTS move_group_up(INT);

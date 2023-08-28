@@ -959,6 +959,9 @@
                 "content": {
                   "type": "string"
                 },
+                "description": {
+                  "type": "string"
+                },
                 "postTypeId": {
                   "type": "integer",
                   "format": "int32"
@@ -968,6 +971,10 @@
                 },
                 "isPrivate": {
                   "type": "boolean"
+                },
+                "imageThumbnailId": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -2890,6 +2897,9 @@
         "content": {
           "type": "string"
         },
+        "description": {
+          "type": "string"
+        },
         "createdAt": {
           "type": "string",
           "format": "date-time"
@@ -2920,6 +2930,10 @@
         },
         "postTypePrivatable": {
           "type": "boolean"
+        },
+        "imageThumbnailId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -2944,6 +2958,9 @@
         "content": {
           "type": "string"
         },
+        "description": {
+          "type": "string"
+        },
         "createdAt": {
           "type": "string",
           "format": "date-time"
@@ -2965,6 +2982,13 @@
         },
         "isPrivate": {
           "type": "boolean"
+        },
+        "imageThumbnailId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "imageThumbnailUrl": {
+          "type": "string"
         }
       }
     },
