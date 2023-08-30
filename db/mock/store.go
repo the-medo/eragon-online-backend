@@ -1220,7 +1220,7 @@ func (mr *MockStoreMockRecorder) GetWorlds(arg0, arg1 interface{}) *gomock.Call 
 }
 
 // GetWorldsCount mocks base method.
-func (m *MockStore) GetWorldsCount(arg0 context.Context, arg1 bool) (int64, error) {
+func (m *MockStore) GetWorldsCount(arg0 context.Context, arg1 db.GetWorldsCountParams) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWorldsCount", arg0, arg1)
 	ret0, _ := ret[0].(int64)

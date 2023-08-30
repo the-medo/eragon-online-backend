@@ -2115,6 +2115,16 @@
             "type": "boolean"
           },
           {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
             "name": "orderBy",
             "in": "query",
             "required": false,

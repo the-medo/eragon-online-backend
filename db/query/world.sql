@@ -27,7 +27,9 @@ SELECT * FROM view_worlds WHERE id = @world_id LIMIT 1;
 
 -- name: GetWorlds :many
 SELECT * FROM view_worlds
-WHERE (@is_public::boolean IS NULL OR public = @is_public)
+WHERE
+    (@is_public::boolean IS NULL OR public = @is_public) AND
+    (array_length(@tags::varchar[], 1) IS NULL OR tags @> @tags::varchar[])
 ORDER BY
     CASE
      WHEN @order_result::bool
@@ -41,7 +43,8 @@ OFFSET @page_offset;
 
 -- name: GetWorldsCount :one
 SELECT COUNT(*) FROM view_worlds
-WHERE (@is_public::boolean IS NULL OR public = @is_public);
+WHERE (@is_public::boolean IS NULL OR public = @is_public) AND
+    (array_length(@tags::varchar[], 1) IS NULL OR tags @> @tags::varchar[]);
 
 -- name: InsertWorldAdmin :one
 INSERT INTO world_admins (

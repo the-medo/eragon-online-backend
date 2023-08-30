@@ -90,7 +90,7 @@ type Querier interface {
 	GetWorldTags(ctx context.Context) ([]WorldTag, error)
 	GetWorldTagsAvailable(ctx context.Context) ([]WorldTagsAvailable, error)
 	GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWorld, error)
-	GetWorldsCount(ctx context.Context, isPublic bool) (int64, error)
+	GetWorldsCount(ctx context.Context, arg GetWorldsCountParams) (int64, error)
 	GetWorldsOfUser(ctx context.Context, userID int32) ([]GetWorldsOfUserRow, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
 	InsertPostHistory(ctx context.Context, postID int32) (PostHistory, error)

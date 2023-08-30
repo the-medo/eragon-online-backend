@@ -175,29 +175,33 @@ func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, e
 
 const getWorlds = `-- name: GetWorlds :many
 SELECT id, name, public, created_at, short_description, based_on, description_post_id, image_header, image_thumbnail, image_avatar, tags, activity_post_count, activity_quest_count, activity_resource_count, world_menu_id FROM view_worlds
-WHERE ($1::boolean IS NULL OR public = $1)
+WHERE
+    ($1::boolean IS NULL OR public = $1) AND
+    (array_length($2::varchar[], 1) IS NULL OR tags @> $2::varchar[])
 ORDER BY
     CASE
-     WHEN $2::bool
-         THEN $3::VARCHAR
+     WHEN $3::bool
+         THEN $4::VARCHAR
      ELSE 'created_at'
      END
 DESC
-LIMIT $5
-OFFSET $4
+LIMIT $6
+OFFSET $5
 `
 
 type GetWorldsParams struct {
-	IsPublic    bool   `json:"is_public"`
-	OrderResult bool   `json:"order_result"`
-	OrderBy     string `json:"order_by"`
-	PageOffset  int32  `json:"page_offset"`
-	PageLimit   int32  `json:"page_limit"`
+	IsPublic    bool     `json:"is_public"`
+	Tags        []string `json:"tags"`
+	OrderResult bool     `json:"order_result"`
+	OrderBy     string   `json:"order_by"`
+	PageOffset  int32    `json:"page_offset"`
+	PageLimit   int32    `json:"page_limit"`
 }
 
 func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWorld, error) {
 	rows, err := q.db.QueryContext(ctx, getWorlds,
 		arg.IsPublic,
+		pq.Array(arg.Tags),
 		arg.OrderResult,
 		arg.OrderBy,
 		arg.PageOffset,
@@ -242,11 +246,17 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 
 const getWorldsCount = `-- name: GetWorldsCount :one
 SELECT COUNT(*) FROM view_worlds
-WHERE ($1::boolean IS NULL OR public = $1)
+WHERE ($1::boolean IS NULL OR public = $1) AND
+    (array_length($2::varchar[], 1) IS NULL OR tags @> $2::varchar[])
 `
 
-func (q *Queries) GetWorldsCount(ctx context.Context, isPublic bool) (int64, error) {
-	row := q.db.QueryRowContext(ctx, getWorldsCount, isPublic)
+type GetWorldsCountParams struct {
+	IsPublic bool     `json:"is_public"`
+	Tags     []string `json:"tags"`
+}
+
+func (q *Queries) GetWorldsCount(ctx context.Context, arg GetWorldsCountParams) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getWorldsCount, arg.IsPublic, pq.Array(arg.Tags))
 	var count int64
 	err := row.Scan(&count)
 	return count, err
