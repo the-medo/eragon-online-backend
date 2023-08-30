@@ -1089,7 +1089,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbTag"
+              "$ref": "#/definitions/pbViewTag"
             }
           },
           "default": {
@@ -1155,7 +1155,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbTag"
+              "$ref": "#/definitions/pbViewTag"
             }
           },
           "default": {
@@ -3111,7 +3111,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbTag"
+            "$ref": "#/definitions/pbViewTag"
           }
         }
       }
@@ -3704,6 +3704,22 @@
         },
         "headerImageUrl": {
           "type": "string"
+        }
+      }
+    },
+    "pbViewTag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

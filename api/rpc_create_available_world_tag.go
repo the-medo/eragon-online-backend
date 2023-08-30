@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -10,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *Server) CreateAvailableWorldTag(ctx context.Context, req *pb.CreateAvailableWorldTagRequest) (*pb.Tag, error) {
+func (server *Server) CreateAvailableWorldTag(ctx context.Context, req *pb.CreateAvailableWorldTagRequest) (*pb.ViewTag, error) {
 
 	violations := validateCreateAvailableWorldTagRequest(req)
 	if violations != nil {
@@ -27,7 +26,11 @@ func (server *Server) CreateAvailableWorldTag(ctx context.Context, req *pb.Creat
 		return nil, err
 	}
 
-	rsp := converters.ConvertTag(tag)
+	rsp := &pb.ViewTag{
+		Id:    tag.ID,
+		Tag:   tag.Tag,
+		Count: 0,
+	}
 
 	return rsp, nil
 }

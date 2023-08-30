@@ -85,13 +85,13 @@ func (q *Queries) GetWorldTag(ctx context.Context, arg GetWorldTagParams) (World
 }
 
 const getWorldTagAvailable = `-- name: GetWorldTagAvailable :one
-SELECT id, tag FROM world_tags_available WHERE id = $1
+SELECT id, tag, count FROM view_world_tags_available WHERE id = $1
 `
 
-func (q *Queries) GetWorldTagAvailable(ctx context.Context, tagID int32) (WorldTagsAvailable, error) {
+func (q *Queries) GetWorldTagAvailable(ctx context.Context, tagID int32) (ViewWorldTagsAvailable, error) {
 	row := q.db.QueryRowContext(ctx, getWorldTagAvailable, tagID)
-	var i WorldTagsAvailable
-	err := row.Scan(&i.ID, &i.Tag)
+	var i ViewWorldTagsAvailable
+	err := row.Scan(&i.ID, &i.Tag, &i.Count)
 	return i, err
 }
 
@@ -123,19 +123,19 @@ func (q *Queries) GetWorldTags(ctx context.Context) ([]WorldTag, error) {
 }
 
 const getWorldTagsAvailable = `-- name: GetWorldTagsAvailable :many
-SELECT id, tag FROM world_tags_available
+SELECT id, tag, count FROM view_world_tags_available
 `
 
-func (q *Queries) GetWorldTagsAvailable(ctx context.Context) ([]WorldTagsAvailable, error) {
+func (q *Queries) GetWorldTagsAvailable(ctx context.Context) ([]ViewWorldTagsAvailable, error) {
 	rows, err := q.db.QueryContext(ctx, getWorldTagsAvailable)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []WorldTagsAvailable{}
+	items := []ViewWorldTagsAvailable{}
 	for rows.Next() {
-		var i WorldTagsAvailable
-		if err := rows.Scan(&i.ID, &i.Tag); err != nil {
+		var i ViewWorldTagsAvailable
+		if err := rows.Scan(&i.ID, &i.Tag, &i.Count); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

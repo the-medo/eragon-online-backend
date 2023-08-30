@@ -8,3 +8,9 @@ message Tag {
   int32 id = 1;
   string tag = 2;
 }
+
+message ViewTag {
+  int32 id = 1;
+  string tag = 2;
+  int32 count = 3;
+}

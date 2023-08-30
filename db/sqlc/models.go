@@ -400,6 +400,12 @@ type ViewWorld struct {
 	WorldMenuID           int32          `json:"world_menu_id"`
 }
 
+type ViewWorldTagsAvailable struct {
+	ID    int32  `json:"id"`
+	Tag   string `json:"tag"`
+	Count int32  `json:"count"`
+}
+
 type World struct {
 	ID                int32         `json:"id"`
 	Name              string        `json:"name"`

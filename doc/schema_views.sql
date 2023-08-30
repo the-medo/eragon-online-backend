@@ -65,11 +65,13 @@ FROM
     LEFT JOIN images i ON p.thumbnail_img_id = i.id
 ;
 
-CREATE VIEW view_menus AS
+CREATE VIEW view_world_tags_available AS
 SELECT
-    m.*,
-    i.url as header_image_url
+    wta.*,
+    COUNT(wt.world_id) as usageCount
 FROM
-    menus m
-    LEFT JOIN images i ON m.menu_header_img_id = i.id
+    world_tags_available wta
+    LEFT JOIN world_tags wt ON wt.tag_id = wta.id
+GROUP BY
+    wta.id;
 ;

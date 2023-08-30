@@ -486,7 +486,7 @@ service Talebound {
     };
   };
 
-  rpc CreateAvailableWorldTag(CreateAvailableWorldTagRequest) returns (Tag) {
+  rpc CreateAvailableWorldTag(CreateAvailableWorldTagRequest) returns (ViewTag) {
     option (google.api.http) = {
       post: "/tags/worlds"
       body: "*"
@@ -497,7 +497,7 @@ service Talebound {
     };
   };
 
-  rpc UpdateAvailableWorldTag(UpdateAvailableWorldTagRequest) returns (Tag) {
+  rpc UpdateAvailableWorldTag(UpdateAvailableWorldTagRequest) returns (ViewTag) {
     option (google.api.http) = {
       patch: "/tags/worlds/{tagId}"
       body: "*"

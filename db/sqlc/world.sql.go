@@ -173,6 +173,38 @@ func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, e
 	return i, err
 }
 
+const getWorldTagCount = `-- name: GetWorldTagCount :many
+SELECT tag_id, COUNT(*) as count FROM world_tags GROUP BY tag_id
+`
+
+type GetWorldTagCountRow struct {
+	TagID int32 `json:"tag_id"`
+	Count int64 `json:"count"`
+}
+
+func (q *Queries) GetWorldTagCount(ctx context.Context) ([]GetWorldTagCountRow, error) {
+	rows, err := q.db.QueryContext(ctx, getWorldTagCount)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetWorldTagCountRow{}
+	for rows.Next() {
+		var i GetWorldTagCountRow
+		if err := rows.Scan(&i.TagID, &i.Count); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getWorlds = `-- name: GetWorlds :many
 SELECT id, name, public, created_at, short_description, based_on, description_post_id, image_header, image_thumbnail, image_avatar, tags, activity_post_count, activity_quest_count, activity_resource_count, world_menu_id FROM view_worlds
 WHERE

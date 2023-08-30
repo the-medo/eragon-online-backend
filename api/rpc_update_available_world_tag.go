@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *Server) UpdateAvailableWorldTag(ctx context.Context, request *pb.UpdateAvailableWorldTagRequest) (*pb.Tag, error) {
+func (server *Server) UpdateAvailableWorldTag(ctx context.Context, request *pb.UpdateAvailableWorldTagRequest) (*pb.ViewTag, error) {
 	violations := validateUpdateAvailableWorldTag(request)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
@@ -27,12 +27,16 @@ func (server *Server) UpdateAvailableWorldTag(ctx context.Context, request *pb.U
 		Tag: request.GetNewTag(),
 	}
 
-	tag, err := server.store.UpdateWorldTagAvailable(ctx, arg)
+	_, err = server.store.UpdateWorldTagAvailable(ctx, arg)
 	if err != nil {
 		return nil, err
 	}
 
-	rsp := converters.ConvertTag(tag)
+	tag, err := server.store.GetWorldTagAvailable(ctx, request.GetTagId())
+	if err != nil {
+		return nil, err
+	}
+	rsp := converters.ConvertViewTag(tag)
 
 	return rsp, nil
 }

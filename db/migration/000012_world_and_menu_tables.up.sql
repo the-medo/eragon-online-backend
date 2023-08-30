@@ -316,3 +316,14 @@ FROM
     JOIN post_types pt ON p.post_type_id = pt.id
     LEFT JOIN images i ON p.thumbnail_img_id = i.id
 ;
+
+CREATE VIEW view_world_tags_available AS
+SELECT
+    wta.*,
+    cast(COUNT(wt.world_id) as integer) as count
+FROM
+    world_tags_available wta
+    LEFT JOIN world_tags wt ON wt.tag_id = wta.id
+GROUP BY
+    wta.id;
+;

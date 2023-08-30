@@ -137,8 +137,8 @@ type TaleboundClient interface {
 	UpdateWorld(ctx context.Context, in *UpdateWorldRequest, opts ...grpc.CallOption) (*World, error)
 	UploadWorldImage(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error)
 	GetAvailableWorldTags(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAvailableWorldTagsResponse, error)
-	CreateAvailableWorldTag(ctx context.Context, in *CreateAvailableWorldTagRequest, opts ...grpc.CallOption) (*Tag, error)
-	UpdateAvailableWorldTag(ctx context.Context, in *UpdateAvailableWorldTagRequest, opts ...grpc.CallOption) (*Tag, error)
+	CreateAvailableWorldTag(ctx context.Context, in *CreateAvailableWorldTagRequest, opts ...grpc.CallOption) (*ViewTag, error)
+	UpdateAvailableWorldTag(ctx context.Context, in *UpdateAvailableWorldTagRequest, opts ...grpc.CallOption) (*ViewTag, error)
 	DeleteAvailableWorldTag(ctx context.Context, in *DeleteAvailableWorldTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	AddWorldTag(ctx context.Context, in *AddWorldTagRequest, opts ...grpc.CallOption) (*Tag, error)
 	RemoveWorldTag(ctx context.Context, in *RemoveWorldTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -541,8 +541,8 @@ func (c *taleboundClient) GetAvailableWorldTags(ctx context.Context, in *emptypb
 	return out, nil
 }
 
-func (c *taleboundClient) CreateAvailableWorldTag(ctx context.Context, in *CreateAvailableWorldTagRequest, opts ...grpc.CallOption) (*Tag, error) {
-	out := new(Tag)
+func (c *taleboundClient) CreateAvailableWorldTag(ctx context.Context, in *CreateAvailableWorldTagRequest, opts ...grpc.CallOption) (*ViewTag, error) {
+	out := new(ViewTag)
 	err := c.cc.Invoke(ctx, Talebound_CreateAvailableWorldTag_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -550,8 +550,8 @@ func (c *taleboundClient) CreateAvailableWorldTag(ctx context.Context, in *Creat
 	return out, nil
 }
 
-func (c *taleboundClient) UpdateAvailableWorldTag(ctx context.Context, in *UpdateAvailableWorldTagRequest, opts ...grpc.CallOption) (*Tag, error) {
-	out := new(Tag)
+func (c *taleboundClient) UpdateAvailableWorldTag(ctx context.Context, in *UpdateAvailableWorldTagRequest, opts ...grpc.CallOption) (*ViewTag, error) {
+	out := new(ViewTag)
 	err := c.cc.Invoke(ctx, Talebound_UpdateAvailableWorldTag_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -815,8 +815,8 @@ type TaleboundServer interface {
 	UpdateWorld(context.Context, *UpdateWorldRequest) (*World, error)
 	UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error)
 	GetAvailableWorldTags(context.Context, *emptypb.Empty) (*GetAvailableWorldTagsResponse, error)
-	CreateAvailableWorldTag(context.Context, *CreateAvailableWorldTagRequest) (*Tag, error)
-	UpdateAvailableWorldTag(context.Context, *UpdateAvailableWorldTagRequest) (*Tag, error)
+	CreateAvailableWorldTag(context.Context, *CreateAvailableWorldTagRequest) (*ViewTag, error)
+	UpdateAvailableWorldTag(context.Context, *UpdateAvailableWorldTagRequest) (*ViewTag, error)
 	DeleteAvailableWorldTag(context.Context, *DeleteAvailableWorldTagRequest) (*emptypb.Empty, error)
 	AddWorldTag(context.Context, *AddWorldTagRequest) (*Tag, error)
 	RemoveWorldTag(context.Context, *RemoveWorldTagRequest) (*emptypb.Empty, error)
@@ -970,10 +970,10 @@ func (UnimplementedTaleboundServer) UploadWorldImage(context.Context, *UploadWor
 func (UnimplementedTaleboundServer) GetAvailableWorldTags(context.Context, *emptypb.Empty) (*GetAvailableWorldTagsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAvailableWorldTags not implemented")
 }
-func (UnimplementedTaleboundServer) CreateAvailableWorldTag(context.Context, *CreateAvailableWorldTagRequest) (*Tag, error) {
+func (UnimplementedTaleboundServer) CreateAvailableWorldTag(context.Context, *CreateAvailableWorldTagRequest) (*ViewTag, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAvailableWorldTag not implemented")
 }
-func (UnimplementedTaleboundServer) UpdateAvailableWorldTag(context.Context, *UpdateAvailableWorldTagRequest) (*Tag, error) {
+func (UnimplementedTaleboundServer) UpdateAvailableWorldTag(context.Context, *UpdateAvailableWorldTagRequest) (*ViewTag, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAvailableWorldTag not implemented")
 }
 func (UnimplementedTaleboundServer) DeleteAvailableWorldTag(context.Context, *DeleteAvailableWorldTagRequest) (*emptypb.Empty, error) {

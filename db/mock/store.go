@@ -1160,10 +1160,10 @@ func (mr *MockStoreMockRecorder) GetWorldTag(arg0, arg1 interface{}) *gomock.Cal
 }
 
 // GetWorldTagAvailable mocks base method.
-func (m *MockStore) GetWorldTagAvailable(arg0 context.Context, arg1 int32) (db.WorldTagsAvailable, error) {
+func (m *MockStore) GetWorldTagAvailable(arg0 context.Context, arg1 int32) (db.ViewWorldTagsAvailable, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWorldTagAvailable", arg0, arg1)
-	ret0, _ := ret[0].(db.WorldTagsAvailable)
+	ret0, _ := ret[0].(db.ViewWorldTagsAvailable)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1172,6 +1172,21 @@ func (m *MockStore) GetWorldTagAvailable(arg0 context.Context, arg1 int32) (db.W
 func (mr *MockStoreMockRecorder) GetWorldTagAvailable(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldTagAvailable", reflect.TypeOf((*MockStore)(nil).GetWorldTagAvailable), arg0, arg1)
+}
+
+// GetWorldTagCount mocks base method.
+func (m *MockStore) GetWorldTagCount(arg0 context.Context) ([]db.GetWorldTagCountRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWorldTagCount", arg0)
+	ret0, _ := ret[0].([]db.GetWorldTagCountRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWorldTagCount indicates an expected call of GetWorldTagCount.
+func (mr *MockStoreMockRecorder) GetWorldTagCount(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldTagCount", reflect.TypeOf((*MockStore)(nil).GetWorldTagCount), arg0)
 }
 
 // GetWorldTags mocks base method.
@@ -1190,10 +1205,10 @@ func (mr *MockStoreMockRecorder) GetWorldTags(arg0 interface{}) *gomock.Call {
 }
 
 // GetWorldTagsAvailable mocks base method.
-func (m *MockStore) GetWorldTagsAvailable(arg0 context.Context) ([]db.WorldTagsAvailable, error) {
+func (m *MockStore) GetWorldTagsAvailable(arg0 context.Context) ([]db.ViewWorldTagsAvailable, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWorldTagsAvailable", arg0)
-	ret0, _ := ret[0].([]db.WorldTagsAvailable)
+	ret0, _ := ret[0].([]db.ViewWorldTagsAvailable)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

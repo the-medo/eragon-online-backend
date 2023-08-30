@@ -37,7 +37,7 @@ func (server *Server) AddWorldTag(ctx context.Context, req *pb.AddWorldTagReques
 		return nil, err
 	}
 
-	rsp := converters.ConvertTag(tag)
+	rsp := converters.ConvertViewTagToTag(tag)
 
 	return rsp, nil
 }

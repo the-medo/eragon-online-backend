@@ -15,11 +15,11 @@ func (server *Server) GetAvailableWorldTags(ctx context.Context, req *emptypb.Em
 	}
 
 	rsp := &pb.GetAvailableWorldTagsResponse{
-		Tags: make([]*pb.Tag, len(tags)),
+		Tags: make([]*pb.ViewTag, len(tags)),
 	}
 
 	for i, dbTag := range tags {
-		rsp.Tags[i] = converters.ConvertTag(dbTag)
+		rsp.Tags[i] = converters.ConvertViewTag(dbTag)
 	}
 
 	return rsp, nil

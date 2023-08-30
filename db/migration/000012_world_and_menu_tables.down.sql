@@ -1,3 +1,5 @@
+DROP VIEW view_world_tags_available;
+
 DROP VIEW view_posts;
 CREATE VIEW view_posts AS
 SELECT
