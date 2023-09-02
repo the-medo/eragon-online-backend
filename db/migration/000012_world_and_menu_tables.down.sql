@@ -1,3 +1,5 @@
+DROP VIEW view_menu_item_posts;
+DROP PROCEDURE IF EXISTS move_menu_item_post(INT, INT, INT);
 DROP VIEW view_world_tags_available;
 
 DROP VIEW view_posts;

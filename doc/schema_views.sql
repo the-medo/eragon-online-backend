@@ -75,3 +75,7 @@ FROM
 GROUP BY
     wta.id;
 ;
+
+
+CREATE VIEW view_menu_item_posts AS
+SELECT * FROM menu_item_posts mip JOIN view_posts vp ON mip.post_id = vp.id;

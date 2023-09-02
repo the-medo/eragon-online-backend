@@ -50,6 +50,9 @@ SELECT * FROM menu_items WHERE menu_id = sqlc.arg(menu_id);
 -- name: GetMenuItemById :one
 SELECT * FROM menu_items WHERE id = sqlc.arg(id);
 
+-- name: MenuItemPostChangePositions :exec
+CALL move_menu_item_post(sqlc.arg(menu_item_id), sqlc.arg(post_id), sqlc.arg(target_position));
+
 -- name: MenuItemChangePositions :exec
 CALL move_menu_item(sqlc.arg(menu_item_id), sqlc.arg(target_position));
 
@@ -70,7 +73,20 @@ WHERE menu_item_id = sqlc.narg(menu_item_id) AND post_id = sqlc.arg(post_id)
 RETURNING *;
 
 -- name: DeleteMenuItemPost :exec
-DELETE FROM menu_item_posts WHERE menu_item_id = sqlc.arg(menu_item_id) AND post_id = sqlc.arg(post_id);
+WITH deleted_menu_item_post AS (
+    DELETE FROM "menu_item_posts" d
+        WHERE d.menu_item_id = sqlc.arg(menu_item_id) AND d.post_id = sqlc.arg(post_id)
+        RETURNING *
+)
+UPDATE "menu_item_posts"
+SET "position" = "position" - 1
+WHERE
+    "menu_item_id" = (SELECT menu_item_id FROM deleted_menu_item_post)
+    AND "post_id" = (SELECT post_id FROM deleted_menu_item_post)
+    AND "position" > (SELECT position FROM deleted_menu_item_post);
 
 -- name: GetMenuItemPost :one
-SELECT * FROM menu_item_posts WHERE menu_item_id = sqlc.arg(menu_item_id) AND post_id = sqlc.arg(post_id);
+SELECT * FROM view_menu_item_posts WHERE menu_item_id = sqlc.arg(menu_item_id) AND post_id = sqlc.arg(post_id);
+
+-- name: GetMenuItemPosts :many
+SELECT * FROM view_menu_item_posts WHERE menu_item_id = sqlc.arg(menu_item_id);

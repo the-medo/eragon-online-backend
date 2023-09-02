@@ -682,6 +682,9 @@
                 "position": {
                   "type": "integer",
                   "format": "int32"
+                },
+                "isMenuItemDescriptionPost": {
+                  "type": "boolean"
                 }
               }
             }
@@ -747,7 +750,8 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbMenuItemPost"
+              "type": "object",
+              "properties": {}
             }
           },
           "default": {
@@ -3460,6 +3464,10 @@
           "format": "int32"
         },
         "postId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
           "type": "integer",
           "format": "int32"
         },

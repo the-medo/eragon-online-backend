@@ -716,7 +716,7 @@ service Talebound {
     };
   };
 
-  rpc UpdateMenuItemPost(UpdateMenuItemPostRequest) returns (MenuItemPost) {
+  rpc UpdateMenuItemPost(UpdateMenuItemPostRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       patch: "/menus/{menuId}/items/{menuItemId}/posts/{postId}"
       body: "*"

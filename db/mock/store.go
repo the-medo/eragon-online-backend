@@ -815,10 +815,10 @@ func (mr *MockStoreMockRecorder) GetMenuItemById(arg0, arg1 interface{}) *gomock
 }
 
 // GetMenuItemPost mocks base method.
-func (m *MockStore) GetMenuItemPost(arg0 context.Context, arg1 db.GetMenuItemPostParams) (db.MenuItemPost, error) {
+func (m *MockStore) GetMenuItemPost(arg0 context.Context, arg1 db.GetMenuItemPostParams) (db.ViewMenuItemPost, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMenuItemPost", arg0, arg1)
-	ret0, _ := ret[0].(db.MenuItemPost)
+	ret0, _ := ret[0].(db.ViewMenuItemPost)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -827,6 +827,21 @@ func (m *MockStore) GetMenuItemPost(arg0 context.Context, arg1 db.GetMenuItemPos
 func (mr *MockStoreMockRecorder) GetMenuItemPost(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenuItemPost", reflect.TypeOf((*MockStore)(nil).GetMenuItemPost), arg0, arg1)
+}
+
+// GetMenuItemPosts mocks base method.
+func (m *MockStore) GetMenuItemPosts(arg0 context.Context, arg1 sql.NullInt32) ([]db.ViewMenuItemPost, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMenuItemPosts", arg0, arg1)
+	ret0, _ := ret[0].([]db.ViewMenuItemPost)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMenuItemPosts indicates an expected call of GetMenuItemPosts.
+func (mr *MockStoreMockRecorder) GetMenuItemPosts(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenuItemPosts", reflect.TypeOf((*MockStore)(nil).GetMenuItemPosts), arg0, arg1)
 }
 
 // GetMenuItems mocks base method.
@@ -1365,6 +1380,20 @@ func (m *MockStore) MenuItemMoveGroupUp(arg0 context.Context, arg1 int32) error 
 func (mr *MockStoreMockRecorder) MenuItemMoveGroupUp(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MenuItemMoveGroupUp", reflect.TypeOf((*MockStore)(nil).MenuItemMoveGroupUp), arg0, arg1)
+}
+
+// MenuItemPostChangePositions mocks base method.
+func (m *MockStore) MenuItemPostChangePositions(arg0 context.Context, arg1 db.MenuItemPostChangePositionsParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "MenuItemPostChangePositions", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// MenuItemPostChangePositions indicates an expected call of MenuItemPostChangePositions.
+func (mr *MockStoreMockRecorder) MenuItemPostChangePositions(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MenuItemPostChangePositions", reflect.TypeOf((*MockStore)(nil).MenuItemPostChangePositions), arg0, arg1)
 }
 
 // RemoveUserRole mocks base method.

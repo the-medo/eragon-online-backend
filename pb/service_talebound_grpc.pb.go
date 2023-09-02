@@ -159,7 +159,7 @@ type TaleboundClient interface {
 	DeleteMenuItem(ctx context.Context, in *DeleteMenuItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetMenuItems(ctx context.Context, in *GetMenuItemsRequest, opts ...grpc.CallOption) (*GetMenuItemsResponse, error)
 	CreateMenuItemPost(ctx context.Context, in *CreateMenuItemPostRequest, opts ...grpc.CallOption) (*MenuItemPost, error)
-	UpdateMenuItemPost(ctx context.Context, in *UpdateMenuItemPostRequest, opts ...grpc.CallOption) (*MenuItemPost, error)
+	UpdateMenuItemPost(ctx context.Context, in *UpdateMenuItemPostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteMenuItemPost(ctx context.Context, in *DeleteMenuItemPostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetMenuItemPosts(ctx context.Context, in *GetMenuItemPostsRequest, opts ...grpc.CallOption) (*GetMenuItemPostsResponse, error)
 }
@@ -739,8 +739,8 @@ func (c *taleboundClient) CreateMenuItemPost(ctx context.Context, in *CreateMenu
 	return out, nil
 }
 
-func (c *taleboundClient) UpdateMenuItemPost(ctx context.Context, in *UpdateMenuItemPostRequest, opts ...grpc.CallOption) (*MenuItemPost, error) {
-	out := new(MenuItemPost)
+func (c *taleboundClient) UpdateMenuItemPost(ctx context.Context, in *UpdateMenuItemPostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, Talebound_UpdateMenuItemPost_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -837,7 +837,7 @@ type TaleboundServer interface {
 	DeleteMenuItem(context.Context, *DeleteMenuItemRequest) (*emptypb.Empty, error)
 	GetMenuItems(context.Context, *GetMenuItemsRequest) (*GetMenuItemsResponse, error)
 	CreateMenuItemPost(context.Context, *CreateMenuItemPostRequest) (*MenuItemPost, error)
-	UpdateMenuItemPost(context.Context, *UpdateMenuItemPostRequest) (*MenuItemPost, error)
+	UpdateMenuItemPost(context.Context, *UpdateMenuItemPostRequest) (*emptypb.Empty, error)
 	DeleteMenuItemPost(context.Context, *DeleteMenuItemPostRequest) (*emptypb.Empty, error)
 	GetMenuItemPosts(context.Context, *GetMenuItemPostsRequest) (*GetMenuItemPostsResponse, error)
 	mustEmbedUnimplementedTaleboundServer()
@@ -1036,7 +1036,7 @@ func (UnimplementedTaleboundServer) GetMenuItems(context.Context, *GetMenuItemsR
 func (UnimplementedTaleboundServer) CreateMenuItemPost(context.Context, *CreateMenuItemPostRequest) (*MenuItemPost, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMenuItemPost not implemented")
 }
-func (UnimplementedTaleboundServer) UpdateMenuItemPost(context.Context, *UpdateMenuItemPostRequest) (*MenuItemPost, error) {
+func (UnimplementedTaleboundServer) UpdateMenuItemPost(context.Context, *UpdateMenuItemPostRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenuItemPost not implemented")
 }
 func (UnimplementedTaleboundServer) DeleteMenuItemPost(context.Context, *DeleteMenuItemPostRequest) (*emptypb.Empty, error) {
