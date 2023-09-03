@@ -63,6 +63,7 @@ func (server *Server) CreateMenuItemPost(ctx context.Context, req *pb.CreateMenu
 
 	} else {
 		arg := db.CreateMenuItemPostParams{
+			MenuID: req.GetMenuId(),
 			MenuItemID: sql.NullInt32{
 				Int32: req.GetMenuItemId(),
 				Valid: true,

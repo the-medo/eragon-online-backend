@@ -66,19 +66,25 @@ func (q *Queries) CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) 
 }
 
 const createMenuItemPost = `-- name: CreateMenuItemPost :one
-INSERT INTO menu_item_posts (menu_item_id, post_id, position)
-VALUES ($1, $2, $3)
+INSERT INTO menu_item_posts (menu_id, menu_item_id, post_id, position)
+VALUES ($1, $2, $3, $4)
 RETURNING menu_id, menu_item_id, post_id, position
 `
 
 type CreateMenuItemPostParams struct {
+	MenuID     int32         `json:"menu_id"`
 	MenuItemID sql.NullInt32 `json:"menu_item_id"`
 	PostID     int32         `json:"post_id"`
 	Position   int32         `json:"position"`
 }
 
 func (q *Queries) CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error) {
-	row := q.db.QueryRowContext(ctx, createMenuItemPost, arg.MenuItemID, arg.PostID, arg.Position)
+	row := q.db.QueryRowContext(ctx, createMenuItemPost,
+		arg.MenuID,
+		arg.MenuItemID,
+		arg.PostID,
+		arg.Position,
+	)
 	var i MenuItemPost
 	err := row.Scan(
 		&i.MenuID,

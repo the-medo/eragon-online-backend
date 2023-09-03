@@ -60,8 +60,8 @@ CALL move_menu_item(sqlc.arg(menu_item_id), sqlc.arg(target_position));
 CALL move_group_up(sqlc.arg(menu_item_id));
 
 -- name: CreateMenuItemPost :one
-INSERT INTO menu_item_posts (menu_item_id, post_id, position)
-VALUES (sqlc.arg(menu_item_id), sqlc.arg(post_id), sqlc.arg(position))
+INSERT INTO menu_item_posts (menu_id, menu_item_id, post_id, position)
+VALUES (sqlc.arg(menu_id), sqlc.narg(menu_item_id), sqlc.arg(post_id), sqlc.arg(position))
 RETURNING *;
 
 -- name: UpdateMenuItemPost :one
