@@ -34,7 +34,7 @@ func (server *Server) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest)
 		},
 		Content: sql.NullString{
 			String: req.GetContent(),
-			Valid:  req.Title != nil,
+			Valid:  req.Content != nil,
 		},
 		Description: sql.NullString{
 			String: req.GetDescription(),
