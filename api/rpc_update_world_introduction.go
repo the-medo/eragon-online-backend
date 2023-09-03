@@ -59,7 +59,12 @@ func (server *Server) UpdateWorldIntroduction(ctx context.Context, req *pb.Updat
 		}
 		_, err = server.store.UpdateWorld(ctx, updateWorldArg)
 
-		return convertPostAndPostType(post, postType), nil
+		viewPost, err := server.store.GetPostById(ctx, post.ID)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
+		}
+
+		return convertPostAndPostType(viewPost, postType), nil
 	} else {
 		//update existing post
 		arg := db.UpdatePostParams{
@@ -78,7 +83,12 @@ func (server *Server) UpdateWorldIntroduction(ctx context.Context, req *pb.Updat
 			return nil, status.Errorf(codes.Internal, "failed to update post: %s", err)
 		}
 
-		return convertPostAndPostType(post, postType), nil
+		viewPost, err := server.store.GetPostById(ctx, post.ID)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
+		}
+
+		return convertPostAndPostType(viewPost, postType), nil
 	}
 }
 

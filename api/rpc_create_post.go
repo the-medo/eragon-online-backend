@@ -60,7 +60,12 @@ func (server *Server) CreatePost(ctx context.Context, req *pb.CreatePostRequest)
 		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
 	}
 
-	rsp := convertPostAndPostType(postResult, postType)
+	viewPost, err := server.store.GetPostById(ctx, postResult.ID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
+	}
+
+	rsp := convertPostAndPostType(viewPost, postType)
 
 	return rsp, nil
 }

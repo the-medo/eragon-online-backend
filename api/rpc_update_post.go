@@ -72,7 +72,12 @@ func (server *Server) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest)
 		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
 	}
 
-	rsp := convertPostAndPostType(post, postType)
+	viewPost, err := server.store.GetPostById(ctx, post.ID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
+	}
+
+	rsp := convertPostAndPostType(viewPost, postType)
 
 	return rsp, nil
 }

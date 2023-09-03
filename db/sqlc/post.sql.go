@@ -432,7 +432,7 @@ SET
     last_updated_at = now(),
     thumbnail_img_id = COALESCE($8, thumbnail_img_id)
 WHERE
-        id = $9
+    posts.id = $9
 RETURNING id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id
 `
 

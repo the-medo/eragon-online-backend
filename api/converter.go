@@ -260,7 +260,7 @@ func convertPostType(postType db.PostType) *pb.DataPostType {
 	return pbPostType
 }
 
-func convertPostAndPostType(post db.Post, postType db.PostType) *pb.Post {
+func convertPostAndPostType(post db.ViewPost, postType db.PostType) *pb.Post {
 	pbPost := &pb.Post{
 		Post: &pb.DataPost{
 			Id:         post.ID,
@@ -298,6 +298,10 @@ func convertPostAndPostType(post db.Post, postType db.PostType) *pb.Post {
 
 	if post.ThumbnailImgID.Valid == true {
 		pbPost.Post.ImageThumbnailId = post.ThumbnailImgID.Int32
+	}
+
+	if post.ThumbnailImgUrl.Valid == true {
+		pbPost.Post.ImageThumbnailUrl = post.ThumbnailImgUrl.String
 	}
 
 	return pbPost

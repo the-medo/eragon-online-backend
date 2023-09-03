@@ -54,7 +54,7 @@ SET
     last_updated_at = now(),
     thumbnail_img_id = COALESCE(sqlc.narg(thumbnail_img_id), thumbnail_img_id)
 WHERE
-        id = sqlc.arg(post_id)
+    posts.id = sqlc.arg(post_id)
 RETURNING *;
 
 -- name: DeletePost :exec

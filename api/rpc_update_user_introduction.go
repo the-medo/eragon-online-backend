@@ -70,7 +70,12 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 		}
 		_, err = server.store.UpdateUser(ctx, updateUserArg)
 
-		return convertPostAndPostType(post, postType), nil
+		viewPost, err := server.store.GetPostById(ctx, post.ID)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
+		}
+
+		return convertPostAndPostType(viewPost, postType), nil
 	} else {
 		//update existing post
 		arg := db.UpdatePostParams{
@@ -93,7 +98,12 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 			return nil, status.Errorf(codes.Internal, "failed to update post: %s", err)
 		}
 
-		return convertPostAndPostType(post, postType), nil
+		viewPost, err := server.store.GetPostById(ctx, post.ID)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
+		}
+
+		return convertPostAndPostType(viewPost, postType), nil
 	}
 }
 
