@@ -66,10 +66,16 @@ RETURNING *;
 
 -- name: UpdateMenuItemPost :one
 UPDATE menu_item_posts
-SET menu_item_id = COALESCE(sqlc.narg(menu_item_id), menu_item_id),
+SET menu_item_id = COALESCE(sqlc.narg(new_menu_item_id), menu_item_id),
     post_id = COALESCE(sqlc.narg(post_id), post_id),
     position = COALESCE(sqlc.narg(position), position)
-WHERE menu_item_id = sqlc.narg(menu_item_id) AND post_id = sqlc.arg(post_id)
+WHERE (menu_item_id = sqlc.narg(menu_item_id) OR (sqlc.narg(menu_item_id) IS NULL AND menu_item_id IS NULL))  AND post_id = sqlc.arg(post_id)
+RETURNING *;
+
+-- name: UnassignMenuItemPost :one
+UPDATE menu_item_posts
+SET menu_item_id = NULL
+WHERE menu_item_id = sqlc.arg(menu_item_id) AND post_id = sqlc.arg(post_id)
 RETURNING *;
 
 -- name: DeleteMenuItemPost :exec
@@ -90,3 +96,6 @@ SELECT * FROM view_menu_item_posts WHERE menu_item_id = sqlc.arg(menu_item_id) A
 
 -- name: GetMenuItemPosts :many
 SELECT * FROM view_menu_item_posts WHERE menu_item_id = sqlc.arg(menu_item_id);
+
+-- name: GetMenuItemPostsByMenuId :many
+SELECT * FROM view_menu_item_posts WHERE menu_id = sqlc.arg(menu_id);

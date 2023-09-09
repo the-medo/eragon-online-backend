@@ -267,6 +267,55 @@ func (q *Queries) GetMenuItemPosts(ctx context.Context, menuItemID sql.NullInt32
 	return items, nil
 }
 
+const getMenuItemPostsByMenuId = `-- name: GetMenuItemPostsByMenuId :many
+SELECT menu_id, menu_item_id, post_id, position, id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url FROM view_menu_item_posts WHERE menu_id = $1
+`
+
+func (q *Queries) GetMenuItemPostsByMenuId(ctx context.Context, menuID int32) ([]ViewMenuItemPost, error) {
+	rows, err := q.db.QueryContext(ctx, getMenuItemPostsByMenuId, menuID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ViewMenuItemPost{}
+	for rows.Next() {
+		var i ViewMenuItemPost
+		if err := rows.Scan(
+			&i.MenuID,
+			&i.MenuItemID,
+			&i.PostID,
+			&i.Position,
+			&i.ID,
+			&i.PostTypeID,
+			&i.UserID,
+			&i.Title,
+			&i.Content,
+			&i.CreatedAt,
+			&i.DeletedAt,
+			&i.LastUpdatedAt,
+			&i.LastUpdatedUserID,
+			&i.IsDraft,
+			&i.IsPrivate,
+			&i.Description,
+			&i.ThumbnailImgID,
+			&i.PostTypeName,
+			&i.PostTypeDraftable,
+			&i.PostTypePrivatable,
+			&i.ThumbnailImgUrl,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getMenuItems = `-- name: GetMenuItems :many
 SELECT id, menu_id, menu_item_code, name, position, is_main, description_post_id FROM menu_items WHERE menu_id = $1
 `
@@ -340,6 +389,30 @@ func (q *Queries) MenuItemPostChangePositions(ctx context.Context, arg MenuItemP
 	return err
 }
 
+const unassignMenuItemPost = `-- name: UnassignMenuItemPost :one
+UPDATE menu_item_posts
+SET menu_item_id = NULL
+WHERE menu_item_id = $1 AND post_id = $2
+RETURNING menu_id, menu_item_id, post_id, position
+`
+
+type UnassignMenuItemPostParams struct {
+	MenuItemID sql.NullInt32 `json:"menu_item_id"`
+	PostID     int32         `json:"post_id"`
+}
+
+func (q *Queries) UnassignMenuItemPost(ctx context.Context, arg UnassignMenuItemPostParams) (MenuItemPost, error) {
+	row := q.db.QueryRowContext(ctx, unassignMenuItemPost, arg.MenuItemID, arg.PostID)
+	var i MenuItemPost
+	err := row.Scan(
+		&i.MenuID,
+		&i.MenuItemID,
+		&i.PostID,
+		&i.Position,
+	)
+	return i, err
+}
+
 const updateMenu = `-- name: UpdateMenu :one
 UPDATE menus
 SET menu_code = COALESCE($1, menu_code),
@@ -407,18 +480,24 @@ UPDATE menu_item_posts
 SET menu_item_id = COALESCE($1, menu_item_id),
     post_id = COALESCE($2, post_id),
     position = COALESCE($3, position)
-WHERE menu_item_id = $1 AND post_id = $2
+WHERE (menu_item_id = $4 OR ($4 IS NULL AND menu_item_id IS NULL))  AND post_id = $2
 RETURNING menu_id, menu_item_id, post_id, position
 `
 
 type UpdateMenuItemPostParams struct {
-	MenuItemID sql.NullInt32 `json:"menu_item_id"`
-	PostID     sql.NullInt32 `json:"post_id"`
-	Position   sql.NullInt32 `json:"position"`
+	NewMenuItemID sql.NullInt32 `json:"new_menu_item_id"`
+	PostID        sql.NullInt32 `json:"post_id"`
+	Position      sql.NullInt32 `json:"position"`
+	MenuItemID    sql.NullInt32 `json:"menu_item_id"`
 }
 
 func (q *Queries) UpdateMenuItemPost(ctx context.Context, arg UpdateMenuItemPostParams) (MenuItemPost, error) {
-	row := q.db.QueryRowContext(ctx, updateMenuItemPost, arg.MenuItemID, arg.PostID, arg.Position)
+	row := q.db.QueryRowContext(ctx, updateMenuItemPost,
+		arg.NewMenuItemID,
+		arg.PostID,
+		arg.Position,
+		arg.MenuItemID,
+	)
 	var i MenuItemPost
 	err := row.Scan(
 		&i.MenuID,

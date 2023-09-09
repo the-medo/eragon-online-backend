@@ -70,7 +70,8 @@ message UpdateMenuItemPostRequest {
   int32 menuId = 1;
   int32 menuItemId = 2;
   int32 postId = 3;
-  optional int32 position = 4;
+  optional int32 newMenuItemId = 4;
+  optional int32 position = 5;
 }
 
 message DeleteMenuItemPostRequest {
@@ -85,5 +86,13 @@ message GetMenuItemPostsRequest {
 }
 
 message GetMenuItemPostsResponse {
+  repeated MenuItemPost menuItemPosts = 1;
+}
+
+message GetMenuItemPostsByMenuIdRequest {
+  int32 menuId = 1;
+}
+
+message GetMenuItemPostsByMenuIdResponse {
   repeated MenuItemPost menuItemPosts = 1;
 }

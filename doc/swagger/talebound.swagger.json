@@ -790,12 +790,49 @@
             "schema": {
               "type": "object",
               "properties": {
+                "newMenuItemId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
                 "position": {
                   "type": "integer",
                   "format": "int32"
                 }
               }
             }
+          }
+        ],
+        "tags": [
+          "Talebound"
+        ]
+      }
+    },
+    "/menus/{menuId}/posts": {
+      "get": {
+        "summary": "Get menu item posts by menu id",
+        "description": "gets list of menu item posts for menu",
+        "operationId": "Talebound_GetMenuItemPostsByMenuId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetMenuItemPostsByMenuIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "tags": [
@@ -3201,6 +3238,18 @@
         "totalCount": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "pbGetMenuItemPostsByMenuIdResponse": {
+      "type": "object",
+      "properties": {
+        "menuItemPosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbMenuItemPost"
+          }
         }
       }
     },

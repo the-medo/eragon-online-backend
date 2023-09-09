@@ -65,6 +65,7 @@ type Querier interface {
 	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)
 	GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams) (ViewMenuItemPost, error)
 	GetMenuItemPosts(ctx context.Context, menuItemID sql.NullInt32) ([]ViewMenuItemPost, error)
+	GetMenuItemPostsByMenuId(ctx context.Context, menuID int32) ([]ViewMenuItemPost, error)
 	GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, error)
 	GetPostById(ctx context.Context, postID int32) (ViewPost, error)
 	GetPostHistoryById(ctx context.Context, postHistoryID int32) (GetPostHistoryByIdRow, error)
@@ -103,6 +104,7 @@ type Querier interface {
 	MenuItemMoveGroupUp(ctx context.Context, menuItemID int32) error
 	MenuItemPostChangePositions(ctx context.Context, arg MenuItemPostChangePositionsParams) error
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
+	UnassignMenuItemPost(ctx context.Context, arg UnassignMenuItemPostParams) (MenuItemPost, error)
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
 	UpdateImage(ctx context.Context, arg UpdateImageParams) (Image, error)
 	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)

@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"database/sql"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -32,6 +33,43 @@ func (server *Server) UpdateMenuItemPost(ctx context.Context, req *pb.UpdateMenu
 		err = server.store.MenuItemPostChangePositions(ctx, positionChangeArg)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to change menu item post position: %s", err)
+		}
+	}
+
+	if req.NewMenuItemId != nil {
+		if req.GetNewMenuItemId() > 0 {
+			updateArg := db.UpdateMenuItemPostParams{
+				MenuItemID: sql.NullInt32{
+					Int32: req.GetMenuItemId(),
+					Valid: true,
+				},
+				PostID: sql.NullInt32{
+					Int32: req.GetPostId(),
+					Valid: true,
+				},
+				NewMenuItemID: sql.NullInt32{
+					Int32: req.GetNewMenuItemId(),
+					Valid: true,
+				},
+			}
+
+			_, err = server.store.UpdateMenuItemPost(ctx, updateArg)
+			if err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update menu item post: %s", err)
+			}
+		} else {
+
+			updateArg := db.UnassignMenuItemPostParams{
+				MenuItemID: sql.NullInt32{
+					Int32: req.GetMenuItemId(),
+					Valid: true,
+				},
+				PostID: req.GetPostId(),
+			}
+			_, err = server.store.UnassignMenuItemPost(ctx, updateArg)
+			if err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to unassign menu item post: %s", err)
+			}
 		}
 	}
 

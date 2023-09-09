@@ -746,4 +746,14 @@ service Talebound {
       summary: "Get menu item posts";
     };
   };
+
+  rpc GetMenuItemPostsByMenuId(GetMenuItemPostsByMenuIdRequest) returns (GetMenuItemPostsByMenuIdResponse) {
+    option (google.api.http) = {
+      get: "/menus/{menuId}/posts"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of menu item posts for menu";
+      summary: "Get menu item posts by menu id";
+    };
+  };
 }

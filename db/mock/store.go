@@ -844,6 +844,21 @@ func (mr *MockStoreMockRecorder) GetMenuItemPosts(arg0, arg1 interface{}) *gomoc
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenuItemPosts", reflect.TypeOf((*MockStore)(nil).GetMenuItemPosts), arg0, arg1)
 }
 
+// GetMenuItemPostsByMenuId mocks base method.
+func (m *MockStore) GetMenuItemPostsByMenuId(arg0 context.Context, arg1 int32) ([]db.ViewMenuItemPost, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMenuItemPostsByMenuId", arg0, arg1)
+	ret0, _ := ret[0].([]db.ViewMenuItemPost)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMenuItemPostsByMenuId indicates an expected call of GetMenuItemPostsByMenuId.
+func (mr *MockStoreMockRecorder) GetMenuItemPostsByMenuId(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenuItemPostsByMenuId", reflect.TypeOf((*MockStore)(nil).GetMenuItemPostsByMenuId), arg0, arg1)
+}
+
 // GetMenuItems mocks base method.
 func (m *MockStore) GetMenuItems(arg0 context.Context, arg1 int32) ([]db.MenuItem, error) {
 	m.ctrl.T.Helper()
@@ -1438,6 +1453,21 @@ func (m *MockStore) ResetPasswordVerifyTx(arg0 context.Context, arg1 db.ResetPas
 func (mr *MockStoreMockRecorder) ResetPasswordVerifyTx(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ResetPasswordVerifyTx", reflect.TypeOf((*MockStore)(nil).ResetPasswordVerifyTx), arg0, arg1)
+}
+
+// UnassignMenuItemPost mocks base method.
+func (m *MockStore) UnassignMenuItemPost(arg0 context.Context, arg1 db.UnassignMenuItemPostParams) (db.MenuItemPost, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UnassignMenuItemPost", arg0, arg1)
+	ret0, _ := ret[0].(db.MenuItemPost)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UnassignMenuItemPost indicates an expected call of UnassignMenuItemPost.
+func (mr *MockStoreMockRecorder) UnassignMenuItemPost(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnassignMenuItemPost", reflect.TypeOf((*MockStore)(nil).UnassignMenuItemPost), arg0, arg1)
 }
 
 // UpdateEvaluationVote mocks base method.
