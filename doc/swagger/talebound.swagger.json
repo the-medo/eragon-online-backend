@@ -685,6 +685,16 @@
                 },
                 "isMenuItemDescriptionPost": {
                   "type": "boolean"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "shortDescription": {
+                  "type": "string"
+                },
+                "imageThumbnailId": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }

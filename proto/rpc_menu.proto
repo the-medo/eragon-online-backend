@@ -64,6 +64,9 @@ message CreateMenuItemPostRequest {
   optional int32 postId = 3;
   optional int32 position = 4;
   optional bool isMenuItemDescriptionPost = 5;
+  optional string title = 6;
+  optional string shortDescription = 7;
+  optional int32 imageThumbnailId = 8;
 }
 
 message UpdateMenuItemPostRequest {

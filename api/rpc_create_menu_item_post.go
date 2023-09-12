@@ -34,6 +34,24 @@ func (server *Server) CreateMenuItemPost(ctx context.Context, req *pb.CreateMenu
 		IsPrivate:  false,
 	}
 
+	if req.Title != nil && req.GetTitle() != "" {
+		argPost.Title = req.GetTitle()
+	}
+
+	if req.ShortDescription != nil && req.GetShortDescription() != "" {
+		argPost.Description = sql.NullString{
+			String: req.GetShortDescription(),
+			Valid:  true,
+		}
+	}
+
+	if req.ImageThumbnailId != nil {
+		argPost.ThumbnailImgID = sql.NullInt32{
+			Int32: req.GetImageThumbnailId(),
+			Valid: true,
+		}
+	}
+
 	newPost, err := server.store.CreatePost(ctx, argPost)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create menu item post [CreatePost]: %s", err)
@@ -102,6 +120,24 @@ func validateCreateMenuItemPostRequest(req *pb.CreateMenuItemPostRequest) (viola
 	if req.Position != nil {
 		if err := validator.ValidateMenuItemPosition(req.GetPosition()); err != nil {
 			violations = append(violations, FieldViolation("position", err))
+		}
+	}
+
+	if req.Title != nil {
+		if err := validator.ValidatePostTitle(req.GetTitle()); err != nil {
+			violations = append(violations, FieldViolation("title", err))
+		}
+	}
+
+	if req.ShortDescription != nil {
+		if err := validator.ValidatePostDescription(req.GetShortDescription()); err != nil {
+			violations = append(violations, FieldViolation("short_description", err))
+		}
+	}
+
+	if req.ImageThumbnailId != nil {
+		if err := validator.ValidateImageId(req.GetImageThumbnailId()); err != nil {
+			violations = append(violations, FieldViolation("image_thumbnail_id", err))
 		}
 	}
 
