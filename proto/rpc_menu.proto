@@ -99,3 +99,9 @@ message GetMenuItemPostsByMenuIdRequest {
 message GetMenuItemPostsByMenuIdResponse {
   repeated MenuItemPost menuItemPosts = 1;
 }
+
+message UpdateMenuPostsRequest {
+  int32 menuId = 1;
+  optional int32 menuItemId = 2;
+  repeated int32 postIds = 3;
+}

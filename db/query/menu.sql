@@ -60,8 +60,16 @@ CALL move_menu_item(sqlc.arg(menu_item_id), sqlc.arg(target_position));
 CALL move_group_up(sqlc.arg(menu_item_id));
 
 -- name: CreateMenuItemPost :one
+WITH post_count AS (
+    SELECT COUNT(*) AS count FROM menu_item_posts WHERE menu_item_id = COALESCE(sqlc.narg(menu_item_id), 0)
+)
 INSERT INTO menu_item_posts (menu_id, menu_item_id, post_id, position)
-VALUES (sqlc.arg(menu_id), sqlc.narg(menu_item_id), sqlc.arg(post_id), sqlc.arg(position))
+SELECT
+    sqlc.arg(menu_id) as menu_id,
+    sqlc.narg(menu_item_id) as menu_item_id,
+    sqlc.arg(post_id) as post_id,
+    COALESCE(sqlc.narg(position), count + 1) as position
+FROM post_count
 RETURNING *;
 
 -- name: UpdateMenuItemPost :one
@@ -81,7 +89,7 @@ RETURNING *;
 -- name: DeleteMenuItemPost :exec
 WITH deleted_menu_item_post AS (
     DELETE FROM "menu_item_posts" d
-        WHERE d.menu_item_id = sqlc.arg(menu_item_id) AND d.post_id = sqlc.arg(post_id)
+        WHERE d.menu_id = sqlc.arg(menu_id) AND d.post_id = sqlc.arg(post_id)
         RETURNING *
 )
 UPDATE "menu_item_posts"

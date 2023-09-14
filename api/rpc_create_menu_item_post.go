@@ -81,9 +81,15 @@ func (server *Server) CreateMenuItemPost(ctx context.Context, req *pb.CreateMenu
 
 	} else {
 		arg := db.CreateMenuItemPostParams{
-			MenuID:   req.GetMenuId(),
-			PostID:   newPost.ID,
-			Position: req.GetPosition(),
+			MenuID: req.GetMenuId(),
+			PostID: newPost.ID,
+		}
+
+		if req.Position != nil {
+			arg.Position = sql.NullInt32{
+				Int32: req.GetPosition(),
+				Valid: true,
+			}
 		}
 
 		if req.GetMenuItemId() != 0 {

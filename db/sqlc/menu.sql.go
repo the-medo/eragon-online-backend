@@ -66,8 +66,16 @@ func (q *Queries) CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) 
 }
 
 const createMenuItemPost = `-- name: CreateMenuItemPost :one
+WITH post_count AS (
+    SELECT COUNT(*) AS count FROM menu_item_posts WHERE menu_item_id = COALESCE($2, 0)
+)
 INSERT INTO menu_item_posts (menu_id, menu_item_id, post_id, position)
-VALUES ($1, $2, $3, $4)
+SELECT
+    $1 as menu_id,
+    $2 as menu_item_id,
+    $3 as post_id,
+    COALESCE($4, count + 1) as position
+FROM post_count
 RETURNING menu_id, menu_item_id, post_id, position
 `
 
@@ -75,7 +83,7 @@ type CreateMenuItemPostParams struct {
 	MenuID     int32         `json:"menu_id"`
 	MenuItemID sql.NullInt32 `json:"menu_item_id"`
 	PostID     int32         `json:"post_id"`
-	Position   int32         `json:"position"`
+	Position   sql.NullInt32 `json:"position"`
 }
 
 func (q *Queries) CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error) {
@@ -124,7 +132,7 @@ func (q *Queries) DeleteMenuItem(ctx context.Context, menuItemID int32) error {
 const deleteMenuItemPost = `-- name: DeleteMenuItemPost :exec
 WITH deleted_menu_item_post AS (
     DELETE FROM "menu_item_posts" d
-        WHERE d.menu_item_id = $1 AND d.post_id = $2
+        WHERE d.menu_id = $1 AND d.post_id = $2
         RETURNING menu_id, menu_item_id, post_id, position
 )
 UPDATE "menu_item_posts"
@@ -136,12 +144,12 @@ WHERE
 `
 
 type DeleteMenuItemPostParams struct {
-	MenuItemID sql.NullInt32 `json:"menu_item_id"`
-	PostID     int32         `json:"post_id"`
+	MenuID int32 `json:"menu_id"`
+	PostID int32 `json:"post_id"`
 }
 
 func (q *Queries) DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error {
-	_, err := q.db.ExecContext(ctx, deleteMenuItemPost, arg.MenuItemID, arg.PostID)
+	_, err := q.db.ExecContext(ctx, deleteMenuItemPost, arg.MenuID, arg.PostID)
 	return err
 }
 

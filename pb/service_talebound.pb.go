@@ -58,7 +58,7 @@ var file_service_talebound_proto_rawDesc = []byte{
 	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x65, 0x6d, 0x70, 0x74, 0x79, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x1a, 0x0e, 0x72, 0x70, 0x63, 0x5f, 0x6d, 0x65, 0x6e, 0x75, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x1a, 0x0a, 0x6d, 0x65, 0x6e, 0x75, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x32,
-	0x83, 0x58, 0x0a, 0x09, 0x54, 0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x12, 0xa4, 0x01,
+	0xab, 0x59, 0x0a, 0x09, 0x54, 0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x12, 0xa4, 0x01,
 	0x0a, 0x0c, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52, 0x6f, 0x6c, 0x65, 0x73, 0x12, 0x17,
 	0x2e, 0x70, 0x62, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52, 0x6f, 0x6c, 0x65, 0x73,
 	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x70, 0x62, 0x2e, 0x47, 0x65, 0x74,
@@ -762,17 +762,27 @@ var file_service_talebound_proto_rawDesc = []byte{
 	0x6d, 0x65, 0x6e, 0x75, 0x20, 0x69, 0x74, 0x65, 0x6d, 0x20, 0x70, 0x6f, 0x73, 0x74, 0x73, 0x20,
 	0x66, 0x6f, 0x72, 0x20, 0x6d, 0x65, 0x6e, 0x75, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x17, 0x12, 0x15,
 	0x2f, 0x6d, 0x65, 0x6e, 0x75, 0x73, 0x2f, 0x7b, 0x6d, 0x65, 0x6e, 0x75, 0x49, 0x64, 0x7d, 0x2f,
-	0x70, 0x6f, 0x73, 0x74, 0x73, 0x42, 0x93, 0x01, 0x92, 0x41, 0x66, 0x12, 0x64, 0x0a, 0x0d, 0x54,
-	0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x20, 0x41, 0x50, 0x49, 0x22, 0x4e, 0x0a, 0x04,
-	0x4d, 0x65, 0x64, 0x6f, 0x12, 0x2d, 0x68, 0x74, 0x74, 0x70, 0x73, 0x3a, 0x2f, 0x2f, 0x67, 0x69,
-	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d, 0x65, 0x64,
-	0x6f, 0x2f, 0x74, 0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61, 0x63, 0x6b,
-	0x65, 0x6e, 0x64, 0x1a, 0x17, 0x6d, 0x61, 0x72, 0x74, 0x69, 0x6e, 0x6d, 0x65, 0x64, 0x65, 0x72,
-	0x6c, 0x79, 0x40, 0x67, 0x6d, 0x61, 0x69, 0x6c, 0x2e, 0x63, 0x6f, 0x6d, 0x32, 0x03, 0x31, 0x2e,
-	0x30, 0x5a, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68,
-	0x65, 0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64,
-	0x2d, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x70, 0x6f, 0x73, 0x74, 0x73, 0x12, 0xa5, 0x01, 0x0a, 0x0f, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
+	0x4d, 0x65, 0x6e, 0x75, 0x50, 0x6f, 0x73, 0x74, 0x73, 0x12, 0x1a, 0x2e, 0x70, 0x62, 0x2e, 0x55,
+	0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x65, 0x6e, 0x75, 0x50, 0x6f, 0x73, 0x74, 0x73, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x5e, 0x92,
+	0x41, 0x3b, 0x12, 0x11, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x20, 0x6d, 0x65, 0x6e, 0x75, 0x20,
+	0x70, 0x6f, 0x73, 0x74, 0x73, 0x1a, 0x26, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x20, 0x6d, 0x65,
+	0x6e, 0x75, 0x20, 0x69, 0x74, 0x65, 0x6d, 0x20, 0x69, 0x64, 0x20, 0x66, 0x6f, 0x72, 0x20, 0x6d,
+	0x75, 0x6c, 0x74, 0x69, 0x70, 0x6c, 0x65, 0x20, 0x70, 0x6f, 0x73, 0x74, 0x73, 0x82, 0xd3, 0xe4,
+	0x93, 0x02, 0x1a, 0x3a, 0x01, 0x2a, 0x32, 0x15, 0x2f, 0x6d, 0x65, 0x6e, 0x75, 0x73, 0x2f, 0x7b,
+	0x6d, 0x65, 0x6e, 0x75, 0x49, 0x64, 0x7d, 0x2f, 0x70, 0x6f, 0x73, 0x74, 0x73, 0x42, 0x93, 0x01,
+	0x92, 0x41, 0x66, 0x12, 0x64, 0x0a, 0x0d, 0x54, 0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64,
+	0x20, 0x41, 0x50, 0x49, 0x22, 0x4e, 0x0a, 0x04, 0x4d, 0x65, 0x64, 0x6f, 0x12, 0x2d, 0x68, 0x74,
+	0x74, 0x70, 0x73, 0x3a, 0x2f, 0x2f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
+	0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c, 0x65, 0x62, 0x6f,
+	0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x1a, 0x17, 0x6d, 0x61, 0x72,
+	0x74, 0x69, 0x6e, 0x6d, 0x65, 0x64, 0x65, 0x72, 0x6c, 0x79, 0x40, 0x67, 0x6d, 0x61, 0x69, 0x6c,
+	0x2e, 0x63, 0x6f, 0x6d, 0x32, 0x03, 0x31, 0x2e, 0x30, 0x5a, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75,
+	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f, 0x74,
+	0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64,
+	0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var file_service_talebound_proto_goTypes = []interface{}{
@@ -841,53 +851,54 @@ var file_service_talebound_proto_goTypes = []interface{}{
 	(*DeleteMenuItemPostRequest)(nil),                  // 62: pb.DeleteMenuItemPostRequest
 	(*GetMenuItemPostsRequest)(nil),                    // 63: pb.GetMenuItemPostsRequest
 	(*GetMenuItemPostsByMenuIdRequest)(nil),            // 64: pb.GetMenuItemPostsByMenuIdRequest
-	(*GetUserRolesResponse)(nil),                       // 65: pb.GetUserRolesResponse
-	(*AddRoleToUserResponse)(nil),                      // 66: pb.AddRoleToUserResponse
-	(*RemoveRoleFromUserResponse)(nil),                 // 67: pb.RemoveRoleFromUserResponse
-	(*GetChatMessagesResponse)(nil),                    // 68: pb.GetChatMessagesResponse
-	(*AddChatMessageResponse)(nil),                     // 69: pb.AddChatMessageResponse
-	(*DeleteChatMessageResponse)(nil),                  // 70: pb.DeleteChatMessageResponse
-	(*GetUsersResponse)(nil),                           // 71: pb.GetUsersResponse
-	(*ViewUser)(nil),                                   // 72: pb.ViewUser
-	(*CreateUserResponse)(nil),                         // 73: pb.CreateUserResponse
-	(*UpdateUserResponse)(nil),                         // 74: pb.UpdateUserResponse
-	(*Post)(nil),                                       // 75: pb.Post
-	(*LoginUserResponse)(nil),                          // 76: pb.LoginUserResponse
-	(*ResetPasswordSendCodeResponse)(nil),              // 77: pb.ResetPasswordSendCodeResponse
-	(*ResetPasswordVerifyCodeResponse)(nil),            // 78: pb.ResetPasswordVerifyCodeResponse
-	(*ResetPasswordVerifyCodeValidityResponse)(nil),    // 79: pb.ResetPasswordVerifyCodeValidityResponse
-	(*VerifyEmailResponse)(nil),                        // 80: pb.VerifyEmailResponse
-	(*GetEvaluationByIdResponse)(nil),                  // 81: pb.GetEvaluationByIdResponse
-	(*GetEvaluationsByTypeResponse)(nil),               // 82: pb.GetEvaluationsByTypeResponse
-	(*CreateOrUpdateEvaluationVoteResponse)(nil),       // 83: pb.CreateOrUpdateEvaluationVoteResponse
-	(*GetEvaluationVotesByUserIdResponse)(nil),         // 84: pb.GetEvaluationVotesByUserIdResponse
-	(*GetEvaluationVotesByUserIdAndVoterResponse)(nil), // 85: pb.GetEvaluationVotesByUserIdAndVoterResponse
-	(*DeleteEvaluationVoteResponse)(nil),               // 86: pb.DeleteEvaluationVoteResponse
-	(*GetAverageUserEvaluationsByTypeResponse)(nil),    // 87: pb.GetAverageUserEvaluationsByTypeResponse
-	(*GetImagesResponse)(nil),                          // 88: pb.GetImagesResponse
-	(*Image)(nil),                                      // 89: pb.Image
-	(*UploadUserAvatarResponse)(nil),                   // 90: pb.UploadUserAvatarResponse
-	(*GetUserPostsResponse)(nil),                       // 91: pb.GetUserPostsResponse
-	(*GetPostHistoryResponse)(nil),                     // 92: pb.GetPostHistoryResponse
-	(*HistoryPost)(nil),                                // 93: pb.HistoryPost
-	(*DeletePostResponse)(nil),                         // 94: pb.DeletePostResponse
-	(*GetPostTypesResponse)(nil),                       // 95: pb.GetPostTypesResponse
-	(*GetWorldsOfCreatorResponse)(nil),                 // 96: pb.GetWorldsOfCreatorResponse
-	(*World)(nil),                                      // 97: pb.World
-	(*GetAvailableWorldTagsResponse)(nil),              // 98: pb.GetAvailableWorldTagsResponse
-	(*ViewTag)(nil),                                    // 99: pb.ViewTag
-	(*Tag)(nil),                                        // 100: pb.Tag
-	(*GetWorldAdminsResponse)(nil),                     // 101: pb.GetWorldAdminsResponse
-	(*WorldAdmin)(nil),                                 // 102: pb.WorldAdmin
-	(*GetWorldDailyActivityResponse)(nil),              // 103: pb.GetWorldDailyActivityResponse
-	(*GetWorldMonthlyActivityResponse)(nil),            // 104: pb.GetWorldMonthlyActivityResponse
-	(*GetWorldsResponse)(nil),                          // 105: pb.GetWorldsResponse
-	(*ViewMenu)(nil),                                   // 106: pb.ViewMenu
-	(*MenuItem)(nil),                                   // 107: pb.MenuItem
-	(*GetMenuItemsResponse)(nil),                       // 108: pb.GetMenuItemsResponse
-	(*MenuItemPost)(nil),                               // 109: pb.MenuItemPost
-	(*GetMenuItemPostsResponse)(nil),                   // 110: pb.GetMenuItemPostsResponse
-	(*GetMenuItemPostsByMenuIdResponse)(nil),           // 111: pb.GetMenuItemPostsByMenuIdResponse
+	(*UpdateMenuPostsRequest)(nil),                     // 65: pb.UpdateMenuPostsRequest
+	(*GetUserRolesResponse)(nil),                       // 66: pb.GetUserRolesResponse
+	(*AddRoleToUserResponse)(nil),                      // 67: pb.AddRoleToUserResponse
+	(*RemoveRoleFromUserResponse)(nil),                 // 68: pb.RemoveRoleFromUserResponse
+	(*GetChatMessagesResponse)(nil),                    // 69: pb.GetChatMessagesResponse
+	(*AddChatMessageResponse)(nil),                     // 70: pb.AddChatMessageResponse
+	(*DeleteChatMessageResponse)(nil),                  // 71: pb.DeleteChatMessageResponse
+	(*GetUsersResponse)(nil),                           // 72: pb.GetUsersResponse
+	(*ViewUser)(nil),                                   // 73: pb.ViewUser
+	(*CreateUserResponse)(nil),                         // 74: pb.CreateUserResponse
+	(*UpdateUserResponse)(nil),                         // 75: pb.UpdateUserResponse
+	(*Post)(nil),                                       // 76: pb.Post
+	(*LoginUserResponse)(nil),                          // 77: pb.LoginUserResponse
+	(*ResetPasswordSendCodeResponse)(nil),              // 78: pb.ResetPasswordSendCodeResponse
+	(*ResetPasswordVerifyCodeResponse)(nil),            // 79: pb.ResetPasswordVerifyCodeResponse
+	(*ResetPasswordVerifyCodeValidityResponse)(nil),    // 80: pb.ResetPasswordVerifyCodeValidityResponse
+	(*VerifyEmailResponse)(nil),                        // 81: pb.VerifyEmailResponse
+	(*GetEvaluationByIdResponse)(nil),                  // 82: pb.GetEvaluationByIdResponse
+	(*GetEvaluationsByTypeResponse)(nil),               // 83: pb.GetEvaluationsByTypeResponse
+	(*CreateOrUpdateEvaluationVoteResponse)(nil),       // 84: pb.CreateOrUpdateEvaluationVoteResponse
+	(*GetEvaluationVotesByUserIdResponse)(nil),         // 85: pb.GetEvaluationVotesByUserIdResponse
+	(*GetEvaluationVotesByUserIdAndVoterResponse)(nil), // 86: pb.GetEvaluationVotesByUserIdAndVoterResponse
+	(*DeleteEvaluationVoteResponse)(nil),               // 87: pb.DeleteEvaluationVoteResponse
+	(*GetAverageUserEvaluationsByTypeResponse)(nil),    // 88: pb.GetAverageUserEvaluationsByTypeResponse
+	(*GetImagesResponse)(nil),                          // 89: pb.GetImagesResponse
+	(*Image)(nil),                                      // 90: pb.Image
+	(*UploadUserAvatarResponse)(nil),                   // 91: pb.UploadUserAvatarResponse
+	(*GetUserPostsResponse)(nil),                       // 92: pb.GetUserPostsResponse
+	(*GetPostHistoryResponse)(nil),                     // 93: pb.GetPostHistoryResponse
+	(*HistoryPost)(nil),                                // 94: pb.HistoryPost
+	(*DeletePostResponse)(nil),                         // 95: pb.DeletePostResponse
+	(*GetPostTypesResponse)(nil),                       // 96: pb.GetPostTypesResponse
+	(*GetWorldsOfCreatorResponse)(nil),                 // 97: pb.GetWorldsOfCreatorResponse
+	(*World)(nil),                                      // 98: pb.World
+	(*GetAvailableWorldTagsResponse)(nil),              // 99: pb.GetAvailableWorldTagsResponse
+	(*ViewTag)(nil),                                    // 100: pb.ViewTag
+	(*Tag)(nil),                                        // 101: pb.Tag
+	(*GetWorldAdminsResponse)(nil),                     // 102: pb.GetWorldAdminsResponse
+	(*WorldAdmin)(nil),                                 // 103: pb.WorldAdmin
+	(*GetWorldDailyActivityResponse)(nil),              // 104: pb.GetWorldDailyActivityResponse
+	(*GetWorldMonthlyActivityResponse)(nil),            // 105: pb.GetWorldMonthlyActivityResponse
+	(*GetWorldsResponse)(nil),                          // 106: pb.GetWorldsResponse
+	(*ViewMenu)(nil),                                   // 107: pb.ViewMenu
+	(*MenuItem)(nil),                                   // 108: pb.MenuItem
+	(*GetMenuItemsResponse)(nil),                       // 109: pb.GetMenuItemsResponse
+	(*MenuItemPost)(nil),                               // 110: pb.MenuItemPost
+	(*GetMenuItemPostsResponse)(nil),                   // 111: pb.GetMenuItemPostsResponse
+	(*GetMenuItemPostsByMenuIdResponse)(nil),           // 112: pb.GetMenuItemPostsByMenuIdResponse
 }
 var file_service_talebound_proto_depIdxs = []int32{
 	0,   // 0: pb.Talebound.GetUserRoles:input_type -> pb.GetUserRolesRequest
@@ -957,75 +968,77 @@ var file_service_talebound_proto_depIdxs = []int32{
 	62,  // 64: pb.Talebound.DeleteMenuItemPost:input_type -> pb.DeleteMenuItemPostRequest
 	63,  // 65: pb.Talebound.GetMenuItemPosts:input_type -> pb.GetMenuItemPostsRequest
 	64,  // 66: pb.Talebound.GetMenuItemPostsByMenuId:input_type -> pb.GetMenuItemPostsByMenuIdRequest
-	65,  // 67: pb.Talebound.GetUserRoles:output_type -> pb.GetUserRolesResponse
-	66,  // 68: pb.Talebound.AddRoleToUser:output_type -> pb.AddRoleToUserResponse
-	67,  // 69: pb.Talebound.RemoveRoleFromUser:output_type -> pb.RemoveRoleFromUserResponse
-	68,  // 70: pb.Talebound.GetChatMessages:output_type -> pb.GetChatMessagesResponse
-	69,  // 71: pb.Talebound.AddChatMessage:output_type -> pb.AddChatMessageResponse
-	70,  // 72: pb.Talebound.DeleteChatMessage:output_type -> pb.DeleteChatMessageResponse
-	71,  // 73: pb.Talebound.GetUsers:output_type -> pb.GetUsersResponse
-	72,  // 74: pb.Talebound.GetUserById:output_type -> pb.ViewUser
-	73,  // 75: pb.Talebound.CreateUser:output_type -> pb.CreateUserResponse
-	74,  // 76: pb.Talebound.UpdateUser:output_type -> pb.UpdateUserResponse
-	75,  // 77: pb.Talebound.UpdateUserIntroduction:output_type -> pb.Post
-	76,  // 78: pb.Talebound.LoginUser:output_type -> pb.LoginUserResponse
-	12,  // 79: pb.Talebound.LogoutUser:output_type -> google.protobuf.Empty
-	77,  // 80: pb.Talebound.ResetPasswordSendCode:output_type -> pb.ResetPasswordSendCodeResponse
-	78,  // 81: pb.Talebound.ResetPasswordVerifyCode:output_type -> pb.ResetPasswordVerifyCodeResponse
-	79,  // 82: pb.Talebound.ResetPasswordVerifyCodeValidity:output_type -> pb.ResetPasswordVerifyCodeValidityResponse
-	80,  // 83: pb.Talebound.VerifyEmail:output_type -> pb.VerifyEmailResponse
-	81,  // 84: pb.Talebound.GetEvaluationById:output_type -> pb.GetEvaluationByIdResponse
-	82,  // 85: pb.Talebound.GetEvaluationsByType:output_type -> pb.GetEvaluationsByTypeResponse
-	83,  // 86: pb.Talebound.CreateOrUpdateEvaluationVote:output_type -> pb.CreateOrUpdateEvaluationVoteResponse
-	84,  // 87: pb.Talebound.GetEvaluationVotesByUserId:output_type -> pb.GetEvaluationVotesByUserIdResponse
-	85,  // 88: pb.Talebound.GetEvaluationVotesByUserIdAndVoter:output_type -> pb.GetEvaluationVotesByUserIdAndVoterResponse
-	86,  // 89: pb.Talebound.DeleteEvaluationVote:output_type -> pb.DeleteEvaluationVoteResponse
-	87,  // 90: pb.Talebound.GetAverageUserEvaluationsByType:output_type -> pb.GetAverageUserEvaluationsByTypeResponse
-	88,  // 91: pb.Talebound.GetImages:output_type -> pb.GetImagesResponse
-	88,  // 92: pb.Talebound.GetUserImages:output_type -> pb.GetImagesResponse
-	89,  // 93: pb.Talebound.UploadDefaultImage:output_type -> pb.Image
-	90,  // 94: pb.Talebound.UploadUserAvatar:output_type -> pb.UploadUserAvatarResponse
-	75,  // 95: pb.Talebound.GetPostById:output_type -> pb.Post
-	91,  // 96: pb.Talebound.GetUserPosts:output_type -> pb.GetUserPostsResponse
-	92,  // 97: pb.Talebound.GetPostHistory:output_type -> pb.GetPostHistoryResponse
-	93,  // 98: pb.Talebound.GetPostHistoryById:output_type -> pb.HistoryPost
-	75,  // 99: pb.Talebound.CreatePost:output_type -> pb.Post
-	75,  // 100: pb.Talebound.UpdatePost:output_type -> pb.Post
-	94,  // 101: pb.Talebound.DeletePost:output_type -> pb.DeletePostResponse
-	95,  // 102: pb.Talebound.GetPostTypes:output_type -> pb.GetPostTypesResponse
-	96,  // 103: pb.Talebound.GetWorldsOfCreator:output_type -> pb.GetWorldsOfCreatorResponse
-	97,  // 104: pb.Talebound.CreateWorld:output_type -> pb.World
-	97,  // 105: pb.Talebound.UpdateWorld:output_type -> pb.World
-	89,  // 106: pb.Talebound.UploadWorldImage:output_type -> pb.Image
-	98,  // 107: pb.Talebound.GetAvailableWorldTags:output_type -> pb.GetAvailableWorldTagsResponse
-	99,  // 108: pb.Talebound.CreateAvailableWorldTag:output_type -> pb.ViewTag
-	99,  // 109: pb.Talebound.UpdateAvailableWorldTag:output_type -> pb.ViewTag
-	12,  // 110: pb.Talebound.DeleteAvailableWorldTag:output_type -> google.protobuf.Empty
-	100, // 111: pb.Talebound.AddWorldTag:output_type -> pb.Tag
-	12,  // 112: pb.Talebound.RemoveWorldTag:output_type -> google.protobuf.Empty
-	101, // 113: pb.Talebound.GetWorldAdmins:output_type -> pb.GetWorldAdminsResponse
-	102, // 114: pb.Talebound.CreateWorldAdmin:output_type -> pb.WorldAdmin
-	102, // 115: pb.Talebound.UpdateWorldAdmin:output_type -> pb.WorldAdmin
-	12,  // 116: pb.Talebound.DeleteWorldAdmin:output_type -> google.protobuf.Empty
-	103, // 117: pb.Talebound.GetWorldDailyActivity:output_type -> pb.GetWorldDailyActivityResponse
-	104, // 118: pb.Talebound.GetWorldMonthlyActivity:output_type -> pb.GetWorldMonthlyActivityResponse
-	105, // 119: pb.Talebound.GetWorlds:output_type -> pb.GetWorldsResponse
-	97,  // 120: pb.Talebound.GetWorldById:output_type -> pb.World
-	75,  // 121: pb.Talebound.UpdateWorldIntroduction:output_type -> pb.Post
-	106, // 122: pb.Talebound.UpdateMenu:output_type -> pb.ViewMenu
-	106, // 123: pb.Talebound.GetMenu:output_type -> pb.ViewMenu
-	107, // 124: pb.Talebound.CreateMenuItem:output_type -> pb.MenuItem
-	107, // 125: pb.Talebound.UpdateMenuItem:output_type -> pb.MenuItem
-	12,  // 126: pb.Talebound.UpdateMenuItemMoveGroupUp:output_type -> google.protobuf.Empty
-	12,  // 127: pb.Talebound.DeleteMenuItem:output_type -> google.protobuf.Empty
-	108, // 128: pb.Talebound.GetMenuItems:output_type -> pb.GetMenuItemsResponse
-	109, // 129: pb.Talebound.CreateMenuItemPost:output_type -> pb.MenuItemPost
-	12,  // 130: pb.Talebound.UpdateMenuItemPost:output_type -> google.protobuf.Empty
-	12,  // 131: pb.Talebound.DeleteMenuItemPost:output_type -> google.protobuf.Empty
-	110, // 132: pb.Talebound.GetMenuItemPosts:output_type -> pb.GetMenuItemPostsResponse
-	111, // 133: pb.Talebound.GetMenuItemPostsByMenuId:output_type -> pb.GetMenuItemPostsByMenuIdResponse
-	67,  // [67:134] is the sub-list for method output_type
-	0,   // [0:67] is the sub-list for method input_type
+	65,  // 67: pb.Talebound.UpdateMenuPosts:input_type -> pb.UpdateMenuPostsRequest
+	66,  // 68: pb.Talebound.GetUserRoles:output_type -> pb.GetUserRolesResponse
+	67,  // 69: pb.Talebound.AddRoleToUser:output_type -> pb.AddRoleToUserResponse
+	68,  // 70: pb.Talebound.RemoveRoleFromUser:output_type -> pb.RemoveRoleFromUserResponse
+	69,  // 71: pb.Talebound.GetChatMessages:output_type -> pb.GetChatMessagesResponse
+	70,  // 72: pb.Talebound.AddChatMessage:output_type -> pb.AddChatMessageResponse
+	71,  // 73: pb.Talebound.DeleteChatMessage:output_type -> pb.DeleteChatMessageResponse
+	72,  // 74: pb.Talebound.GetUsers:output_type -> pb.GetUsersResponse
+	73,  // 75: pb.Talebound.GetUserById:output_type -> pb.ViewUser
+	74,  // 76: pb.Talebound.CreateUser:output_type -> pb.CreateUserResponse
+	75,  // 77: pb.Talebound.UpdateUser:output_type -> pb.UpdateUserResponse
+	76,  // 78: pb.Talebound.UpdateUserIntroduction:output_type -> pb.Post
+	77,  // 79: pb.Talebound.LoginUser:output_type -> pb.LoginUserResponse
+	12,  // 80: pb.Talebound.LogoutUser:output_type -> google.protobuf.Empty
+	78,  // 81: pb.Talebound.ResetPasswordSendCode:output_type -> pb.ResetPasswordSendCodeResponse
+	79,  // 82: pb.Talebound.ResetPasswordVerifyCode:output_type -> pb.ResetPasswordVerifyCodeResponse
+	80,  // 83: pb.Talebound.ResetPasswordVerifyCodeValidity:output_type -> pb.ResetPasswordVerifyCodeValidityResponse
+	81,  // 84: pb.Talebound.VerifyEmail:output_type -> pb.VerifyEmailResponse
+	82,  // 85: pb.Talebound.GetEvaluationById:output_type -> pb.GetEvaluationByIdResponse
+	83,  // 86: pb.Talebound.GetEvaluationsByType:output_type -> pb.GetEvaluationsByTypeResponse
+	84,  // 87: pb.Talebound.CreateOrUpdateEvaluationVote:output_type -> pb.CreateOrUpdateEvaluationVoteResponse
+	85,  // 88: pb.Talebound.GetEvaluationVotesByUserId:output_type -> pb.GetEvaluationVotesByUserIdResponse
+	86,  // 89: pb.Talebound.GetEvaluationVotesByUserIdAndVoter:output_type -> pb.GetEvaluationVotesByUserIdAndVoterResponse
+	87,  // 90: pb.Talebound.DeleteEvaluationVote:output_type -> pb.DeleteEvaluationVoteResponse
+	88,  // 91: pb.Talebound.GetAverageUserEvaluationsByType:output_type -> pb.GetAverageUserEvaluationsByTypeResponse
+	89,  // 92: pb.Talebound.GetImages:output_type -> pb.GetImagesResponse
+	89,  // 93: pb.Talebound.GetUserImages:output_type -> pb.GetImagesResponse
+	90,  // 94: pb.Talebound.UploadDefaultImage:output_type -> pb.Image
+	91,  // 95: pb.Talebound.UploadUserAvatar:output_type -> pb.UploadUserAvatarResponse
+	76,  // 96: pb.Talebound.GetPostById:output_type -> pb.Post
+	92,  // 97: pb.Talebound.GetUserPosts:output_type -> pb.GetUserPostsResponse
+	93,  // 98: pb.Talebound.GetPostHistory:output_type -> pb.GetPostHistoryResponse
+	94,  // 99: pb.Talebound.GetPostHistoryById:output_type -> pb.HistoryPost
+	76,  // 100: pb.Talebound.CreatePost:output_type -> pb.Post
+	76,  // 101: pb.Talebound.UpdatePost:output_type -> pb.Post
+	95,  // 102: pb.Talebound.DeletePost:output_type -> pb.DeletePostResponse
+	96,  // 103: pb.Talebound.GetPostTypes:output_type -> pb.GetPostTypesResponse
+	97,  // 104: pb.Talebound.GetWorldsOfCreator:output_type -> pb.GetWorldsOfCreatorResponse
+	98,  // 105: pb.Talebound.CreateWorld:output_type -> pb.World
+	98,  // 106: pb.Talebound.UpdateWorld:output_type -> pb.World
+	90,  // 107: pb.Talebound.UploadWorldImage:output_type -> pb.Image
+	99,  // 108: pb.Talebound.GetAvailableWorldTags:output_type -> pb.GetAvailableWorldTagsResponse
+	100, // 109: pb.Talebound.CreateAvailableWorldTag:output_type -> pb.ViewTag
+	100, // 110: pb.Talebound.UpdateAvailableWorldTag:output_type -> pb.ViewTag
+	12,  // 111: pb.Talebound.DeleteAvailableWorldTag:output_type -> google.protobuf.Empty
+	101, // 112: pb.Talebound.AddWorldTag:output_type -> pb.Tag
+	12,  // 113: pb.Talebound.RemoveWorldTag:output_type -> google.protobuf.Empty
+	102, // 114: pb.Talebound.GetWorldAdmins:output_type -> pb.GetWorldAdminsResponse
+	103, // 115: pb.Talebound.CreateWorldAdmin:output_type -> pb.WorldAdmin
+	103, // 116: pb.Talebound.UpdateWorldAdmin:output_type -> pb.WorldAdmin
+	12,  // 117: pb.Talebound.DeleteWorldAdmin:output_type -> google.protobuf.Empty
+	104, // 118: pb.Talebound.GetWorldDailyActivity:output_type -> pb.GetWorldDailyActivityResponse
+	105, // 119: pb.Talebound.GetWorldMonthlyActivity:output_type -> pb.GetWorldMonthlyActivityResponse
+	106, // 120: pb.Talebound.GetWorlds:output_type -> pb.GetWorldsResponse
+	98,  // 121: pb.Talebound.GetWorldById:output_type -> pb.World
+	76,  // 122: pb.Talebound.UpdateWorldIntroduction:output_type -> pb.Post
+	107, // 123: pb.Talebound.UpdateMenu:output_type -> pb.ViewMenu
+	107, // 124: pb.Talebound.GetMenu:output_type -> pb.ViewMenu
+	108, // 125: pb.Talebound.CreateMenuItem:output_type -> pb.MenuItem
+	108, // 126: pb.Talebound.UpdateMenuItem:output_type -> pb.MenuItem
+	12,  // 127: pb.Talebound.UpdateMenuItemMoveGroupUp:output_type -> google.protobuf.Empty
+	12,  // 128: pb.Talebound.DeleteMenuItem:output_type -> google.protobuf.Empty
+	109, // 129: pb.Talebound.GetMenuItems:output_type -> pb.GetMenuItemsResponse
+	110, // 130: pb.Talebound.CreateMenuItemPost:output_type -> pb.MenuItemPost
+	12,  // 131: pb.Talebound.UpdateMenuItemPost:output_type -> google.protobuf.Empty
+	12,  // 132: pb.Talebound.DeleteMenuItemPost:output_type -> google.protobuf.Empty
+	111, // 133: pb.Talebound.GetMenuItemPosts:output_type -> pb.GetMenuItemPostsResponse
+	112, // 134: pb.Talebound.GetMenuItemPostsByMenuId:output_type -> pb.GetMenuItemPostsByMenuIdResponse
+	12,  // 135: pb.Talebound.UpdateMenuPosts:output_type -> google.protobuf.Empty
+	68,  // [68:136] is the sub-list for method output_type
+	0,   // [0:68] is the sub-list for method input_type
 	0,   // [0:0] is the sub-list for extension type_name
 	0,   // [0:0] is the sub-list for extension extendee
 	0,   // [0:0] is the sub-list for field type_name

@@ -756,4 +756,15 @@ service Talebound {
       summary: "Get menu item posts by menu id";
     };
   };
+
+  rpc UpdateMenuPosts(UpdateMenuPostsRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      patch: "/menus/{menuId}/posts",
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "change menu item id for multiple posts";
+      summary: "Update menu posts";
+    };
+  };
 }

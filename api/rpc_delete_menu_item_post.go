@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"database/sql"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -24,10 +23,7 @@ func (server *Server) DeleteMenuItemPost(ctx context.Context, req *pb.DeleteMenu
 	}
 
 	arg := db.DeleteMenuItemPostParams{
-		MenuItemID: sql.NullInt32{
-			Int32: req.GetMenuItemId(),
-			Valid: true,
-		},
+		MenuID: req.GetMenuId(),
 		PostID: req.GetPostId(),
 	}
 

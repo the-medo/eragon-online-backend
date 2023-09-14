@@ -87,6 +87,7 @@ const (
 	Talebound_DeleteMenuItemPost_FullMethodName                 = "/pb.Talebound/DeleteMenuItemPost"
 	Talebound_GetMenuItemPosts_FullMethodName                   = "/pb.Talebound/GetMenuItemPosts"
 	Talebound_GetMenuItemPostsByMenuId_FullMethodName           = "/pb.Talebound/GetMenuItemPostsByMenuId"
+	Talebound_UpdateMenuPosts_FullMethodName                    = "/pb.Talebound/UpdateMenuPosts"
 )
 
 // TaleboundClient is the client API for Talebound service.
@@ -164,6 +165,7 @@ type TaleboundClient interface {
 	DeleteMenuItemPost(ctx context.Context, in *DeleteMenuItemPostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetMenuItemPosts(ctx context.Context, in *GetMenuItemPostsRequest, opts ...grpc.CallOption) (*GetMenuItemPostsResponse, error)
 	GetMenuItemPostsByMenuId(ctx context.Context, in *GetMenuItemPostsByMenuIdRequest, opts ...grpc.CallOption) (*GetMenuItemPostsByMenuIdResponse, error)
+	UpdateMenuPosts(ctx context.Context, in *UpdateMenuPostsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type taleboundClient struct {
@@ -777,6 +779,15 @@ func (c *taleboundClient) GetMenuItemPostsByMenuId(ctx context.Context, in *GetM
 	return out, nil
 }
 
+func (c *taleboundClient) UpdateMenuPosts(ctx context.Context, in *UpdateMenuPostsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Talebound_UpdateMenuPosts_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TaleboundServer is the server API for Talebound service.
 // All implementations must embed UnimplementedTaleboundServer
 // for forward compatibility
@@ -852,6 +863,7 @@ type TaleboundServer interface {
 	DeleteMenuItemPost(context.Context, *DeleteMenuItemPostRequest) (*emptypb.Empty, error)
 	GetMenuItemPosts(context.Context, *GetMenuItemPostsRequest) (*GetMenuItemPostsResponse, error)
 	GetMenuItemPostsByMenuId(context.Context, *GetMenuItemPostsByMenuIdRequest) (*GetMenuItemPostsByMenuIdResponse, error)
+	UpdateMenuPosts(context.Context, *UpdateMenuPostsRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedTaleboundServer()
 }
 
@@ -1059,6 +1071,9 @@ func (UnimplementedTaleboundServer) GetMenuItemPosts(context.Context, *GetMenuIt
 }
 func (UnimplementedTaleboundServer) GetMenuItemPostsByMenuId(context.Context, *GetMenuItemPostsByMenuIdRequest) (*GetMenuItemPostsByMenuIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMenuItemPostsByMenuId not implemented")
+}
+func (UnimplementedTaleboundServer) UpdateMenuPosts(context.Context, *UpdateMenuPostsRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenuPosts not implemented")
 }
 func (UnimplementedTaleboundServer) mustEmbedUnimplementedTaleboundServer() {}
 
@@ -2279,6 +2294,24 @@ func _Talebound_GetMenuItemPostsByMenuId_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Talebound_UpdateMenuPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMenuPostsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaleboundServer).UpdateMenuPosts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Talebound_UpdateMenuPosts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaleboundServer).UpdateMenuPosts(ctx, req.(*UpdateMenuPostsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Talebound_ServiceDesc is the grpc.ServiceDesc for Talebound service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2553,6 +2586,10 @@ var Talebound_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMenuItemPostsByMenuId",
 			Handler:    _Talebound_GetMenuItemPostsByMenuId_Handler,
+		},
+		{
+			MethodName: "UpdateMenuPosts",
+			Handler:    _Talebound_UpdateMenuPosts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

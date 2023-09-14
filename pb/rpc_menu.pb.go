@@ -949,6 +949,69 @@ func (x *GetMenuItemPostsByMenuIdResponse) GetMenuItemPosts() []*MenuItemPost {
 	return nil
 }
 
+type UpdateMenuPostsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	MenuId     int32   `protobuf:"varint,1,opt,name=menuId,proto3" json:"menuId,omitempty"`
+	MenuItemId *int32  `protobuf:"varint,2,opt,name=menuItemId,proto3,oneof" json:"menuItemId,omitempty"`
+	PostIds    []int32 `protobuf:"varint,3,rep,packed,name=postIds,proto3" json:"postIds,omitempty"`
+}
+
+func (x *UpdateMenuPostsRequest) Reset() {
+	*x = UpdateMenuPostsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_rpc_menu_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateMenuPostsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMenuPostsRequest) ProtoMessage() {}
+
+func (x *UpdateMenuPostsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_rpc_menu_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMenuPostsRequest.ProtoReflect.Descriptor instead.
+func (*UpdateMenuPostsRequest) Descriptor() ([]byte, []int) {
+	return file_rpc_menu_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *UpdateMenuPostsRequest) GetMenuId() int32 {
+	if x != nil {
+		return x.MenuId
+	}
+	return 0
+}
+
+func (x *UpdateMenuPostsRequest) GetMenuItemId() int32 {
+	if x != nil && x.MenuItemId != nil {
+		return *x.MenuItemId
+	}
+	return 0
+}
+
+func (x *UpdateMenuPostsRequest) GetPostIds() []int32 {
+	if x != nil {
+		return x.PostIds
+	}
+	return nil
+}
+
 var File_rpc_menu_proto protoreflect.FileDescriptor
 
 var file_rpc_menu_proto_rawDesc = []byte{
@@ -1081,7 +1144,15 @@ var file_rpc_menu_proto_rawDesc = []byte{
 	0x12, 0x36, 0x0a, 0x0d, 0x6d, 0x65, 0x6e, 0x75, 0x49, 0x74, 0x65, 0x6d, 0x50, 0x6f, 0x73, 0x74,
 	0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x10, 0x2e, 0x70, 0x62, 0x2e, 0x4d, 0x65, 0x6e,
 	0x75, 0x49, 0x74, 0x65, 0x6d, 0x50, 0x6f, 0x73, 0x74, 0x52, 0x0d, 0x6d, 0x65, 0x6e, 0x75, 0x49,
-	0x74, 0x65, 0x6d, 0x50, 0x6f, 0x73, 0x74, 0x73, 0x42, 0x2a, 0x5a, 0x28, 0x67, 0x69, 0x74, 0x68,
+	0x74, 0x65, 0x6d, 0x50, 0x6f, 0x73, 0x74, 0x73, 0x22, 0x7e, 0x0a, 0x16, 0x55, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x4d, 0x65, 0x6e, 0x75, 0x50, 0x6f, 0x73, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x6d, 0x65, 0x6e, 0x75, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x05, 0x52, 0x06, 0x6d, 0x65, 0x6e, 0x75, 0x49, 0x64, 0x12, 0x23, 0x0a, 0x0a, 0x6d, 0x65,
+	0x6e, 0x75, 0x49, 0x74, 0x65, 0x6d, 0x49, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x48, 0x00,
+	0x52, 0x0a, 0x6d, 0x65, 0x6e, 0x75, 0x49, 0x74, 0x65, 0x6d, 0x49, 0x64, 0x88, 0x01, 0x01, 0x12,
+	0x18, 0x0a, 0x07, 0x70, 0x6f, 0x73, 0x74, 0x49, 0x64, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x05,
+	0x52, 0x07, 0x70, 0x6f, 0x73, 0x74, 0x49, 0x64, 0x73, 0x42, 0x0d, 0x0a, 0x0b, 0x5f, 0x6d, 0x65,
+	0x6e, 0x75, 0x49, 0x74, 0x65, 0x6d, 0x49, 0x64, 0x42, 0x2a, 0x5a, 0x28, 0x67, 0x69, 0x74, 0x68,
 	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f,
 	0x74, 0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e,
 	0x64, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
@@ -1099,7 +1170,7 @@ func file_rpc_menu_proto_rawDescGZIP() []byte {
 	return file_rpc_menu_proto_rawDescData
 }
 
-var file_rpc_menu_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_rpc_menu_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_rpc_menu_proto_goTypes = []interface{}{
 	(*UpdateMenuRequest)(nil),                // 0: pb.UpdateMenuRequest
 	(*GetMenuRequest)(nil),                   // 1: pb.GetMenuRequest
@@ -1116,13 +1187,14 @@ var file_rpc_menu_proto_goTypes = []interface{}{
 	(*GetMenuItemPostsResponse)(nil),         // 12: pb.GetMenuItemPostsResponse
 	(*GetMenuItemPostsByMenuIdRequest)(nil),  // 13: pb.GetMenuItemPostsByMenuIdRequest
 	(*GetMenuItemPostsByMenuIdResponse)(nil), // 14: pb.GetMenuItemPostsByMenuIdResponse
-	(*MenuItem)(nil),                         // 15: pb.MenuItem
-	(*MenuItemPost)(nil),                     // 16: pb.MenuItemPost
+	(*UpdateMenuPostsRequest)(nil),           // 15: pb.UpdateMenuPostsRequest
+	(*MenuItem)(nil),                         // 16: pb.MenuItem
+	(*MenuItemPost)(nil),                     // 17: pb.MenuItemPost
 }
 var file_rpc_menu_proto_depIdxs = []int32{
-	15, // 0: pb.GetMenuItemsResponse.menuItems:type_name -> pb.MenuItem
-	16, // 1: pb.GetMenuItemPostsResponse.menuItemPosts:type_name -> pb.MenuItemPost
-	16, // 2: pb.GetMenuItemPostsByMenuIdResponse.menuItemPosts:type_name -> pb.MenuItemPost
+	16, // 0: pb.GetMenuItemsResponse.menuItems:type_name -> pb.MenuItem
+	17, // 1: pb.GetMenuItemPostsResponse.menuItemPosts:type_name -> pb.MenuItemPost
+	17, // 2: pb.GetMenuItemPostsByMenuIdResponse.menuItemPosts:type_name -> pb.MenuItemPost
 	3,  // [3:3] is the sub-list for method output_type
 	3,  // [3:3] is the sub-list for method input_type
 	3,  // [3:3] is the sub-list for extension type_name
@@ -1317,19 +1389,32 @@ func file_rpc_menu_proto_init() {
 				return nil
 			}
 		}
+		file_rpc_menu_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateMenuPostsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_rpc_menu_proto_msgTypes[0].OneofWrappers = []interface{}{}
 	file_rpc_menu_proto_msgTypes[2].OneofWrappers = []interface{}{}
 	file_rpc_menu_proto_msgTypes[3].OneofWrappers = []interface{}{}
 	file_rpc_menu_proto_msgTypes[8].OneofWrappers = []interface{}{}
 	file_rpc_menu_proto_msgTypes[9].OneofWrappers = []interface{}{}
+	file_rpc_menu_proto_msgTypes[15].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_rpc_menu_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
