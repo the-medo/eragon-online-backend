@@ -857,8 +857,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "object",
-              "properties": {}
+              "$ref": "#/definitions/pbUpdateMenuPostsResponse"
             }
           },
           "default": {
@@ -3686,6 +3685,18 @@
         },
         "tag": {
           "type": "string"
+        }
+      }
+    },
+    "pbUpdateMenuPostsResponse": {
+      "type": "object",
+      "properties": {
+        "menuItemPosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbMenuItemPost"
+          }
         }
       }
     },

@@ -11,10 +11,9 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (server *Server) UpdateMenuPosts(ctx context.Context, req *pb.UpdateMenuPostsRequest) (*emptypb.Empty, error) {
+func (server *Server) UpdateMenuPosts(ctx context.Context, req *pb.UpdateMenuPostsRequest) (*pb.UpdateMenuPostsResponse, error) {
 	violations := validateUpdateMenuPostsRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
@@ -59,7 +58,11 @@ func (server *Server) UpdateMenuPosts(ctx context.Context, req *pb.UpdateMenuPos
 		}
 	}
 
-	return nil, nil
+	rsp, err := server.GetMenuItemPostsByMenuId(ctx, &pb.GetMenuItemPostsByMenuIdRequest{
+		MenuId: req.GetMenuId(),
+	})
+
+	return &pb.UpdateMenuPostsResponse{MenuItemPosts: rsp.MenuItemPosts}, nil
 }
 
 func validateUpdateMenuPostsRequest(req *pb.UpdateMenuPostsRequest) (violations []*errdetails.BadRequest_FieldViolation) {

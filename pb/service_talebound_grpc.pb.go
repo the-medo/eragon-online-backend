@@ -165,7 +165,7 @@ type TaleboundClient interface {
 	DeleteMenuItemPost(ctx context.Context, in *DeleteMenuItemPostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetMenuItemPosts(ctx context.Context, in *GetMenuItemPostsRequest, opts ...grpc.CallOption) (*GetMenuItemPostsResponse, error)
 	GetMenuItemPostsByMenuId(ctx context.Context, in *GetMenuItemPostsByMenuIdRequest, opts ...grpc.CallOption) (*GetMenuItemPostsByMenuIdResponse, error)
-	UpdateMenuPosts(ctx context.Context, in *UpdateMenuPostsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UpdateMenuPosts(ctx context.Context, in *UpdateMenuPostsRequest, opts ...grpc.CallOption) (*UpdateMenuPostsResponse, error)
 }
 
 type taleboundClient struct {
@@ -779,8 +779,8 @@ func (c *taleboundClient) GetMenuItemPostsByMenuId(ctx context.Context, in *GetM
 	return out, nil
 }
 
-func (c *taleboundClient) UpdateMenuPosts(ctx context.Context, in *UpdateMenuPostsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *taleboundClient) UpdateMenuPosts(ctx context.Context, in *UpdateMenuPostsRequest, opts ...grpc.CallOption) (*UpdateMenuPostsResponse, error) {
+	out := new(UpdateMenuPostsResponse)
 	err := c.cc.Invoke(ctx, Talebound_UpdateMenuPosts_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -863,7 +863,7 @@ type TaleboundServer interface {
 	DeleteMenuItemPost(context.Context, *DeleteMenuItemPostRequest) (*emptypb.Empty, error)
 	GetMenuItemPosts(context.Context, *GetMenuItemPostsRequest) (*GetMenuItemPostsResponse, error)
 	GetMenuItemPostsByMenuId(context.Context, *GetMenuItemPostsByMenuIdRequest) (*GetMenuItemPostsByMenuIdResponse, error)
-	UpdateMenuPosts(context.Context, *UpdateMenuPostsRequest) (*emptypb.Empty, error)
+	UpdateMenuPosts(context.Context, *UpdateMenuPostsRequest) (*UpdateMenuPostsResponse, error)
 	mustEmbedUnimplementedTaleboundServer()
 }
 
@@ -1072,7 +1072,7 @@ func (UnimplementedTaleboundServer) GetMenuItemPosts(context.Context, *GetMenuIt
 func (UnimplementedTaleboundServer) GetMenuItemPostsByMenuId(context.Context, *GetMenuItemPostsByMenuIdRequest) (*GetMenuItemPostsByMenuIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMenuItemPostsByMenuId not implemented")
 }
-func (UnimplementedTaleboundServer) UpdateMenuPosts(context.Context, *UpdateMenuPostsRequest) (*emptypb.Empty, error) {
+func (UnimplementedTaleboundServer) UpdateMenuPosts(context.Context, *UpdateMenuPostsRequest) (*UpdateMenuPostsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenuPosts not implemented")
 }
 func (UnimplementedTaleboundServer) mustEmbedUnimplementedTaleboundServer() {}
