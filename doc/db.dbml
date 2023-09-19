@@ -352,6 +352,54 @@ Table menu_item_posts {
   }
 }
 
+Table maps {
+  id int [pk, increment]
+  name varchar [not null]
+  type varchar
+  description varchar
+  width int [not null]
+  height int [not null]
+  thumbnail_image_id int [ref: > images.id]
+}
+
+Table locations {
+  id int [pk, increment]
+  name varchar [not null]
+  description varchar
+  post_id int [not null, ref: > posts.id]
+  thumbnail_image_id int [ref: > images.id]
+}
+
+Table map_layers {
+  id int [pk, increment]
+  name varchar [not null]
+  map_id int [not null, ref: > maps.id]
+  image_id int [not null, ref: > images.id]
+  is_main bool [not null, default: false]
+  enabled bool [not null, default: true]
+  sublayer bool [not null, default: false]
+}
+
+Table map_pins {
+  id int [pk, increment]
+  name varchar
+  map_id int [not null, ref: > maps.id]
+  location_id int [ref: > locations.id]
+  map_layer_id int [ref: > map_layers.id]
+  x int [not null]
+  y int [not null]
+}
+
+Table world_maps {
+  world_id int [not null, ref: > worlds.id]
+  map_id int [not null, ref: > maps.id]
+}
+
+Table world_locations {
+  world_id int [not null, ref: > worlds.id]
+  location_id int [not null, ref: > locations.id]
+}
+
 TableGroup Evaluations {
   evaluations
   evaluation_votes
