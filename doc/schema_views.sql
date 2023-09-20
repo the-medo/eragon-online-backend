@@ -79,3 +79,33 @@ GROUP BY
 
 CREATE VIEW view_menu_item_posts AS
 SELECT * FROM menu_item_posts mip JOIN view_posts vp ON mip.post_id = vp.id;
+
+
+CREATE VIEW view_maps AS
+SELECT
+    m.*,
+    i.url as thumbnail_image_url
+FROM
+    maps m
+        LEFT JOIN images i ON m.thumbnail_image_id = i.id
+;
+
+
+CREATE VIEW view_locations AS
+SELECT
+    l.*,
+    i.url as thumbnail_image_url
+FROM
+    locations l
+        LEFT JOIN images i ON l.thumbnail_image_id = i.id
+;
+
+
+CREATE VIEW view_map_layers AS
+SELECT
+    ml.*,
+    i.url as image_url
+FROM
+    map_layers ml
+        LEFT JOIN images i ON ml.image_id = i.id
+;
