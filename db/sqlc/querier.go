@@ -17,6 +17,7 @@ type Querier interface {
 	AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error)
 	CreateEvaluationVote(ctx context.Context, arg CreateEvaluationVoteParams) (EvaluationVote, error)
 	CreateImage(ctx context.Context, arg CreateImageParams) (Image, error)
+	CreateLocation(ctx context.Context, arg CreateLocationParams) (Location, error)
 	CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, error)
 	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)
 	CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error)
@@ -27,6 +28,7 @@ type Querier interface {
 	CreateWorld(ctx context.Context, arg CreateWorldParams) (World, error)
 	CreateWorldActivity(ctx context.Context, arg CreateWorldActivityParams) error
 	CreateWorldImages(ctx context.Context, worldID int32) error
+	CreateWorldLocation(ctx context.Context, arg CreateWorldLocationParams) (WorldLocation, error)
 	CreateWorldMenu(ctx context.Context, arg CreateWorldMenuParams) (WorldMenu, error)
 	CreateWorldTag(ctx context.Context, arg CreateWorldTagParams) (WorldTag, error)
 	CreateWorldTagAvailable(ctx context.Context, tag string) (WorldTagsAvailable, error)
@@ -34,6 +36,7 @@ type Querier interface {
 	DeleteChatMessage(ctx context.Context, id int64) error
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
 	DeleteImage(ctx context.Context, id int32) error
+	DeleteLocation(ctx context.Context, id int32) error
 	DeleteMenu(ctx context.Context, id int32) error
 	DeleteMenuItem(ctx context.Context, menuItemID int32) error
 	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
@@ -43,6 +46,7 @@ type Querier interface {
 	DeleteWorldActivityForDate(ctx context.Context, arg DeleteWorldActivityForDateParams) error
 	DeleteWorldAdmin(ctx context.Context, arg DeleteWorldAdminParams) error
 	DeleteWorldImages(ctx context.Context, worldID int32) error
+	DeleteWorldLocation(ctx context.Context, arg DeleteWorldLocationParams) error
 	DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error
 	DeleteWorldTag(ctx context.Context, arg DeleteWorldTagParams) error
 	DeleteWorldTagAvailable(ctx context.Context, id int32) error
@@ -61,6 +65,8 @@ type Querier interface {
 	GetImages(ctx context.Context, arg GetImagesParams) ([]Image, error)
 	GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.NullInt32) ([]Image, error)
 	GetImagesCount(ctx context.Context, arg GetImagesCountParams) (int64, error)
+	GetLocationByID(ctx context.Context, id int32) (ViewLocation, error)
+	GetLocations(ctx context.Context) ([]ViewLocation, error)
 	GetMenu(ctx context.Context, id int32) (ViewMenu, error)
 	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)
 	GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams) (ViewMenuItemPost, error)
@@ -84,6 +90,7 @@ type Querier interface {
 	GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error)
 	GetWorldDailyActivity(ctx context.Context, arg GetWorldDailyActivityParams) ([]WorldActivity, error)
 	GetWorldImages(ctx context.Context, worldID int32) (WorldImage, error)
+	GetWorldLocations(ctx context.Context, worldID int32) ([]Location, error)
 	GetWorldMenu(ctx context.Context, arg GetWorldMenuParams) (WorldMenu, error)
 	GetWorldMenuByMenuId(ctx context.Context, menuID int32) (WorldMenu, error)
 	GetWorldMonthlyActivity(ctx context.Context, arg GetWorldMonthlyActivityParams) ([]GetWorldMonthlyActivityRow, error)
@@ -107,6 +114,7 @@ type Querier interface {
 	UnassignMenuItemPost(ctx context.Context, arg UnassignMenuItemPostParams) (MenuItemPost, error)
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
 	UpdateImage(ctx context.Context, arg UpdateImageParams) (Image, error)
+	UpdateLocation(ctx context.Context, arg UpdateLocationParams) (Location, error)
 	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)
 	UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) (MenuItem, error)
 	UpdateMenuItemPost(ctx context.Context, arg UpdateMenuItemPostParams) (MenuItemPost, error)

@@ -109,6 +109,57 @@ func (ns NullImageVariant) Value() (driver.Value, error) {
 	return string(ns.ImageVariant), nil
 }
 
+type PinShape string
+
+const (
+	PinShapeSquare   PinShape = "square"
+	PinShapeTriangle PinShape = "triangle"
+	PinShapePin      PinShape = "pin"
+	PinShapeCircle   PinShape = "circle"
+	PinShapeHexagon  PinShape = "hexagon"
+	PinShapeOctagon  PinShape = "octagon"
+	PinShapeStar     PinShape = "star"
+	PinShapeDiamond  PinShape = "diamond"
+	PinShapePentagon PinShape = "pentagon"
+	PinShapeHeart    PinShape = "heart"
+	PinShapeCloud    PinShape = "cloud"
+)
+
+func (e *PinShape) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = PinShape(s)
+	case string:
+		*e = PinShape(s)
+	default:
+		return fmt.Errorf("unsupported scan type for PinShape: %T", src)
+	}
+	return nil
+}
+
+type NullPinShape struct {
+	PinShape PinShape
+	Valid    bool // Valid is true if PinShape is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullPinShape) Scan(value interface{}) error {
+	if value == nil {
+		ns.PinShape, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.PinShape.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullPinShape) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.PinShape), nil
+}
+
 type Character struct {
 	ID             int32         `json:"id"`
 	UserID         int32         `json:"user_id"`
@@ -174,6 +225,57 @@ type ImageType struct {
 	Description string `json:"description"`
 	// Variant name from cloudflare.
 	Variant ImageVariant `json:"variant"`
+}
+
+type Location struct {
+	ID               int32          `json:"id"`
+	Name             string         `json:"name"`
+	Description      sql.NullString `json:"description"`
+	PostID           sql.NullInt32  `json:"post_id"`
+	ThumbnailImageID sql.NullInt32  `json:"thumbnail_image_id"`
+}
+
+type Map struct {
+	ID               int32          `json:"id"`
+	Name             string         `json:"name"`
+	Type             sql.NullString `json:"type"`
+	Description      sql.NullString `json:"description"`
+	Width            int32          `json:"width"`
+	Height           int32          `json:"height"`
+	ThumbnailImageID sql.NullInt32  `json:"thumbnail_image_id"`
+}
+
+type MapLayer struct {
+	ID       int32  `json:"id"`
+	Name     string `json:"name"`
+	MapID    int32  `json:"map_id"`
+	ImageID  int32  `json:"image_id"`
+	IsMain   bool   `json:"is_main"`
+	Enabled  bool   `json:"enabled"`
+	Sublayer bool   `json:"sublayer"`
+}
+
+type MapPin struct {
+	ID           int32          `json:"id"`
+	Name         sql.NullString `json:"name"`
+	MapID        int32          `json:"map_id"`
+	MapPinTypeID sql.NullInt32  `json:"map_pin_type_id"`
+	LocationID   sql.NullInt32  `json:"location_id"`
+	MapLayerID   sql.NullInt32  `json:"map_layer_id"`
+	X            int32          `json:"x"`
+	Y            int32          `json:"y"`
+}
+
+type MapPinType struct {
+	ID              int32          `json:"id"`
+	MapID           int32          `json:"map_id"`
+	Shape           PinShape       `json:"shape"`
+	BackgroundColor sql.NullString `json:"backgroundColor"`
+	BorderColor     sql.NullString `json:"borderColor"`
+	IconColor       sql.NullString `json:"iconColor"`
+	Icon            sql.NullString `json:"icon"`
+	IconSize        sql.NullInt32  `json:"iconSize"`
+	Width           sql.NullInt32  `json:"width"`
 }
 
 type Menu struct {
@@ -339,6 +441,37 @@ type VerifyEmail struct {
 	ExpiredAt  time.Time `json:"expired_at"`
 }
 
+type ViewLocation struct {
+	ID                int32          `json:"id"`
+	Name              string         `json:"name"`
+	Description       sql.NullString `json:"description"`
+	PostID            sql.NullInt32  `json:"post_id"`
+	ThumbnailImageID  sql.NullInt32  `json:"thumbnail_image_id"`
+	ThumbnailImageUrl sql.NullString `json:"thumbnail_image_url"`
+}
+
+type ViewMap struct {
+	ID                int32          `json:"id"`
+	Name              string         `json:"name"`
+	Type              sql.NullString `json:"type"`
+	Description       sql.NullString `json:"description"`
+	Width             int32          `json:"width"`
+	Height            int32          `json:"height"`
+	ThumbnailImageID  sql.NullInt32  `json:"thumbnail_image_id"`
+	ThumbnailImageUrl sql.NullString `json:"thumbnail_image_url"`
+}
+
+type ViewMapLayer struct {
+	ID       int32          `json:"id"`
+	Name     string         `json:"name"`
+	MapID    int32          `json:"map_id"`
+	ImageID  int32          `json:"image_id"`
+	IsMain   bool           `json:"is_main"`
+	Enabled  bool           `json:"enabled"`
+	Sublayer bool           `json:"sublayer"`
+	ImageUrl sql.NullString `json:"image_url"`
+}
+
 type ViewMenu struct {
 	ID              int32          `json:"id"`
 	MenuCode        string         `json:"menu_code"`
@@ -464,6 +597,16 @@ type WorldImage struct {
 	ImageAvatar    sql.NullInt32 `json:"image_avatar"`
 	ThumbnailImgID sql.NullInt32 `json:"thumbnail_img_id"`
 	AvatarImgID    sql.NullInt32 `json:"avatar_img_id"`
+}
+
+type WorldLocation struct {
+	WorldID    int32 `json:"world_id"`
+	LocationID int32 `json:"location_id"`
+}
+
+type WorldMap struct {
+	WorldID int32 `json:"world_id"`
+	MapID   int32 `json:"map_id"`
 }
 
 type WorldMenu struct {
