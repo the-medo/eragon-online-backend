@@ -18,6 +18,11 @@ type Querier interface {
 	CreateEvaluationVote(ctx context.Context, arg CreateEvaluationVoteParams) (EvaluationVote, error)
 	CreateImage(ctx context.Context, arg CreateImageParams) (Image, error)
 	CreateLocation(ctx context.Context, arg CreateLocationParams) (Location, error)
+	CreateMap(ctx context.Context, arg CreateMapParams) (Map, error)
+	CreateMapLayer(ctx context.Context, arg CreateMapLayerParams) (MapLayer, error)
+	CreateMapPin(ctx context.Context, arg CreateMapPinParams) (MapPin, error)
+	//------------------------------------
+	CreateMapPinType(ctx context.Context, arg CreateMapPinTypeParams) (MapPinType, error)
 	CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, error)
 	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)
 	CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error)
@@ -29,6 +34,7 @@ type Querier interface {
 	CreateWorldActivity(ctx context.Context, arg CreateWorldActivityParams) error
 	CreateWorldImages(ctx context.Context, worldID int32) error
 	CreateWorldLocation(ctx context.Context, arg CreateWorldLocationParams) (WorldLocation, error)
+	CreateWorldMap(ctx context.Context, arg CreateWorldMapParams) (WorldMap, error)
 	CreateWorldMenu(ctx context.Context, arg CreateWorldMenuParams) (WorldMenu, error)
 	CreateWorldTag(ctx context.Context, arg CreateWorldTagParams) (WorldTag, error)
 	CreateWorldTagAvailable(ctx context.Context, tag string) (WorldTagsAvailable, error)
@@ -37,6 +43,10 @@ type Querier interface {
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
 	DeleteImage(ctx context.Context, id int32) error
 	DeleteLocation(ctx context.Context, id int32) error
+	DeleteMap(ctx context.Context, id int32) error
+	DeleteMapLayer(ctx context.Context, id int32) error
+	DeleteMapPin(ctx context.Context, id int32) error
+	DeleteMapPinType(ctx context.Context, id int32) error
 	DeleteMenu(ctx context.Context, id int32) error
 	DeleteMenuItem(ctx context.Context, menuItemID int32) error
 	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
@@ -47,6 +57,7 @@ type Querier interface {
 	DeleteWorldAdmin(ctx context.Context, arg DeleteWorldAdminParams) error
 	DeleteWorldImages(ctx context.Context, worldID int32) error
 	DeleteWorldLocation(ctx context.Context, arg DeleteWorldLocationParams) error
+	DeleteWorldMap(ctx context.Context, arg DeleteWorldMapParams) error
 	DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error
 	DeleteWorldTag(ctx context.Context, arg DeleteWorldTagParams) error
 	DeleteWorldTagAvailable(ctx context.Context, id int32) error
@@ -67,6 +78,11 @@ type Querier interface {
 	GetImagesCount(ctx context.Context, arg GetImagesCountParams) (int64, error)
 	GetLocationByID(ctx context.Context, id int32) (ViewLocation, error)
 	GetLocations(ctx context.Context) ([]ViewLocation, error)
+	GetMapByID(ctx context.Context, id int32) (ViewMap, error)
+	GetMapLayers(ctx context.Context, mapID int32) ([]ViewMapLayer, error)
+	GetMapPinByID(ctx context.Context, id int32) (ViewMapPin, error)
+	GetMapPinTypesForMap(ctx context.Context, mapID int32) ([]MapPinType, error)
+	GetMapPins(ctx context.Context, mapID int32) ([]ViewMapPin, error)
 	GetMenu(ctx context.Context, id int32) (ViewMenu, error)
 	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)
 	GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams) (ViewMenuItemPost, error)
@@ -91,6 +107,7 @@ type Querier interface {
 	GetWorldDailyActivity(ctx context.Context, arg GetWorldDailyActivityParams) ([]WorldActivity, error)
 	GetWorldImages(ctx context.Context, worldID int32) (WorldImage, error)
 	GetWorldLocations(ctx context.Context, worldID int32) ([]Location, error)
+	GetWorldMaps(ctx context.Context, worldID int32) ([]ViewMap, error)
 	GetWorldMenu(ctx context.Context, arg GetWorldMenuParams) (WorldMenu, error)
 	GetWorldMenuByMenuId(ctx context.Context, menuID int32) (WorldMenu, error)
 	GetWorldMonthlyActivity(ctx context.Context, arg GetWorldMonthlyActivityParams) ([]GetWorldMonthlyActivityRow, error)
@@ -115,6 +132,10 @@ type Querier interface {
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
 	UpdateImage(ctx context.Context, arg UpdateImageParams) (Image, error)
 	UpdateLocation(ctx context.Context, arg UpdateLocationParams) (Location, error)
+	UpdateMap(ctx context.Context, arg UpdateMapParams) (Map, error)
+	UpdateMapLayer(ctx context.Context, arg UpdateMapLayerParams) (MapLayer, error)
+	UpdateMapPin(ctx context.Context, arg UpdateMapPinParams) (MapPin, error)
+	UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypeParams) (MapPinType, error)
 	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)
 	UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) (MenuItem, error)
 	UpdateMenuItemPost(ctx context.Context, arg UpdateMenuItemPostParams) (MenuItemPost, error)

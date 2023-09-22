@@ -1,3 +1,4 @@
+DROP VIEW view_map_pins;
 DROP VIEW view_map_layers;
 DROP VIEW view_locations;
 DROP VIEW view_maps;

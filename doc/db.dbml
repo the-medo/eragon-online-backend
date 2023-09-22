@@ -397,7 +397,7 @@ Table map_layers {
 
 Table map_pins {
   id int [pk, increment]
-  name varchar
+  name varchar [not null]
   map_id int [not null, ref: > maps.id]
   map_pin_type_id int [ref: > map_layers.id]
   location_id int [ref: > locations.id]
@@ -410,11 +410,11 @@ Table map_pin_types {
   id int [pk, increment]
   map_id int [not null, ref: > maps.id]
   shape pin_shape [not null, default: "pin"]
-  backgroundColor varchar
-  borderColor varchar
-  iconColor varchar
+  background_color varchar
+  border_color varchar
+  icon_color varchar
   icon varchar
-  iconSize int
+  icon_size int
   width int
 }
 

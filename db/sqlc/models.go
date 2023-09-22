@@ -256,25 +256,25 @@ type MapLayer struct {
 }
 
 type MapPin struct {
-	ID           int32          `json:"id"`
-	Name         sql.NullString `json:"name"`
-	MapID        int32          `json:"map_id"`
-	MapPinTypeID sql.NullInt32  `json:"map_pin_type_id"`
-	LocationID   sql.NullInt32  `json:"location_id"`
-	MapLayerID   sql.NullInt32  `json:"map_layer_id"`
-	X            int32          `json:"x"`
-	Y            int32          `json:"y"`
+	ID           int32         `json:"id"`
+	Name         string        `json:"name"`
+	MapID        int32         `json:"map_id"`
+	MapPinTypeID sql.NullInt32 `json:"map_pin_type_id"`
+	LocationID   sql.NullInt32 `json:"location_id"`
+	MapLayerID   sql.NullInt32 `json:"map_layer_id"`
+	X            int32         `json:"x"`
+	Y            int32         `json:"y"`
 }
 
 type MapPinType struct {
 	ID              int32          `json:"id"`
 	MapID           int32          `json:"map_id"`
 	Shape           PinShape       `json:"shape"`
-	BackgroundColor sql.NullString `json:"backgroundColor"`
-	BorderColor     sql.NullString `json:"borderColor"`
-	IconColor       sql.NullString `json:"iconColor"`
+	BackgroundColor sql.NullString `json:"background_color"`
+	BorderColor     sql.NullString `json:"border_color"`
+	IconColor       sql.NullString `json:"icon_color"`
 	Icon            sql.NullString `json:"icon"`
-	IconSize        sql.NullInt32  `json:"iconSize"`
+	IconSize        sql.NullInt32  `json:"icon_size"`
 	Width           sql.NullInt32  `json:"width"`
 }
 
@@ -470,6 +470,22 @@ type ViewMapLayer struct {
 	Enabled  bool           `json:"enabled"`
 	Sublayer bool           `json:"sublayer"`
 	ImageUrl sql.NullString `json:"image_url"`
+}
+
+type ViewMapPin struct {
+	ID                        int32          `json:"id"`
+	Name                      string         `json:"name"`
+	MapID                     int32          `json:"map_id"`
+	MapPinTypeID              sql.NullInt32  `json:"map_pin_type_id"`
+	LocationID                sql.NullInt32  `json:"location_id"`
+	MapLayerID                sql.NullInt32  `json:"map_layer_id"`
+	X                         int32          `json:"x"`
+	Y                         int32          `json:"y"`
+	LocationName              sql.NullString `json:"location_name"`
+	LocationPostID            sql.NullInt32  `json:"location_post_id"`
+	LocationDescription       sql.NullString `json:"location_description"`
+	LocationThumbnailImageID  sql.NullInt32  `json:"location_thumbnail_image_id"`
+	LocationThumbnailImageUrl sql.NullString `json:"location_thumbnail_image_url"`
 }
 
 type ViewMenu struct {

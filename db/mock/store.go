@@ -127,6 +127,66 @@ func (mr *MockStoreMockRecorder) CreateLocation(arg0, arg1 interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateLocation", reflect.TypeOf((*MockStore)(nil).CreateLocation), arg0, arg1)
 }
 
+// CreateMap mocks base method.
+func (m *MockStore) CreateMap(arg0 context.Context, arg1 db.CreateMapParams) (db.Map, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMap", arg0, arg1)
+	ret0, _ := ret[0].(db.Map)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateMap indicates an expected call of CreateMap.
+func (mr *MockStoreMockRecorder) CreateMap(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMap", reflect.TypeOf((*MockStore)(nil).CreateMap), arg0, arg1)
+}
+
+// CreateMapLayer mocks base method.
+func (m *MockStore) CreateMapLayer(arg0 context.Context, arg1 db.CreateMapLayerParams) (db.MapLayer, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMapLayer", arg0, arg1)
+	ret0, _ := ret[0].(db.MapLayer)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateMapLayer indicates an expected call of CreateMapLayer.
+func (mr *MockStoreMockRecorder) CreateMapLayer(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMapLayer", reflect.TypeOf((*MockStore)(nil).CreateMapLayer), arg0, arg1)
+}
+
+// CreateMapPin mocks base method.
+func (m *MockStore) CreateMapPin(arg0 context.Context, arg1 db.CreateMapPinParams) (db.MapPin, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMapPin", arg0, arg1)
+	ret0, _ := ret[0].(db.MapPin)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateMapPin indicates an expected call of CreateMapPin.
+func (mr *MockStoreMockRecorder) CreateMapPin(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMapPin", reflect.TypeOf((*MockStore)(nil).CreateMapPin), arg0, arg1)
+}
+
+// CreateMapPinType mocks base method.
+func (m *MockStore) CreateMapPinType(arg0 context.Context, arg1 db.CreateMapPinTypeParams) (db.MapPinType, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMapPinType", arg0, arg1)
+	ret0, _ := ret[0].(db.MapPinType)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateMapPinType indicates an expected call of CreateMapPinType.
+func (mr *MockStoreMockRecorder) CreateMapPinType(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMapPinType", reflect.TypeOf((*MockStore)(nil).CreateMapPinType), arg0, arg1)
+}
+
 // CreateMenu mocks base method.
 func (m *MockStore) CreateMenu(arg0 context.Context, arg1 db.CreateMenuParams) (db.Menu, error) {
 	m.ctrl.T.Helper()
@@ -305,6 +365,21 @@ func (mr *MockStoreMockRecorder) CreateWorldLocation(arg0, arg1 interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorldLocation", reflect.TypeOf((*MockStore)(nil).CreateWorldLocation), arg0, arg1)
 }
 
+// CreateWorldMap mocks base method.
+func (m *MockStore) CreateWorldMap(arg0 context.Context, arg1 db.CreateWorldMapParams) (db.WorldMap, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateWorldMap", arg0, arg1)
+	ret0, _ := ret[0].(db.WorldMap)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateWorldMap indicates an expected call of CreateWorldMap.
+func (mr *MockStoreMockRecorder) CreateWorldMap(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorldMap", reflect.TypeOf((*MockStore)(nil).CreateWorldMap), arg0, arg1)
+}
+
 // CreateWorldMenu mocks base method.
 func (m *MockStore) CreateWorldMenu(arg0 context.Context, arg1 db.CreateWorldMenuParams) (db.WorldMenu, error) {
 	m.ctrl.T.Helper()
@@ -433,6 +508,62 @@ func (m *MockStore) DeleteLocation(arg0 context.Context, arg1 int32) error {
 func (mr *MockStoreMockRecorder) DeleteLocation(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteLocation", reflect.TypeOf((*MockStore)(nil).DeleteLocation), arg0, arg1)
+}
+
+// DeleteMap mocks base method.
+func (m *MockStore) DeleteMap(arg0 context.Context, arg1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMap", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMap indicates an expected call of DeleteMap.
+func (mr *MockStoreMockRecorder) DeleteMap(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMap", reflect.TypeOf((*MockStore)(nil).DeleteMap), arg0, arg1)
+}
+
+// DeleteMapLayer mocks base method.
+func (m *MockStore) DeleteMapLayer(arg0 context.Context, arg1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMapLayer", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMapLayer indicates an expected call of DeleteMapLayer.
+func (mr *MockStoreMockRecorder) DeleteMapLayer(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapLayer", reflect.TypeOf((*MockStore)(nil).DeleteMapLayer), arg0, arg1)
+}
+
+// DeleteMapPin mocks base method.
+func (m *MockStore) DeleteMapPin(arg0 context.Context, arg1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMapPin", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMapPin indicates an expected call of DeleteMapPin.
+func (mr *MockStoreMockRecorder) DeleteMapPin(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapPin", reflect.TypeOf((*MockStore)(nil).DeleteMapPin), arg0, arg1)
+}
+
+// DeleteMapPinType mocks base method.
+func (m *MockStore) DeleteMapPinType(arg0 context.Context, arg1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMapPinType", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMapPinType indicates an expected call of DeleteMapPinType.
+func (mr *MockStoreMockRecorder) DeleteMapPinType(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapPinType", reflect.TypeOf((*MockStore)(nil).DeleteMapPinType), arg0, arg1)
 }
 
 // DeleteMenu mocks base method.
@@ -573,6 +704,20 @@ func (m *MockStore) DeleteWorldLocation(arg0 context.Context, arg1 db.DeleteWorl
 func (mr *MockStoreMockRecorder) DeleteWorldLocation(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorldLocation", reflect.TypeOf((*MockStore)(nil).DeleteWorldLocation), arg0, arg1)
+}
+
+// DeleteWorldMap mocks base method.
+func (m *MockStore) DeleteWorldMap(arg0 context.Context, arg1 db.DeleteWorldMapParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteWorldMap", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteWorldMap indicates an expected call of DeleteWorldMap.
+func (mr *MockStoreMockRecorder) DeleteWorldMap(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorldMap", reflect.TypeOf((*MockStore)(nil).DeleteWorldMap), arg0, arg1)
 }
 
 // DeleteWorldMenu mocks base method.
@@ -870,6 +1015,81 @@ func (m *MockStore) GetLocations(arg0 context.Context) ([]db.ViewLocation, error
 func (mr *MockStoreMockRecorder) GetLocations(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLocations", reflect.TypeOf((*MockStore)(nil).GetLocations), arg0)
+}
+
+// GetMapByID mocks base method.
+func (m *MockStore) GetMapByID(arg0 context.Context, arg1 int32) (db.ViewMap, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMapByID", arg0, arg1)
+	ret0, _ := ret[0].(db.ViewMap)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMapByID indicates an expected call of GetMapByID.
+func (mr *MockStoreMockRecorder) GetMapByID(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMapByID", reflect.TypeOf((*MockStore)(nil).GetMapByID), arg0, arg1)
+}
+
+// GetMapLayers mocks base method.
+func (m *MockStore) GetMapLayers(arg0 context.Context, arg1 int32) ([]db.ViewMapLayer, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMapLayers", arg0, arg1)
+	ret0, _ := ret[0].([]db.ViewMapLayer)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMapLayers indicates an expected call of GetMapLayers.
+func (mr *MockStoreMockRecorder) GetMapLayers(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMapLayers", reflect.TypeOf((*MockStore)(nil).GetMapLayers), arg0, arg1)
+}
+
+// GetMapPinByID mocks base method.
+func (m *MockStore) GetMapPinByID(arg0 context.Context, arg1 int32) (db.ViewMapPin, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMapPinByID", arg0, arg1)
+	ret0, _ := ret[0].(db.ViewMapPin)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMapPinByID indicates an expected call of GetMapPinByID.
+func (mr *MockStoreMockRecorder) GetMapPinByID(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMapPinByID", reflect.TypeOf((*MockStore)(nil).GetMapPinByID), arg0, arg1)
+}
+
+// GetMapPinTypesForMap mocks base method.
+func (m *MockStore) GetMapPinTypesForMap(arg0 context.Context, arg1 int32) ([]db.MapPinType, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMapPinTypesForMap", arg0, arg1)
+	ret0, _ := ret[0].([]db.MapPinType)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMapPinTypesForMap indicates an expected call of GetMapPinTypesForMap.
+func (mr *MockStoreMockRecorder) GetMapPinTypesForMap(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMapPinTypesForMap", reflect.TypeOf((*MockStore)(nil).GetMapPinTypesForMap), arg0, arg1)
+}
+
+// GetMapPins mocks base method.
+func (m *MockStore) GetMapPins(arg0 context.Context, arg1 int32) ([]db.ViewMapPin, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMapPins", arg0, arg1)
+	ret0, _ := ret[0].([]db.ViewMapPin)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMapPins indicates an expected call of GetMapPins.
+func (mr *MockStoreMockRecorder) GetMapPins(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMapPins", reflect.TypeOf((*MockStore)(nil).GetMapPins), arg0, arg1)
 }
 
 // GetMenu mocks base method.
@@ -1230,6 +1450,21 @@ func (m *MockStore) GetWorldLocations(arg0 context.Context, arg1 int32) ([]db.Lo
 func (mr *MockStoreMockRecorder) GetWorldLocations(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldLocations", reflect.TypeOf((*MockStore)(nil).GetWorldLocations), arg0, arg1)
+}
+
+// GetWorldMaps mocks base method.
+func (m *MockStore) GetWorldMaps(arg0 context.Context, arg1 int32) ([]db.ViewMap, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWorldMaps", arg0, arg1)
+	ret0, _ := ret[0].([]db.ViewMap)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWorldMaps indicates an expected call of GetWorldMaps.
+func (mr *MockStoreMockRecorder) GetWorldMaps(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldMaps", reflect.TypeOf((*MockStore)(nil).GetWorldMaps), arg0, arg1)
 }
 
 // GetWorldMenu mocks base method.
@@ -1616,6 +1851,66 @@ func (m *MockStore) UpdateLocation(arg0 context.Context, arg1 db.UpdateLocationP
 func (mr *MockStoreMockRecorder) UpdateLocation(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateLocation", reflect.TypeOf((*MockStore)(nil).UpdateLocation), arg0, arg1)
+}
+
+// UpdateMap mocks base method.
+func (m *MockStore) UpdateMap(arg0 context.Context, arg1 db.UpdateMapParams) (db.Map, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMap", arg0, arg1)
+	ret0, _ := ret[0].(db.Map)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateMap indicates an expected call of UpdateMap.
+func (mr *MockStoreMockRecorder) UpdateMap(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMap", reflect.TypeOf((*MockStore)(nil).UpdateMap), arg0, arg1)
+}
+
+// UpdateMapLayer mocks base method.
+func (m *MockStore) UpdateMapLayer(arg0 context.Context, arg1 db.UpdateMapLayerParams) (db.MapLayer, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMapLayer", arg0, arg1)
+	ret0, _ := ret[0].(db.MapLayer)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateMapLayer indicates an expected call of UpdateMapLayer.
+func (mr *MockStoreMockRecorder) UpdateMapLayer(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMapLayer", reflect.TypeOf((*MockStore)(nil).UpdateMapLayer), arg0, arg1)
+}
+
+// UpdateMapPin mocks base method.
+func (m *MockStore) UpdateMapPin(arg0 context.Context, arg1 db.UpdateMapPinParams) (db.MapPin, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMapPin", arg0, arg1)
+	ret0, _ := ret[0].(db.MapPin)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateMapPin indicates an expected call of UpdateMapPin.
+func (mr *MockStoreMockRecorder) UpdateMapPin(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMapPin", reflect.TypeOf((*MockStore)(nil).UpdateMapPin), arg0, arg1)
+}
+
+// UpdateMapPinType mocks base method.
+func (m *MockStore) UpdateMapPinType(arg0 context.Context, arg1 db.UpdateMapPinTypeParams) (db.MapPinType, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMapPinType", arg0, arg1)
+	ret0, _ := ret[0].(db.MapPinType)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateMapPinType indicates an expected call of UpdateMapPinType.
+func (mr *MockStoreMockRecorder) UpdateMapPinType(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMapPinType", reflect.TypeOf((*MockStore)(nil).UpdateMapPinType), arg0, arg1)
 }
 
 // UpdateMenu mocks base method.
