@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-09-22T19:01:49.387Z
+-- Generated at: 2023-09-23T19:40:44.941Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -539,7 +539,7 @@ ALTER TABLE "map_layers" ADD FOREIGN KEY ("image_id") REFERENCES "images" ("id")
 
 ALTER TABLE "map_pins" ADD FOREIGN KEY ("map_id") REFERENCES "maps" ("id");
 
-ALTER TABLE "map_pins" ADD FOREIGN KEY ("map_pin_type_id") REFERENCES "map_layers" ("id");
+ALTER TABLE "map_pins" ADD FOREIGN KEY ("map_pin_type_id") REFERENCES "map_pin_types" ("id");
 
 ALTER TABLE "map_pins" ADD FOREIGN KEY ("location_id") REFERENCES "locations" ("id");
 

@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+enum PinShape {
+  SQUARE = 0;
+  TRIANGLE = 1;
+  PIN = 2;
+  CIRCLE = 3;
+  HEXAGON = 4;
+  OCTAGON = 5;
+  STAR = 6;
+  DIAMOND = 7;
+  PENTAGON = 8;
+  HEART = 9;
+  CLOUD = 10;
+}
+
+message Map {
+  int32 id = 1;
+  string name = 2;
+  optional string type = 3;
+  optional string description = 4;
+  int32 width = 5;
+  int32 height = 6;
+  optional int32 thumbnailImageId = 7;
+}
+
+message ViewMap {
+  int32 id = 1;
+  string name = 2;
+  optional string type = 3;
+  optional string description = 4;
+  int32 width = 5;
+  int32 height = 6;
+  optional int32 thumbnailImageId = 7;
+  optional string thumbnailImageUrl = 8;
+}
+
+message MapLayer {
+  int32 id = 1;
+  string name = 2;
+  int32 mapId = 3;
+  int32 imageId = 4;
+  bool isMain = 5;
+  bool enabled = 6;
+  bool sublayer = 7;
+}
+
+message ViewMapLayer {
+  int32 id = 1;
+  string name = 2;
+  int32 mapId = 3;
+  int32 imageId = 4;
+  int32 imageUrl = 5;
+  bool isMain = 6;
+  bool enabled = 7;
+  bool sublayer = 8;
+}
+
+message MapPinType {
+  int32 id = 1;
+  int32 map_id = 2;
+  PinShape shape = 3;
+  string backgroundColor = 4;
+  string borderColor = 5;
+  string iconColor = 6;
+  string icon = 7;
+  int32 iconSize = 8;
+  int32 width = 9;
+}
+
+message MapPin {
+  int32 id = 1;
+  string name = 2;
+  int32 mapId = 3;
+  optional int32 mapPinTypeId = 4;
+  optional int32 locationId = 5;
+  optional int32 mapLayerId = 6;
+  int32 x = 7;
+  int32 y = 8;
+}
+
+message ViewMapPin {
+  int32 id = 1;
+  string name = 2;
+  int32 mapId = 3;
+  optional int32 mapPinTypeId = 4;
+  optional int32 locationId = 5;
+  optional int32 mapLayerId = 6;
+  int32 x = 7;
+  int32 y = 8;
+  optional string locationName = 9;
+  optional int32 locationPostId = 10;
+  optional string locationDescription = 11;
+  optional int32 locationThumbnailImageId = 12;
+  optional string locationThumbnailImageUrl = 13;
+}

@@ -399,7 +399,7 @@ Table map_pins {
   id int [pk, increment]
   name varchar [not null]
   map_id int [not null, ref: > maps.id]
-  map_pin_type_id int [ref: > map_layers.id]
+  map_pin_type_id int [ref: > map_pin_types.id]
   location_id int [ref: > locations.id]
   map_layer_id int [ref: > map_layers.id]
   x int [not null]

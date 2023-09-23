@@ -89,7 +89,7 @@ ALTER TABLE "map_pins" ADD FOREIGN KEY ("location_id") REFERENCES "locations" ("
 
 ALTER TABLE "map_pins" ADD FOREIGN KEY ("map_layer_id") REFERENCES "map_layers" ("id");
 
-ALTER TABLE "map_pins" ADD FOREIGN KEY ("map_pin_type_id") REFERENCES "map_layers" ("id");
+ALTER TABLE "map_pins" ADD FOREIGN KEY ("map_pin_type_id") REFERENCES "map_pin_types" ("id");
 
 ALTER TABLE "map_pin_types" ADD FOREIGN KEY ("map_id") REFERENCES "maps" ("id");
 

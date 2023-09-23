@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package pb;
+
+//import "map.proto";
+//import "location.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message GetWorldLocationRequest {}
+message GetWorldLocationResponse {}
+
+message UpdateLocationRequest {}
+message UpdateLocationResponse {}
+
+message CreateWorldLocationRequest {}
+message CreateWorldLocationResponse {}
+
+message DeleteWorldLocationRequest {}
+message DeleteWorldLocationResponse {}
+
