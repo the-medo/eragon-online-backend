@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "google/protobuf/empty.proto";
+import "services/posts/rpc_post.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service PostTypes {
+
+  rpc GetPostTypes(google.protobuf.Empty) returns (GetPostTypesResponse) {
+    option (google.api.http) = {
+      get: "/post_types"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get post types with info (draftable, privatable)";
+      summary: "Get post types";
+    };
+  };
+}

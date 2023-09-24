@@ -1,0 +1,266 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "google/protobuf/empty.proto";
+import "services/users/rpc_user_roles.proto";
+import "services/users/rpc_get_user.proto";
+import "services/users/rpc_update_user.proto";
+import "services/users/rpc_reset_password.proto";
+import "services/users/rpc_login_user.proto";
+import "services/users/rpc_create_user.proto";
+import "services/users/user.proto";
+import "services/evaluations/rpc_user_evaluations.proto";
+import "services/images/rpc_image.proto";
+import "services/images/rpc_upload_image.proto";
+import "services/posts/post.proto";
+import "services/posts/rpc_post.proto";
+import "services/worlds/rpc_world.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Users {
+
+  // ============= USER ROLES =================
+  rpc GetUserRoles(GetUserRolesRequest) returns (GetUserRolesResponse) {
+    option (google.api.http) = {
+      get: "/users/roles"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns full list of user roles";
+      summary: "Get user roles (admin, moderator, etc.)";
+    };
+  };
+
+  rpc AddRoleToUser(AddRoleToUserRequest) returns (AddRoleToUserResponse) {
+    option (google.api.http) = {
+      post: "/users/roles"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "adds new role to user";
+      summary: "Add role to user";
+    };
+  };
+
+  rpc RemoveRoleFromUser(RemoveRoleFromUserRequest) returns (RemoveRoleFromUserResponse) {
+    option (google.api.http) = {
+      delete: "/users/{userId}/roles/{roleId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "removes role from user";
+      summary: "Remove role from user";
+    };
+  };
+
+
+
+  // ============= USERS =================
+
+  rpc GetUsers(GetUsersRequest) returns (GetUsersResponse) {
+    option (google.api.http) = {
+      get: "/users"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns list of users";
+      summary: "Get list of users";
+    };
+  };
+
+  rpc GetUserById(GetUserByIdRequest) returns (ViewUser) {
+    option (google.api.http) = {
+      get: "/users/id/{userId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns information about one user";
+      summary: "Get user";
+    };
+  };
+
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post: "/users"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "use this API to create a new user";
+      summary: "Create new user";
+    };
+  };
+
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
+    option (google.api.http) = {
+      patch: "/users"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "use this API to update user";
+      summary: "Update user";
+    };
+  };
+
+  rpc UpdateUserIntroduction(UpdateUserIntroductionRequest) returns (Post) {
+    option (google.api.http) = {
+      patch: "/users/{userId}/introduction"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "use this API to update user introduction";
+      summary: "Update user introduction";
+    };
+  };
+
+  // ============= LOGIN & LOGOUT =================
+  rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {
+    option (google.api.http) = {
+      post: "/users/login"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "login user - get user object and set HttpOnly cookies";
+      summary: "Login user";
+    };
+  };
+
+  rpc LogoutUser(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/users/logout"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "logout user - it clears HttpOnly cookies - no request data required";
+      summary: "Logout user";
+    };
+  };
+
+  rpc ResetPasswordSendCode(ResetPasswordSendCodeRequest) returns (ResetPasswordSendCodeResponse) {
+    option (google.api.http) = {
+      post: "/users/reset/send-code"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "in case a user forgot their password, they can request a password reset using this endpoint";
+      summary: "Request password reset";
+    };
+  };
+
+  rpc ResetPasswordVerifyCode(ResetPasswordVerifyCodeRequest) returns (ResetPasswordVerifyCodeResponse) {
+    option (google.api.http) = {
+      post: "/users/reset/verify-code"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "in case a user forgot their password, they can confirm the password reset using this endpoint";
+      summary: "Confirm password reset";
+    };
+  };
+
+  rpc ResetPasswordVerifyCodeValidity(ResetPasswordVerifyCodeValidityRequest) returns (ResetPasswordVerifyCodeValidityResponse) {
+    option (google.api.http) = {
+      get: "/users/reset/verify-code-validity"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "validate reset password secret code";
+      summary: "Validate reset password secret code";
+    };
+  };
+
+
+  rpc CreateOrUpdateEvaluationVote(CreateOrUpdateEvaluationVoteRequest) returns (CreateOrUpdateEvaluationVoteResponse) {
+    option (google.api.http) = {
+      post: "/users/{userId}/evaluation-vote"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "create or update evaluation vote";
+      summary: "Create or update evaluation vote";
+    };
+  };
+
+  rpc GetEvaluationVotesByUserId(GetEvaluationVotesByUserIdRequest) returns (GetEvaluationVotesByUserIdResponse) {
+    option (google.api.http) = {
+      get: "/users/{userId}/evaluation-vote"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get evaluation votes by user id";
+      summary: "Get evaluation votes by user id";
+    };
+  };
+
+  rpc GetEvaluationVotesByUserIdAndVoter(GetEvaluationVotesByUserIdAndVoterRequest) returns (GetEvaluationVotesByUserIdAndVoterResponse) {
+    option (google.api.http) = {
+      get: "/users/{userId}/evaluation-vote/voter/{userIdVoter}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get evaluation votes by user id and voter";
+      summary: "Get evaluation votes by user id and voter";
+    };
+  };
+
+  rpc DeleteEvaluationVote(DeleteEvaluationVoteRequest) returns (DeleteEvaluationVoteResponse) {
+    option (google.api.http) = {
+      delete: "/users/{userId}/evaluation-vote/{evaluationId}/voter/{userIdVoter}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "delete evaluation vote";
+      summary: "Delete evaluation vote";
+    };
+  };
+
+  rpc GetAverageUserEvaluationsByType(GetAverageUserEvaluationsByTypeRequest) returns (GetAverageUserEvaluationsByTypeResponse) {
+    option (google.api.http) = {
+      get: "/users/{userId}/evaluation-vote/type/{type}/average"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get average user evaluation by type";
+      summary: "Get average user evaluation";
+    };
+  };
+
+  rpc GetUserImages(GetUserImagesRequest) returns (GetImagesResponse) {
+    option (google.api.http) = {
+      get: "/users/{userId}/images"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get images of user by userID - filterable by image type";
+      summary: "Get user images";
+    };
+  };
+
+  rpc UploadUserAvatar(UploadUserAvatarRequest) returns (UploadUserAvatarResponse) {
+    option (google.api.http) = {
+      post: "/users/{userId}/avatar"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "uploads an user avatar";
+      summary: "Upload user avatar";
+    };
+  };
+
+
+  rpc GetUserPosts(GetUserPostsRequest) returns (GetUserPostsResponse) {
+    option (google.api.http) = {
+      get: "/users/{userId}/posts"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get posts of user by userID";
+      summary: "Get user posts";
+    };
+  };
+
+
+  rpc GetWorldsOfCreator(GetWorldsOfCreatorRequest) returns (GetWorldsOfCreatorResponse) {
+    option (google.api.http) = {
+      get: "/users/{userId}/worlds"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of worlds that the creator is part of";
+      summary: "Get creator's worlds";
+    };
+  };
+}

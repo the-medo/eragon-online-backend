@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "services/maps/rpc_map.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Maps {
+  rpc UpdateMap(UpdateMapRequest) returns (UpdateMapResponse) {
+    option (google.api.http) = {
+      patch: "/maps/{mapId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates map properties";
+      summary: "Update map";
+    };
+  };
+}

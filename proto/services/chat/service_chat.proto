@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "services/chat/rpc_chat.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Chat {
+  rpc GetChatMessages(GetChatMessagesRequest) returns (GetChatMessagesResponse) {
+    option (google.api.http) = {
+      get: "/chat"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns list of chat messages";
+      summary: "Get list of chat messages";
+    };
+  };
+
+  rpc AddChatMessage(AddChatMessageRequest) returns (AddChatMessageResponse) {
+    option (google.api.http) = {
+      post: "/chat"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "adds new chat message";
+      summary: "Add new chat message";
+    };
+  };
+
+  rpc DeleteChatMessage(DeleteChatMessageRequest) returns (DeleteChatMessageResponse) {
+    option (google.api.http) = {
+      delete: "/chat/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "removes role from user";
+      summary: "Delete chat message";
+    };
+  };
+
+}

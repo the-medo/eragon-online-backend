@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.30.0
 // 	protoc        v4.22.0
-// source: rpc_upload_image.proto
+// source: services/images/rpc_upload_image.proto
 
 package pb
 
@@ -34,7 +34,7 @@ type UploadImageRequest struct {
 func (x *UploadImageRequest) Reset() {
 	*x = UploadImageRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_upload_image_proto_msgTypes[0]
+		mi := &file_services_images_rpc_upload_image_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -47,7 +47,7 @@ func (x *UploadImageRequest) String() string {
 func (*UploadImageRequest) ProtoMessage() {}
 
 func (x *UploadImageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_upload_image_proto_msgTypes[0]
+	mi := &file_services_images_rpc_upload_image_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,7 +60,7 @@ func (x *UploadImageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadImageRequest.ProtoReflect.Descriptor instead.
 func (*UploadImageRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_upload_image_proto_rawDescGZIP(), []int{0}
+	return file_services_images_rpc_upload_image_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *UploadImageRequest) GetFilename() string {
@@ -98,7 +98,7 @@ type UploadImageResponse struct {
 func (x *UploadImageResponse) Reset() {
 	*x = UploadImageResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_upload_image_proto_msgTypes[1]
+		mi := &file_services_images_rpc_upload_image_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -111,7 +111,7 @@ func (x *UploadImageResponse) String() string {
 func (*UploadImageResponse) ProtoMessage() {}
 
 func (x *UploadImageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_upload_image_proto_msgTypes[1]
+	mi := &file_services_images_rpc_upload_image_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -124,7 +124,7 @@ func (x *UploadImageResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadImageResponse.ProtoReflect.Descriptor instead.
 func (*UploadImageResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_upload_image_proto_rawDescGZIP(), []int{1}
+	return file_services_images_rpc_upload_image_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *UploadImageResponse) GetId() string {
@@ -167,7 +167,7 @@ type UploadUserAvatarRequest struct {
 func (x *UploadUserAvatarRequest) Reset() {
 	*x = UploadUserAvatarRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_upload_image_proto_msgTypes[2]
+		mi := &file_services_images_rpc_upload_image_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -180,7 +180,7 @@ func (x *UploadUserAvatarRequest) String() string {
 func (*UploadUserAvatarRequest) ProtoMessage() {}
 
 func (x *UploadUserAvatarRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_upload_image_proto_msgTypes[2]
+	mi := &file_services_images_rpc_upload_image_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -193,7 +193,7 @@ func (x *UploadUserAvatarRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadUserAvatarRequest.ProtoReflect.Descriptor instead.
 func (*UploadUserAvatarRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_upload_image_proto_rawDescGZIP(), []int{2}
+	return file_services_images_rpc_upload_image_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UploadUserAvatarRequest) GetUserId() int32 {
@@ -222,7 +222,7 @@ type UploadUserAvatarResponse struct {
 func (x *UploadUserAvatarResponse) Reset() {
 	*x = UploadUserAvatarResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_upload_image_proto_msgTypes[3]
+		mi := &file_services_images_rpc_upload_image_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -235,7 +235,7 @@ func (x *UploadUserAvatarResponse) String() string {
 func (*UploadUserAvatarResponse) ProtoMessage() {}
 
 func (x *UploadUserAvatarResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_upload_image_proto_msgTypes[3]
+	mi := &file_services_images_rpc_upload_image_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -248,7 +248,7 @@ func (x *UploadUserAvatarResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadUserAvatarResponse.ProtoReflect.Descriptor instead.
 func (*UploadUserAvatarResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_upload_image_proto_rawDescGZIP(), []int{3}
+	return file_services_images_rpc_upload_image_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UploadUserAvatarResponse) GetUserId() int32 {
@@ -265,13 +265,15 @@ func (x *UploadUserAvatarResponse) GetImage() *Image {
 	return nil
 }
 
-var File_rpc_upload_image_proto protoreflect.FileDescriptor
+var File_services_images_rpc_upload_image_proto protoreflect.FileDescriptor
 
-var file_rpc_upload_image_proto_rawDesc = []byte{
-	0x0a, 0x16, 0x72, 0x70, 0x63, 0x5f, 0x75, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x5f, 0x69, 0x6d, 0x61,
+var file_services_images_rpc_upload_image_proto_rawDesc = []byte{
+	0x0a, 0x26, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2f, 0x69, 0x6d, 0x61, 0x67, 0x65,
+	0x73, 0x2f, 0x72, 0x70, 0x63, 0x5f, 0x75, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x5f, 0x69, 0x6d, 0x61,
 	0x67, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x02, 0x70, 0x62, 0x1a, 0x1f, 0x67, 0x6f,
 	0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69,
-	0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x0b, 0x69,
+	0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1b, 0x73,
+	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2f, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x73, 0x2f, 0x69,
 	0x6d, 0x61, 0x67, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x66, 0x0a, 0x12, 0x55, 0x70,
 	0x6c, 0x6f, 0x61, 0x64, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
 	0x12, 0x1a, 0x0a, 0x08, 0x66, 0x69, 0x6c, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
@@ -305,19 +307,19 @@ var file_rpc_upload_image_proto_rawDesc = []byte{
 }
 
 var (
-	file_rpc_upload_image_proto_rawDescOnce sync.Once
-	file_rpc_upload_image_proto_rawDescData = file_rpc_upload_image_proto_rawDesc
+	file_services_images_rpc_upload_image_proto_rawDescOnce sync.Once
+	file_services_images_rpc_upload_image_proto_rawDescData = file_services_images_rpc_upload_image_proto_rawDesc
 )
 
-func file_rpc_upload_image_proto_rawDescGZIP() []byte {
-	file_rpc_upload_image_proto_rawDescOnce.Do(func() {
-		file_rpc_upload_image_proto_rawDescData = protoimpl.X.CompressGZIP(file_rpc_upload_image_proto_rawDescData)
+func file_services_images_rpc_upload_image_proto_rawDescGZIP() []byte {
+	file_services_images_rpc_upload_image_proto_rawDescOnce.Do(func() {
+		file_services_images_rpc_upload_image_proto_rawDescData = protoimpl.X.CompressGZIP(file_services_images_rpc_upload_image_proto_rawDescData)
 	})
-	return file_rpc_upload_image_proto_rawDescData
+	return file_services_images_rpc_upload_image_proto_rawDescData
 }
 
-var file_rpc_upload_image_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_rpc_upload_image_proto_goTypes = []interface{}{
+var file_services_images_rpc_upload_image_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_services_images_rpc_upload_image_proto_goTypes = []interface{}{
 	(*UploadImageRequest)(nil),       // 0: pb.UploadImageRequest
 	(*UploadImageResponse)(nil),      // 1: pb.UploadImageResponse
 	(*UploadUserAvatarRequest)(nil),  // 2: pb.UploadUserAvatarRequest
@@ -325,7 +327,7 @@ var file_rpc_upload_image_proto_goTypes = []interface{}{
 	(*timestamppb.Timestamp)(nil),    // 4: google.protobuf.Timestamp
 	(*Image)(nil),                    // 5: pb.Image
 }
-var file_rpc_upload_image_proto_depIdxs = []int32{
+var file_services_images_rpc_upload_image_proto_depIdxs = []int32{
 	4, // 0: pb.UploadImageResponse.uploadedAt:type_name -> google.protobuf.Timestamp
 	5, // 1: pb.UploadUserAvatarResponse.image:type_name -> pb.Image
 	2, // [2:2] is the sub-list for method output_type
@@ -335,14 +337,14 @@ var file_rpc_upload_image_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_rpc_upload_image_proto_init() }
-func file_rpc_upload_image_proto_init() {
-	if File_rpc_upload_image_proto != nil {
+func init() { file_services_images_rpc_upload_image_proto_init() }
+func file_services_images_rpc_upload_image_proto_init() {
+	if File_services_images_rpc_upload_image_proto != nil {
 		return
 	}
-	file_image_proto_init()
+	file_services_images_image_proto_init()
 	if !protoimpl.UnsafeEnabled {
-		file_rpc_upload_image_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_services_images_rpc_upload_image_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UploadImageRequest); i {
 			case 0:
 				return &v.state
@@ -354,7 +356,7 @@ func file_rpc_upload_image_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_upload_image_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_services_images_rpc_upload_image_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UploadImageResponse); i {
 			case 0:
 				return &v.state
@@ -366,7 +368,7 @@ func file_rpc_upload_image_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_upload_image_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_services_images_rpc_upload_image_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UploadUserAvatarRequest); i {
 			case 0:
 				return &v.state
@@ -378,7 +380,7 @@ func file_rpc_upload_image_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_upload_image_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_services_images_rpc_upload_image_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UploadUserAvatarResponse); i {
 			case 0:
 				return &v.state
@@ -395,18 +397,18 @@ func file_rpc_upload_image_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_rpc_upload_image_proto_rawDesc,
+			RawDescriptor: file_services_images_rpc_upload_image_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_rpc_upload_image_proto_goTypes,
-		DependencyIndexes: file_rpc_upload_image_proto_depIdxs,
-		MessageInfos:      file_rpc_upload_image_proto_msgTypes,
+		GoTypes:           file_services_images_rpc_upload_image_proto_goTypes,
+		DependencyIndexes: file_services_images_rpc_upload_image_proto_depIdxs,
+		MessageInfos:      file_services_images_rpc_upload_image_proto_msgTypes,
 	}.Build()
-	File_rpc_upload_image_proto = out.File
-	file_rpc_upload_image_proto_rawDesc = nil
-	file_rpc_upload_image_proto_goTypes = nil
-	file_rpc_upload_image_proto_depIdxs = nil
+	File_services_images_rpc_upload_image_proto = out.File
+	file_services_images_rpc_upload_image_proto_rawDesc = nil
+	file_services_images_rpc_upload_image_proto_goTypes = nil
+	file_services_images_rpc_upload_image_proto_depIdxs = nil
 }

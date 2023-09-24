@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/posts/post.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message GetPostHistoryRequest {
+  int32 postId = 1;
+}
+
+message GetPostHistoryResponse {
+  repeated HistoryPost historyPosts = 1;
+}
+
+message GetPostHistoryByIdRequest {
+  int32 postId = 1;
+  int32 postHistoryId = 2;
+}

@@ -1,4 +1,5 @@
 DB_URL=postgresql://root:secret@localhost:5432/talebound?sslmode=disable
+PROTO_SERVICES := $(shell find proto/services -mindepth 1 -maxdepth 1 -type d | sort | awk -F/ '{print "proto/services/" $$NF "/*.proto"}' | tr '\n' ' ')
 
 rm-postgres:
 	docker stop postgres15
@@ -52,20 +53,33 @@ db_schema:
 	dbml2sql --postgres -o doc/schema.sql doc/db.dbml
 
 proto_delete_win:
-	del /Q pb\*.pb.go
+	del /Q pb\**\**\*.pb.go
+	del /Q pb\**\**\*.pb.gw.go
 	del /Q doc\swagger\*.swagger.json
 
 proto_delete_linux:
-	rm -f pb/*.pb.go
+	rm -rf pb/**/*.pb.go
+	rm -f pb/**/**/*.pb.go
+	rm -f pb/**/**/*.pb.gw.go
 	rm -f doc/swagger/*.swagger.json
 
-proto_without_clean: # add --openapiv2_opt= json_names_for_fields=false ???
-	protoc --proto_path=proto --go_out=pb --go_opt=paths=source_relative --go-grpc_out=pb --go-grpc_opt=paths=source_relative --grpc-gateway_out=pb --grpc-gateway_opt paths=source_relative --openapiv2_out=doc/swagger --openapiv2_opt=allow_merge=true,merge_file_name=talebound proto/*.proto
+#proto_without_clean:
+#	protoc --proto_path=proto --go_out=pb --go-grpc_out=pb --grpc-gateway_out=pb --go_opt=module=pb --go-grpc_opt=module=pb --openapiv2_out=doc/swagger --openapiv2_opt=allow_merge=true,merge_file_name=talebound $(PROTO_SERVICES);
+#	statik -src=./doc/swagger -dest=./doc
+
+proto_without_clean:
+	protoc --proto_path=proto --go_out=paths=import:pb --go-grpc_out=paths=import:pb --grpc-gateway_out=pb --openapiv2_out=doc/swagger --openapiv2_opt=allow_merge=true,merge_file_name=talebound $(PROTO_SERVICES);
+	statik -src=./doc/swagger -dest=./doc
+	mv pb/github.com/the-medo/talebound-backend/pb/* pb/
+	rm -rf pb/github.com
+
+proto_without_clean2:
+	protoc --proto_path=proto --go_out=pb --go-grpc_out=pb --grpc-gateway_out=pb --openapiv2_out=doc/swagger --openapiv2_opt=allow_merge=true,merge_file_name=talebound $(PROTO_SERVICES);
 	statik -src=./doc/swagger -dest=./doc
 
 proto_win: proto_delete_win	proto_without_clean
 
-proto_linux: proto_delete_linux proto_without_clean
+proto: proto_delete_linux proto_without_clean
 
 evans:
 	evans --host localhost --port 9090 -r repl

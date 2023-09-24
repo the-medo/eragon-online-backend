@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "services/verify/rpc_verify_email.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Verify {
+
+  // ============= VERIFY =================
+  rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {
+    option (google.api.http) = {
+      post: "/verify"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "verify user email";
+      summary: "Verify email";
+    };
+  };
+
+}

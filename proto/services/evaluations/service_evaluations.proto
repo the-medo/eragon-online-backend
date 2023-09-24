@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "services/evaluations/rpc_user_evaluations.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Evaluations {
+
+
+
+  // ============= USER EVALUATION =================
+  rpc GetEvaluationById(GetEvaluationByIdRequest) returns (GetEvaluationByIdResponse) {
+    option (google.api.http) = {
+      get: "/evaluations/id/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get evaluation by id";
+      summary: "Get evaluation by id";
+    };
+  };
+
+  rpc GetEvaluationsByType(GetEvaluationsByTypeRequest) returns (GetEvaluationsByTypeResponse) {
+    option (google.api.http) = {
+      get: "/evaluations/type/{type}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get evaluations by type";
+      summary: "Get evaluations by type";
+    };
+  };
+
+
+}

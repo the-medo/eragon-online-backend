@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.30.0
 // 	protoc        v4.22.0
-// source: image.proto
+// source: services/images/image.proto
 
 package pb
 
@@ -87,11 +87,11 @@ func (x ImageTypeVariant) String() string {
 }
 
 func (ImageTypeVariant) Descriptor() protoreflect.EnumDescriptor {
-	return file_image_proto_enumTypes[0].Descriptor()
+	return file_services_images_image_proto_enumTypes[0].Descriptor()
 }
 
 func (ImageTypeVariant) Type() protoreflect.EnumType {
-	return &file_image_proto_enumTypes[0]
+	return &file_services_images_image_proto_enumTypes[0]
 }
 
 func (x ImageTypeVariant) Number() protoreflect.EnumNumber {
@@ -100,7 +100,7 @@ func (x ImageTypeVariant) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ImageTypeVariant.Descriptor instead.
 func (ImageTypeVariant) EnumDescriptor() ([]byte, []int) {
-	return file_image_proto_rawDescGZIP(), []int{0}
+	return file_services_images_image_proto_rawDescGZIP(), []int{0}
 }
 
 type ImageType struct {
@@ -117,7 +117,7 @@ type ImageType struct {
 func (x *ImageType) Reset() {
 	*x = ImageType{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_image_proto_msgTypes[0]
+		mi := &file_services_images_image_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -130,7 +130,7 @@ func (x *ImageType) String() string {
 func (*ImageType) ProtoMessage() {}
 
 func (x *ImageType) ProtoReflect() protoreflect.Message {
-	mi := &file_image_proto_msgTypes[0]
+	mi := &file_services_images_image_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -143,7 +143,7 @@ func (x *ImageType) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImageType.ProtoReflect.Descriptor instead.
 func (*ImageType) Descriptor() ([]byte, []int) {
-	return file_image_proto_rawDescGZIP(), []int{0}
+	return file_services_images_image_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ImageType) GetId() int32 {
@@ -192,7 +192,7 @@ type Image struct {
 func (x *Image) Reset() {
 	*x = Image{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_image_proto_msgTypes[1]
+		mi := &file_services_images_image_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -205,7 +205,7 @@ func (x *Image) String() string {
 func (*Image) ProtoMessage() {}
 
 func (x *Image) ProtoReflect() protoreflect.Message {
-	mi := &file_image_proto_msgTypes[1]
+	mi := &file_services_images_image_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -218,7 +218,7 @@ func (x *Image) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Image.ProtoReflect.Descriptor instead.
 func (*Image) Descriptor() ([]byte, []int) {
-	return file_image_proto_rawDescGZIP(), []int{1}
+	return file_services_images_image_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Image) GetId() int32 {
@@ -277,10 +277,11 @@ func (x *Image) GetUserId() int32 {
 	return 0
 }
 
-var File_image_proto protoreflect.FileDescriptor
+var File_services_images_image_proto protoreflect.FileDescriptor
 
-var file_image_proto_rawDesc = []byte{
-	0x0a, 0x0b, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x02, 0x70,
+var file_services_images_image_proto_rawDesc = []byte{
+	0x0a, 0x1b, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2f, 0x69, 0x6d, 0x61, 0x67, 0x65,
+	0x73, 0x2f, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x02, 0x70,
 	0x62, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
 	0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f,
 	0x74, 0x6f, 0x22, 0x81, 0x01, 0x0a, 0x09, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x54, 0x79, 0x70, 0x65,
@@ -327,26 +328,26 @@ var file_image_proto_rawDesc = []byte{
 }
 
 var (
-	file_image_proto_rawDescOnce sync.Once
-	file_image_proto_rawDescData = file_image_proto_rawDesc
+	file_services_images_image_proto_rawDescOnce sync.Once
+	file_services_images_image_proto_rawDescData = file_services_images_image_proto_rawDesc
 )
 
-func file_image_proto_rawDescGZIP() []byte {
-	file_image_proto_rawDescOnce.Do(func() {
-		file_image_proto_rawDescData = protoimpl.X.CompressGZIP(file_image_proto_rawDescData)
+func file_services_images_image_proto_rawDescGZIP() []byte {
+	file_services_images_image_proto_rawDescOnce.Do(func() {
+		file_services_images_image_proto_rawDescData = protoimpl.X.CompressGZIP(file_services_images_image_proto_rawDescData)
 	})
-	return file_image_proto_rawDescData
+	return file_services_images_image_proto_rawDescData
 }
 
-var file_image_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_image_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_image_proto_goTypes = []interface{}{
+var file_services_images_image_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_services_images_image_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_services_images_image_proto_goTypes = []interface{}{
 	(ImageTypeVariant)(0),         // 0: pb.ImageTypeVariant
 	(*ImageType)(nil),             // 1: pb.ImageType
 	(*Image)(nil),                 // 2: pb.Image
 	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
 }
-var file_image_proto_depIdxs = []int32{
+var file_services_images_image_proto_depIdxs = []int32{
 	0, // 0: pb.ImageType.variant:type_name -> pb.ImageTypeVariant
 	3, // 1: pb.Image.createdAt:type_name -> google.protobuf.Timestamp
 	2, // [2:2] is the sub-list for method output_type
@@ -356,13 +357,13 @@ var file_image_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_image_proto_init() }
-func file_image_proto_init() {
-	if File_image_proto != nil {
+func init() { file_services_images_image_proto_init() }
+func file_services_images_image_proto_init() {
+	if File_services_images_image_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_image_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_services_images_image_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ImageType); i {
 			case 0:
 				return &v.state
@@ -374,7 +375,7 @@ func file_image_proto_init() {
 				return nil
 			}
 		}
-		file_image_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_services_images_image_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Image); i {
 			case 0:
 				return &v.state
@@ -391,19 +392,19 @@ func file_image_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_image_proto_rawDesc,
+			RawDescriptor: file_services_images_image_proto_rawDesc,
 			NumEnums:      1,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_image_proto_goTypes,
-		DependencyIndexes: file_image_proto_depIdxs,
-		EnumInfos:         file_image_proto_enumTypes,
-		MessageInfos:      file_image_proto_msgTypes,
+		GoTypes:           file_services_images_image_proto_goTypes,
+		DependencyIndexes: file_services_images_image_proto_depIdxs,
+		EnumInfos:         file_services_images_image_proto_enumTypes,
+		MessageInfos:      file_services_images_image_proto_msgTypes,
 	}.Build()
-	File_image_proto = out.File
-	file_image_proto_rawDesc = nil
-	file_image_proto_goTypes = nil
-	file_image_proto_depIdxs = nil
+	File_services_images_image_proto = out.File
+	file_services_images_image_proto_rawDesc = nil
+	file_services_images_image_proto_goTypes = nil
+	file_services_images_image_proto_depIdxs = nil
 }

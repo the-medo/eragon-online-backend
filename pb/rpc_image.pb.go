@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.30.0
 // 	protoc        v4.22.0
-// source: rpc_image.proto
+// source: services/images/rpc_image.proto
 
 package pb
 
@@ -34,7 +34,7 @@ type GetImagesRequest struct {
 func (x *GetImagesRequest) Reset() {
 	*x = GetImagesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_image_proto_msgTypes[0]
+		mi := &file_services_images_rpc_image_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -47,7 +47,7 @@ func (x *GetImagesRequest) String() string {
 func (*GetImagesRequest) ProtoMessage() {}
 
 func (x *GetImagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_image_proto_msgTypes[0]
+	mi := &file_services_images_rpc_image_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,7 +60,7 @@ func (x *GetImagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetImagesRequest.ProtoReflect.Descriptor instead.
 func (*GetImagesRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_image_proto_rawDescGZIP(), []int{0}
+	return file_services_images_rpc_image_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *GetImagesRequest) GetUserId() int32 {
@@ -105,7 +105,7 @@ type GetUserImagesRequest struct {
 func (x *GetUserImagesRequest) Reset() {
 	*x = GetUserImagesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_image_proto_msgTypes[1]
+		mi := &file_services_images_rpc_image_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -118,7 +118,7 @@ func (x *GetUserImagesRequest) String() string {
 func (*GetUserImagesRequest) ProtoMessage() {}
 
 func (x *GetUserImagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_image_proto_msgTypes[1]
+	mi := &file_services_images_rpc_image_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -131,7 +131,7 @@ func (x *GetUserImagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserImagesRequest.ProtoReflect.Descriptor instead.
 func (*GetUserImagesRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_image_proto_rawDescGZIP(), []int{1}
+	return file_services_images_rpc_image_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetUserImagesRequest) GetUserId() int32 {
@@ -174,7 +174,7 @@ type GetImagesResponse struct {
 func (x *GetImagesResponse) Reset() {
 	*x = GetImagesResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_image_proto_msgTypes[2]
+		mi := &file_services_images_rpc_image_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -187,7 +187,7 @@ func (x *GetImagesResponse) String() string {
 func (*GetImagesResponse) ProtoMessage() {}
 
 func (x *GetImagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_image_proto_msgTypes[2]
+	mi := &file_services_images_rpc_image_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -200,7 +200,7 @@ func (x *GetImagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetImagesResponse.ProtoReflect.Descriptor instead.
 func (*GetImagesResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_image_proto_rawDescGZIP(), []int{2}
+	return file_services_images_rpc_image_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetImagesResponse) GetImages() []*Image {
@@ -217,11 +217,13 @@ func (x *GetImagesResponse) GetTotalCount() int32 {
 	return 0
 }
 
-var File_rpc_image_proto protoreflect.FileDescriptor
+var File_services_images_rpc_image_proto protoreflect.FileDescriptor
 
-var file_rpc_image_proto_rawDesc = []byte{
-	0x0a, 0x0f, 0x72, 0x70, 0x63, 0x5f, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x12, 0x02, 0x70, 0x62, 0x1a, 0x0b, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x70, 0x72, 0x6f,
+var file_services_images_rpc_image_proto_rawDesc = []byte{
+	0x0a, 0x1f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2f, 0x69, 0x6d, 0x61, 0x67, 0x65,
+	0x73, 0x2f, 0x72, 0x70, 0x63, 0x5f, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x12, 0x02, 0x70, 0x62, 0x1a, 0x1b, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2f,
+	0x69, 0x6d, 0x61, 0x67, 0x65, 0x73, 0x2f, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x70, 0x72, 0x6f,
 	0x74, 0x6f, 0x22, 0xbe, 0x01, 0x0a, 0x10, 0x47, 0x65, 0x74, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x73,
 	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1b, 0x0a, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49,
 	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x48, 0x00, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49,
@@ -258,25 +260,25 @@ var file_rpc_image_proto_rawDesc = []byte{
 }
 
 var (
-	file_rpc_image_proto_rawDescOnce sync.Once
-	file_rpc_image_proto_rawDescData = file_rpc_image_proto_rawDesc
+	file_services_images_rpc_image_proto_rawDescOnce sync.Once
+	file_services_images_rpc_image_proto_rawDescData = file_services_images_rpc_image_proto_rawDesc
 )
 
-func file_rpc_image_proto_rawDescGZIP() []byte {
-	file_rpc_image_proto_rawDescOnce.Do(func() {
-		file_rpc_image_proto_rawDescData = protoimpl.X.CompressGZIP(file_rpc_image_proto_rawDescData)
+func file_services_images_rpc_image_proto_rawDescGZIP() []byte {
+	file_services_images_rpc_image_proto_rawDescOnce.Do(func() {
+		file_services_images_rpc_image_proto_rawDescData = protoimpl.X.CompressGZIP(file_services_images_rpc_image_proto_rawDescData)
 	})
-	return file_rpc_image_proto_rawDescData
+	return file_services_images_rpc_image_proto_rawDescData
 }
 
-var file_rpc_image_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_rpc_image_proto_goTypes = []interface{}{
+var file_services_images_rpc_image_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_services_images_rpc_image_proto_goTypes = []interface{}{
 	(*GetImagesRequest)(nil),     // 0: pb.GetImagesRequest
 	(*GetUserImagesRequest)(nil), // 1: pb.GetUserImagesRequest
 	(*GetImagesResponse)(nil),    // 2: pb.GetImagesResponse
 	(*Image)(nil),                // 3: pb.Image
 }
-var file_rpc_image_proto_depIdxs = []int32{
+var file_services_images_rpc_image_proto_depIdxs = []int32{
 	3, // 0: pb.GetImagesResponse.images:type_name -> pb.Image
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
@@ -285,14 +287,14 @@ var file_rpc_image_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_rpc_image_proto_init() }
-func file_rpc_image_proto_init() {
-	if File_rpc_image_proto != nil {
+func init() { file_services_images_rpc_image_proto_init() }
+func file_services_images_rpc_image_proto_init() {
+	if File_services_images_rpc_image_proto != nil {
 		return
 	}
-	file_image_proto_init()
+	file_services_images_image_proto_init()
 	if !protoimpl.UnsafeEnabled {
-		file_rpc_image_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_services_images_rpc_image_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetImagesRequest); i {
 			case 0:
 				return &v.state
@@ -304,7 +306,7 @@ func file_rpc_image_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_image_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_services_images_rpc_image_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetUserImagesRequest); i {
 			case 0:
 				return &v.state
@@ -316,7 +318,7 @@ func file_rpc_image_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_image_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_services_images_rpc_image_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetImagesResponse); i {
 			case 0:
 				return &v.state
@@ -329,24 +331,24 @@ func file_rpc_image_proto_init() {
 			}
 		}
 	}
-	file_rpc_image_proto_msgTypes[0].OneofWrappers = []interface{}{}
-	file_rpc_image_proto_msgTypes[1].OneofWrappers = []interface{}{}
+	file_services_images_rpc_image_proto_msgTypes[0].OneofWrappers = []interface{}{}
+	file_services_images_rpc_image_proto_msgTypes[1].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_rpc_image_proto_rawDesc,
+			RawDescriptor: file_services_images_rpc_image_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_rpc_image_proto_goTypes,
-		DependencyIndexes: file_rpc_image_proto_depIdxs,
-		MessageInfos:      file_rpc_image_proto_msgTypes,
+		GoTypes:           file_services_images_rpc_image_proto_goTypes,
+		DependencyIndexes: file_services_images_rpc_image_proto_depIdxs,
+		MessageInfos:      file_services_images_rpc_image_proto_msgTypes,
 	}.Build()
-	File_rpc_image_proto = out.File
-	file_rpc_image_proto_rawDesc = nil
-	file_rpc_image_proto_goTypes = nil
-	file_rpc_image_proto_depIdxs = nil
+	File_services_images_rpc_image_proto = out.File
+	file_services_images_rpc_image_proto_rawDesc = nil
+	file_services_images_rpc_image_proto_goTypes = nil
+	file_services_images_rpc_image_proto_depIdxs = nil
 }

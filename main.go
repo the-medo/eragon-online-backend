@@ -91,7 +91,19 @@ func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.Ta
 
 	grpcLogger := grpc.UnaryInterceptor(api.GrpcLogger)
 	grpcServer := grpc.NewServer(grpcLogger)
-	pb.RegisterTaleboundServer(grpcServer, server)
+
+	pb.RegisterChatServer(grpcServer, server)
+	pb.RegisterEvaluationsServer(grpcServer, server)
+	pb.RegisterImagesServer(grpcServer, server)
+	pb.RegisterMapsServer(grpcServer, server)
+	pb.RegisterMenusServer(grpcServer, server)
+	pb.RegisterPostTypesServer(grpcServer, server)
+	pb.RegisterPostsServer(grpcServer, server)
+	pb.RegisterTagsServer(grpcServer, server)
+	pb.RegisterUsersServer(grpcServer, server)
+	pb.RegisterVerifyServer(grpcServer, server)
+	pb.RegisterWorldsServer(grpcServer, server)
+
 	reflection.Register(grpcServer)
 
 	listener, err := net.Listen("tcp", config.GRPCServerAddress)
@@ -107,10 +119,6 @@ func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.Ta
 }
 
 func runGatewayServer(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) {
-	server, err := api.NewServer(config, store, taskDistributor)
-	if err != nil {
-		log.Fatal().Err(err).Msg("Cannot create server:")
-	}
 
 	grpcMux := runtime.NewServeMux(
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
@@ -130,7 +138,24 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	err = pb.RegisterTaleboundHandlerServer(ctx, grpcMux, server)
+
+	server, err := api.NewServer(config, store, taskDistributor)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Cannot create server:")
+	}
+
+	err = pb.RegisterChatHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterEvaluationsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterImagesHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterMapsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterMenusHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterPostTypesHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterPostsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterTagsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterUsersHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterVerifyHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterWorldsHandlerServer(ctx, grpcMux, server)
+
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot register handler server")
 	}

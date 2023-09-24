@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+import "services/chat/chat.proto";
+
+package pb;
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message AddChatMessageRequest {
+  string text = 1;
+}
+
+message AddChatMessageResponse {
+  ChatMessage message = 1;
+}
+
+message DeleteChatMessageRequest {
+  int64 id = 1;
+}
+
+message DeleteChatMessageResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetChatMessagesRequest {
+  optional int32 limit = 1;
+  optional int32 offset = 2;
+}
+
+message GetChatMessagesResponse {
+  repeated ChatMessage messages = 1;
+}

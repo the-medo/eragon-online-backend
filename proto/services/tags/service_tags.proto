@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "google/protobuf/empty.proto";
+import "services/worlds/rpc_world.proto";
+import "services/tags/tag.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Tags {
+
+  rpc GetAvailableWorldTags(google.protobuf.Empty) returns (GetAvailableWorldTagsResponse) {
+    option (google.api.http) = {
+      get: "/tags/worlds"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of tags, that are usable for worlds";
+      summary: "Get available world tags";
+    };
+  };
+
+  rpc CreateAvailableWorldTag(CreateAvailableWorldTagRequest) returns (ViewTag) {
+    option (google.api.http) = {
+      post: "/tags/worlds"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates new tag, that can be assigned to worlds";
+      summary: "Create available world tag";
+    };
+  };
+
+  rpc UpdateAvailableWorldTag(UpdateAvailableWorldTagRequest) returns (ViewTag) {
+    option (google.api.http) = {
+      patch: "/tags/worlds/{tagId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates world-assignable tag";
+      summary: "Update available world tag";
+    };
+  };
+
+  rpc DeleteAvailableWorldTag(DeleteAvailableWorldTagRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/tags/worlds/{tagId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes available world tag and removes all its assignments";
+      summary: "Delete available world tag";
+    };
+  };
+}

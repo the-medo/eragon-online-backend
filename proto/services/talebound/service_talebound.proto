@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package pb;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Talebound API";
+    version: "1.0";
+    contact: {
+      name: "Medo";
+      url: "https://github.com/the-medo/talebound-backend";
+      email: "martinmederly@gmail.com";
+    };
+  };
+};
+
+
+service Talebound {
+
+
+}

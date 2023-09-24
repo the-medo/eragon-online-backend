@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "google/protobuf/empty.proto";
+import "services/worlds/rpc_world.proto";
+import "services/worlds/world.proto";
+import "services/tags/tag.proto";
+import "services/images/image.proto";
+import "services/posts/post.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Worlds {
+
+  rpc CreateWorld(CreateWorldRequest) returns (World) {
+    option (google.api.http) = {
+      post: "/worlds"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates completely new world";
+      summary: "Create world";
+    };
+  };
+
+  rpc UpdateWorld(UpdateWorldRequest) returns (World) {
+    option (google.api.http) = {
+      patch: "/worlds/{worldId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates world properties (NO images or stats!)";
+      summary: "Update world";
+    };
+  };
+
+  rpc UploadWorldImage(UploadWorldImageRequest) returns (Image) {
+    option (google.api.http) = {
+      post: "/worlds/{worldId}/images"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "uploads and sets new image for given world";
+      summary: "Upload image for world";
+    };
+  };
+
+  rpc AddWorldTag(AddWorldTagRequest) returns (Tag) {
+    option (google.api.http) = {
+      post: "/worlds/{worldId}/tags"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "assigns one tag to the world";
+      summary: "Add tag world";
+    };
+  };
+
+  rpc RemoveWorldTag(RemoveWorldTagRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/worlds/{worldId}/tags"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "removes tag from the world";
+      summary: "Remove world tag";
+    };
+  };
+
+  rpc GetWorldAdmins(GetWorldAdminsRequest) returns (GetWorldAdminsResponse) {
+    option (google.api.http) = {
+      get: "/worlds/{worldId}/admin"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns admins and admin requests for world";
+      summary: "Get world admins";
+    };
+  };
+
+  rpc CreateWorldAdmin(CreateWorldAdminRequest) returns (WorldAdmin) {
+    option (google.api.http) = {
+      post: "/worlds/{worldId}/admin"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "adds request to become admin of the world";
+      summary: "Create world admin";
+    };
+  };
+
+  rpc UpdateWorldAdmin(UpdateWorldAdminRequest) returns (WorldAdmin) {
+    option (google.api.http) = {
+      patch: "/worlds/{worldId}/admin"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates world admin request (approve / decline)";
+      summary: "Update world admin";
+    };
+  };
+
+  rpc DeleteWorldAdmin(DeleteWorldAdminRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/worlds/{worldId}/admin"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes world admin";
+      summary: "Delete world admin";
+    };
+  };
+
+  rpc GetWorldDailyActivity(GetWorldDailyActivityRequest) returns (GetWorldDailyActivityResponse) {
+    option (google.api.http) = {
+      get: "/worlds/activity/daily"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets activity by day";
+      summary: "Get world(s) daily activity";
+    };
+  };
+
+  rpc GetWorldMonthlyActivity(GetWorldMonthlyActivityRequest) returns (GetWorldMonthlyActivityResponse) {
+    option (google.api.http) = {
+      get: "/worlds/activity/monthly"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets world activity grouped by month";
+      summary: "Get world(s) monthly activity";
+    };
+  };
+
+  rpc GetWorlds(GetWorldsRequest) returns (GetWorldsResponse) {
+    option (google.api.http) = {
+      get: "/worlds"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of worlds";
+      summary: "Get worlds ";
+    };
+  };
+
+  rpc GetWorldById(GetWorldByIdRequest) returns (World) {
+    option (google.api.http) = {
+      get: "/worlds/{worldId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets world by ID";
+      summary: "Get world by ID ";
+    };
+  };
+
+  rpc UpdateWorldIntroduction(UpdateWorldIntroductionRequest) returns (Post) {
+    option (google.api.http) = {
+      patch: "/worlds/{worldId}/introduction"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates/updates world introduction";
+      summary: "Update world introduction";
+    };
+  };
+}

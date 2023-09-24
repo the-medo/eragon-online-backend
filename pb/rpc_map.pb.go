@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.30.0
 // 	protoc        v4.22.0
-// source: rpc_map.proto
+// source: services/maps/rpc_map.proto
 
 package pb
 
@@ -29,7 +29,7 @@ type GetWorldMapRequest struct {
 func (x *GetWorldMapRequest) Reset() {
 	*x = GetWorldMapRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[0]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -42,7 +42,7 @@ func (x *GetWorldMapRequest) String() string {
 func (*GetWorldMapRequest) ProtoMessage() {}
 
 func (x *GetWorldMapRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[0]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +55,7 @@ func (x *GetWorldMapRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWorldMapRequest.ProtoReflect.Descriptor instead.
 func (*GetWorldMapRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{0}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{0}
 }
 
 type GetWorldMapResponse struct {
@@ -67,7 +67,7 @@ type GetWorldMapResponse struct {
 func (x *GetWorldMapResponse) Reset() {
 	*x = GetWorldMapResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[1]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -80,7 +80,7 @@ func (x *GetWorldMapResponse) String() string {
 func (*GetWorldMapResponse) ProtoMessage() {}
 
 func (x *GetWorldMapResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[1]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -93,7 +93,7 @@ func (x *GetWorldMapResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWorldMapResponse.ProtoReflect.Descriptor instead.
 func (*GetWorldMapResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{1}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{1}
 }
 
 type CreateWorldMapRequest struct {
@@ -105,7 +105,7 @@ type CreateWorldMapRequest struct {
 func (x *CreateWorldMapRequest) Reset() {
 	*x = CreateWorldMapRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[2]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -118,7 +118,7 @@ func (x *CreateWorldMapRequest) String() string {
 func (*CreateWorldMapRequest) ProtoMessage() {}
 
 func (x *CreateWorldMapRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[2]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -131,7 +131,7 @@ func (x *CreateWorldMapRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWorldMapRequest.ProtoReflect.Descriptor instead.
 func (*CreateWorldMapRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{2}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{2}
 }
 
 type CreateWorldMapResponse struct {
@@ -143,7 +143,7 @@ type CreateWorldMapResponse struct {
 func (x *CreateWorldMapResponse) Reset() {
 	*x = CreateWorldMapResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[3]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -156,7 +156,7 @@ func (x *CreateWorldMapResponse) String() string {
 func (*CreateWorldMapResponse) ProtoMessage() {}
 
 func (x *CreateWorldMapResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[3]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -169,7 +169,7 @@ func (x *CreateWorldMapResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWorldMapResponse.ProtoReflect.Descriptor instead.
 func (*CreateWorldMapResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{3}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{3}
 }
 
 type DeleteWorldMapRequest struct {
@@ -181,7 +181,7 @@ type DeleteWorldMapRequest struct {
 func (x *DeleteWorldMapRequest) Reset() {
 	*x = DeleteWorldMapRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[4]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -194,7 +194,7 @@ func (x *DeleteWorldMapRequest) String() string {
 func (*DeleteWorldMapRequest) ProtoMessage() {}
 
 func (x *DeleteWorldMapRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[4]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -207,7 +207,7 @@ func (x *DeleteWorldMapRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWorldMapRequest.ProtoReflect.Descriptor instead.
 func (*DeleteWorldMapRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{4}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{4}
 }
 
 type DeleteWorldMapResponse struct {
@@ -219,7 +219,7 @@ type DeleteWorldMapResponse struct {
 func (x *DeleteWorldMapResponse) Reset() {
 	*x = DeleteWorldMapResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[5]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -232,7 +232,7 @@ func (x *DeleteWorldMapResponse) String() string {
 func (*DeleteWorldMapResponse) ProtoMessage() {}
 
 func (x *DeleteWorldMapResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[5]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -245,19 +245,21 @@ func (x *DeleteWorldMapResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWorldMapResponse.ProtoReflect.Descriptor instead.
 func (*DeleteWorldMapResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{5}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{5}
 }
 
 type UpdateMapRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	MapId int32 `protobuf:"varint,1,opt,name=mapId,proto3" json:"mapId,omitempty"`
 }
 
 func (x *UpdateMapRequest) Reset() {
 	*x = UpdateMapRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[6]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -270,7 +272,7 @@ func (x *UpdateMapRequest) String() string {
 func (*UpdateMapRequest) ProtoMessage() {}
 
 func (x *UpdateMapRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[6]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -283,19 +285,28 @@ func (x *UpdateMapRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMapRequest.ProtoReflect.Descriptor instead.
 func (*UpdateMapRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{6}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UpdateMapRequest) GetMapId() int32 {
+	if x != nil {
+		return x.MapId
+	}
+	return 0
 }
 
 type UpdateMapResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	Map *ViewMap `protobuf:"bytes,1,opt,name=map,proto3" json:"map,omitempty"`
 }
 
 func (x *UpdateMapResponse) Reset() {
 	*x = UpdateMapResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[7]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -308,7 +319,7 @@ func (x *UpdateMapResponse) String() string {
 func (*UpdateMapResponse) ProtoMessage() {}
 
 func (x *UpdateMapResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[7]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -321,7 +332,14 @@ func (x *UpdateMapResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMapResponse.ProtoReflect.Descriptor instead.
 func (*UpdateMapResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{7}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateMapResponse) GetMap() *ViewMap {
+	if x != nil {
+		return x.Map
+	}
+	return nil
 }
 
 type GetMapLayersRequest struct {
@@ -333,7 +351,7 @@ type GetMapLayersRequest struct {
 func (x *GetMapLayersRequest) Reset() {
 	*x = GetMapLayersRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[8]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -346,7 +364,7 @@ func (x *GetMapLayersRequest) String() string {
 func (*GetMapLayersRequest) ProtoMessage() {}
 
 func (x *GetMapLayersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[8]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -359,7 +377,7 @@ func (x *GetMapLayersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMapLayersRequest.ProtoReflect.Descriptor instead.
 func (*GetMapLayersRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{8}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{8}
 }
 
 type GetMapLayersResponse struct {
@@ -371,7 +389,7 @@ type GetMapLayersResponse struct {
 func (x *GetMapLayersResponse) Reset() {
 	*x = GetMapLayersResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[9]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -384,7 +402,7 @@ func (x *GetMapLayersResponse) String() string {
 func (*GetMapLayersResponse) ProtoMessage() {}
 
 func (x *GetMapLayersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[9]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -397,7 +415,7 @@ func (x *GetMapLayersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMapLayersResponse.ProtoReflect.Descriptor instead.
 func (*GetMapLayersResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{9}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{9}
 }
 
 type CreateMapLayerRequest struct {
@@ -409,7 +427,7 @@ type CreateMapLayerRequest struct {
 func (x *CreateMapLayerRequest) Reset() {
 	*x = CreateMapLayerRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[10]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -422,7 +440,7 @@ func (x *CreateMapLayerRequest) String() string {
 func (*CreateMapLayerRequest) ProtoMessage() {}
 
 func (x *CreateMapLayerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[10]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -435,7 +453,7 @@ func (x *CreateMapLayerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMapLayerRequest.ProtoReflect.Descriptor instead.
 func (*CreateMapLayerRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{10}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{10}
 }
 
 type CreateMapLayerResponse struct {
@@ -447,7 +465,7 @@ type CreateMapLayerResponse struct {
 func (x *CreateMapLayerResponse) Reset() {
 	*x = CreateMapLayerResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[11]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -460,7 +478,7 @@ func (x *CreateMapLayerResponse) String() string {
 func (*CreateMapLayerResponse) ProtoMessage() {}
 
 func (x *CreateMapLayerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[11]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -473,7 +491,7 @@ func (x *CreateMapLayerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMapLayerResponse.ProtoReflect.Descriptor instead.
 func (*CreateMapLayerResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{11}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{11}
 }
 
 type DeleteMapLayerRequest struct {
@@ -485,7 +503,7 @@ type DeleteMapLayerRequest struct {
 func (x *DeleteMapLayerRequest) Reset() {
 	*x = DeleteMapLayerRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[12]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -498,7 +516,7 @@ func (x *DeleteMapLayerRequest) String() string {
 func (*DeleteMapLayerRequest) ProtoMessage() {}
 
 func (x *DeleteMapLayerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[12]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -511,7 +529,7 @@ func (x *DeleteMapLayerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMapLayerRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMapLayerRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{12}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{12}
 }
 
 type DeleteMapLayerResponse struct {
@@ -523,7 +541,7 @@ type DeleteMapLayerResponse struct {
 func (x *DeleteMapLayerResponse) Reset() {
 	*x = DeleteMapLayerResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[13]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -536,7 +554,7 @@ func (x *DeleteMapLayerResponse) String() string {
 func (*DeleteMapLayerResponse) ProtoMessage() {}
 
 func (x *DeleteMapLayerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[13]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -549,7 +567,7 @@ func (x *DeleteMapLayerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMapLayerResponse.ProtoReflect.Descriptor instead.
 func (*DeleteMapLayerResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{13}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{13}
 }
 
 type UpdateMapLayerRequest struct {
@@ -561,7 +579,7 @@ type UpdateMapLayerRequest struct {
 func (x *UpdateMapLayerRequest) Reset() {
 	*x = UpdateMapLayerRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[14]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -574,7 +592,7 @@ func (x *UpdateMapLayerRequest) String() string {
 func (*UpdateMapLayerRequest) ProtoMessage() {}
 
 func (x *UpdateMapLayerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[14]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -587,7 +605,7 @@ func (x *UpdateMapLayerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMapLayerRequest.ProtoReflect.Descriptor instead.
 func (*UpdateMapLayerRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{14}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{14}
 }
 
 type UpdateMapLayerResponse struct {
@@ -599,7 +617,7 @@ type UpdateMapLayerResponse struct {
 func (x *UpdateMapLayerResponse) Reset() {
 	*x = UpdateMapLayerResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[15]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -612,7 +630,7 @@ func (x *UpdateMapLayerResponse) String() string {
 func (*UpdateMapLayerResponse) ProtoMessage() {}
 
 func (x *UpdateMapLayerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[15]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -625,7 +643,7 @@ func (x *UpdateMapLayerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMapLayerResponse.ProtoReflect.Descriptor instead.
 func (*UpdateMapLayerResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{15}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{15}
 }
 
 type GetMapPinTypesRequest struct {
@@ -637,7 +655,7 @@ type GetMapPinTypesRequest struct {
 func (x *GetMapPinTypesRequest) Reset() {
 	*x = GetMapPinTypesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[16]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -650,7 +668,7 @@ func (x *GetMapPinTypesRequest) String() string {
 func (*GetMapPinTypesRequest) ProtoMessage() {}
 
 func (x *GetMapPinTypesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[16]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -663,7 +681,7 @@ func (x *GetMapPinTypesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMapPinTypesRequest.ProtoReflect.Descriptor instead.
 func (*GetMapPinTypesRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{16}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{16}
 }
 
 type GetMapPinTypesResponse struct {
@@ -675,7 +693,7 @@ type GetMapPinTypesResponse struct {
 func (x *GetMapPinTypesResponse) Reset() {
 	*x = GetMapPinTypesResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[17]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -688,7 +706,7 @@ func (x *GetMapPinTypesResponse) String() string {
 func (*GetMapPinTypesResponse) ProtoMessage() {}
 
 func (x *GetMapPinTypesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[17]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -701,7 +719,7 @@ func (x *GetMapPinTypesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMapPinTypesResponse.ProtoReflect.Descriptor instead.
 func (*GetMapPinTypesResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{17}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{17}
 }
 
 type CreateMapPinTypeRequest struct {
@@ -713,7 +731,7 @@ type CreateMapPinTypeRequest struct {
 func (x *CreateMapPinTypeRequest) Reset() {
 	*x = CreateMapPinTypeRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[18]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -726,7 +744,7 @@ func (x *CreateMapPinTypeRequest) String() string {
 func (*CreateMapPinTypeRequest) ProtoMessage() {}
 
 func (x *CreateMapPinTypeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[18]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -739,7 +757,7 @@ func (x *CreateMapPinTypeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMapPinTypeRequest.ProtoReflect.Descriptor instead.
 func (*CreateMapPinTypeRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{18}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{18}
 }
 
 type CreateMapPinTypeResponse struct {
@@ -751,7 +769,7 @@ type CreateMapPinTypeResponse struct {
 func (x *CreateMapPinTypeResponse) Reset() {
 	*x = CreateMapPinTypeResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[19]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -764,7 +782,7 @@ func (x *CreateMapPinTypeResponse) String() string {
 func (*CreateMapPinTypeResponse) ProtoMessage() {}
 
 func (x *CreateMapPinTypeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[19]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -777,7 +795,7 @@ func (x *CreateMapPinTypeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMapPinTypeResponse.ProtoReflect.Descriptor instead.
 func (*CreateMapPinTypeResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{19}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{19}
 }
 
 type DeleteMapPinTypeRequest struct {
@@ -789,7 +807,7 @@ type DeleteMapPinTypeRequest struct {
 func (x *DeleteMapPinTypeRequest) Reset() {
 	*x = DeleteMapPinTypeRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[20]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -802,7 +820,7 @@ func (x *DeleteMapPinTypeRequest) String() string {
 func (*DeleteMapPinTypeRequest) ProtoMessage() {}
 
 func (x *DeleteMapPinTypeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[20]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -815,7 +833,7 @@ func (x *DeleteMapPinTypeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMapPinTypeRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMapPinTypeRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{20}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{20}
 }
 
 type DeleteMapPinTypeResponse struct {
@@ -827,7 +845,7 @@ type DeleteMapPinTypeResponse struct {
 func (x *DeleteMapPinTypeResponse) Reset() {
 	*x = DeleteMapPinTypeResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[21]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -840,7 +858,7 @@ func (x *DeleteMapPinTypeResponse) String() string {
 func (*DeleteMapPinTypeResponse) ProtoMessage() {}
 
 func (x *DeleteMapPinTypeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[21]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -853,7 +871,7 @@ func (x *DeleteMapPinTypeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMapPinTypeResponse.ProtoReflect.Descriptor instead.
 func (*DeleteMapPinTypeResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{21}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{21}
 }
 
 type UpdateMapPinTypeRequest struct {
@@ -865,7 +883,7 @@ type UpdateMapPinTypeRequest struct {
 func (x *UpdateMapPinTypeRequest) Reset() {
 	*x = UpdateMapPinTypeRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[22]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -878,7 +896,7 @@ func (x *UpdateMapPinTypeRequest) String() string {
 func (*UpdateMapPinTypeRequest) ProtoMessage() {}
 
 func (x *UpdateMapPinTypeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[22]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -891,7 +909,7 @@ func (x *UpdateMapPinTypeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMapPinTypeRequest.ProtoReflect.Descriptor instead.
 func (*UpdateMapPinTypeRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{22}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{22}
 }
 
 type UpdateMapPinTypeResponse struct {
@@ -903,7 +921,7 @@ type UpdateMapPinTypeResponse struct {
 func (x *UpdateMapPinTypeResponse) Reset() {
 	*x = UpdateMapPinTypeResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[23]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -916,7 +934,7 @@ func (x *UpdateMapPinTypeResponse) String() string {
 func (*UpdateMapPinTypeResponse) ProtoMessage() {}
 
 func (x *UpdateMapPinTypeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[23]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -929,7 +947,7 @@ func (x *UpdateMapPinTypeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMapPinTypeResponse.ProtoReflect.Descriptor instead.
 func (*UpdateMapPinTypeResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{23}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{23}
 }
 
 type GetMapPinsRequest struct {
@@ -941,7 +959,7 @@ type GetMapPinsRequest struct {
 func (x *GetMapPinsRequest) Reset() {
 	*x = GetMapPinsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[24]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -954,7 +972,7 @@ func (x *GetMapPinsRequest) String() string {
 func (*GetMapPinsRequest) ProtoMessage() {}
 
 func (x *GetMapPinsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[24]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -967,7 +985,7 @@ func (x *GetMapPinsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMapPinsRequest.ProtoReflect.Descriptor instead.
 func (*GetMapPinsRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{24}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{24}
 }
 
 type GetMapPinsResponse struct {
@@ -979,7 +997,7 @@ type GetMapPinsResponse struct {
 func (x *GetMapPinsResponse) Reset() {
 	*x = GetMapPinsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[25]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -992,7 +1010,7 @@ func (x *GetMapPinsResponse) String() string {
 func (*GetMapPinsResponse) ProtoMessage() {}
 
 func (x *GetMapPinsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[25]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1005,7 +1023,7 @@ func (x *GetMapPinsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMapPinsResponse.ProtoReflect.Descriptor instead.
 func (*GetMapPinsResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{25}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{25}
 }
 
 type CreateMapPinRequest struct {
@@ -1017,7 +1035,7 @@ type CreateMapPinRequest struct {
 func (x *CreateMapPinRequest) Reset() {
 	*x = CreateMapPinRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[26]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1030,7 +1048,7 @@ func (x *CreateMapPinRequest) String() string {
 func (*CreateMapPinRequest) ProtoMessage() {}
 
 func (x *CreateMapPinRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[26]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1043,7 +1061,7 @@ func (x *CreateMapPinRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMapPinRequest.ProtoReflect.Descriptor instead.
 func (*CreateMapPinRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{26}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{26}
 }
 
 type CreateMapPinResponse struct {
@@ -1055,7 +1073,7 @@ type CreateMapPinResponse struct {
 func (x *CreateMapPinResponse) Reset() {
 	*x = CreateMapPinResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[27]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1068,7 +1086,7 @@ func (x *CreateMapPinResponse) String() string {
 func (*CreateMapPinResponse) ProtoMessage() {}
 
 func (x *CreateMapPinResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[27]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1081,7 +1099,7 @@ func (x *CreateMapPinResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMapPinResponse.ProtoReflect.Descriptor instead.
 func (*CreateMapPinResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{27}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{27}
 }
 
 type DeleteMapPinRequest struct {
@@ -1093,7 +1111,7 @@ type DeleteMapPinRequest struct {
 func (x *DeleteMapPinRequest) Reset() {
 	*x = DeleteMapPinRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[28]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1106,7 +1124,7 @@ func (x *DeleteMapPinRequest) String() string {
 func (*DeleteMapPinRequest) ProtoMessage() {}
 
 func (x *DeleteMapPinRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[28]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1119,7 +1137,7 @@ func (x *DeleteMapPinRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMapPinRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMapPinRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{28}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{28}
 }
 
 type DeleteMapPinResponse struct {
@@ -1131,7 +1149,7 @@ type DeleteMapPinResponse struct {
 func (x *DeleteMapPinResponse) Reset() {
 	*x = DeleteMapPinResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[29]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1144,7 +1162,7 @@ func (x *DeleteMapPinResponse) String() string {
 func (*DeleteMapPinResponse) ProtoMessage() {}
 
 func (x *DeleteMapPinResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[29]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1157,7 +1175,7 @@ func (x *DeleteMapPinResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMapPinResponse.ProtoReflect.Descriptor instead.
 func (*DeleteMapPinResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{29}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{29}
 }
 
 type UpdateMapPinRequest struct {
@@ -1169,7 +1187,7 @@ type UpdateMapPinRequest struct {
 func (x *UpdateMapPinRequest) Reset() {
 	*x = UpdateMapPinRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[30]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[30]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1182,7 +1200,7 @@ func (x *UpdateMapPinRequest) String() string {
 func (*UpdateMapPinRequest) ProtoMessage() {}
 
 func (x *UpdateMapPinRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[30]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1195,7 +1213,7 @@ func (x *UpdateMapPinRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMapPinRequest.ProtoReflect.Descriptor instead.
 func (*UpdateMapPinRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{30}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{30}
 }
 
 type UpdateMapPinResponse struct {
@@ -1207,7 +1225,7 @@ type UpdateMapPinResponse struct {
 func (x *UpdateMapPinResponse) Reset() {
 	*x = UpdateMapPinResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_rpc_map_proto_msgTypes[31]
+		mi := &file_services_maps_rpc_map_proto_msgTypes[31]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1220,7 +1238,7 @@ func (x *UpdateMapPinResponse) String() string {
 func (*UpdateMapPinResponse) ProtoMessage() {}
 
 func (x *UpdateMapPinResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_map_proto_msgTypes[31]
+	mi := &file_services_maps_rpc_map_proto_msgTypes[31]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1233,82 +1251,88 @@ func (x *UpdateMapPinResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMapPinResponse.ProtoReflect.Descriptor instead.
 func (*UpdateMapPinResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_map_proto_rawDescGZIP(), []int{31}
+	return file_services_maps_rpc_map_proto_rawDescGZIP(), []int{31}
 }
 
-var File_rpc_map_proto protoreflect.FileDescriptor
+var File_services_maps_rpc_map_proto protoreflect.FileDescriptor
 
-var file_rpc_map_proto_rawDesc = []byte{
-	0x0a, 0x0d, 0x72, 0x70, 0x63, 0x5f, 0x6d, 0x61, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12,
-	0x02, 0x70, 0x62, 0x22, 0x14, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4d,
-	0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x15, 0x0a, 0x13, 0x47, 0x65, 0x74,
-	0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4d, 0x61, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x17, 0x0a, 0x15, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4d,
-	0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x18, 0x0a, 0x16, 0x43, 0x72, 0x65,
-	0x61, 0x74, 0x65, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4d, 0x61, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x22, 0x17, 0x0a, 0x15, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x57, 0x6f, 0x72,
-	0x6c, 0x64, 0x4d, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x18, 0x0a, 0x16,
-	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4d, 0x61, 0x70, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x12, 0x0a, 0x10, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
-	0x4d, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x13, 0x0a, 0x11, 0x55, 0x70,
-	0x64, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x15, 0x0a, 0x13, 0x47, 0x65, 0x74, 0x4d, 0x61, 0x70, 0x4c, 0x61, 0x79, 0x65, 0x72, 0x73, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x16, 0x0a, 0x14, 0x47, 0x65, 0x74, 0x4d, 0x61, 0x70,
-	0x4c, 0x61, 0x79, 0x65, 0x72, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x17,
-	0x0a, 0x15, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x4c, 0x61, 0x79, 0x65, 0x72,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x18, 0x0a, 0x16, 0x43, 0x72, 0x65, 0x61, 0x74,
-	0x65, 0x4d, 0x61, 0x70, 0x4c, 0x61, 0x79, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x17, 0x0a, 0x15, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x4c, 0x61,
-	0x79, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x18, 0x0a, 0x16, 0x44, 0x65,
-	0x6c, 0x65, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x4c, 0x61, 0x79, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x17, 0x0a, 0x15, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x61,
-	0x70, 0x4c, 0x61, 0x79, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x18, 0x0a,
-	0x16, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x4c, 0x61, 0x79, 0x65, 0x72, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x17, 0x0a, 0x15, 0x47, 0x65, 0x74, 0x4d, 0x61,
-	0x70, 0x50, 0x69, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x22, 0x18, 0x0a, 0x16, 0x47, 0x65, 0x74, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x54, 0x79, 0x70,
-	0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x19, 0x0a, 0x17, 0x43, 0x72,
-	0x65, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x1a, 0x0a, 0x18, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4d,
-	0x61, 0x70, 0x50, 0x69, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x19, 0x0a, 0x17, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69,
-	0x6e, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x1a, 0x0a, 0x18,
-	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x54, 0x79, 0x70, 0x65,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x19, 0x0a, 0x17, 0x55, 0x70, 0x64, 0x61,
-	0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x22, 0x1a, 0x0a, 0x18, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70,
-	0x50, 0x69, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x13, 0x0a, 0x11, 0x47, 0x65, 0x74, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x73, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x22, 0x14, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x4d, 0x61, 0x70, 0x50, 0x69,
-	0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x15, 0x0a, 0x13, 0x43, 0x72,
-	0x65, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x22, 0x16, 0x0a, 0x14, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69,
-	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x15, 0x0a, 0x13, 0x44, 0x65, 0x6c,
-	0x65, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x22, 0x16, 0x0a, 0x14, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x15, 0x0a, 0x13, 0x55, 0x70, 0x64, 0x61,
-	0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22,
-	0x16, 0x0a, 0x14, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x2a, 0x5a, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f, 0x74,
-	0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64,
-	0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+var file_services_maps_rpc_map_proto_rawDesc = []byte{
+	0x0a, 0x1b, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2f, 0x6d, 0x61, 0x70, 0x73, 0x2f,
+	0x72, 0x70, 0x63, 0x5f, 0x6d, 0x61, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x02, 0x70,
+	0x62, 0x1a, 0x17, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2f, 0x6d, 0x61, 0x70, 0x73,
+	0x2f, 0x6d, 0x61, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x14, 0x0a, 0x12, 0x47, 0x65,
+	0x74, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4d, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x22, 0x15, 0x0a, 0x13, 0x47, 0x65, 0x74, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4d, 0x61, 0x70, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x17, 0x0a, 0x15, 0x43, 0x72, 0x65, 0x61, 0x74,
+	0x65, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4d, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x22, 0x18, 0x0a, 0x16, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4d,
+	0x61, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x17, 0x0a, 0x15, 0x44, 0x65,
+	0x6c, 0x65, 0x74, 0x65, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4d, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x22, 0x18, 0x0a, 0x16, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x57, 0x6f, 0x72,
+	0x6c, 0x64, 0x4d, 0x61, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x28, 0x0a,
+	0x10, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x14, 0x0a, 0x05, 0x6d, 0x61, 0x70, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05,
+	0x52, 0x05, 0x6d, 0x61, 0x70, 0x49, 0x64, 0x22, 0x32, 0x0a, 0x11, 0x55, 0x70, 0x64, 0x61, 0x74,
+	0x65, 0x4d, 0x61, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1d, 0x0a, 0x03,
+	0x6d, 0x61, 0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0b, 0x2e, 0x70, 0x62, 0x2e, 0x56,
+	0x69, 0x65, 0x77, 0x4d, 0x61, 0x70, 0x52, 0x03, 0x6d, 0x61, 0x70, 0x22, 0x15, 0x0a, 0x13, 0x47,
+	0x65, 0x74, 0x4d, 0x61, 0x70, 0x4c, 0x61, 0x79, 0x65, 0x72, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x22, 0x16, 0x0a, 0x14, 0x47, 0x65, 0x74, 0x4d, 0x61, 0x70, 0x4c, 0x61, 0x79, 0x65,
+	0x72, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x17, 0x0a, 0x15, 0x43, 0x72,
+	0x65, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x4c, 0x61, 0x79, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x22, 0x18, 0x0a, 0x16, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70,
+	0x4c, 0x61, 0x79, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x17, 0x0a,
+	0x15, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x4c, 0x61, 0x79, 0x65, 0x72, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x18, 0x0a, 0x16, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
+	0x4d, 0x61, 0x70, 0x4c, 0x61, 0x79, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x17, 0x0a, 0x15, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x4c, 0x61, 0x79,
+	0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x18, 0x0a, 0x16, 0x55, 0x70, 0x64,
+	0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x4c, 0x61, 0x79, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x17, 0x0a, 0x15, 0x47, 0x65, 0x74, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e,
+	0x54, 0x79, 0x70, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x18, 0x0a, 0x16,
+	0x47, 0x65, 0x74, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x73, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x19, 0x0a, 0x17, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x22, 0x1a, 0x0a, 0x18, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69,
+	0x6e, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x19, 0x0a,
+	0x17, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x54, 0x79, 0x70,
+	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x1a, 0x0a, 0x18, 0x44, 0x65, 0x6c, 0x65,
+	0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x19, 0x0a, 0x17, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x61,
+	0x70, 0x50, 0x69, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22,
+	0x1a, 0x0a, 0x18, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x54,
+	0x79, 0x70, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x13, 0x0a, 0x11, 0x47,
+	0x65, 0x74, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x22, 0x14, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x73, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x15, 0x0a, 0x13, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x16, 0x0a,
+	0x14, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x15, 0x0a, 0x13, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4d,
+	0x61, 0x70, 0x50, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x16, 0x0a, 0x14,
+	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x15, 0x0a, 0x13, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x61,
+	0x70, 0x50, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x16, 0x0a, 0x14, 0x55,
+	0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x70, 0x50, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x42, 0x2a, 0x5a, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
+	0x6d, 0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c, 0x65, 0x62,
+	0x6f, 0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70, 0x62, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_rpc_map_proto_rawDescOnce sync.Once
-	file_rpc_map_proto_rawDescData = file_rpc_map_proto_rawDesc
+	file_services_maps_rpc_map_proto_rawDescOnce sync.Once
+	file_services_maps_rpc_map_proto_rawDescData = file_services_maps_rpc_map_proto_rawDesc
 )
 
-func file_rpc_map_proto_rawDescGZIP() []byte {
-	file_rpc_map_proto_rawDescOnce.Do(func() {
-		file_rpc_map_proto_rawDescData = protoimpl.X.CompressGZIP(file_rpc_map_proto_rawDescData)
+func file_services_maps_rpc_map_proto_rawDescGZIP() []byte {
+	file_services_maps_rpc_map_proto_rawDescOnce.Do(func() {
+		file_services_maps_rpc_map_proto_rawDescData = protoimpl.X.CompressGZIP(file_services_maps_rpc_map_proto_rawDescData)
 	})
-	return file_rpc_map_proto_rawDescData
+	return file_services_maps_rpc_map_proto_rawDescData
 }
 
-var file_rpc_map_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
-var file_rpc_map_proto_goTypes = []interface{}{
+var file_services_maps_rpc_map_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
+var file_services_maps_rpc_map_proto_goTypes = []interface{}{
 	(*GetWorldMapRequest)(nil),       // 0: pb.GetWorldMapRequest
 	(*GetWorldMapResponse)(nil),      // 1: pb.GetWorldMapResponse
 	(*CreateWorldMapRequest)(nil),    // 2: pb.CreateWorldMapRequest
@@ -1341,22 +1365,25 @@ var file_rpc_map_proto_goTypes = []interface{}{
 	(*DeleteMapPinResponse)(nil),     // 29: pb.DeleteMapPinResponse
 	(*UpdateMapPinRequest)(nil),      // 30: pb.UpdateMapPinRequest
 	(*UpdateMapPinResponse)(nil),     // 31: pb.UpdateMapPinResponse
+	(*ViewMap)(nil),                  // 32: pb.ViewMap
 }
-var file_rpc_map_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+var file_services_maps_rpc_map_proto_depIdxs = []int32{
+	32, // 0: pb.UpdateMapResponse.map:type_name -> pb.ViewMap
+	1,  // [1:1] is the sub-list for method output_type
+	1,  // [1:1] is the sub-list for method input_type
+	1,  // [1:1] is the sub-list for extension type_name
+	1,  // [1:1] is the sub-list for extension extendee
+	0,  // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_rpc_map_proto_init() }
-func file_rpc_map_proto_init() {
-	if File_rpc_map_proto != nil {
+func init() { file_services_maps_rpc_map_proto_init() }
+func file_services_maps_rpc_map_proto_init() {
+	if File_services_maps_rpc_map_proto != nil {
 		return
 	}
+	file_services_maps_map_proto_init()
 	if !protoimpl.UnsafeEnabled {
-		file_rpc_map_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetWorldMapRequest); i {
 			case 0:
 				return &v.state
@@ -1368,7 +1395,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetWorldMapResponse); i {
 			case 0:
 				return &v.state
@@ -1380,7 +1407,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateWorldMapRequest); i {
 			case 0:
 				return &v.state
@@ -1392,7 +1419,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateWorldMapResponse); i {
 			case 0:
 				return &v.state
@@ -1404,7 +1431,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteWorldMapRequest); i {
 			case 0:
 				return &v.state
@@ -1416,7 +1443,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteWorldMapResponse); i {
 			case 0:
 				return &v.state
@@ -1428,7 +1455,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateMapRequest); i {
 			case 0:
 				return &v.state
@@ -1440,7 +1467,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateMapResponse); i {
 			case 0:
 				return &v.state
@@ -1452,7 +1479,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetMapLayersRequest); i {
 			case 0:
 				return &v.state
@@ -1464,7 +1491,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetMapLayersResponse); i {
 			case 0:
 				return &v.state
@@ -1476,7 +1503,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateMapLayerRequest); i {
 			case 0:
 				return &v.state
@@ -1488,7 +1515,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateMapLayerResponse); i {
 			case 0:
 				return &v.state
@@ -1500,7 +1527,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteMapLayerRequest); i {
 			case 0:
 				return &v.state
@@ -1512,7 +1539,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteMapLayerResponse); i {
 			case 0:
 				return &v.state
@@ -1524,7 +1551,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateMapLayerRequest); i {
 			case 0:
 				return &v.state
@@ -1536,7 +1563,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateMapLayerResponse); i {
 			case 0:
 				return &v.state
@@ -1548,7 +1575,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetMapPinTypesRequest); i {
 			case 0:
 				return &v.state
@@ -1560,7 +1587,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetMapPinTypesResponse); i {
 			case 0:
 				return &v.state
@@ -1572,7 +1599,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateMapPinTypeRequest); i {
 			case 0:
 				return &v.state
@@ -1584,7 +1611,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateMapPinTypeResponse); i {
 			case 0:
 				return &v.state
@@ -1596,7 +1623,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteMapPinTypeRequest); i {
 			case 0:
 				return &v.state
@@ -1608,7 +1635,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteMapPinTypeResponse); i {
 			case 0:
 				return &v.state
@@ -1620,7 +1647,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateMapPinTypeRequest); i {
 			case 0:
 				return &v.state
@@ -1632,7 +1659,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateMapPinTypeResponse); i {
 			case 0:
 				return &v.state
@@ -1644,7 +1671,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetMapPinsRequest); i {
 			case 0:
 				return &v.state
@@ -1656,7 +1683,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetMapPinsResponse); i {
 			case 0:
 				return &v.state
@@ -1668,7 +1695,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateMapPinRequest); i {
 			case 0:
 				return &v.state
@@ -1680,7 +1707,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateMapPinResponse); i {
 			case 0:
 				return &v.state
@@ -1692,7 +1719,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteMapPinRequest); i {
 			case 0:
 				return &v.state
@@ -1704,7 +1731,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteMapPinResponse); i {
 			case 0:
 				return &v.state
@@ -1716,7 +1743,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateMapPinRequest); i {
 			case 0:
 				return &v.state
@@ -1728,7 +1755,7 @@ func file_rpc_map_proto_init() {
 				return nil
 			}
 		}
-		file_rpc_map_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
+		file_services_maps_rpc_map_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateMapPinResponse); i {
 			case 0:
 				return &v.state
@@ -1745,18 +1772,18 @@ func file_rpc_map_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_rpc_map_proto_rawDesc,
+			RawDescriptor: file_services_maps_rpc_map_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   32,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_rpc_map_proto_goTypes,
-		DependencyIndexes: file_rpc_map_proto_depIdxs,
-		MessageInfos:      file_rpc_map_proto_msgTypes,
+		GoTypes:           file_services_maps_rpc_map_proto_goTypes,
+		DependencyIndexes: file_services_maps_rpc_map_proto_depIdxs,
+		MessageInfos:      file_services_maps_rpc_map_proto_msgTypes,
 	}.Build()
-	File_rpc_map_proto = out.File
-	file_rpc_map_proto_rawDesc = nil
-	file_rpc_map_proto_goTypes = nil
-	file_rpc_map_proto_depIdxs = nil
+	File_services_maps_rpc_map_proto = out.File
+	file_services_maps_rpc_map_proto_rawDesc = nil
+	file_services_maps_rpc_map_proto_goTypes = nil
+	file_services_maps_rpc_map_proto_depIdxs = nil
 }

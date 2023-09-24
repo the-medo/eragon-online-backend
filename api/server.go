@@ -9,9 +9,31 @@ import (
 	"github.com/the-medo/talebound-backend/worker"
 )
 
+//err = pb.RegisterChatHandlerServer(ctx, grpcMux, server)
+//err = pb.RegisterEvaluationsHandlerServer(ctx, grpcMux, server)
+//err = pb.RegisterImagesHandlerServer(ctx, grpcMux, server)
+//err = pb.RegisterMapsHandlerServer(ctx, grpcMux, server)
+//err = pb.RegisterMenusHandlerServer(ctx, grpcMux, server)
+//err = pb.RegisterPostTypesHandlerServer(ctx, grpcMux, server)
+//err = pb.RegisterPostsHandlerServer(ctx, grpcMux, server)
+//err = pb.RegisterTagsHandlerServer(ctx, grpcMux, server)
+//err = pb.RegisterUsersHandlerServer(ctx, grpcMux, server)
+//err = pb.RegisterVerifyHandlerServer(ctx, grpcMux, server)
+//err = pb.RegisterWorldsHandlerServer(ctx, grpcMux, server)
+
 // Server serves gRPC requests
 type Server struct {
-	pb.UnimplementedTaleboundServer
+	pb.UnimplementedChatServer
+	pb.UnimplementedEvaluationsServer
+	pb.UnimplementedImagesServer
+	pb.UnimplementedMapsServer
+	pb.UnimplementedMenusServer
+	pb.UnimplementedPostTypesServer
+	pb.UnimplementedPostsServer
+	pb.UnimplementedTagsServer
+	pb.UnimplementedUsersServer
+	pb.UnimplementedVerifyServer
+	pb.UnimplementedWorldsServer
 	config          util.Config
 	store           db.Store
 	tokenMaker      token.Maker
