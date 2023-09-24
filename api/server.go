@@ -26,6 +26,7 @@ type Server struct {
 	pb.UnimplementedChatServer
 	pb.UnimplementedEvaluationsServer
 	pb.UnimplementedImagesServer
+	pb.UnimplementedLocationsServer
 	pb.UnimplementedMapsServer
 	pb.UnimplementedMenusServer
 	pb.UnimplementedPostTypesServer
