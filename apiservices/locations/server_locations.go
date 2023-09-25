@@ -7,11 +7,11 @@ import (
 
 type ServerLocations struct {
 	pb.UnimplementedLocationsServer
-	srv.ServerCore
+	*srv.ServerCore
 }
 
-func NewLocationsServer(core srv.ServerCore) ServerLocations {
-	return ServerLocations{
+func NewLocationsServer(core *srv.ServerCore) *ServerLocations {
+	return &ServerLocations{
 		ServerCore: core,
 	}
 }

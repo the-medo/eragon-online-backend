@@ -7,11 +7,11 @@ import (
 
 type ServerMaps struct {
 	pb.UnimplementedMapsServer
-	srv.ServerCore
+	*srv.ServerCore
 }
 
-func NewMapsServer(core srv.ServerCore) ServerMaps {
-	return ServerMaps{
+func NewMapsServer(core *srv.ServerCore) *ServerMaps {
+	return &ServerMaps{
 		ServerCore: core,
 	}
 }

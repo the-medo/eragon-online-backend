@@ -17,21 +17,17 @@ const CookieName = "access_token"
 type ServerCore struct {
 	Config          util.Config
 	Store           db.Store
-	TokenMaker      token.Maker
 	TaskDistributor worker.TaskDistributor
+	TokenMaker      token.Maker
 }
 
-func NewServerCore(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) (ServerCore, error) {
-	tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
-	if err != nil {
-		return ServerCore{}, fmt.Errorf("cannot create token maker: %w", err)
-	}
-	return ServerCore{
+func NewServerCore(config util.Config, store db.Store, taskDistributor worker.TaskDistributor, tokenMaker token.Maker) *ServerCore {
+	return &ServerCore{
 		Config:          config,
 		Store:           store,
-		TokenMaker:      tokenMaker,
 		TaskDistributor: taskDistributor,
-	}, nil
+		TokenMaker:      tokenMaker,
+	}
 }
 
 func (core *ServerCore) AuthorizeUserCookie(ctx context.Context) (*token.Payload, error) {

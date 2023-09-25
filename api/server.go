@@ -1,20 +1,21 @@
 package api
 
 import (
-	"github.com/rs/zerolog/log"
+	"fmt"
 	"github.com/the-medo/talebound-backend/apiservices/locations"
 	"github.com/the-medo/talebound-backend/apiservices/maps"
 	"github.com/the-medo/talebound-backend/apiservices/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
+	"github.com/the-medo/talebound-backend/token"
 	"github.com/the-medo/talebound-backend/util"
 	"github.com/the-medo/talebound-backend/worker"
 )
 
 // Server serves gRPC requests
 type Server struct {
-	locations.ServerLocations
-	maps.ServerMaps
+	*locations.ServerLocations
+	*maps.ServerMaps
 	pb.UnimplementedChatServer
 	pb.UnimplementedEvaluationsServer
 	pb.UnimplementedImagesServer
@@ -25,18 +26,27 @@ type Server struct {
 	pb.UnimplementedUsersServer
 	pb.UnimplementedVerifyServer
 	pb.UnimplementedWorldsServer
+	Config          util.Config
+	Store           db.Store
+	TaskDistributor worker.TaskDistributor
+	TokenMaker      token.Maker
 }
 
 func NewServer(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) (*Server, error) {
-
-	serverCore, err := srv.NewServerCore(config, store, taskDistributor)
+	tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Cannot create server core:")
+		return nil, fmt.Errorf("cannot create token maker: %w", err)
 	}
+
+	serverCore := srv.NewServerCore(config, store, taskDistributor, tokenMaker)
 
 	server := &Server{
 		ServerLocations: locations.NewLocationsServer(serverCore),
 		ServerMaps:      maps.NewMapsServer(serverCore),
+		Config:          serverCore.Config,
+		Store:           serverCore.Store,
+		TaskDistributor: serverCore.TaskDistributor,
+		TokenMaker:      serverCore.TokenMaker,
 	}
 
 	return server, nil
