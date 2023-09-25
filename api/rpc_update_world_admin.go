@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/the-medo/talebound-backend/api/converters"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -15,15 +16,15 @@ import (
 func (server *Server) UpdateWorldAdmin(ctx context.Context, req *pb.UpdateWorldAdminRequest) (*pb.WorldAdmin, error) {
 	violations := validateUpdateWorldAdmin(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
-	isAdmin, err := server.store.IsWorldAdmin(ctx, db.IsWorldAdminParams{
+	isAdmin, err := server.Store.IsWorldAdmin(ctx, db.IsWorldAdminParams{
 		UserID:  authPayload.UserId,
 		WorldID: req.GetWorldId(),
 	})
@@ -57,12 +58,12 @@ func (server *Server) UpdateWorldAdmin(ctx context.Context, req *pb.UpdateWorldA
 		},
 	}
 
-	worldAdmin, err := server.store.UpdateWorldAdmin(ctx, arg)
+	worldAdmin, err := server.Store.UpdateWorldAdmin(ctx, arg)
 	if err != nil {
 		return nil, err
 	}
 
-	user, err := server.store.GetUserById(ctx, req.GetUserId())
+	user, err := server.Store.GetUserById(ctx, req.GetUserId())
 
 	rsp := converters.ConvertWorldAdmin(worldAdmin, user)
 
@@ -72,22 +73,22 @@ func (server *Server) UpdateWorldAdmin(ctx context.Context, req *pb.UpdateWorldA
 func validateUpdateWorldAdmin(req *pb.UpdateWorldAdminRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-		violations = append(violations, FieldViolation("user_id", err))
+		violations = append(violations, e.FieldViolation("user_id", err))
 	}
 
 	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
-		violations = append(violations, FieldViolation("world_id", err))
+		violations = append(violations, e.FieldViolation("world_id", err))
 	}
 
 	if req.Approved != nil {
 		if err := validator.ValidateWorldAdminApproved(req.GetApproved()); err != nil {
-			violations = append(violations, FieldViolation("approved", err))
+			violations = append(violations, e.FieldViolation("approved", err))
 		}
 	}
 
 	if req.MotivationalLetter != nil {
 		if err := validator.ValidateWorldAdminMotivationalLetter(req.GetMotivationalLetter()); err != nil {
-			violations = append(violations, FieldViolation("motivational_letter", err))
+			violations = append(violations, e.FieldViolation("motivational_letter", err))
 		}
 	}
 

@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/consts"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -15,12 +16,12 @@ import (
 func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.UpdateUserIntroductionRequest) (*pb.Post, error) {
 	violations := validateUpdateUserIntroductionRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
 	if req.GetUserId() != authPayload.UserId {
@@ -30,12 +31,12 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 		}
 	}
 
-	user, err := server.store.GetUserById(ctx, req.GetUserId())
+	user, err := server.Store.GetUserById(ctx, req.GetUserId())
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "unable to save changes - user not found: %s", err)
 	}
 
-	postType, err := server.store.GetPostTypeById(ctx, consts.PostTypeUserIntroduction)
+	postType, err := server.Store.GetPostTypeById(ctx, consts.PostTypeUserIntroduction)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
 	}
@@ -55,7 +56,7 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 			IsPrivate:  false,
 		}
 
-		post, err := server.store.CreatePost(ctx, createPostArg)
+		post, err := server.Store.CreatePost(ctx, createPostArg)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to create post: %s", err)
 		}
@@ -68,9 +69,9 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 				Valid: true,
 			},
 		}
-		_, err = server.store.UpdateUser(ctx, updateUserArg)
+		_, err = server.Store.UpdateUser(ctx, updateUserArg)
 
-		viewPost, err := server.store.GetPostById(ctx, post.ID)
+		viewPost, err := server.Store.GetPostById(ctx, post.ID)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 		}
@@ -93,12 +94,12 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 				Valid: req.SaveAsDraft != nil,
 			},
 		}
-		post, err := server.store.UpdatePost(ctx, arg)
+		post, err := server.Store.UpdatePost(ctx, arg)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to update post: %s", err)
 		}
 
-		viewPost, err := server.store.GetPostById(ctx, post.ID)
+		viewPost, err := server.Store.GetPostById(ctx, post.ID)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 		}
@@ -109,11 +110,11 @@ func (server *Server) UpdateUserIntroduction(ctx context.Context, req *pb.Update
 
 func validateUpdateUserIntroductionRequest(req *pb.UpdateUserIntroductionRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-		violations = append(violations, FieldViolation("user_id", err))
+		violations = append(violations, e.FieldViolation("user_id", err))
 	}
 
 	if err := validator.ValidatePostContent(req.GetContent()); err != nil {
-		violations = append(violations, FieldViolation("content", err))
+		violations = append(violations, e.FieldViolation("content", err))
 	}
 
 	return violations

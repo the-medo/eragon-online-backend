@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,7 +15,7 @@ import (
 func (server *Server) GetAverageUserEvaluationsByType(ctx context.Context, req *pb.GetAverageUserEvaluationsByTypeRequest) (*pb.GetAverageUserEvaluationsByTypeResponse, error) {
 	violations := validateGetAverageUserEvaluationsByType(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	evaluationType := db.EvaluationType(req.GetType())
@@ -24,7 +25,7 @@ func (server *Server) GetAverageUserEvaluationsByType(ctx context.Context, req *
 		EvaluationType: evaluationType,
 	}
 
-	avgEvaluationVotes, err := server.store.GetAverageUserEvaluationsByType(ctx, arg)
+	avgEvaluationVotes, err := server.Store.GetAverageUserEvaluationsByType(ctx, arg)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get evaluation averages: %v", err)
 	}
@@ -54,11 +55,11 @@ func (server *Server) GetAverageUserEvaluationsByType(ctx context.Context, req *
 func validateGetAverageUserEvaluationsByType(req *pb.GetAverageUserEvaluationsByTypeRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-		violations = append(violations, FieldViolation("user_id", err))
+		violations = append(violations, e.FieldViolation("user_id", err))
 	}
 
 	if err := validator.ValidateEvaluationType(req.GetType()); err != nil {
-		violations = append(violations, FieldViolation("type", err))
+		violations = append(violations, e.FieldViolation("type", err))
 	}
 
 	return violations

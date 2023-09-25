@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -13,10 +14,10 @@ import (
 func (server *Server) VerifyEmail(ctx context.Context, req *pb.VerifyEmailRequest) (*pb.VerifyEmailResponse, error) {
 	violations := validateVerifyEmailRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
-	txResult, err := server.store.VerifyEmailTx(ctx, db.VerifyEmailTxParams{
+	txResult, err := server.Store.VerifyEmailTx(ctx, db.VerifyEmailTxParams{
 		EmailId:    req.GetEmailId(),
 		SecretCode: req.GetSecretCode(),
 	})
@@ -33,11 +34,11 @@ func (server *Server) VerifyEmail(ctx context.Context, req *pb.VerifyEmailReques
 
 func validateVerifyEmailRequest(req *pb.VerifyEmailRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateEmailId(req.GetEmailId()); err != nil {
-		violations = append(violations, FieldViolation("email_id", err))
+		violations = append(violations, e.FieldViolation("email_id", err))
 	}
 
 	if err := validator.ValidateSecretCode(req.GetSecretCode()); err != nil {
-		violations = append(violations, FieldViolation("secret_code", err))
+		violations = append(violations, e.FieldViolation("secret_code", err))
 	}
 
 	return violations

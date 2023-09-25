@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/converters"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -12,10 +13,10 @@ import (
 func (server *Server) GetMenuItemPostsByMenuId(ctx context.Context, req *pb.GetMenuItemPostsByMenuIdRequest) (*pb.GetMenuItemPostsByMenuIdResponse, error) {
 	violations := validateGetMenuItemPostsByMenuIdRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
-	menuItemPostRows, err := server.store.GetMenuItemPostsByMenuId(ctx, req.GetMenuId())
+	menuItemPostRows, err := server.Store.GetMenuItemPostsByMenuId(ctx, req.GetMenuId())
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +62,7 @@ func (server *Server) GetMenuItemPostsByMenuId(ctx context.Context, req *pb.GetM
 
 func validateGetMenuItemPostsByMenuIdRequest(req *pb.GetMenuItemPostsByMenuIdRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateMenuId(req.GetMenuId()); err != nil {
-		violations = append(violations, FieldViolation("menu_id", err))
+		violations = append(violations, e.FieldViolation("menu_id", err))
 	}
 
 	return violations

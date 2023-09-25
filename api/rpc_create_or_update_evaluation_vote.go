@@ -20,7 +20,7 @@ func (server *Server) CreateOrUpdateEvaluationVote(ctx context.Context, req *pb.
 	var alreadyExists bool
 	alreadyExists = true
 
-	_, err := server.store.GetEvaluationVoteByEvaluationIdUserIdAndVoter(ctx, arg)
+	_, err := server.Store.GetEvaluationVoteByEvaluationIdUserIdAndVoter(ctx, arg)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			alreadyExists = false
@@ -33,7 +33,7 @@ func (server *Server) CreateOrUpdateEvaluationVote(ctx context.Context, req *pb.
 
 	if alreadyExists {
 
-		evaluationVoteNew, err := server.store.UpdateEvaluationVote(ctx, db.UpdateEvaluationVoteParams{
+		evaluationVoteNew, err := server.Store.UpdateEvaluationVote(ctx, db.UpdateEvaluationVoteParams{
 			EvaluationID: req.GetEvaluationId(),
 			UserID:       req.GetUserId(),
 			UserIDVoter:  req.GetUserIdVoter(),
@@ -51,7 +51,7 @@ func (server *Server) CreateOrUpdateEvaluationVote(ctx context.Context, req *pb.
 			CreatedAt:    timestamppb.New(evaluationVoteNew.CreatedAt),
 		}
 	} else {
-		evaluationVoteNew, err := server.store.CreateEvaluationVote(ctx, db.CreateEvaluationVoteParams{
+		evaluationVoteNew, err := server.Store.CreateEvaluationVote(ctx, db.CreateEvaluationVoteParams{
 			EvaluationID: req.GetEvaluationId(),
 			UserID:       req.GetUserId(),
 			UserIDVoter:  req.GetUserIdVoter(),

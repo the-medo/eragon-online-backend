@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/converters"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,7 +15,7 @@ import (
 func (server *Server) UpdateAvailableWorldTag(ctx context.Context, request *pb.UpdateAvailableWorldTagRequest) (*pb.ViewTag, error) {
 	violations := validateUpdateAvailableWorldTag(request)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
@@ -27,12 +28,12 @@ func (server *Server) UpdateAvailableWorldTag(ctx context.Context, request *pb.U
 		Tag: request.GetNewTag(),
 	}
 
-	_, err = server.store.UpdateWorldTagAvailable(ctx, arg)
+	_, err = server.Store.UpdateWorldTagAvailable(ctx, arg)
 	if err != nil {
 		return nil, err
 	}
 
-	tag, err := server.store.GetWorldTagAvailable(ctx, request.GetTagId())
+	tag, err := server.Store.GetWorldTagAvailable(ctx, request.GetTagId())
 	if err != nil {
 		return nil, err
 	}
@@ -44,11 +45,11 @@ func (server *Server) UpdateAvailableWorldTag(ctx context.Context, request *pb.U
 func validateUpdateAvailableWorldTag(req *pb.UpdateAvailableWorldTagRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateTagId(req.GetTagId()); err != nil {
-		violations = append(violations, FieldViolation("tag_id", err))
+		violations = append(violations, e.FieldViolation("tag_id", err))
 	}
 
 	if err := validator.ValidateTag(req.GetNewTag()); err != nil {
-		violations = append(violations, FieldViolation("new_tag", err))
+		violations = append(violations, e.FieldViolation("new_tag", err))
 	}
 
 	return violations

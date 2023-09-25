@@ -9,7 +9,7 @@ import (
 
 func (server *Server) GetAvailableWorldTags(ctx context.Context, req *emptypb.Empty) (*pb.GetAvailableWorldTagsResponse, error) {
 
-	tags, err := server.store.GetWorldTagsAvailable(ctx)
+	tags, err := server.Store.GetWorldTagsAvailable(ctx)
 	if err != nil {
 		return nil, err
 	}

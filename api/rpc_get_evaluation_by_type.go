@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/util"
@@ -14,10 +15,10 @@ func (server *Server) GetEvaluationsByType(ctx context.Context, req *pb.GetEvalu
 
 	violations := validateGetEvaluationsByType(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
-	evaluations, err := server.store.GetEvaluationsByType(ctx, db.EvaluationType(req.GetType()))
+	evaluations, err := server.Store.GetEvaluationsByType(ctx, db.EvaluationType(req.GetType()))
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get evaluation list: %v", err)
 	}

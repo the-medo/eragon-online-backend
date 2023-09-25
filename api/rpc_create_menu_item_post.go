@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/consts"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -16,7 +17,7 @@ import (
 func (server *Server) CreateMenuItemPost(ctx context.Context, req *pb.CreateMenuItemPostRequest) (*pb.MenuItemPost, error) {
 	violations := validateCreateMenuItemPostRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	auth, err := server.CheckMenuAdmin(ctx, req.GetMenuId(), false)
@@ -52,12 +53,12 @@ func (server *Server) CreateMenuItemPost(ctx context.Context, req *pb.CreateMenu
 		}
 	}
 
-	newPost, err := server.store.CreatePost(ctx, argPost)
+	newPost, err := server.Store.CreatePost(ctx, argPost)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create menu item post [CreatePost]: %s", err)
 	}
 
-	post, err := server.store.GetPostById(ctx, newPost.ID)
+	post, err := server.Store.GetPostById(ctx, newPost.ID)
 
 	rsp := &pb.MenuItemPost{
 		MenuItemId: req.GetMenuItemId(),
@@ -67,7 +68,7 @@ func (server *Server) CreateMenuItemPost(ctx context.Context, req *pb.CreateMenu
 	}
 
 	if isDescriptionPost {
-		_, err := server.store.UpdateMenuItem(ctx, db.UpdateMenuItemParams{
+		_, err := server.Store.UpdateMenuItem(ctx, db.UpdateMenuItemParams{
 			ID: req.GetMenuItemId(),
 			DescriptionPostID: sql.NullInt32{
 				Int32: newPost.ID,
@@ -99,7 +100,7 @@ func (server *Server) CreateMenuItemPost(ctx context.Context, req *pb.CreateMenu
 			}
 		}
 
-		menuItemPost, err := server.store.CreateMenuItemPost(ctx, arg)
+		menuItemPost, err := server.Store.CreateMenuItemPost(ctx, arg)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to create menu item post [CreateMenuItemPost]: %s", err)
 		}
@@ -113,40 +114,40 @@ func (server *Server) CreateMenuItemPost(ctx context.Context, req *pb.CreateMenu
 
 func validateCreateMenuItemPostRequest(req *pb.CreateMenuItemPostRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateMenuId(req.GetMenuId()); err != nil {
-		violations = append(violations, FieldViolation("menu_id", err))
+		violations = append(violations, e.FieldViolation("menu_id", err))
 	}
 
 	if err := validator.ValidateMenuItemId(req.GetMenuItemId()); err != nil {
-		violations = append(violations, FieldViolation("menu_item_id", err))
+		violations = append(violations, e.FieldViolation("menu_item_id", err))
 	}
 
 	if req.PostId != nil {
 		if err := validator.ValidatePostId(req.GetPostId()); err != nil {
-			violations = append(violations, FieldViolation("post_id", err))
+			violations = append(violations, e.FieldViolation("post_id", err))
 		}
 	}
 
 	if req.Position != nil {
 		if err := validator.ValidateMenuItemPosition(req.GetPosition()); err != nil {
-			violations = append(violations, FieldViolation("position", err))
+			violations = append(violations, e.FieldViolation("position", err))
 		}
 	}
 
 	if req.Title != nil {
 		if err := validator.ValidatePostTitle(req.GetTitle()); err != nil {
-			violations = append(violations, FieldViolation("title", err))
+			violations = append(violations, e.FieldViolation("title", err))
 		}
 	}
 
 	if req.ShortDescription != nil {
 		if err := validator.ValidatePostDescription(req.GetShortDescription()); err != nil {
-			violations = append(violations, FieldViolation("short_description", err))
+			violations = append(violations, e.FieldViolation("short_description", err))
 		}
 	}
 
 	if req.ImageThumbnailId != nil {
 		if err := validator.ValidateImageId(req.GetImageThumbnailId()); err != nil {
-			violations = append(violations, FieldViolation("image_thumbnail_id", err))
+			violations = append(violations, e.FieldViolation("image_thumbnail_id", err))
 		}
 	}
 

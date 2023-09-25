@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -15,7 +16,7 @@ import (
 func (server *Server) UpdateMenu(ctx context.Context, req *pb.UpdateMenuRequest) (*pb.ViewMenu, error) {
 	violations := validateUpdateMenu(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	_, err := server.CheckMenuAdmin(ctx, req.GetMenuId(), false)
@@ -35,7 +36,7 @@ func (server *Server) UpdateMenu(ctx context.Context, req *pb.UpdateMenuRequest)
 		},
 	}
 
-	_, err = server.store.UpdateMenu(ctx, arg)
+	_, err = server.Store.UpdateMenu(ctx, arg)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, status.Errorf(codes.NotFound, "user not found: %s", err)
@@ -43,7 +44,7 @@ func (server *Server) UpdateMenu(ctx context.Context, req *pb.UpdateMenuRequest)
 		return nil, status.Errorf(codes.Internal, "failed to update menu: %s", err)
 	}
 
-	menu, err := server.store.GetMenu(ctx, req.GetMenuId())
+	menu, err := server.Store.GetMenu(ctx, req.GetMenuId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get menu: %s", err)
 	}
@@ -55,18 +56,18 @@ func (server *Server) UpdateMenu(ctx context.Context, req *pb.UpdateMenuRequest)
 
 func validateUpdateMenu(req *pb.UpdateMenuRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateMenuId(req.GetMenuId()); err != nil {
-		violations = append(violations, FieldViolation("menu_id", err))
+		violations = append(violations, e.FieldViolation("menu_id", err))
 	}
 
 	if req.Code != nil {
 		if err := validator.ValidateMenuCode(req.GetCode()); err != nil {
-			violations = append(violations, FieldViolation("code", err))
+			violations = append(violations, e.FieldViolation("code", err))
 		}
 	}
 
 	if req.HeaderImgId != nil {
 		if err := validator.ValidateImageId(req.GetHeaderImgId()); err != nil {
-			violations = append(violations, FieldViolation("header_img_id", err))
+			violations = append(violations, e.FieldViolation("header_img_id", err))
 		}
 	}
 

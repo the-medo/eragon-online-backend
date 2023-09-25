@@ -1,33 +1,23 @@
 package api
 
 import (
-	"fmt"
+	"github.com/rs/zerolog/log"
+	"github.com/the-medo/talebound-backend/apiservices/locations"
+	"github.com/the-medo/talebound-backend/apiservices/maps"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
-	"github.com/the-medo/talebound-backend/token"
 	"github.com/the-medo/talebound-backend/util"
 	"github.com/the-medo/talebound-backend/worker"
 )
 
-//err = pb.RegisterChatHandlerServer(ctx, grpcMux, server)
-//err = pb.RegisterEvaluationsHandlerServer(ctx, grpcMux, server)
-//err = pb.RegisterImagesHandlerServer(ctx, grpcMux, server)
-//err = pb.RegisterMapsHandlerServer(ctx, grpcMux, server)
-//err = pb.RegisterMenusHandlerServer(ctx, grpcMux, server)
-//err = pb.RegisterPostTypesHandlerServer(ctx, grpcMux, server)
-//err = pb.RegisterPostsHandlerServer(ctx, grpcMux, server)
-//err = pb.RegisterTagsHandlerServer(ctx, grpcMux, server)
-//err = pb.RegisterUsersHandlerServer(ctx, grpcMux, server)
-//err = pb.RegisterVerifyHandlerServer(ctx, grpcMux, server)
-//err = pb.RegisterWorldsHandlerServer(ctx, grpcMux, server)
-
 // Server serves gRPC requests
 type Server struct {
+	locations.ServerLocations
+	maps.ServerMaps
 	pb.UnimplementedChatServer
 	pb.UnimplementedEvaluationsServer
 	pb.UnimplementedImagesServer
-	pb.UnimplementedLocationsServer
-	pb.UnimplementedMapsServer
 	pb.UnimplementedMenusServer
 	pb.UnimplementedPostTypesServer
 	pb.UnimplementedPostsServer
@@ -35,23 +25,18 @@ type Server struct {
 	pb.UnimplementedUsersServer
 	pb.UnimplementedVerifyServer
 	pb.UnimplementedWorldsServer
-	config          util.Config
-	store           db.Store
-	tokenMaker      token.Maker
-	taskDistributor worker.TaskDistributor
 }
 
 func NewServer(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) (*Server, error) {
-	tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
+
+	serverCore, err := srv.NewServerCore(config, store, taskDistributor)
 	if err != nil {
-		return nil, fmt.Errorf("cannot create token maker: %w", err)
+		log.Fatal().Err(err).Msg("Cannot create server core:")
 	}
 
 	server := &Server{
-		config:          config,
-		store:           store,
-		tokenMaker:      tokenMaker,
-		taskDistributor: taskDistributor,
+		ServerLocations: locations.NewLocationsServer(serverCore),
+		ServerMaps:      maps.NewMapsServer(serverCore),
 	}
 
 	return server, nil

@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,20 +15,20 @@ import (
 func (server *Server) AddChatMessage(ctx context.Context, req *pb.AddChatMessageRequest) (*pb.AddChatMessageResponse, error) {
 	violations := validateAddChatMessage(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
-	user, err := server.store.GetUserById(ctx, authPayload.UserId)
+	user, err := server.Store.GetUserById(ctx, authPayload.UserId)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
 	}
 
-	message, err := server.store.AddChatMessage(ctx, db.AddChatMessageParams{
+	message, err := server.Store.AddChatMessage(ctx, db.AddChatMessageParams{
 		Text:   req.GetText(),
 		UserID: user.ID,
 	})
@@ -48,7 +49,7 @@ func (server *Server) AddChatMessage(ctx context.Context, req *pb.AddChatMessage
 
 func validateAddChatMessage(req *pb.AddChatMessageRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateChatMessageText(req.GetText()); err != nil {
-		violations = append(violations, FieldViolation("text", err))
+		violations = append(violations, e.FieldViolation("text", err))
 	}
 
 	return violations

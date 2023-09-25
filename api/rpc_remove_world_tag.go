@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -15,7 +16,7 @@ import (
 func (server *Server) RemoveWorldTag(ctx context.Context, req *pb.RemoveWorldTagRequest) (*emptypb.Empty, error) {
 	violations := validateRemoveWorldTag(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	_, err := server.CheckWorldAdmin(ctx, req.GetWorldId(), false)
@@ -34,7 +35,7 @@ func (server *Server) RemoveWorldTag(ctx context.Context, req *pb.RemoveWorldTag
 		},
 	}
 
-	err = server.store.DeleteWorldTag(ctx, arg)
+	err = server.Store.DeleteWorldTag(ctx, arg)
 	if err != nil {
 		return nil, err
 	}
@@ -44,11 +45,11 @@ func (server *Server) RemoveWorldTag(ctx context.Context, req *pb.RemoveWorldTag
 
 func validateRemoveWorldTag(req *pb.RemoveWorldTagRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
-		violations = append(violations, FieldViolation("world_id", err))
+		violations = append(violations, e.FieldViolation("world_id", err))
 	}
 
 	if err := validator.ValidateTagId(req.GetTagId()); err != nil {
-		violations = append(violations, FieldViolation("tag_id", err))
+		violations = append(violations, e.FieldViolation("tag_id", err))
 	}
 
 	return violations

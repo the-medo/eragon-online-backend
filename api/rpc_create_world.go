@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"github.com/lib/pq"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,12 +15,12 @@ import (
 func (server *Server) CreateWorld(ctx context.Context, req *pb.CreateWorldRequest) (*pb.World, error) {
 	violations := validateCreateWorldRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
 	arg := db.CreateWorldTxParams{
@@ -31,7 +32,7 @@ func (server *Server) CreateWorld(ctx context.Context, req *pb.CreateWorldReques
 		UserId: authPayload.UserId,
 	}
 
-	txResult, err := server.store.CreateWorldTx(ctx, arg)
+	txResult, err := server.Store.CreateWorldTx(ctx, arg)
 	if err != nil {
 		if pqErr, ok := err.(*pq.Error); ok {
 			switch pqErr.Code.Name() {
@@ -49,15 +50,15 @@ func (server *Server) CreateWorld(ctx context.Context, req *pb.CreateWorldReques
 
 func validateCreateWorldRequest(req *pb.CreateWorldRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateWorldName(req.GetName()); err != nil {
-		violations = append(violations, FieldViolation("name", err))
+		violations = append(violations, e.FieldViolation("name", err))
 	}
 
 	if err := validator.ValidateWorldShortDescription(req.GetShortDescription()); err != nil {
-		violations = append(violations, FieldViolation("short_description", err))
+		violations = append(violations, e.FieldViolation("short_description", err))
 	}
 
 	if err := validator.ValidateWorldBasedOn(req.GetBasedOn()); err != nil {
-		violations = append(violations, FieldViolation("based_on", err))
+		violations = append(violations, e.FieldViolation("based_on", err))
 	}
 
 	return violations

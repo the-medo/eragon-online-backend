@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/converters"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -11,10 +12,10 @@ import (
 func (server *Server) GetMenu(ctx context.Context, req *pb.GetMenuRequest) (*pb.ViewMenu, error) {
 	violations := validateGetMenuRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
-	menu, err := server.store.GetMenu(ctx, req.MenuId)
+	menu, err := server.Store.GetMenu(ctx, req.MenuId)
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +27,7 @@ func (server *Server) GetMenu(ctx context.Context, req *pb.GetMenuRequest) (*pb.
 
 func validateGetMenuRequest(req *pb.GetMenuRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateMenuId(req.GetMenuId()); err != nil {
-		violations = append(violations, FieldViolation("menu_id", err))
+		violations = append(violations, e.FieldViolation("menu_id", err))
 	}
 
 	return violations

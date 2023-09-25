@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	cloudflareGo "github.com/cloudflare/cloudflare-go"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -16,10 +17,10 @@ import (
 func (server *Server) UploadImage(ctx context.Context, request *pb.UploadImageRequest) (*pb.UploadImageResponse, error) {
 	violations := validateUploadImageRequest(request)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
-	cloudflare, err := cloudflareGo.NewWithAPIToken(server.config.CloudflareApiToken)
+	cloudflare, err := cloudflareGo.NewWithAPIToken(server.Config.CloudflareApiToken)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create cloudflare client: %v", err)
 	}
@@ -41,7 +42,7 @@ func (server *Server) UploadImage(ctx context.Context, request *pb.UploadImageRe
 
 	resourceContainer := cloudflareGo.ResourceContainer{
 		Level:      cloudflareGo.AccountRouteLevel,
-		Identifier: server.config.CloudflareAccountId,
+		Identifier: server.Config.CloudflareAccountId,
 		Type:       cloudflareGo.AccountType,
 	}
 
@@ -62,11 +63,11 @@ func (server *Server) UploadImage(ctx context.Context, request *pb.UploadImageRe
 
 func validateUploadImageRequest(req *pb.UploadImageRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateFilename(req.GetFilename()); err != nil {
-		violations = append(violations, FieldViolation("filename", err))
+		violations = append(violations, e.FieldViolation("filename", err))
 	}
 
 	if err := validator.ValidateImageTypeId(req.GetImageTypeId()); err != nil {
-		violations = append(violations, FieldViolation("image_type_id", err))
+		violations = append(violations, e.FieldViolation("image_type_id", err))
 	}
 
 	return violations

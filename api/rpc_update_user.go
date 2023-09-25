@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/util"
@@ -16,12 +17,12 @@ import (
 func (server *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
 	violations := validateUpdateUser(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
 	if req.Id == 0 {
@@ -73,7 +74,7 @@ func (server *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest)
 		}
 	}
 
-	user, err := server.store.UpdateUser(ctx, arg)
+	user, err := server.Store.UpdateUser(ctx, arg)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, status.Errorf(codes.NotFound, "user not found: %s", err)
@@ -90,36 +91,36 @@ func (server *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest)
 
 func validateUpdateUser(req *pb.UpdateUserRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateUserId(req.GetId()); err != nil {
-		violations = append(violations, FieldViolation("id", err))
+		violations = append(violations, e.FieldViolation("id", err))
 	}
 
 	if req.Username != nil {
 		if err := validator.ValidateUsername(req.GetUsername()); err != nil {
-			violations = append(violations, FieldViolation("username", err))
+			violations = append(violations, e.FieldViolation("username", err))
 		}
 	}
 
 	if req.ImgId != nil {
 		if err := validator.ValidateImageId(req.GetImgId()); err != nil {
-			violations = append(violations, FieldViolation("img_id", err))
+			violations = append(violations, e.FieldViolation("img_id", err))
 		}
 	}
 
 	if req.Password != nil {
 		if err := validator.ValidatePassword(req.GetPassword()); err != nil {
-			violations = append(violations, FieldViolation("password", err))
+			violations = append(violations, e.FieldViolation("password", err))
 		}
 	}
 
 	if req.Email != nil {
 		if err := validator.ValidateEmail(req.GetEmail()); err != nil {
-			violations = append(violations, FieldViolation("email", err))
+			violations = append(violations, e.FieldViolation("email", err))
 		}
 	}
 
 	if req.IntroductionPostId != nil {
 		if err := validator.ValidatePostId(req.GetIntroductionPostId()); err != nil {
-			violations = append(violations, FieldViolation("introduction_post_id", err))
+			violations = append(violations, e.FieldViolation("introduction_post_id", err))
 		}
 	}
 

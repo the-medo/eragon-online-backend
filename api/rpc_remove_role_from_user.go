@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -15,7 +16,7 @@ import (
 func (server *Server) RemoveRoleFromUser(ctx context.Context, req *pb.RemoveRoleFromUserRequest) (*pb.RemoveRoleFromUserResponse, error) {
 	violations := validateRemoveRoleFromUser(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
@@ -23,7 +24,7 @@ func (server *Server) RemoveRoleFromUser(ctx context.Context, req *pb.RemoveRole
 		return nil, status.Errorf(codes.PermissionDenied, "failed to remove role from user: %v", err)
 	}
 
-	_, err = server.store.HasUserRole(ctx, db.HasUserRoleParams{
+	_, err = server.Store.HasUserRole(ctx, db.HasUserRoleParams{
 		UserID: req.GetUserId(),
 		Role:   pb.RoleType_name[req.GetRoleId()],
 	})
@@ -35,7 +36,7 @@ func (server *Server) RemoveRoleFromUser(ctx context.Context, req *pb.RemoveRole
 		return nil, status.Errorf(codes.Internal, "failed to remove role from user: %v", err)
 	}
 
-	err = server.store.RemoveUserRole(ctx, db.RemoveUserRoleParams{
+	err = server.Store.RemoveUserRole(ctx, db.RemoveUserRoleParams{
 		UserID: req.GetUserId(),
 		RoleID: req.GetRoleId(),
 	})
@@ -54,10 +55,10 @@ func (server *Server) RemoveRoleFromUser(ctx context.Context, req *pb.RemoveRole
 func validateRemoveRoleFromUser(req *pb.RemoveRoleFromUserRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-		violations = append(violations, FieldViolation("user_id", err))
+		violations = append(violations, e.FieldViolation("user_id", err))
 	}
 	if err := validator.ValidateRoleId(req.GetRoleId()); err != nil {
-		violations = append(violations, FieldViolation("role_id", err))
+		violations = append(violations, e.FieldViolation("role_id", err))
 	}
 
 	return violations

@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,14 +15,14 @@ import (
 func (server *Server) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest) (*pb.Post, error) {
 	violations := validateUpdatePostRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
-	_, err = server.store.InsertPostHistory(ctx, req.GetPostId())
+	_, err = server.Store.InsertPostHistory(ctx, req.GetPostId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to insert post history: %v", err)
 	}
@@ -62,17 +63,17 @@ func (server *Server) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest)
 		},
 	}
 
-	post, err := server.store.UpdatePost(ctx, arg)
+	post, err := server.Store.UpdatePost(ctx, arg)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to update post: %v", err)
 	}
 
-	postType, err := server.store.GetPostTypeById(ctx, post.PostTypeID)
+	postType, err := server.Store.GetPostTypeById(ctx, post.PostTypeID)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
 	}
 
-	viewPost, err := server.store.GetPostById(ctx, post.ID)
+	viewPost, err := server.Store.GetPostById(ctx, post.ID)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 	}
@@ -84,36 +85,36 @@ func (server *Server) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest)
 
 func validateUpdatePostRequest(req *pb.UpdatePostRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidatePostId(req.GetPostId()); err != nil {
-		violations = append(violations, FieldViolation("post_id", err))
+		violations = append(violations, e.FieldViolation("post_id", err))
 	}
 
 	if req.Title != nil {
 		if err := validator.ValidatePostTitle(req.GetTitle()); err != nil {
-			violations = append(violations, FieldViolation("title", err))
+			violations = append(violations, e.FieldViolation("title", err))
 		}
 	}
 
 	if req.Description != nil {
 		if err := validator.ValidatePostDescription(req.GetDescription()); err != nil {
-			violations = append(violations, FieldViolation("description", err))
+			violations = append(violations, e.FieldViolation("description", err))
 		}
 	}
 
 	if req.Content != nil {
 		if err := validator.ValidatePostContent(req.GetContent()); err != nil {
-			violations = append(violations, FieldViolation("content", err))
+			violations = append(violations, e.FieldViolation("content", err))
 		}
 	}
 
 	if req.PostTypeId != nil {
 		if err := validator.ValidatePostTypeId(req.GetPostTypeId()); err != nil {
-			violations = append(violations, FieldViolation("post_type_id", err))
+			violations = append(violations, e.FieldViolation("post_type_id", err))
 		}
 	}
 
 	if req.ImageThumbnailId != nil {
 		if err := validator.ValidateImageId(req.GetImageThumbnailId()); err != nil {
-			violations = append(violations, FieldViolation("image_thumbnail_id", err))
+			violations = append(violations, e.FieldViolation("image_thumbnail_id", err))
 		}
 	}
 

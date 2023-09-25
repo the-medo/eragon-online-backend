@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -13,12 +14,12 @@ import (
 func (server *Server) GetChatMessages(ctx context.Context, req *pb.GetChatMessagesRequest) (*pb.GetChatMessagesResponse, error) {
 	violations := validateGetChatMessages(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	limit, offset := GetDefaultQueryBoundaries(req.GetLimit(), req.GetOffset())
 
-	messages, err := server.store.GetChatMessages(ctx, db.GetChatMessagesParams{
+	messages, err := server.Store.GetChatMessages(ctx, db.GetChatMessagesParams{
 		PageLimit:  limit,
 		PageOffset: offset,
 	})
@@ -39,10 +40,10 @@ func (server *Server) GetChatMessages(ctx context.Context, req *pb.GetChatMessag
 
 func validateGetChatMessages(req *pb.GetChatMessagesRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateLimit(req.GetLimit()); err != nil {
-		violations = append(violations, FieldViolation("limit", err))
+		violations = append(violations, e.FieldViolation("limit", err))
 	}
 	if err := validator.ValidateOffset(req.GetOffset()); err != nil {
-		violations = append(violations, FieldViolation("offset", err))
+		violations = append(violations, e.FieldViolation("offset", err))
 	}
 
 	return violations

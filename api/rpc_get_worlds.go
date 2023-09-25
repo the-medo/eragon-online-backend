@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/util"
@@ -14,7 +15,7 @@ func (server *Server) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (
 	violations := validateGetWorlds(req)
 
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	limit, offset := GetDefaultQueryBoundaries(req.GetLimit(), req.GetOffset())
@@ -36,7 +37,7 @@ func (server *Server) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (
 		arg.OrderBy = req.GetOrderBy()
 	}
 
-	worlds, err := server.store.GetWorlds(ctx, arg)
+	worlds, err := server.Store.GetWorlds(ctx, arg)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +47,7 @@ func (server *Server) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (
 		Tags:     req.GetTags(),
 	}
 
-	totalCount, err := server.store.GetWorldsCount(ctx, countArg)
+	totalCount, err := server.Store.GetWorldsCount(ctx, countArg)
 	if err != nil {
 		return nil, err
 	}
@@ -70,19 +71,19 @@ func validateGetWorlds(req *pb.GetWorldsRequest) (violations []*errdetails.BadRe
 
 	if req.OrderBy != nil {
 		if validator.StringInSlice(req.GetOrderBy(), fields) == false {
-			violations = append(violations, FieldViolation("order_by", fmt.Errorf("invalid field to order by %s", req.GetOrderBy())))
+			violations = append(violations, e.FieldViolation("order_by", fmt.Errorf("invalid field to order by %s", req.GetOrderBy())))
 		}
 	}
 
 	if req.Limit != nil {
 		if err := validator.ValidateLimit(req.GetLimit()); err != nil {
-			violations = append(violations, FieldViolation("limit", err))
+			violations = append(violations, e.FieldViolation("limit", err))
 		}
 	}
 
 	if req.Offset != nil {
 		if err := validator.ValidateOffset(req.GetOffset()); err != nil {
-			violations = append(violations, FieldViolation("offset", err))
+			violations = append(violations, e.FieldViolation("offset", err))
 		}
 	}
 

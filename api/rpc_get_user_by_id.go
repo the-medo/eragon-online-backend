@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -13,10 +14,10 @@ func (server *Server) GetUserById(ctx context.Context, req *pb.GetUserByIdReques
 
 	violations := validateGetUserById(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
-	user, err := server.store.GetUserById(ctx, req.GetUserId())
+	user, err := server.Store.GetUserById(ctx, req.GetUserId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
 	}
@@ -27,7 +28,7 @@ func (server *Server) GetUserById(ctx context.Context, req *pb.GetUserByIdReques
 func validateGetUserById(req *pb.GetUserByIdRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-		violations = append(violations, FieldViolation("user_id", err))
+		violations = append(violations, e.FieldViolation("user_id", err))
 	}
 
 	return violations

@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -16,10 +17,10 @@ func (server *Server) ResetPasswordVerifyCodeValidity(ctx context.Context, req *
 
 	violations := validateResetPasswordVerifyCodeValidity(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.store.GetUserPasswordReset(ctx, req.GetSecretCode())
+	_, err := server.Store.GetUserPasswordReset(ctx, req.GetSecretCode())
 	if err != nil {
 		if err == sql.ErrNoRows {
 			rsp = &pb.ResetPasswordVerifyCodeValidityResponse{
@@ -42,7 +43,7 @@ func (server *Server) ResetPasswordVerifyCodeValidity(ctx context.Context, req *
 func validateResetPasswordVerifyCodeValidity(req *pb.ResetPasswordVerifyCodeValidityRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateSecretCode(req.GetSecretCode()); err != nil {
-		violations = append(violations, FieldViolation("secret_code", err))
+		violations = append(violations, e.FieldViolation("secret_code", err))
 	}
 
 	return violations

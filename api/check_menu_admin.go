@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/token"
@@ -12,7 +13,7 @@ import (
 func (server *Server) CheckMenuAdmin(ctx context.Context, menuId int32, needsSuperAdmin bool) (*token.Payload, error) {
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
 	err = server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
@@ -20,7 +21,7 @@ func (server *Server) CheckMenuAdmin(ctx context.Context, menuId int32, needsSup
 		return authPayload, nil
 	}
 
-	worldMenu, err := server.store.GetWorldMenuByMenuId(ctx, menuId)
+	worldMenu, err := server.Store.GetWorldMenuByMenuId(ctx, menuId)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("menu not found")
@@ -30,7 +31,7 @@ func (server *Server) CheckMenuAdmin(ctx context.Context, menuId int32, needsSup
 
 	worldId := worldMenu.WorldID
 
-	isAdmin, err := server.store.IsWorldAdmin(ctx, db.IsWorldAdminParams{
+	isAdmin, err := server.Store.IsWorldAdmin(ctx, db.IsWorldAdminParams{
 		UserID:  authPayload.UserId,
 		WorldID: worldId,
 	})

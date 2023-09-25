@@ -10,7 +10,7 @@ import (
 
 func (server *Server) GetPostTypes(ctx context.Context, req *emptypb.Empty) (*pb.GetPostTypesResponse, error) {
 
-	postTypes, err := server.store.GetPostTypes(ctx)
+	postTypes, err := server.Store.GetPostTypes(ctx)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get posts: %v", err)
 	}

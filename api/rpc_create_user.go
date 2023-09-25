@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/hibiken/asynq"
 	"github.com/lib/pq"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/util"
@@ -18,7 +19,7 @@ import (
 func (server *Server) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
 	violations := validateCreateUserRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	hashedPassword, err := util.HashPassword(req.GetPassword())
@@ -43,11 +44,11 @@ func (server *Server) CreateUser(ctx context.Context, req *pb.CreateUserRequest)
 				asynq.Queue(worker.QueueCritical),
 			}
 
-			return server.taskDistributor.DistributeTaskSendVerifyEmail(ctx, taskPayload, opts...)
+			return server.TaskDistributor.DistributeTaskSendVerifyEmail(ctx, taskPayload, opts...)
 		},
 	}
 
-	txResult, err := server.store.CreateUserTx(ctx, arg)
+	txResult, err := server.Store.CreateUserTx(ctx, arg)
 	if err != nil {
 		if pqErr, ok := err.(*pq.Error); ok {
 			switch pqErr.Code.Name() {
@@ -67,15 +68,15 @@ func (server *Server) CreateUser(ctx context.Context, req *pb.CreateUserRequest)
 
 func validateCreateUserRequest(req *pb.CreateUserRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateUsername(req.GetUsername()); err != nil {
-		violations = append(violations, FieldViolation("username", err))
+		violations = append(violations, e.FieldViolation("username", err))
 	}
 
 	if err := validator.ValidatePassword(req.GetPassword()); err != nil {
-		violations = append(violations, FieldViolation("password", err))
+		violations = append(violations, e.FieldViolation("password", err))
 	}
 
 	if err := validator.ValidateEmail(req.GetEmail()); err != nil {
-		violations = append(violations, FieldViolation("email", err))
+		violations = append(violations, e.FieldViolation("email", err))
 	}
 
 	return violations

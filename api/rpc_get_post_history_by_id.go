@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -12,15 +13,15 @@ import (
 func (server *Server) GetPostHistoryById(ctx context.Context, req *pb.GetPostHistoryByIdRequest) (*pb.HistoryPost, error) {
 	violations := validateGetPostHistoryById(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
-	post, err := server.store.GetPostHistoryById(ctx, req.GetPostHistoryId())
+	post, err := server.Store.GetPostHistoryById(ctx, req.GetPostHistoryId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post history: %v", err)
 	}
@@ -32,7 +33,7 @@ func (server *Server) GetPostHistoryById(ctx context.Context, req *pb.GetPostHis
 		}
 	}
 
-	postType, err := server.store.GetPostTypeById(ctx, post.PostTypeID)
+	postType, err := server.Store.GetPostTypeById(ctx, post.PostTypeID)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
 	}
@@ -44,11 +45,11 @@ func (server *Server) GetPostHistoryById(ctx context.Context, req *pb.GetPostHis
 
 func validateGetPostHistoryById(req *pb.GetPostHistoryByIdRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidatePostId(req.GetPostId()); err != nil {
-		violations = append(violations, FieldViolation("post_id", err))
+		violations = append(violations, e.FieldViolation("post_id", err))
 	}
 
 	if err := validator.ValidatePostHistoryId(req.GetPostHistoryId()); err != nil {
-		violations = append(violations, FieldViolation("post_history_id", err))
+		violations = append(violations, e.FieldViolation("post_history_id", err))
 	}
 
 	return violations

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -23,12 +24,12 @@ Uploads a user avatar image to Cloudflare and inserts it into the DB
 func (server *Server) UploadUserAvatar(ctx context.Context, request *pb.UploadUserAvatarRequest) (*pb.UploadUserAvatarResponse, error) {
 	violations := validateUploadUserAvatarRequest(request)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
 	if authPayload.UserId != request.GetUserId() {
@@ -43,7 +44,7 @@ func (server *Server) UploadUserAvatar(ctx context.Context, request *pb.UploadUs
 	}
 
 	//update user imgID in DB
-	_, err = server.store.UpdateUser(ctx, db.UpdateUserParams{
+	_, err = server.Store.UpdateUser(ctx, db.UpdateUserParams{
 		ID: request.GetUserId(),
 		ImgID: sql.NullInt32{
 			Int32: dbImg.ID,
@@ -63,7 +64,7 @@ func (server *Server) UploadUserAvatar(ctx context.Context, request *pb.UploadUs
 
 func validateUploadUserAvatarRequest(req *pb.UploadUserAvatarRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-		violations = append(violations, FieldViolation("user_id", err))
+		violations = append(violations, e.FieldViolation("user_id", err))
 	}
 
 	return violations

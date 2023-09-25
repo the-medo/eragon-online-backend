@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,7 +15,7 @@ import (
 func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldRequest) (*pb.World, error) {
 	violations := validateUpdateWorldRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	_, err := server.CheckWorldAdmin(ctx, req.GetWorldId(), true)
@@ -48,7 +49,7 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 
 	changesMade := arg.Name.Valid || arg.BasedOn.Valid || arg.ShortDescription.Valid || arg.Public.Valid || arg.DescriptionPostID.Valid
 	if changesMade {
-		_, err = server.store.UpdateWorld(ctx, arg)
+		_, err = server.Store.UpdateWorld(ctx, arg)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to update world: %v", err)
 		}
@@ -73,13 +74,13 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 	changesMade = argImages.ThumbnailImgID.Valid || argImages.HeaderImgID.Valid || argImages.AvatarImgID.Valid
 
 	if changesMade {
-		_, err = server.store.UpdateWorldImages(ctx, argImages)
+		_, err = server.Store.UpdateWorldImages(ctx, argImages)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to update world: %v", err)
 		}
 	}
 
-	world, err := server.store.GetWorldByID(ctx, req.GetWorldId())
+	world, err := server.Store.GetWorldByID(ctx, req.GetWorldId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to retrieve updated world: %v", err)
 	}
@@ -92,48 +93,48 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 func validateUpdateWorldRequest(req *pb.UpdateWorldRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
-		violations = append(violations, FieldViolation("world_id", err))
+		violations = append(violations, e.FieldViolation("world_id", err))
 	}
 
 	if req.Name != nil {
 		if err := validator.ValidateWorldName(req.GetName()); err != nil {
-			violations = append(violations, FieldViolation("name", err))
+			violations = append(violations, e.FieldViolation("name", err))
 		}
 	}
 
 	if req.ShortDescription != nil {
 		if err := validator.ValidateWorldShortDescription(req.GetShortDescription()); err != nil {
-			violations = append(violations, FieldViolation("short_description", err))
+			violations = append(violations, e.FieldViolation("short_description", err))
 		}
 	}
 
 	if req.BasedOn != nil {
 		if err := validator.ValidateWorldBasedOn(req.GetBasedOn()); err != nil {
-			violations = append(violations, FieldViolation("based_on", err))
+			violations = append(violations, e.FieldViolation("based_on", err))
 		}
 	}
 
 	if req.DescriptionPostId != nil {
 		if err := validator.ValidatePostId(req.GetDescriptionPostId()); err != nil {
-			violations = append(violations, FieldViolation("description_post_id", err))
+			violations = append(violations, e.FieldViolation("description_post_id", err))
 		}
 	}
 
 	if req.ImageAvatarId != nil {
 		if err := validator.ValidateImageId(req.GetImageAvatarId()); err != nil {
-			violations = append(violations, FieldViolation("image_avatar_id", err))
+			violations = append(violations, e.FieldViolation("image_avatar_id", err))
 		}
 	}
 
 	if req.ImageThumbnailId != nil {
 		if err := validator.ValidateImageId(req.GetImageThumbnailId()); err != nil {
-			violations = append(violations, FieldViolation("image_thumbnail_id", err))
+			violations = append(violations, e.FieldViolation("image_thumbnail_id", err))
 		}
 	}
 
 	if req.ImageHeaderId != nil {
 		if err := validator.ValidateImageId(req.GetImageHeaderId()); err != nil {
-			violations = append(violations, FieldViolation("image_header_id", err))
+			violations = append(violations, e.FieldViolation("image_header_id", err))
 		}
 	}
 

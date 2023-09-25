@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,7 +15,7 @@ func (server *Server) DeleteEvaluationVote(ctx context.Context, req *pb.DeleteEv
 
 	violations := validateDeleteEvaluationVote(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	arg := db.DeleteEvaluationVoteParams{
@@ -23,7 +24,7 @@ func (server *Server) DeleteEvaluationVote(ctx context.Context, req *pb.DeleteEv
 		UserIDVoter:  req.GetUserIdVoter(),
 	}
 
-	err := server.store.DeleteEvaluationVote(ctx, arg)
+	err := server.Store.DeleteEvaluationVote(ctx, arg)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get evaluation votes : %v", err)
 	}
@@ -38,15 +39,15 @@ func (server *Server) DeleteEvaluationVote(ctx context.Context, req *pb.DeleteEv
 
 func validateDeleteEvaluationVote(req *pb.DeleteEvaluationVoteRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateEvaluationId(req.GetEvaluationId()); err != nil {
-		violations = append(violations, FieldViolation("evaluation_id", err))
+		violations = append(violations, e.FieldViolation("evaluation_id", err))
 	}
 
 	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-		violations = append(violations, FieldViolation("user_id", err))
+		violations = append(violations, e.FieldViolation("user_id", err))
 	}
 
 	if err := validator.ValidateUserId(req.GetUserIdVoter()); err != nil {
-		violations = append(violations, FieldViolation("user_id_voter", err))
+		violations = append(violations, e.FieldViolation("user_id_voter", err))
 	}
 	return violations
 }

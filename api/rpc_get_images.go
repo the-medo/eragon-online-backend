@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,14 +15,14 @@ import (
 func (server *Server) GetImages(ctx context.Context, req *pb.GetImagesRequest) (*pb.GetImagesResponse, error) {
 	violations := validateGetImagesRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	limit, offset := GetDefaultQueryBoundaries(req.GetLimit(), req.GetOffset())
 
 	_, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
 	arg := db.GetImagesParams{
@@ -37,13 +38,13 @@ func (server *Server) GetImages(ctx context.Context, req *pb.GetImagesRequest) (
 		PageOffset: offset,
 	}
 
-	images, err := server.store.GetImages(ctx, arg)
+	images, err := server.Store.GetImages(ctx, arg)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get posts: %v", err)
 	}
 
 	imageCountArg := convertGetImagesParamsToGetImagesCountParams(&arg)
-	totalCount, err := server.store.GetImagesCount(ctx, imageCountArg)
+	totalCount, err := server.Store.GetImagesCount(ctx, imageCountArg)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get posts count: %v", err)
 	}
@@ -70,25 +71,25 @@ func convertGetImagesParamsToGetImagesCountParams(arg *db.GetImagesParams) db.Ge
 func validateGetImagesRequest(req *pb.GetImagesRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if req.UserId != nil {
 		if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-			violations = append(violations, FieldViolation("user_id", err))
+			violations = append(violations, e.FieldViolation("user_id", err))
 		}
 	}
 
 	if req.ImageTypeId != nil {
 		if err := validator.ValidateImageTypeId(req.GetImageTypeId()); err != nil {
-			violations = append(violations, FieldViolation("post_type_id", err))
+			violations = append(violations, e.FieldViolation("post_type_id", err))
 		}
 	}
 
 	if req.Limit != nil {
 		if err := validator.ValidateLimit(req.GetLimit()); err != nil {
-			violations = append(violations, FieldViolation("limit", err))
+			violations = append(violations, e.FieldViolation("limit", err))
 		}
 	}
 
 	if req.Offset != nil {
 		if err := validator.ValidateOffset(req.GetOffset()); err != nil {
-			violations = append(violations, FieldViolation("offset", err))
+			violations = append(violations, e.FieldViolation("offset", err))
 		}
 	}
 

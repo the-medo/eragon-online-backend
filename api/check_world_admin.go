@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/token"
@@ -12,7 +13,7 @@ import (
 func (server *Server) CheckWorldAdmin(ctx context.Context, worldId int32, needsSuperAdmin bool) (*token.Payload, error) {
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
 	err = server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
@@ -20,7 +21,7 @@ func (server *Server) CheckWorldAdmin(ctx context.Context, worldId int32, needsS
 		return authPayload, nil
 	}
 
-	isAdmin, err := server.store.IsWorldAdmin(ctx, db.IsWorldAdminParams{
+	isAdmin, err := server.Store.IsWorldAdmin(ctx, db.IsWorldAdminParams{
 		UserID:  authPayload.UserId,
 		WorldID: worldId,
 	})

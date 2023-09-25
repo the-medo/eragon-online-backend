@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -12,10 +13,10 @@ import (
 func (server *Server) GetPostById(ctx context.Context, req *pb.GetPostByIdRequest) (*pb.Post, error) {
 	violations := validateGetPostByIdRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
-	post, err := server.store.GetPostById(ctx, req.GetPostId())
+	post, err := server.Store.GetPostById(ctx, req.GetPostId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post: %v", err)
 	}
@@ -27,7 +28,7 @@ func (server *Server) GetPostById(ctx context.Context, req *pb.GetPostByIdReques
 
 func validateGetPostByIdRequest(req *pb.GetPostByIdRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidatePostId(req.GetPostId()); err != nil {
-		violations = append(violations, FieldViolation("post_id", err))
+		violations = append(violations, e.FieldViolation("post_id", err))
 	}
 
 	return violations

@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/converters"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,7 +15,7 @@ import (
 func (server *Server) AddWorldTag(ctx context.Context, req *pb.AddWorldTagRequest) (*pb.Tag, error) {
 	violations := validateAddWorldTagRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	_, err := server.CheckWorldAdmin(ctx, req.GetWorldId(), false)
@@ -27,12 +28,12 @@ func (server *Server) AddWorldTag(ctx context.Context, req *pb.AddWorldTagReques
 		TagID:   req.GetTagId(),
 	}
 
-	_, err = server.store.CreateWorldTag(ctx, arg)
+	_, err = server.Store.CreateWorldTag(ctx, arg)
 	if err != nil {
 		return nil, err
 	}
 
-	tag, err := server.store.GetWorldTagAvailable(ctx, req.GetTagId())
+	tag, err := server.Store.GetWorldTagAvailable(ctx, req.GetTagId())
 	if err != nil {
 		return nil, err
 	}
@@ -45,11 +46,11 @@ func (server *Server) AddWorldTag(ctx context.Context, req *pb.AddWorldTagReques
 func validateAddWorldTagRequest(req *pb.AddWorldTagRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
-		violations = append(violations, FieldViolation("world_id", err))
+		violations = append(violations, e.FieldViolation("world_id", err))
 	}
 
 	if err := validator.ValidateTagId(req.GetTagId()); err != nil {
-		violations = append(violations, FieldViolation("tag_id", err))
+		violations = append(violations, e.FieldViolation("tag_id", err))
 	}
 
 	return violations

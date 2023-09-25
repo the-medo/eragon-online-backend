@@ -28,7 +28,7 @@ func (server *Server) UploadAndInsertToDb(ctx context.Context, data []byte, imgT
 	}
 
 	//insert img into DB "images" table
-	dbImg, err := server.store.CreateImage(ctx, createImageParams)
+	dbImg, err := server.Store.CreateImage(ctx, createImageParams)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to insert image into DB: %v", err)
 	}

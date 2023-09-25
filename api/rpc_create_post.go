@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -13,12 +14,12 @@ import (
 func (server *Server) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.Post, error) {
 	violations := validateCreatePostRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
 	arg := db.CreatePostParams{
@@ -35,7 +36,7 @@ func (server *Server) CreatePost(ctx context.Context, req *pb.CreatePostRequest)
 	}
 
 	if postTypeNeeded {
-		postType, err := server.store.GetPostTypeById(ctx, req.GetPostTypeId())
+		postType, err := server.Store.GetPostTypeById(ctx, req.GetPostTypeId())
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
 		}
@@ -50,17 +51,17 @@ func (server *Server) CreatePost(ctx context.Context, req *pb.CreatePostRequest)
 		arg.IsPrivate = req.GetIsPrivate()
 	}
 
-	postResult, err := server.store.CreatePost(ctx, arg)
+	postResult, err := server.Store.CreatePost(ctx, arg)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create post: %s", err)
 	}
 
-	postType, err := server.store.GetPostTypeById(ctx, postResult.PostTypeID)
+	postType, err := server.Store.GetPostTypeById(ctx, postResult.PostTypeID)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
 	}
 
-	viewPost, err := server.store.GetPostById(ctx, postResult.ID)
+	viewPost, err := server.Store.GetPostById(ctx, postResult.ID)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 	}
@@ -73,15 +74,15 @@ func (server *Server) CreatePost(ctx context.Context, req *pb.CreatePostRequest)
 func validateCreatePostRequest(req *pb.CreatePostRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidatePostTitle(req.GetTitle()); err != nil {
-		violations = append(violations, FieldViolation("title", err))
+		violations = append(violations, e.FieldViolation("title", err))
 	}
 
 	if err := validator.ValidatePostContent(req.GetContent()); err != nil {
-		violations = append(violations, FieldViolation("content", err))
+		violations = append(violations, e.FieldViolation("content", err))
 	}
 
 	if err := validator.ValidatePostTypeId(req.GetPostTypeId()); err != nil {
-		violations = append(violations, FieldViolation("post_type_id", err))
+		violations = append(violations, e.FieldViolation("post_type_id", err))
 	}
 
 	return violations

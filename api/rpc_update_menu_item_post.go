@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -15,7 +16,7 @@ import (
 func (server *Server) UpdateMenuItemPost(ctx context.Context, req *pb.UpdateMenuItemPostRequest) (*emptypb.Empty, error) {
 	violations := validateUpdateMenuItemPostRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	_, err := server.CheckMenuAdmin(ctx, req.GetMenuId(), false)
@@ -30,7 +31,7 @@ func (server *Server) UpdateMenuItemPost(ctx context.Context, req *pb.UpdateMenu
 			PostID:         req.GetPostId(),
 			TargetPosition: req.GetPosition(),
 		}
-		err = server.store.MenuItemPostChangePositions(ctx, positionChangeArg)
+		err = server.Store.MenuItemPostChangePositions(ctx, positionChangeArg)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to change menu item post position: %s", err)
 		}
@@ -53,7 +54,7 @@ func (server *Server) UpdateMenuItemPost(ctx context.Context, req *pb.UpdateMenu
 				},
 			}
 
-			_, err = server.store.UpdateMenuItemPost(ctx, updateArg)
+			_, err = server.Store.UpdateMenuItemPost(ctx, updateArg)
 			if err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update menu item post: %s", err)
 			}
@@ -66,7 +67,7 @@ func (server *Server) UpdateMenuItemPost(ctx context.Context, req *pb.UpdateMenu
 				},
 				PostID: req.GetPostId(),
 			}
-			_, err = server.store.UnassignMenuItemPost(ctx, updateArg)
+			_, err = server.Store.UnassignMenuItemPost(ctx, updateArg)
 			if err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to unassign menu item post: %s", err)
 			}
@@ -78,20 +79,20 @@ func (server *Server) UpdateMenuItemPost(ctx context.Context, req *pb.UpdateMenu
 
 func validateUpdateMenuItemPostRequest(req *pb.UpdateMenuItemPostRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateMenuId(req.GetMenuId()); err != nil {
-		violations = append(violations, FieldViolation("menu_id", err))
+		violations = append(violations, e.FieldViolation("menu_id", err))
 	}
 
 	if err := validator.ValidateMenuItemId(req.GetMenuItemId()); err != nil {
-		violations = append(violations, FieldViolation("menu_item_id", err))
+		violations = append(violations, e.FieldViolation("menu_item_id", err))
 	}
 
 	if err := validator.ValidatePostId(req.GetPostId()); err != nil {
-		violations = append(violations, FieldViolation("post_id", err))
+		violations = append(violations, e.FieldViolation("post_id", err))
 	}
 
 	if req.Position != nil {
 		if err := validator.ValidateMenuItemPosition(req.GetPosition()); err != nil {
-			violations = append(violations, FieldViolation("position", err))
+			violations = append(violations, e.FieldViolation("position", err))
 		}
 	}
 

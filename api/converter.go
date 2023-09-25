@@ -50,7 +50,7 @@ func convertUserGetImage(server *Server, ctx context.Context, user db.User) *pb.
 	pbUser := convertUser(user, nil)
 
 	if user.ImgID.Valid == true {
-		img, err := server.store.GetImageById(ctx, *pbUser.ImgId)
+		img, err := server.Store.GetImageById(ctx, *pbUser.ImgId)
 		if err != nil {
 			return nil
 		}
@@ -165,7 +165,7 @@ func convertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb
 		Valid: true,
 	}
 
-	imageType, err := server.store.GetImageTypeById(ctx, int32(imgTypeId))
+	imageType, err := server.Store.GetImageTypeById(ctx, int32(imgTypeId))
 	if err != nil {
 		return db.CreateImageParams{}, status.Errorf(codes.Internal, "failed to get image type: %v", err)
 	}

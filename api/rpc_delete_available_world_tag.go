@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -15,7 +16,7 @@ import (
 func (server *Server) DeleteAvailableWorldTag(ctx context.Context, req *pb.DeleteAvailableWorldTagRequest) (*emptypb.Empty, error) {
 	violations := validateDeleteAvailableWorldTagRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
@@ -30,12 +31,12 @@ func (server *Server) DeleteAvailableWorldTag(ctx context.Context, req *pb.Delet
 		},
 	}
 
-	err = server.store.DeleteWorldTag(ctx, arg)
+	err = server.Store.DeleteWorldTag(ctx, arg)
 	if err != nil {
 		return nil, err
 	}
 
-	err = server.store.DeleteWorldTagAvailable(ctx, req.GetTagId())
+	err = server.Store.DeleteWorldTagAvailable(ctx, req.GetTagId())
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +47,7 @@ func (server *Server) DeleteAvailableWorldTag(ctx context.Context, req *pb.Delet
 func validateDeleteAvailableWorldTagRequest(req *pb.DeleteAvailableWorldTagRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateTagId(req.GetTagId()); err != nil {
-		violations = append(violations, FieldViolation("tag_id", err))
+		violations = append(violations, e.FieldViolation("tag_id", err))
 	}
 
 	return violations

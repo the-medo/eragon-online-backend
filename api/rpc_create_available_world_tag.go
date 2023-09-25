@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -13,7 +14,7 @@ func (server *Server) CreateAvailableWorldTag(ctx context.Context, req *pb.Creat
 
 	violations := validateCreateAvailableWorldTagRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin})
@@ -21,7 +22,7 @@ func (server *Server) CreateAvailableWorldTag(ctx context.Context, req *pb.Creat
 		return nil, status.Errorf(codes.PermissionDenied, "can not create new tag - you are not admin: %v", err)
 	}
 
-	tag, err := server.store.CreateWorldTagAvailable(ctx, req.GetTag())
+	tag, err := server.Store.CreateWorldTagAvailable(ctx, req.GetTag())
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +39,7 @@ func (server *Server) CreateAvailableWorldTag(ctx context.Context, req *pb.Creat
 func validateCreateAvailableWorldTagRequest(req *pb.CreateAvailableWorldTagRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateTag(req.GetTag()); err != nil {
-		violations = append(violations, FieldViolation("tag", err))
+		violations = append(violations, e.FieldViolation("tag", err))
 	}
 
 	return violations

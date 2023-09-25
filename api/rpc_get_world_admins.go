@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/converters"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -11,10 +12,10 @@ import (
 func (server *Server) GetWorldAdmins(ctx context.Context, req *pb.GetWorldAdminsRequest) (*pb.GetWorldAdminsResponse, error) {
 	violations := validateGetWorldAdmins(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
-	worldAdminRows, err := server.store.GetWorldAdmins(ctx, req.GetWorldId())
+	worldAdminRows, err := server.Store.GetWorldAdmins(ctx, req.GetWorldId())
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +33,7 @@ func (server *Server) GetWorldAdmins(ctx context.Context, req *pb.GetWorldAdmins
 
 func validateGetWorldAdmins(req *pb.GetWorldAdminsRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
-		violations = append(violations, FieldViolation("world_id", err))
+		violations = append(violations, e.FieldViolation("world_id", err))
 	}
 
 	return violations

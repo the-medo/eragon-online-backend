@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,12 +15,12 @@ func (server *Server) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (*p
 
 	violations := validateGetUsers(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	limit, offset := GetDefaultQueryBoundaries(req.GetLimit(), req.GetOffset())
 
-	users, err := server.store.GetUsers(ctx, db.GetUsersParams{
+	users, err := server.Store.GetUsers(ctx, db.GetUsersParams{
 		PageLimit:  limit,
 		PageOffset: offset,
 	})
@@ -42,13 +43,13 @@ func validateGetUsers(req *pb.GetUsersRequest) (violations []*errdetails.BadRequ
 
 	if req.Limit != nil {
 		if err := validator.ValidateLimit(req.GetLimit()); err != nil {
-			violations = append(violations, FieldViolation("limit", err))
+			violations = append(violations, e.FieldViolation("limit", err))
 		}
 	}
 
 	if req.Offset != nil {
 		if err := validator.ValidateOffset(req.GetOffset()); err != nil {
-			violations = append(violations, FieldViolation("offset", err))
+			violations = append(violations, e.FieldViolation("offset", err))
 		}
 	}
 

@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/converters"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -12,12 +13,12 @@ import (
 func (server *Server) CreateWorldAdmin(ctx context.Context, request *pb.CreateWorldAdminRequest) (*pb.WorldAdmin, error) {
 	violations := validateCreateWorldAdmin(request)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
 	arg := db.InsertWorldAdminParams{
@@ -28,12 +29,12 @@ func (server *Server) CreateWorldAdmin(ctx context.Context, request *pb.CreateWo
 		MotivationalLetter: request.GetMotivationalLetter(),
 	}
 
-	worldAdmin, err := server.store.InsertWorldAdmin(ctx, arg)
+	worldAdmin, err := server.Store.InsertWorldAdmin(ctx, arg)
 	if err != nil {
 		return nil, err
 	}
 
-	user, err := server.store.GetUserById(ctx, authPayload.UserId)
+	user, err := server.Store.GetUserById(ctx, authPayload.UserId)
 
 	rsp := converters.ConvertWorldAdmin(worldAdmin, user)
 
@@ -42,11 +43,11 @@ func (server *Server) CreateWorldAdmin(ctx context.Context, request *pb.CreateWo
 
 func validateCreateWorldAdmin(req *pb.CreateWorldAdminRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
-		violations = append(violations, FieldViolation("world_id", err))
+		violations = append(violations, e.FieldViolation("world_id", err))
 	}
 
 	if err := validator.ValidateWorldAdminMotivationalLetter(req.GetMotivationalLetter()); err != nil {
-		violations = append(violations, FieldViolation("motivational_letter", err))
+		violations = append(violations, e.FieldViolation("motivational_letter", err))
 	}
 
 	return violations

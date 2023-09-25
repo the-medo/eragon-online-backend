@@ -167,7 +167,7 @@ func TestLoginUserAPI(t *testing.T) {
 		tc := testCases[i]
 
 		t.Run(tc.name, func(t *testing.T) {
-			// Initialize a new mock store for each test case
+			// Initialize a new mock Store for each test case
 			storeCtrl := gomock.NewController(t)
 			defer storeCtrl.Finish()
 			store := mockdb.NewMockStore(storeCtrl)

@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -13,15 +14,15 @@ import (
 func (server *Server) DeletePost(ctx context.Context, req *pb.DeletePostRequest) (*pb.DeletePostResponse, error) {
 	violations := validateDeletePostRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
-	post, err := server.store.GetPostById(ctx, req.GetPostId())
+	post, err := server.Store.GetPostById(ctx, req.GetPostId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post: %v", err)
 	}
@@ -33,7 +34,7 @@ func (server *Server) DeletePost(ctx context.Context, req *pb.DeletePostRequest)
 		}
 	}
 
-	err = server.store.DeletePost(ctx, req.GetPostId())
+	err = server.Store.DeletePost(ctx, req.GetPostId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to delete post: %v", err)
 	}
@@ -46,7 +47,7 @@ func (server *Server) DeletePost(ctx context.Context, req *pb.DeletePostRequest)
 
 func validateDeletePostRequest(req *pb.DeletePostRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidatePostId(req.GetPostId()); err != nil {
-		violations = append(violations, FieldViolation("post_id", err))
+		violations = append(violations, e.FieldViolation("post_id", err))
 	}
 
 	return violations

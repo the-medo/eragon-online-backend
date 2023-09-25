@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -15,7 +16,7 @@ func (server *Server) GetWorldDailyActivity(ctx context.Context, req *pb.GetWorl
 
 	violations := validateGetWorldDailyActivity(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	arg := db.GetWorldDailyActivityParams{
@@ -30,7 +31,7 @@ func (server *Server) GetWorldDailyActivity(ctx context.Context, req *pb.GetWorl
 		arg.DateFrom = req.GetDateFrom().AsTime()
 	}
 
-	worldActivity, err := server.store.GetWorldDailyActivity(ctx, arg)
+	worldActivity, err := server.Store.GetWorldDailyActivity(ctx, arg)
 	if err != nil {
 		return nil, err
 	}
@@ -49,13 +50,13 @@ func (server *Server) GetWorldDailyActivity(ctx context.Context, req *pb.GetWorl
 func validateGetWorldDailyActivity(req *pb.GetWorldDailyActivityRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if req.WorldId != nil {
 		if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
-			violations = append(violations, FieldViolation("world_id", err))
+			violations = append(violations, e.FieldViolation("world_id", err))
 		}
 	}
 
 	if req.DateFrom != nil {
 		if err := validator.ValidateDatePast(req.GetDateFrom()); err != nil {
-			violations = append(violations, FieldViolation("date_from", err))
+			violations = append(violations, e.FieldViolation("date_from", err))
 		}
 
 	}

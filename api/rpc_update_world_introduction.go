@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/consts"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -15,7 +16,7 @@ import (
 func (server *Server) UpdateWorldIntroduction(ctx context.Context, req *pb.UpdateWorldIntroductionRequest) (*pb.Post, error) {
 	violations := validateUpdateWorldIntroductionRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	authPayload, err := server.CheckWorldAdmin(ctx, req.GetWorldId(), false)
@@ -23,12 +24,12 @@ func (server *Server) UpdateWorldIntroduction(ctx context.Context, req *pb.Updat
 		return nil, status.Errorf(codes.PermissionDenied, "failed update introduction: %v", err)
 	}
 
-	world, err := server.store.GetWorldByID(ctx, req.GetWorldId())
+	world, err := server.Store.GetWorldByID(ctx, req.GetWorldId())
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "unable to save changes - world not found: %s", err)
 	}
 
-	postType, err := server.store.GetPostTypeById(ctx, consts.PostTypeWorldDescription)
+	postType, err := server.Store.GetPostTypeById(ctx, consts.PostTypeWorldDescription)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
 	}
@@ -44,7 +45,7 @@ func (server *Server) UpdateWorldIntroduction(ctx context.Context, req *pb.Updat
 			IsPrivate:  false,
 		}
 
-		post, err := server.store.CreatePost(ctx, createPostArg)
+		post, err := server.Store.CreatePost(ctx, createPostArg)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to create post: %s", err)
 		}
@@ -57,9 +58,9 @@ func (server *Server) UpdateWorldIntroduction(ctx context.Context, req *pb.Updat
 				Valid: true,
 			},
 		}
-		_, err = server.store.UpdateWorld(ctx, updateWorldArg)
+		_, err = server.Store.UpdateWorld(ctx, updateWorldArg)
 
-		viewPost, err := server.store.GetPostById(ctx, post.ID)
+		viewPost, err := server.Store.GetPostById(ctx, post.ID)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 		}
@@ -78,12 +79,12 @@ func (server *Server) UpdateWorldIntroduction(ctx context.Context, req *pb.Updat
 				Valid:  true,
 			},
 		}
-		post, err := server.store.UpdatePost(ctx, arg)
+		post, err := server.Store.UpdatePost(ctx, arg)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to update post: %s", err)
 		}
 
-		viewPost, err := server.store.GetPostById(ctx, post.ID)
+		viewPost, err := server.Store.GetPostById(ctx, post.ID)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 		}
@@ -94,11 +95,11 @@ func (server *Server) UpdateWorldIntroduction(ctx context.Context, req *pb.Updat
 
 func validateUpdateWorldIntroductionRequest(req *pb.UpdateWorldIntroductionRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
-		violations = append(violations, FieldViolation("world_id", err))
+		violations = append(violations, e.FieldViolation("world_id", err))
 	}
 
 	if err := validator.ValidatePostContent(req.GetContent()); err != nil {
-		violations = append(violations, FieldViolation("content", err))
+		violations = append(violations, e.FieldViolation("content", err))
 	}
 
 	return violations

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -14,7 +15,7 @@ import (
 func (server *Server) DeleteChatMessage(ctx context.Context, req *pb.DeleteChatMessageRequest) (*pb.DeleteChatMessageResponse, error) {
 	violations := validateDeleteChatMessages(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	err := server.CheckUserRole(ctx, []pb.RoleType{pb.RoleType_admin, pb.RoleType_moderator})
@@ -22,7 +23,7 @@ func (server *Server) DeleteChatMessage(ctx context.Context, req *pb.DeleteChatM
 		return nil, status.Errorf(codes.PermissionDenied, "failed to delete chat message: %v", err)
 	}
 
-	_, err = server.store.GetChatMessage(ctx, req.GetId())
+	_, err = server.Store.GetChatMessage(ctx, req.GetId())
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, status.Errorf(codes.NotFound, "message not found: %v", err)
@@ -30,7 +31,7 @@ func (server *Server) DeleteChatMessage(ctx context.Context, req *pb.DeleteChatM
 		return nil, status.Errorf(codes.Internal, "failed to get chat message: %v", err)
 	}
 
-	err = server.store.DeleteChatMessage(ctx, req.GetId())
+	err = server.Store.DeleteChatMessage(ctx, req.GetId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to delete chat message: %v", err)
 	}
@@ -43,7 +44,7 @@ func (server *Server) DeleteChatMessage(ctx context.Context, req *pb.DeleteChatM
 
 func validateDeleteChatMessages(req *pb.DeleteChatMessageRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateChatMessageId(req.GetId()); err != nil {
-		violations = append(violations, FieldViolation("id", err))
+		violations = append(violations, e.FieldViolation("id", err))
 	}
 
 	return violations

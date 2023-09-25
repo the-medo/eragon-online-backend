@@ -95,8 +95,6 @@ func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.Ta
 	pb.RegisterChatServer(grpcServer, server)
 	pb.RegisterEvaluationsServer(grpcServer, server)
 	pb.RegisterImagesServer(grpcServer, server)
-	pb.RegisterLocationsServer(grpcServer, server)
-	pb.RegisterMapsServer(grpcServer, server)
 	pb.RegisterMenusServer(grpcServer, server)
 	pb.RegisterPostTypesServer(grpcServer, server)
 	pb.RegisterPostsServer(grpcServer, server)
@@ -148,8 +146,6 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	err = pb.RegisterChatHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterEvaluationsHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterImagesHandlerServer(ctx, grpcMux, server)
-	err = pb.RegisterLocationsHandlerServer(ctx, grpcMux, server)
-	err = pb.RegisterMapsHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterMenusHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterPostTypesHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterPostsHandlerServer(ctx, grpcMux, server)
@@ -157,7 +153,6 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	err = pb.RegisterUsersHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterVerifyHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterWorldsHandlerServer(ctx, grpcMux, server)
-
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot register handler server")
 	}

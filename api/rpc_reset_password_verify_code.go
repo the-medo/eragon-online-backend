@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -13,7 +14,7 @@ import (
 func (server *Server) ResetPasswordVerifyCode(ctx context.Context, req *pb.ResetPasswordVerifyCodeRequest) (*pb.ResetPasswordVerifyCodeResponse, error) {
 	violations := validateResetPasswordVerifyCode(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	arg := db.ResetPasswordVerifyTxParams{
@@ -21,7 +22,7 @@ func (server *Server) ResetPasswordVerifyCode(ctx context.Context, req *pb.Reset
 		NewPassword: req.GetNewPassword(),
 	}
 
-	_, err := server.store.ResetPasswordVerifyTx(ctx, arg)
+	_, err := server.Store.ResetPasswordVerifyTx(ctx, arg)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to reset password: %s", err)
 	}
@@ -36,11 +37,11 @@ func (server *Server) ResetPasswordVerifyCode(ctx context.Context, req *pb.Reset
 
 func validateResetPasswordVerifyCode(req *pb.ResetPasswordVerifyCodeRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateSecretCode(req.GetSecretCode()); err != nil {
-		violations = append(violations, FieldViolation("secret_code", err))
+		violations = append(violations, e.FieldViolation("secret_code", err))
 	}
 
 	if err := validator.ValidatePassword(req.GetNewPassword()); err != nil {
-		violations = append(violations, FieldViolation("new_password", err))
+		violations = append(violations, e.FieldViolation("new_password", err))
 	}
 
 	return violations

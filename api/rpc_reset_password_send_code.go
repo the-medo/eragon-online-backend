@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"github.com/hibiken/asynq"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -16,7 +17,7 @@ import (
 func (server *Server) ResetPasswordSendCode(ctx context.Context, req *pb.ResetPasswordSendCodeRequest) (*pb.ResetPasswordSendCodeResponse, error) {
 	violations := validateResetPasswordSendCode(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	arg := db.ResetPasswordRequestTxParams{
@@ -32,11 +33,11 @@ func (server *Server) ResetPasswordSendCode(ctx context.Context, req *pb.ResetPa
 				asynq.Queue(worker.QueueCritical),
 			}
 
-			return server.taskDistributor.DistributeTaskSendResetPasswordEmail(ctx, taskPayload, opts...)
+			return server.TaskDistributor.DistributeTaskSendResetPasswordEmail(ctx, taskPayload, opts...)
 		},
 	}
 
-	_, err := server.store.ResetPasswordRequestTx(ctx, arg)
+	_, err := server.Store.ResetPasswordRequestTx(ctx, arg)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to reset password: %s", err)
 	}
@@ -51,7 +52,7 @@ func (server *Server) ResetPasswordSendCode(ctx context.Context, req *pb.ResetPa
 
 func validateResetPasswordSendCode(req *pb.ResetPasswordSendCodeRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateEmail(req.GetEmail()); err != nil {
-		violations = append(violations, FieldViolation("email", err))
+		violations = append(violations, e.FieldViolation("email", err))
 	}
 
 	return violations

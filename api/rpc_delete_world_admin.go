@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,12 +15,12 @@ import (
 func (server *Server) DeleteWorldAdmin(ctx context.Context, req *pb.DeleteWorldAdminRequest) (*emptypb.Empty, error) {
 	violations := validateDeleteWorldAdmin(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
 	//user can remove himself from world admin even if he is not super admin
@@ -33,7 +34,7 @@ func (server *Server) DeleteWorldAdmin(ctx context.Context, req *pb.DeleteWorldA
 		UserID:  req.GetUserId(),
 	}
 
-	err = server.store.DeleteWorldAdmin(ctx, arg)
+	err = server.Store.DeleteWorldAdmin(ctx, arg)
 	if err != nil {
 		return nil, err
 	}
@@ -44,11 +45,11 @@ func (server *Server) DeleteWorldAdmin(ctx context.Context, req *pb.DeleteWorldA
 func validateDeleteWorldAdmin(req *pb.DeleteWorldAdminRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-		violations = append(violations, FieldViolation("user_id", err))
+		violations = append(violations, e.FieldViolation("user_id", err))
 	}
 
 	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
-		violations = append(violations, FieldViolation("world_id", err))
+		violations = append(violations, e.FieldViolation("world_id", err))
 	}
 
 	return violations

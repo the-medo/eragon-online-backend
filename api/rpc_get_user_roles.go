@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -13,10 +14,10 @@ func (server *Server) GetUserRoles(ctx context.Context, req *pb.GetUserRolesRequ
 
 	violations := validateGetUserRoles(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
-	roles, err := server.store.GetUserRoles(ctx, req.GetUserId())
+	roles, err := server.Store.GetUserRoles(ctx, req.GetUserId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get user roles: %v", err)
 	}
@@ -39,7 +40,7 @@ func (server *Server) GetUserRoles(ctx context.Context, req *pb.GetUserRolesRequ
 func validateGetUserRoles(req *pb.GetUserRolesRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-		violations = append(violations, FieldViolation("user_id", err))
+		violations = append(violations, e.FieldViolation("user_id", err))
 	}
 
 	return violations

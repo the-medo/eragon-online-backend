@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 )
@@ -12,13 +13,13 @@ func (server *Server) CheckUserRole(ctx context.Context, roleTypes []pb.RoleType
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return unauthenticatedError(err)
+		return e.UnauthenticatedError(err)
 	}
 
 	roleFound := false
 
 	for _, roleType := range roleTypes {
-		roles, err := server.store.HasUserRole(ctx, db.HasUserRoleParams{
+		roles, err := server.Store.HasUserRole(ctx, db.HasUserRoleParams{
 			UserID: authPayload.UserId,
 			Role:   roleType.String(),
 		})

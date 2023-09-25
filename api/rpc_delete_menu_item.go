@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -13,7 +14,7 @@ import (
 func (server *Server) DeleteMenuItem(ctx context.Context, req *pb.DeleteMenuItemRequest) (*emptypb.Empty, error) {
 	violations := validateDeleteMenuItemRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	_, err := server.CheckMenuAdmin(ctx, req.GetMenuId(), false)
@@ -21,7 +22,7 @@ func (server *Server) DeleteMenuItem(ctx context.Context, req *pb.DeleteMenuItem
 		return nil, status.Errorf(codes.PermissionDenied, "failed delete menu item: %v", err)
 	}
 
-	err = server.store.DeleteMenuItem(ctx, req.GetMenuItemId())
+	err = server.Store.DeleteMenuItem(ctx, req.GetMenuItemId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to delete menu item: %s", err)
 	}
@@ -31,11 +32,11 @@ func (server *Server) DeleteMenuItem(ctx context.Context, req *pb.DeleteMenuItem
 
 func validateDeleteMenuItemRequest(req *pb.DeleteMenuItemRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateMenuId(req.GetMenuId()); err != nil {
-		violations = append(violations, FieldViolation("menu_id", err))
+		violations = append(violations, e.FieldViolation("menu_id", err))
 	}
 
 	if err := validator.ValidateMenuItemId(req.GetMenuItemId()); err != nil {
-		violations = append(violations, FieldViolation("menu_item_id", err))
+		violations = append(violations, e.FieldViolation("menu_item_id", err))
 	}
 
 	return violations

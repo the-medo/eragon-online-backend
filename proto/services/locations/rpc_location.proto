@@ -17,8 +17,17 @@ message UpdateLocationResponse {
   ViewLocation location = 1;
 }
 
-message CreateWorldLocationRequest {}
-message CreateWorldLocationResponse {}
+message CreateWorldLocationRequest {
+  int32 worldId = 1;
+  string name = 2;
+  optional string description = 3;
+  optional int32 thumbnailImageId = 4;
+}
+
+message CreateWorldLocationResponse {
+  int32 worldId = 1;
+  int32 locationId = 2;
+}
 
 message DeleteWorldLocationRequest {}
 message DeleteWorldLocationResponse {}

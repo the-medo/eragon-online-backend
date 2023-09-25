@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	"testing"
 	"time"
 
@@ -48,9 +49,9 @@ func newContextWithBearerToken(t *testing.T, tokenMaker token.Maker, userId int3
 	accessToken, _, err := tokenMaker.CreateToken(userId, duration)
 	require.NoError(t, err)
 
-	bearerToken := fmt.Sprintf("%s %s", authorizationBearer, accessToken)
+	bearerToken := fmt.Sprintf("%s %s", AuthorizationBearer, accessToken)
 	md := metadata.MD{
-		authorizationHeader: []string{
+		AuthorizationHeader: []string{
 			bearerToken,
 		},
 	}
@@ -62,9 +63,9 @@ func newContextWithCookie(t *testing.T, tokenMaker token.Maker, userId int32, du
 	accessToken, _, err := tokenMaker.CreateToken(userId, duration)
 	require.NoError(t, err)
 
-	cookie := fmt.Sprintf("%s=%s", cookieName, accessToken)
+	cookie := fmt.Sprintf("%s=%s", srv.CookieName, accessToken)
 	md := metadata.MD{
-		grpcCookieHeader: []string{
+		srv.GrpcCookieHeader: []string{
 			cookie,
 		},
 	}

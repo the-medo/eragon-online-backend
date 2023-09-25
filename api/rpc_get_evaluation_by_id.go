@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/util"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,10 +15,10 @@ func (server *Server) GetEvaluationById(ctx context.Context, req *pb.GetEvaluati
 
 	violations := validateGetEvaluationById(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
-	evaluation, err := server.store.GetEvaluationById(ctx, req.GetId())
+	evaluation, err := server.Store.GetEvaluationById(ctx, req.GetId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get user roles: %v", err)
 	}
@@ -40,7 +41,7 @@ func (server *Server) GetEvaluationById(ctx context.Context, req *pb.GetEvaluati
 
 func validateGetEvaluationById(req *pb.GetEvaluationByIdRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateEvaluationId(req.GetId()); err != nil {
-		violations = append(violations, FieldViolation("id", err))
+		violations = append(violations, e.FieldViolation("id", err))
 	}
 	return violations
 }

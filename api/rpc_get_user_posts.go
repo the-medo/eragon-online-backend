@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,14 +15,14 @@ import (
 func (server *Server) GetUserPosts(ctx context.Context, req *pb.GetUserPostsRequest) (*pb.GetUserPostsResponse, error) {
 	violations := validateGetUserPostsRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
 	limit, offset := GetDefaultQueryBoundaries(req.GetLimit(), req.GetOffset())
 
 	authPayload, err := server.authorizeUserCookie(ctx)
 	if err != nil {
-		return nil, unauthenticatedError(err)
+		return nil, e.UnauthenticatedError(err)
 	}
 
 	if req.GetUserId() != authPayload.UserId {
@@ -41,7 +42,7 @@ func (server *Server) GetUserPosts(ctx context.Context, req *pb.GetUserPostsRequ
 		PageOffset: offset,
 	}
 
-	posts, err := server.store.GetPostsByUserId(ctx, arg)
+	posts, err := server.Store.GetPostsByUserId(ctx, arg)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get posts: %v", err)
 	}
@@ -61,24 +62,24 @@ func (server *Server) GetUserPosts(ctx context.Context, req *pb.GetUserPostsRequ
 
 func validateGetUserPostsRequest(req *pb.GetUserPostsRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-		violations = append(violations, FieldViolation("user_id", err))
+		violations = append(violations, e.FieldViolation("user_id", err))
 	}
 
 	if req.PostTypeId != nil {
 		if err := validator.ValidatePostTypeId(req.GetPostTypeId()); err != nil {
-			violations = append(violations, FieldViolation("post_type_id", err))
+			violations = append(violations, e.FieldViolation("post_type_id", err))
 		}
 	}
 
 	if req.Limit != nil {
 		if err := validator.ValidateLimit(req.GetLimit()); err != nil {
-			violations = append(violations, FieldViolation("limit", err))
+			violations = append(violations, e.FieldViolation("limit", err))
 		}
 	}
 
 	if req.Offset != nil {
 		if err := validator.ValidateOffset(req.GetOffset()); err != nil {
-			violations = append(violations, FieldViolation("offset", err))
+			violations = append(violations, e.FieldViolation("offset", err))
 		}
 	}
 

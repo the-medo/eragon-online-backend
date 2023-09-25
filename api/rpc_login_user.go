@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/util"
@@ -18,10 +19,10 @@ import (
 func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (*pb.LoginUserResponse, error) {
 	violations := validateLoginUserRequest(req)
 	if violations != nil {
-		return nil, invalidArgumentError(violations)
+		return nil, e.InvalidArgumentError(violations)
 	}
 
-	viewUser, err := server.store.GetUserByUsername(ctx, req.GetUsername())
+	viewUser, err := server.Store.GetUserByUsername(ctx, req.GetUsername())
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, status.Errorf(codes.NotFound, "viewUser not found: %v", err)
@@ -34,24 +35,24 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 		return nil, status.Errorf(codes.NotFound, "incorrect password: %v", err)
 	}
 
-	accessToken, accessPayload, err := server.tokenMaker.CreateToken(
+	accessToken, accessPayload, err := server.TokenMaker.CreateToken(
 		viewUser.ID,
-		server.config.AccessTokenDuration,
+		server.Config.AccessTokenDuration,
 	)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create access token: %v", err)
 	}
 
-	refreshToken, refreshPayload, err := server.tokenMaker.CreateToken(
+	refreshToken, refreshPayload, err := server.TokenMaker.CreateToken(
 		viewUser.ID,
-		server.config.RefreshTokenDuration,
+		server.Config.RefreshTokenDuration,
 	)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create refresh token: %v", err)
 	}
 
 	mtdt := server.extractMetadata(ctx)
-	session, err := server.store.CreateSession(ctx, db.CreateSessionParams{
+	session, err := server.Store.CreateSession(ctx, db.CreateSessionParams{
 		ID:           refreshPayload.ID,
 		UserID:       viewUser.ID,
 		Username:     viewUser.Username,
@@ -89,11 +90,11 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 
 func validateLoginUserRequest(req *pb.LoginUserRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateUsername(req.GetUsername()); err != nil {
-		violations = append(violations, FieldViolation("username", err))
+		violations = append(violations, e.FieldViolation("username", err))
 	}
 
 	if err := validator.ValidatePassword(req.GetPassword()); err != nil {
-		violations = append(violations, FieldViolation("password", err))
+		violations = append(violations, e.FieldViolation("password", err))
 	}
 
 	return violations

@@ -3,16 +3,15 @@ package api
 import (
 	"context"
 	"fmt"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	"github.com/the-medo/talebound-backend/token"
 	"google.golang.org/grpc/metadata"
 	"strings"
 )
 
 const (
-	authorizationHeader = "authorization"
-	authorizationBearer = "bearer"
-	grpcCookieHeader    = "grpc-gateway-cookie"
-	cookieName          = "access_token"
+	AuthorizationHeader = "authorization"
+	AuthorizationBearer = "bearer"
 )
 
 func (server *Server) authorizeUser(ctx context.Context) (*token.Payload, error) {
@@ -21,7 +20,7 @@ func (server *Server) authorizeUser(ctx context.Context) (*token.Payload, error)
 		return nil, fmt.Errorf("missing metadata")
 	}
 
-	values := md.Get(authorizationHeader)
+	values := md.Get(AuthorizationHeader)
 	if len(values) == 0 {
 		return nil, fmt.Errorf("missing authorization header")
 	}
@@ -34,12 +33,12 @@ func (server *Server) authorizeUser(ctx context.Context) (*token.Payload, error)
 	}
 
 	authType := strings.ToLower(fields[0])
-	if authType != authorizationBearer {
+	if authType != AuthorizationBearer {
 		return nil, fmt.Errorf("unsupported authorization type: %s", authType)
 	}
 
 	accessToken := fields[1]
-	payload, err := server.tokenMaker.VerifyToken(accessToken)
+	payload, err := server.TokenMaker.VerifyToken(accessToken)
 	if err != nil {
 		return nil, fmt.Errorf("invalid access token: %s", err)
 	}
@@ -53,7 +52,7 @@ func (server *Server) authorizeUserCookie(ctx context.Context) (*token.Payload, 
 		return nil, fmt.Errorf("missing metadata")
 	}
 
-	cookieHeaders := md.Get(grpcCookieHeader)
+	cookieHeaders := md.Get(srv.GrpcCookieHeader)
 	if len(cookieHeaders) == 0 {
 		return nil, fmt.Errorf("missing cookie header")
 	}
@@ -63,8 +62,8 @@ func (server *Server) authorizeUserCookie(ctx context.Context) (*token.Payload, 
 		cookies := strings.Split(cookieHeader, ";")
 		for _, cookie := range cookies {
 			trimmedCookie := strings.TrimSpace(cookie)
-			if strings.HasPrefix(trimmedCookie, fmt.Sprintf("%s=", cookieName)) {
-				accessToken = strings.TrimPrefix(trimmedCookie, fmt.Sprintf("%s=", cookieName))
+			if strings.HasPrefix(trimmedCookie, fmt.Sprintf("%s=", srv.CookieName)) {
+				accessToken = strings.TrimPrefix(trimmedCookie, fmt.Sprintf("%s=", srv.CookieName))
 				break
 			}
 		}
@@ -74,7 +73,7 @@ func (server *Server) authorizeUserCookie(ctx context.Context) (*token.Payload, 
 		return nil, fmt.Errorf("missing access token in cookies")
 	}
 
-	payload, err := server.tokenMaker.VerifyToken(accessToken)
+	payload, err := server.TokenMaker.VerifyToken(accessToken)
 	if err != nil {
 		return nil, fmt.Errorf("invalid access token: %s", err)
 	}
