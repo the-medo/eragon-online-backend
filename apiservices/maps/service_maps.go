@@ -5,13 +5,13 @@ import (
 	"github.com/the-medo/talebound-backend/pb"
 )
 
-type ServerMaps struct {
+type ServiceMaps struct {
 	pb.UnimplementedMapsServer
-	*srv.ServerCore
+	*srv.ServiceCore
 }
 
-func NewMapsServer(core *srv.ServerCore) *ServerMaps {
-	return &ServerMaps{
-		ServerCore: core,
+func NewMapsService(core *srv.ServiceCore) *ServiceMaps {
+	return &ServiceMaps{
+		ServiceCore: core,
 	}
 }

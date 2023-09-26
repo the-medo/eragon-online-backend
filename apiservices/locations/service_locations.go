@@ -5,13 +5,13 @@ import (
 	"github.com/the-medo/talebound-backend/pb"
 )
 
-type ServerLocations struct {
+type ServiceLocations struct {
 	pb.UnimplementedLocationsServer
-	*srv.ServerCore
+	*srv.ServiceCore
 }
 
-func NewLocationsServer(core *srv.ServerCore) *ServerLocations {
-	return &ServerLocations{
-		ServerCore: core,
+func NewLocationsService(core *srv.ServiceCore) *ServiceLocations {
+	return &ServiceLocations{
+		ServiceCore: core,
 	}
 }

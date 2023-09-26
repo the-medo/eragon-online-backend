@@ -10,7 +10,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *ServerLocations) CreateWorldLocation(ctx context.Context, request *pb.CreateWorldLocationRequest) (*pb.CreateWorldLocationResponse, error) {
+func (server *ServiceLocations) CreateWorldLocation(ctx context.Context, request *pb.CreateWorldLocationRequest) (*pb.CreateWorldLocationResponse, error) {
 	violations := validateCreateWorldLocation(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

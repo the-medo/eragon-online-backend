@@ -14,8 +14,8 @@ import (
 
 // Server serves gRPC requests
 type Server struct {
-	*locations.ServerLocations
-	*maps.ServerMaps
+	*locations.ServiceLocations
+	*maps.ServiceMaps
 	pb.UnimplementedChatServer
 	pb.UnimplementedEvaluationsServer
 	pb.UnimplementedImagesServer
@@ -38,15 +38,15 @@ func NewServer(config util.Config, store db.Store, taskDistributor worker.TaskDi
 		return nil, fmt.Errorf("cannot create token maker: %w", err)
 	}
 
-	serverCore := srv.NewServerCore(config, store, taskDistributor, tokenMaker)
+	serverCore := srv.NewServiceCore(config, store, taskDistributor, tokenMaker)
 
 	server := &Server{
-		ServerLocations: locations.NewLocationsServer(serverCore),
-		ServerMaps:      maps.NewMapsServer(serverCore),
-		Config:          serverCore.Config,
-		Store:           serverCore.Store,
-		TaskDistributor: serverCore.TaskDistributor,
-		TokenMaker:      serverCore.TokenMaker,
+		ServiceLocations: locations.NewLocationsService(serverCore),
+		ServiceMaps:      maps.NewMapsService(serverCore),
+		Config:           serverCore.Config,
+		Store:            serverCore.Store,
+		TaskDistributor:  serverCore.TaskDistributor,
+		TokenMaker:       serverCore.TokenMaker,
 	}
 
 	return server, nil

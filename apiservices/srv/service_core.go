@@ -14,15 +14,15 @@ import (
 const GrpcCookieHeader = "grpc-gateway-cookie"
 const CookieName = "access_token"
 
-type ServerCore struct {
+type ServiceCore struct {
 	Config          util.Config
 	Store           db.Store
 	TaskDistributor worker.TaskDistributor
 	TokenMaker      token.Maker
 }
 
-func NewServerCore(config util.Config, store db.Store, taskDistributor worker.TaskDistributor, tokenMaker token.Maker) *ServerCore {
-	return &ServerCore{
+func NewServiceCore(config util.Config, store db.Store, taskDistributor worker.TaskDistributor, tokenMaker token.Maker) *ServiceCore {
+	return &ServiceCore{
 		Config:          config,
 		Store:           store,
 		TaskDistributor: taskDistributor,
@@ -30,7 +30,7 @@ func NewServerCore(config util.Config, store db.Store, taskDistributor worker.Ta
 	}
 }
 
-func (core *ServerCore) AuthorizeUserCookie(ctx context.Context) (*token.Payload, error) {
+func (core *ServiceCore) AuthorizeUserCookie(ctx context.Context) (*token.Payload, error) {
 
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
