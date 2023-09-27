@@ -18,4 +18,5 @@ message ViewLocation {
   optional string description = 3;
   optional int32 postId = 4;
   optional int32 thumbnailImageId = 5;
+  optional string thumbnailImageUrl = 6;
 }

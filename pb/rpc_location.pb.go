@@ -101,7 +101,11 @@ type UpdateLocationRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	LocationId int32 `protobuf:"varint,1,opt,name=locationId,proto3" json:"locationId,omitempty"`
+	LocationId       int32   `protobuf:"varint,1,opt,name=locationId,proto3" json:"locationId,omitempty"`
+	Name             *string `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	Description      *string `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	PostId           *int32  `protobuf:"varint,4,opt,name=postId,proto3,oneof" json:"postId,omitempty"`
+	ThumbnailImageId *int32  `protobuf:"varint,5,opt,name=thumbnailImageId,proto3,oneof" json:"thumbnailImageId,omitempty"`
 }
 
 func (x *UpdateLocationRequest) Reset() {
@@ -143,51 +147,32 @@ func (x *UpdateLocationRequest) GetLocationId() int32 {
 	return 0
 }
 
-type UpdateLocationResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Location *ViewLocation `protobuf:"bytes,1,opt,name=location,proto3" json:"location,omitempty"`
-}
-
-func (x *UpdateLocationResponse) Reset() {
-	*x = UpdateLocationResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_services_locations_rpc_location_proto_msgTypes[3]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
+func (x *UpdateLocationRequest) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
 	}
+	return ""
 }
 
-func (x *UpdateLocationResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateLocationResponse) ProtoMessage() {}
-
-func (x *UpdateLocationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_services_locations_rpc_location_proto_msgTypes[3]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+func (x *UpdateLocationRequest) GetDescription() string {
+	if x != nil && x.Description != nil {
+		return *x.Description
 	}
-	return mi.MessageOf(x)
+	return ""
 }
 
-// Deprecated: Use UpdateLocationResponse.ProtoReflect.Descriptor instead.
-func (*UpdateLocationResponse) Descriptor() ([]byte, []int) {
-	return file_services_locations_rpc_location_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *UpdateLocationResponse) GetLocation() *ViewLocation {
-	if x != nil {
-		return x.Location
+func (x *UpdateLocationRequest) GetPostId() int32 {
+	if x != nil && x.PostId != nil {
+		return *x.PostId
 	}
-	return nil
+	return 0
+}
+
+func (x *UpdateLocationRequest) GetThumbnailImageId() int32 {
+	if x != nil && x.ThumbnailImageId != nil {
+		return *x.ThumbnailImageId
+	}
+	return 0
 }
 
 type CreateWorldLocationRequest struct {
@@ -204,7 +189,7 @@ type CreateWorldLocationRequest struct {
 func (x *CreateWorldLocationRequest) Reset() {
 	*x = CreateWorldLocationRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_services_locations_rpc_location_proto_msgTypes[4]
+		mi := &file_services_locations_rpc_location_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -217,7 +202,7 @@ func (x *CreateWorldLocationRequest) String() string {
 func (*CreateWorldLocationRequest) ProtoMessage() {}
 
 func (x *CreateWorldLocationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_services_locations_rpc_location_proto_msgTypes[4]
+	mi := &file_services_locations_rpc_location_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -230,7 +215,7 @@ func (x *CreateWorldLocationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWorldLocationRequest.ProtoReflect.Descriptor instead.
 func (*CreateWorldLocationRequest) Descriptor() ([]byte, []int) {
-	return file_services_locations_rpc_location_proto_rawDescGZIP(), []int{4}
+	return file_services_locations_rpc_location_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *CreateWorldLocationRequest) GetWorldId() int32 {
@@ -273,7 +258,7 @@ type CreateWorldLocationResponse struct {
 func (x *CreateWorldLocationResponse) Reset() {
 	*x = CreateWorldLocationResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_services_locations_rpc_location_proto_msgTypes[5]
+		mi := &file_services_locations_rpc_location_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -286,7 +271,7 @@ func (x *CreateWorldLocationResponse) String() string {
 func (*CreateWorldLocationResponse) ProtoMessage() {}
 
 func (x *CreateWorldLocationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_services_locations_rpc_location_proto_msgTypes[5]
+	mi := &file_services_locations_rpc_location_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -299,7 +284,7 @@ func (x *CreateWorldLocationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWorldLocationResponse.ProtoReflect.Descriptor instead.
 func (*CreateWorldLocationResponse) Descriptor() ([]byte, []int) {
-	return file_services_locations_rpc_location_proto_rawDescGZIP(), []int{5}
+	return file_services_locations_rpc_location_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CreateWorldLocationResponse) GetWorldId() int32 {
@@ -325,7 +310,7 @@ type DeleteWorldLocationRequest struct {
 func (x *DeleteWorldLocationRequest) Reset() {
 	*x = DeleteWorldLocationRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_services_locations_rpc_location_proto_msgTypes[6]
+		mi := &file_services_locations_rpc_location_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -338,7 +323,7 @@ func (x *DeleteWorldLocationRequest) String() string {
 func (*DeleteWorldLocationRequest) ProtoMessage() {}
 
 func (x *DeleteWorldLocationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_services_locations_rpc_location_proto_msgTypes[6]
+	mi := &file_services_locations_rpc_location_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -351,7 +336,7 @@ func (x *DeleteWorldLocationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWorldLocationRequest.ProtoReflect.Descriptor instead.
 func (*DeleteWorldLocationRequest) Descriptor() ([]byte, []int) {
-	return file_services_locations_rpc_location_proto_rawDescGZIP(), []int{6}
+	return file_services_locations_rpc_location_proto_rawDescGZIP(), []int{5}
 }
 
 type DeleteWorldLocationResponse struct {
@@ -363,7 +348,7 @@ type DeleteWorldLocationResponse struct {
 func (x *DeleteWorldLocationResponse) Reset() {
 	*x = DeleteWorldLocationResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_services_locations_rpc_location_proto_msgTypes[7]
+		mi := &file_services_locations_rpc_location_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -376,7 +361,7 @@ func (x *DeleteWorldLocationResponse) String() string {
 func (*DeleteWorldLocationResponse) ProtoMessage() {}
 
 func (x *DeleteWorldLocationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_services_locations_rpc_location_proto_msgTypes[7]
+	mi := &file_services_locations_rpc_location_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -389,7 +374,7 @@ func (x *DeleteWorldLocationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWorldLocationResponse.ProtoReflect.Descriptor instead.
 func (*DeleteWorldLocationResponse) Descriptor() ([]byte, []int) {
-	return file_services_locations_rpc_location_proto_rawDescGZIP(), []int{7}
+	return file_services_locations_rpc_location_proto_rawDescGZIP(), []int{6}
 }
 
 var File_services_locations_rpc_location_proto protoreflect.FileDescriptor
@@ -403,15 +388,23 @@ var file_services_locations_rpc_location_proto_rawDesc = []byte{
 	0x0a, 0x17, 0x47, 0x65, 0x74, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69,
 	0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x1a, 0x0a, 0x18, 0x47, 0x65, 0x74,
 	0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x37, 0x0a, 0x15, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4c,
-	0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1e,
-	0x0a, 0x0a, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x05, 0x52, 0x0a, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x22, 0x46,
-	0x0a, 0x16, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2c, 0x0a, 0x08, 0x6c, 0x6f, 0x63, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x10, 0x2e, 0x70, 0x62, 0x2e,
-	0x56, 0x69, 0x65, 0x77, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x08, 0x6c, 0x6f,
-	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0xc7, 0x01, 0x0a, 0x1a, 0x43, 0x72, 0x65, 0x61, 0x74,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xfe, 0x01, 0x0a, 0x15, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
+	0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x1e, 0x0a, 0x0a, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x05, 0x52, 0x0a, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12,
+	0x17, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52,
+	0x04, 0x6e, 0x61, 0x6d, 0x65, 0x88, 0x01, 0x01, 0x12, 0x25, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x63,
+	0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x48, 0x01, 0x52,
+	0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x88, 0x01, 0x01, 0x12,
+	0x1b, 0x0a, 0x06, 0x70, 0x6f, 0x73, 0x74, 0x49, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x05, 0x48,
+	0x02, 0x52, 0x06, 0x70, 0x6f, 0x73, 0x74, 0x49, 0x64, 0x88, 0x01, 0x01, 0x12, 0x2f, 0x0a, 0x10,
+	0x74, 0x68, 0x75, 0x6d, 0x62, 0x6e, 0x61, 0x69, 0x6c, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x49, 0x64,
+	0x18, 0x05, 0x20, 0x01, 0x28, 0x05, 0x48, 0x03, 0x52, 0x10, 0x74, 0x68, 0x75, 0x6d, 0x62, 0x6e,
+	0x61, 0x69, 0x6c, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x49, 0x64, 0x88, 0x01, 0x01, 0x42, 0x07, 0x0a,
+	0x05, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x42, 0x0e, 0x0a, 0x0c, 0x5f, 0x64, 0x65, 0x73, 0x63, 0x72,
+	0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x09, 0x0a, 0x07, 0x5f, 0x70, 0x6f, 0x73, 0x74, 0x49,
+	0x64, 0x42, 0x13, 0x0a, 0x11, 0x5f, 0x74, 0x68, 0x75, 0x6d, 0x62, 0x6e, 0x61, 0x69, 0x6c, 0x49,
+	0x6d, 0x61, 0x67, 0x65, 0x49, 0x64, 0x22, 0xc7, 0x01, 0x0a, 0x1a, 0x43, 0x72, 0x65, 0x61, 0x74,
 	0x65, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65,
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x49, 0x64,
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x49, 0x64, 0x12,
@@ -451,25 +444,22 @@ func file_services_locations_rpc_location_proto_rawDescGZIP() []byte {
 	return file_services_locations_rpc_location_proto_rawDescData
 }
 
-var file_services_locations_rpc_location_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_services_locations_rpc_location_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_services_locations_rpc_location_proto_goTypes = []interface{}{
 	(*GetWorldLocationRequest)(nil),     // 0: pb.GetWorldLocationRequest
 	(*GetWorldLocationResponse)(nil),    // 1: pb.GetWorldLocationResponse
 	(*UpdateLocationRequest)(nil),       // 2: pb.UpdateLocationRequest
-	(*UpdateLocationResponse)(nil),      // 3: pb.UpdateLocationResponse
-	(*CreateWorldLocationRequest)(nil),  // 4: pb.CreateWorldLocationRequest
-	(*CreateWorldLocationResponse)(nil), // 5: pb.CreateWorldLocationResponse
-	(*DeleteWorldLocationRequest)(nil),  // 6: pb.DeleteWorldLocationRequest
-	(*DeleteWorldLocationResponse)(nil), // 7: pb.DeleteWorldLocationResponse
-	(*ViewLocation)(nil),                // 8: pb.ViewLocation
+	(*CreateWorldLocationRequest)(nil),  // 3: pb.CreateWorldLocationRequest
+	(*CreateWorldLocationResponse)(nil), // 4: pb.CreateWorldLocationResponse
+	(*DeleteWorldLocationRequest)(nil),  // 5: pb.DeleteWorldLocationRequest
+	(*DeleteWorldLocationResponse)(nil), // 6: pb.DeleteWorldLocationResponse
 }
 var file_services_locations_rpc_location_proto_depIdxs = []int32{
-	8, // 0: pb.UpdateLocationResponse.location:type_name -> pb.ViewLocation
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_services_locations_rpc_location_proto_init() }
@@ -516,18 +506,6 @@ func file_services_locations_rpc_location_proto_init() {
 			}
 		}
 		file_services_locations_rpc_location_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateLocationResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_services_locations_rpc_location_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateWorldLocationRequest); i {
 			case 0:
 				return &v.state
@@ -539,7 +517,7 @@ func file_services_locations_rpc_location_proto_init() {
 				return nil
 			}
 		}
-		file_services_locations_rpc_location_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_services_locations_rpc_location_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateWorldLocationResponse); i {
 			case 0:
 				return &v.state
@@ -551,7 +529,7 @@ func file_services_locations_rpc_location_proto_init() {
 				return nil
 			}
 		}
-		file_services_locations_rpc_location_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_services_locations_rpc_location_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteWorldLocationRequest); i {
 			case 0:
 				return &v.state
@@ -563,7 +541,7 @@ func file_services_locations_rpc_location_proto_init() {
 				return nil
 			}
 		}
-		file_services_locations_rpc_location_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_services_locations_rpc_location_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteWorldLocationResponse); i {
 			case 0:
 				return &v.state
@@ -576,14 +554,15 @@ func file_services_locations_rpc_location_proto_init() {
 			}
 		}
 	}
-	file_services_locations_rpc_location_proto_msgTypes[4].OneofWrappers = []interface{}{}
+	file_services_locations_rpc_location_proto_msgTypes[2].OneofWrappers = []interface{}{}
+	file_services_locations_rpc_location_proto_msgTypes[3].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_services_locations_rpc_location_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

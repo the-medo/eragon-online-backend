@@ -26,7 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LocationsClient interface {
-	UpdateLocation(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*UpdateLocationResponse, error)
+	UpdateLocation(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error)
 }
 
 type locationsClient struct {
@@ -37,8 +37,8 @@ func NewLocationsClient(cc grpc.ClientConnInterface) LocationsClient {
 	return &locationsClient{cc}
 }
 
-func (c *locationsClient) UpdateLocation(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*UpdateLocationResponse, error) {
-	out := new(UpdateLocationResponse)
+func (c *locationsClient) UpdateLocation(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error) {
+	out := new(ViewLocation)
 	err := c.cc.Invoke(ctx, Locations_UpdateLocation_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (c *locationsClient) UpdateLocation(ctx context.Context, in *UpdateLocation
 // All implementations must embed UnimplementedLocationsServer
 // for forward compatibility
 type LocationsServer interface {
-	UpdateLocation(context.Context, *UpdateLocationRequest) (*UpdateLocationResponse, error)
+	UpdateLocation(context.Context, *UpdateLocationRequest) (*ViewLocation, error)
 	mustEmbedUnimplementedLocationsServer()
 }
 
@@ -58,7 +58,7 @@ type LocationsServer interface {
 type UnimplementedLocationsServer struct {
 }
 
-func (UnimplementedLocationsServer) UpdateLocation(context.Context, *UpdateLocationRequest) (*UpdateLocationResponse, error) {
+func (UnimplementedLocationsServer) UpdateLocation(context.Context, *UpdateLocationRequest) (*ViewLocation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateLocation not implemented")
 }
 func (UnimplementedLocationsServer) mustEmbedUnimplementedLocationsServer() {}

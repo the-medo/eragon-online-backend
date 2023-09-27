@@ -11,10 +11,10 @@ message GetWorldLocationResponse {}
 
 message UpdateLocationRequest {
   int32 locationId = 1;
-}
-
-message UpdateLocationResponse {
-  ViewLocation location = 1;
+  optional string name = 2;
+  optional string description = 3;
+  optional int32 postId = 4;
+  optional int32 thumbnailImageId = 5;
 }
 
 message CreateWorldLocationRequest {

@@ -6,12 +6,13 @@ import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "services/locations/rpc_location.proto";
+import "services/locations/location.proto";
 
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 service Locations {
-  rpc UpdateLocation(UpdateLocationRequest) returns (UpdateLocationResponse) {
+  rpc UpdateLocation(UpdateLocationRequest) returns (ViewLocation) {
     option (google.api.http) = {
       patch: "/locations/{locationId}"
       body: "*"

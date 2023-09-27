@@ -323,7 +323,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbUpdateLocationResponse"
+              "$ref": "#/definitions/pbViewLocation"
             }
           },
           "default": {
@@ -346,7 +346,23 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object"
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "postId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "thumbnailImageId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
             }
           }
         ],
@@ -3803,14 +3819,6 @@
         }
       }
     },
-    "pbUpdateLocationResponse": {
-      "type": "object",
-      "properties": {
-        "location": {
-          "$ref": "#/definitions/pbViewLocation"
-        }
-      }
-    },
     "pbUpdateMapResponse": {
       "type": "object",
       "properties": {
@@ -3970,6 +3978,9 @@
         "thumbnailImageId": {
           "type": "integer",
           "format": "int32"
+        },
+        "thumbnailImageUrl": {
+          "type": "string"
         }
       }
     },
