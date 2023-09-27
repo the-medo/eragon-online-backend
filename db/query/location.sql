@@ -29,9 +29,19 @@ RETURNING *;
 
 -- name: GetWorldLocations :many
 SELECT l.*
-FROM locations l
+FROM view_locations l
     JOIN world_locations wl ON l.id = wl.location_id
 WHERE wl.world_id = sqlc.arg(world_id);
+
+-- name: GetLocationAssignments :one
+SELECT
+    CAST(MAX(COALESCE(wl.world_id, 0)) as integer) AS world_id,
+    0 AS quest_id
+FROM
+    locations l
+    LEFT JOIN world_locations wl ON l.id = wl.location_id
+WHERE l.id = sqlc.arg(location_id)
+GROUP BY l.id;
 
 -- name: DeleteWorldLocation :exec
 DELETE FROM world_locations

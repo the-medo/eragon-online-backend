@@ -7,6 +7,7 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "services/locations/rpc_location.proto";
 import "services/locations/location.proto";
+import "google/protobuf/empty.proto";
 
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
@@ -20,6 +21,37 @@ service Locations {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "updates location properties";
       summary: "Update location";
+    };
+  };
+
+  rpc GetWorldLocations(GetWorldLocationsRequest) returns (GetWorldLocationResponse) {
+    option (google.api.http) = {
+      get: "/worlds/{worldId}/locations"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns world locations";
+      summary: "Get world locations";
+    };
+  };
+
+  rpc CreateWorldLocation(CreateWorldLocationRequest) returns (ViewLocation) {
+    option (google.api.http) = {
+      post: "/worlds/{worldId}/locations"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates a new location in the world";
+      summary: "Create world location";
+    };
+  };
+
+  rpc DeleteWorldLocation(DeleteWorldLocationRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/worlds/{worldId}/locations"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes location from the world";
+      summary: "Delete world location";
     };
   };
 }

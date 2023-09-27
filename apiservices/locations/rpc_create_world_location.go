@@ -3,6 +3,7 @@ package locations
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -10,7 +11,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *ServiceLocations) CreateWorldLocation(ctx context.Context, request *pb.CreateWorldLocationRequest) (*pb.CreateWorldLocationResponse, error) {
+func (server *ServiceLocations) CreateWorldLocation(ctx context.Context, request *pb.CreateWorldLocationRequest) (*pb.ViewLocation, error) {
 	violations := validateCreateWorldLocation(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -45,10 +46,12 @@ func (server *ServiceLocations) CreateWorldLocation(ctx context.Context, request
 		return nil, err
 	}
 
-	rsp := &pb.CreateWorldLocationResponse{
-		WorldId:    worldLocation.WorldID,
-		LocationId: worldLocation.LocationID,
+	viewLocation, err := server.Store.GetLocationByID(ctx, worldLocation.LocationID)
+	if err != nil {
+		return nil, err
 	}
+
+	rsp := converters.ConvertViewLocation(viewLocation)
 
 	return rsp, nil
 }
@@ -56,6 +59,22 @@ func (server *ServiceLocations) CreateWorldLocation(ctx context.Context, request
 func validateCreateWorldLocation(req *pb.CreateWorldLocationRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
 		violations = append(violations, e.FieldViolation("world_id", err))
+	}
+
+	if err := validator.ValidateLocationName(req.GetName()); err != nil {
+		violations = append(violations, e.FieldViolation("name", err))
+	}
+
+	if req.Description != nil {
+		if err := validator.ValidateLocationDescription(req.GetDescription()); err != nil {
+			violations = append(violations, e.FieldViolation("description", err))
+		}
+	}
+
+	if req.ThumbnailImageId != nil {
+		if err := validator.ValidateImageId(req.GetThumbnailImageId()); err != nil {
+			violations = append(violations, e.FieldViolation("thumbnail_image_id", err))
+		}
 	}
 
 	return violations

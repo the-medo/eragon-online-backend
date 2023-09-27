@@ -2866,6 +2866,129 @@
         ]
       }
     },
+    "/worlds/{worldId}/locations": {
+      "get": {
+        "summary": "Get world locations",
+        "description": "returns world locations",
+        "operationId": "Locations_GetWorldLocations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetWorldLocationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Locations"
+        ]
+      },
+      "delete": {
+        "summary": "Delete world location",
+        "description": "deletes location from the world",
+        "operationId": "Locations_DeleteWorldLocation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "locationId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Locations"
+        ]
+      },
+      "post": {
+        "summary": "Create world location",
+        "description": "creates a new location in the world",
+        "operationId": "Locations_CreateWorldLocation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewLocation"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "thumbnailImageId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Locations"
+        ]
+      }
+    },
     "/worlds/{worldId}/tags": {
       "delete": {
         "summary": "Remove world tag",
@@ -3550,6 +3673,18 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbWorldActivity"
+          }
+        }
+      }
+    },
+    "pbGetWorldLocationResponse": {
+      "type": "object",
+      "properties": {
+        "locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewLocation"
           }
         }
       }

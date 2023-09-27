@@ -83,6 +83,29 @@ func (q *Queries) DeleteWorldLocation(ctx context.Context, arg DeleteWorldLocati
 	return err
 }
 
+const getLocationAssignments = `-- name: GetLocationAssignments :one
+SELECT
+    CAST(MAX(COALESCE(wl.world_id, 0)) as integer) AS world_id,
+    0 AS quest_id
+FROM
+    locations l
+    LEFT JOIN world_locations wl ON l.id = wl.location_id
+WHERE l.id = $1
+GROUP BY l.id
+`
+
+type GetLocationAssignmentsRow struct {
+	WorldID int32       `json:"world_id"`
+	QuestID interface{} `json:"quest_id"`
+}
+
+func (q *Queries) GetLocationAssignments(ctx context.Context, locationID int32) (GetLocationAssignmentsRow, error) {
+	row := q.db.QueryRowContext(ctx, getLocationAssignments, locationID)
+	var i GetLocationAssignmentsRow
+	err := row.Scan(&i.WorldID, &i.QuestID)
+	return i, err
+}
+
 const getLocationByID = `-- name: GetLocationByID :one
 SELECT id, name, description, post_id, thumbnail_image_id, thumbnail_image_url FROM view_locations WHERE id = $1
 `
@@ -136,27 +159,28 @@ func (q *Queries) GetLocations(ctx context.Context) ([]ViewLocation, error) {
 }
 
 const getWorldLocations = `-- name: GetWorldLocations :many
-SELECT l.id, l.name, l.description, l.post_id, l.thumbnail_image_id
-FROM locations l
+SELECT l.id, l.name, l.description, l.post_id, l.thumbnail_image_id, l.thumbnail_image_url
+FROM view_locations l
     JOIN world_locations wl ON l.id = wl.location_id
 WHERE wl.world_id = $1
 `
 
-func (q *Queries) GetWorldLocations(ctx context.Context, worldID int32) ([]Location, error) {
+func (q *Queries) GetWorldLocations(ctx context.Context, worldID int32) ([]ViewLocation, error) {
 	rows, err := q.db.QueryContext(ctx, getWorldLocations, worldID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Location{}
+	items := []ViewLocation{}
 	for rows.Next() {
-		var i Location
+		var i ViewLocation
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
 			&i.Description,
 			&i.PostID,
 			&i.ThumbnailImageID,
+			&i.ThumbnailImageUrl,
 		); err != nil {
 			return nil, err
 		}

@@ -987,6 +987,21 @@ func (mr *MockStoreMockRecorder) GetImagesCount(arg0, arg1 interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImagesCount", reflect.TypeOf((*MockStore)(nil).GetImagesCount), arg0, arg1)
 }
 
+// GetLocationAssignments mocks base method.
+func (m *MockStore) GetLocationAssignments(arg0 context.Context, arg1 int32) (db.GetLocationAssignmentsRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetLocationAssignments", arg0, arg1)
+	ret0, _ := ret[0].(db.GetLocationAssignmentsRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetLocationAssignments indicates an expected call of GetLocationAssignments.
+func (mr *MockStoreMockRecorder) GetLocationAssignments(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLocationAssignments", reflect.TypeOf((*MockStore)(nil).GetLocationAssignments), arg0, arg1)
+}
+
 // GetLocationByID mocks base method.
 func (m *MockStore) GetLocationByID(arg0 context.Context, arg1 int32) (db.ViewLocation, error) {
 	m.ctrl.T.Helper()
@@ -1438,10 +1453,10 @@ func (mr *MockStoreMockRecorder) GetWorldImages(arg0, arg1 interface{}) *gomock.
 }
 
 // GetWorldLocations mocks base method.
-func (m *MockStore) GetWorldLocations(arg0 context.Context, arg1 int32) ([]db.Location, error) {
+func (m *MockStore) GetWorldLocations(arg0 context.Context, arg1 int32) ([]db.ViewLocation, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWorldLocations", arg0, arg1)
-	ret0, _ := ret[0].([]db.Location)
+	ret0, _ := ret[0].([]db.ViewLocation)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

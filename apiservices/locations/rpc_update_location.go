@@ -9,6 +9,8 @@ import (
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func (server *ServiceLocations) UpdateLocation(ctx context.Context, request *pb.UpdateLocationRequest) (*pb.ViewLocation, error) {
@@ -17,7 +19,15 @@ func (server *ServiceLocations) UpdateLocation(ctx context.Context, request *pb.
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.AuthorizeUserCookie(ctx)
+	assignments, err := server.Store.GetLocationAssignments(ctx, request.GetLocationId())
+	if assignments.WorldID > 0 {
+		_, err = server.CheckWorldAdmin(ctx, assignments.WorldID, false)
+		if err != nil {
+			return nil, status.Errorf(codes.PermissionDenied, "failed to update location: %v", err)
+		}
+	}
+
+	_, err = server.AuthorizeUserCookie(ctx)
 	if err != nil {
 		return nil, e.UnauthenticatedError(err)
 	}
@@ -81,7 +91,7 @@ func validateUpdateLocation(req *pb.UpdateLocationRequest) (violations []*errdet
 	}
 
 	if req.ThumbnailImageId != nil {
-		if err := validator.ValidateImageId(req.GetPostId()); err != nil {
+		if err := validator.ValidateImageId(req.GetThumbnailImageId()); err != nil {
 			violations = append(violations, e.FieldViolation("thumbnail_image_id", err))
 		}
 	}
