@@ -380,7 +380,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbUpdateMapResponse"
+              "$ref": "#/definitions/pbViewMap"
             }
           },
           "default": {
@@ -403,7 +403,30 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object"
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "height": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "thumbnailImageId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
             }
           }
         ],
@@ -3951,14 +3974,6 @@
         },
         "tag": {
           "type": "string"
-        }
-      }
-    },
-    "pbUpdateMapResponse": {
-      "type": "object",
-      "properties": {
-        "map": {
-          "$ref": "#/definitions/pbViewMap"
         }
       }
     },

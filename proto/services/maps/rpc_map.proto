@@ -3,59 +3,143 @@ syntax = "proto3";
 package pb;
 
 import "services/maps/map.proto";
-//import "location.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 
-message GetWorldMapRequest {}
-message GetWorldMapResponse {}
+message GetWorldMapRequest {
+  int32 worldId = 1;
+}
+message GetWorldMapResponse {
+  repeated ViewMap maps = 1;
+}
 
-message CreateWorldMapRequest {}
-message CreateWorldMapResponse {}
+message CreateWorldMapRequest {
+  string name = 1;
+  optional string type = 2;
+  optional string description = 3;
+  int32 width = 4;
+  int32 height = 5;
+  optional int32 thumbnailImageId = 6;
+  int32 layerImageId = 7;
+}
+message CreateWorldMapResponse {
+  ViewMap map = 1;
+  ViewMapLayer layer = 2;
+}
 
-message DeleteWorldMapRequest {}
-message DeleteWorldMapResponse {}
+message DeleteWorldMapRequest {
+  int32 worldId = 1;
+  int32 mapId = 2;
+}
 
 message UpdateMapRequest {
   int32 mapId = 1;
+  optional string name = 2;
+  optional string type = 3;
+  optional string description = 4;
+  optional int32 width = 5;
+  optional int32 height = 6;
+  optional int32 thumbnailImageId = 7;
 }
-message UpdateMapResponse {
-  ViewMap map = 1;
+
+message GetMapLayersRequest {
+  int32 mapId = 1;
+}
+message GetMapLayersResponse {
+  repeated ViewMapLayer layers = 1;
 }
 
-message GetMapLayersRequest {}
-message GetMapLayersResponse {}
+message CreateMapLayerRequest {
+  int32 mapId = 1;
+  string name = 2;
+  int32 imageId = 3;
+  bool isMain = 4;
+  bool enabled = 5;
+  bool sublayer = 6;
+}
 
-message CreateMapLayerRequest {}
-message CreateMapLayerResponse {}
+message DeleteMapLayerRequest {
+  int32 mapId = 1;
+  int32 mapLayerId = 2;
+}
 
-message DeleteMapLayerRequest {}
-message DeleteMapLayerResponse {}
+message UpdateMapLayerRequest {
+  int32 layerId = 1;
+  optional string name = 2;
+  optional int32 imageId = 3;
+  optional bool isMain = 4;
+  optional bool enabled = 5;
+  optional bool sublayer = 6;
+}
 
-message UpdateMapLayerRequest {}
-message UpdateMapLayerResponse {}
+message GetMapPinTypesRequest {
+  int32 mapId = 1;
+}
+message GetMapPinTypesResponse {
+  repeated MapPinType pinTypes = 1;
+}
 
-message GetMapPinTypesRequest {}
-message GetMapPinTypesResponse {}
+message CreateMapPinTypeRequest {
+  int32 mapId = 1;
+  PinShape shape = 2;
+  string backgroundColor = 3;
+  string borderColor = 4;
+  string iconColor = 5;
+  string icon = 6;
+  int32 iconSize = 7;
+  int32 width = 8;
+}
 
-message CreateMapPinTypeRequest {}
-message CreateMapPinTypeResponse {}
+message DeleteMapPinTypeRequest {
+  int32 mapId = 1;
+  int32 pinTypeId = 2;
+}
 
-message DeleteMapPinTypeRequest {}
-message DeleteMapPinTypeResponse {}
+message UpdateMapPinTypeRequest {
+  int32 pinTypeId = 1;
+  optional PinShape shape = 2;
+  optional string backgroundColor = 3;
+  optional string borderColor = 4;
+  optional string iconColor = 5;
+  optional string icon = 6;
+  optional int32 iconSize = 7;
+  optional int32 width = 8;
+}
+message UpdateMapPinTypeResponse {
+  MapPinType pinType = 1;
+}
 
-message UpdateMapPinTypeRequest {}
-message UpdateMapPinTypeResponse {}
+message GetMapPinsRequest {
+  int32 mapId = 1;
+}
+message GetMapPinsResponse {
+  repeated ViewMapPin pins = 1;
+}
 
-message GetMapPinsRequest {}
-message GetMapPinsResponse {}
+message CreateMapPinRequest {
+  int32 mapId = 1;
+  int32 mapPinTypeId = 2;
+  string name = 3;
+  string description = 4;
+  optional int32 locationId = 5;
+  optional int32 mapLayerId = 6;
+  int32 x = 7;
+  int32 y = 8;
+}
 
-message CreateMapPinRequest {}
-message CreateMapPinResponse {}
+message DeleteMapPinRequest {
+  int32 mapId = 1;
+  int32 pinId = 2;
+}
 
-message DeleteMapPinRequest {}
-message DeleteMapPinResponse {}
-
-message UpdateMapPinRequest {}
-message UpdateMapPinResponse {}
+message UpdateMapPinRequest {
+  int32 pinId = 1;
+  optional int32 mapPinTypeId = 2;
+  optional string name = 3;
+  optional string description = 4;
+  optional int32 locationId = 5;
+  optional int32 mapLayerId = 6;
+  optional int32 x = 7;
+  optional int32 y = 8;
+}
