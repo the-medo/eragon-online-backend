@@ -15,13 +15,14 @@ message GetWorldMapResponse {
 }
 
 message CreateWorldMapRequest {
-  string name = 1;
-  optional string type = 2;
-  optional string description = 3;
-  int32 width = 4;
-  int32 height = 5;
-  optional int32 thumbnailImageId = 6;
-  int32 layerImageId = 7;
+  int32 worldId = 1;
+  string name = 2;
+  optional string type = 3;
+  optional string description = 4;
+  int32 width = 5;
+  int32 height = 6;
+  optional int32 thumbnailImageId = 7;
+  int32 layerImageId = 8;
 }
 message CreateWorldMapResponse {
   ViewMap map = 1;
@@ -61,16 +62,17 @@ message CreateMapLayerRequest {
 
 message DeleteMapLayerRequest {
   int32 mapId = 1;
-  int32 mapLayerId = 2;
+  int32 layerId = 2;
 }
 
 message UpdateMapLayerRequest {
-  int32 layerId = 1;
-  optional string name = 2;
-  optional int32 imageId = 3;
-  optional bool isMain = 4;
-  optional bool enabled = 5;
-  optional bool sublayer = 6;
+  int32 mapId = 1;
+  int32 layerId = 2;
+  optional string name = 3;
+  optional int32 imageId = 4;
+  optional bool isMain = 5;
+  optional bool enabled = 6;
+  optional bool sublayer = 7;
 }
 
 message GetMapPinTypesRequest {
@@ -97,14 +99,15 @@ message DeleteMapPinTypeRequest {
 }
 
 message UpdateMapPinTypeRequest {
-  int32 pinTypeId = 1;
-  optional PinShape shape = 2;
-  optional string backgroundColor = 3;
-  optional string borderColor = 4;
-  optional string iconColor = 5;
-  optional string icon = 6;
-  optional int32 iconSize = 7;
-  optional int32 width = 8;
+  int32 mapId = 1;
+  int32 pinTypeId = 2;
+  optional PinShape shape = 3;
+  optional string backgroundColor = 4;
+  optional string borderColor = 5;
+  optional string iconColor = 6;
+  optional string icon = 7;
+  optional int32 iconSize = 8;
+  optional int32 width = 9;
 }
 message UpdateMapPinTypeResponse {
   MapPinType pinType = 1;
@@ -134,12 +137,13 @@ message DeleteMapPinRequest {
 }
 
 message UpdateMapPinRequest {
-  int32 pinId = 1;
-  optional int32 mapPinTypeId = 2;
-  optional string name = 3;
-  optional string description = 4;
-  optional int32 locationId = 5;
-  optional int32 mapLayerId = 6;
-  optional int32 x = 7;
-  optional int32 y = 8;
+  int32 mapId = 1;
+  int32 pinId = 2;
+  optional int32 mapPinTypeId = 3;
+  optional string name = 4;
+  optional string description = 5;
+  optional int32 locationId = 6;
+  optional int32 mapLayerId = 7;
+  optional int32 x = 8;
+  optional int32 y = 9;
 }

@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,7 +20,22 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Maps_UpdateMap_FullMethodName = "/pb.Maps/UpdateMap"
+	Maps_UpdateMap_FullMethodName        = "/pb.Maps/UpdateMap"
+	Maps_GetWorldMaps_FullMethodName     = "/pb.Maps/GetWorldMaps"
+	Maps_CreateWorldMap_FullMethodName   = "/pb.Maps/CreateWorldMap"
+	Maps_DeleteWorldMap_FullMethodName   = "/pb.Maps/DeleteWorldMap"
+	Maps_GetMapLayers_FullMethodName     = "/pb.Maps/GetMapLayers"
+	Maps_CreateMapLayer_FullMethodName   = "/pb.Maps/CreateMapLayer"
+	Maps_DeleteMapLayer_FullMethodName   = "/pb.Maps/DeleteMapLayer"
+	Maps_UpdateMapLayer_FullMethodName   = "/pb.Maps/UpdateMapLayer"
+	Maps_GetMapPinTypes_FullMethodName   = "/pb.Maps/GetMapPinTypes"
+	Maps_CreateMapPinType_FullMethodName = "/pb.Maps/CreateMapPinType"
+	Maps_DeleteMapPinType_FullMethodName = "/pb.Maps/DeleteMapPinType"
+	Maps_UpdateMapPinType_FullMethodName = "/pb.Maps/UpdateMapPinType"
+	Maps_GetMapPins_FullMethodName       = "/pb.Maps/GetMapPins"
+	Maps_CreateMapPin_FullMethodName     = "/pb.Maps/CreateMapPin"
+	Maps_DeleteMapPin_FullMethodName     = "/pb.Maps/DeleteMapPin"
+	Maps_UpdateMapPin_FullMethodName     = "/pb.Maps/UpdateMapPin"
 )
 
 // MapsClient is the client API for Maps service.
@@ -27,6 +43,21 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MapsClient interface {
 	UpdateMap(ctx context.Context, in *UpdateMapRequest, opts ...grpc.CallOption) (*ViewMap, error)
+	GetWorldMaps(ctx context.Context, in *GetWorldMapRequest, opts ...grpc.CallOption) (*GetWorldMapResponse, error)
+	CreateWorldMap(ctx context.Context, in *CreateWorldMapRequest, opts ...grpc.CallOption) (*CreateWorldMapResponse, error)
+	DeleteWorldMap(ctx context.Context, in *DeleteWorldMapRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetMapLayers(ctx context.Context, in *GetMapLayersRequest, opts ...grpc.CallOption) (*GetMapLayersResponse, error)
+	CreateMapLayer(ctx context.Context, in *CreateMapLayerRequest, opts ...grpc.CallOption) (*ViewMapLayer, error)
+	DeleteMapLayer(ctx context.Context, in *DeleteMapLayerRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UpdateMapLayer(ctx context.Context, in *UpdateMapLayerRequest, opts ...grpc.CallOption) (*ViewMapLayer, error)
+	GetMapPinTypes(ctx context.Context, in *GetMapPinTypesRequest, opts ...grpc.CallOption) (*GetMapPinTypesResponse, error)
+	CreateMapPinType(ctx context.Context, in *CreateMapPinTypeRequest, opts ...grpc.CallOption) (*MapPinType, error)
+	DeleteMapPinType(ctx context.Context, in *DeleteMapPinTypeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UpdateMapPinType(ctx context.Context, in *UpdateMapPinTypeRequest, opts ...grpc.CallOption) (*UpdateMapPinTypeResponse, error)
+	GetMapPins(ctx context.Context, in *GetMapPinsRequest, opts ...grpc.CallOption) (*GetMapPinsResponse, error)
+	CreateMapPin(ctx context.Context, in *CreateMapPinRequest, opts ...grpc.CallOption) (*ViewMapPin, error)
+	DeleteMapPin(ctx context.Context, in *DeleteMapPinRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UpdateMapPin(ctx context.Context, in *UpdateMapPinRequest, opts ...grpc.CallOption) (*ViewMapPin, error)
 }
 
 type mapsClient struct {
@@ -46,11 +77,161 @@ func (c *mapsClient) UpdateMap(ctx context.Context, in *UpdateMapRequest, opts .
 	return out, nil
 }
 
+func (c *mapsClient) GetWorldMaps(ctx context.Context, in *GetWorldMapRequest, opts ...grpc.CallOption) (*GetWorldMapResponse, error) {
+	out := new(GetWorldMapResponse)
+	err := c.cc.Invoke(ctx, Maps_GetWorldMaps_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) CreateWorldMap(ctx context.Context, in *CreateWorldMapRequest, opts ...grpc.CallOption) (*CreateWorldMapResponse, error) {
+	out := new(CreateWorldMapResponse)
+	err := c.cc.Invoke(ctx, Maps_CreateWorldMap_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) DeleteWorldMap(ctx context.Context, in *DeleteWorldMapRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Maps_DeleteWorldMap_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) GetMapLayers(ctx context.Context, in *GetMapLayersRequest, opts ...grpc.CallOption) (*GetMapLayersResponse, error) {
+	out := new(GetMapLayersResponse)
+	err := c.cc.Invoke(ctx, Maps_GetMapLayers_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) CreateMapLayer(ctx context.Context, in *CreateMapLayerRequest, opts ...grpc.CallOption) (*ViewMapLayer, error) {
+	out := new(ViewMapLayer)
+	err := c.cc.Invoke(ctx, Maps_CreateMapLayer_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) DeleteMapLayer(ctx context.Context, in *DeleteMapLayerRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Maps_DeleteMapLayer_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) UpdateMapLayer(ctx context.Context, in *UpdateMapLayerRequest, opts ...grpc.CallOption) (*ViewMapLayer, error) {
+	out := new(ViewMapLayer)
+	err := c.cc.Invoke(ctx, Maps_UpdateMapLayer_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) GetMapPinTypes(ctx context.Context, in *GetMapPinTypesRequest, opts ...grpc.CallOption) (*GetMapPinTypesResponse, error) {
+	out := new(GetMapPinTypesResponse)
+	err := c.cc.Invoke(ctx, Maps_GetMapPinTypes_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) CreateMapPinType(ctx context.Context, in *CreateMapPinTypeRequest, opts ...grpc.CallOption) (*MapPinType, error) {
+	out := new(MapPinType)
+	err := c.cc.Invoke(ctx, Maps_CreateMapPinType_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) DeleteMapPinType(ctx context.Context, in *DeleteMapPinTypeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Maps_DeleteMapPinType_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) UpdateMapPinType(ctx context.Context, in *UpdateMapPinTypeRequest, opts ...grpc.CallOption) (*UpdateMapPinTypeResponse, error) {
+	out := new(UpdateMapPinTypeResponse)
+	err := c.cc.Invoke(ctx, Maps_UpdateMapPinType_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) GetMapPins(ctx context.Context, in *GetMapPinsRequest, opts ...grpc.CallOption) (*GetMapPinsResponse, error) {
+	out := new(GetMapPinsResponse)
+	err := c.cc.Invoke(ctx, Maps_GetMapPins_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) CreateMapPin(ctx context.Context, in *CreateMapPinRequest, opts ...grpc.CallOption) (*ViewMapPin, error) {
+	out := new(ViewMapPin)
+	err := c.cc.Invoke(ctx, Maps_CreateMapPin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) DeleteMapPin(ctx context.Context, in *DeleteMapPinRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Maps_DeleteMapPin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) UpdateMapPin(ctx context.Context, in *UpdateMapPinRequest, opts ...grpc.CallOption) (*ViewMapPin, error) {
+	out := new(ViewMapPin)
+	err := c.cc.Invoke(ctx, Maps_UpdateMapPin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MapsServer is the server API for Maps service.
 // All implementations must embed UnimplementedMapsServer
 // for forward compatibility
 type MapsServer interface {
 	UpdateMap(context.Context, *UpdateMapRequest) (*ViewMap, error)
+	GetWorldMaps(context.Context, *GetWorldMapRequest) (*GetWorldMapResponse, error)
+	CreateWorldMap(context.Context, *CreateWorldMapRequest) (*CreateWorldMapResponse, error)
+	DeleteWorldMap(context.Context, *DeleteWorldMapRequest) (*emptypb.Empty, error)
+	GetMapLayers(context.Context, *GetMapLayersRequest) (*GetMapLayersResponse, error)
+	CreateMapLayer(context.Context, *CreateMapLayerRequest) (*ViewMapLayer, error)
+	DeleteMapLayer(context.Context, *DeleteMapLayerRequest) (*emptypb.Empty, error)
+	UpdateMapLayer(context.Context, *UpdateMapLayerRequest) (*ViewMapLayer, error)
+	GetMapPinTypes(context.Context, *GetMapPinTypesRequest) (*GetMapPinTypesResponse, error)
+	CreateMapPinType(context.Context, *CreateMapPinTypeRequest) (*MapPinType, error)
+	DeleteMapPinType(context.Context, *DeleteMapPinTypeRequest) (*emptypb.Empty, error)
+	UpdateMapPinType(context.Context, *UpdateMapPinTypeRequest) (*UpdateMapPinTypeResponse, error)
+	GetMapPins(context.Context, *GetMapPinsRequest) (*GetMapPinsResponse, error)
+	CreateMapPin(context.Context, *CreateMapPinRequest) (*ViewMapPin, error)
+	DeleteMapPin(context.Context, *DeleteMapPinRequest) (*emptypb.Empty, error)
+	UpdateMapPin(context.Context, *UpdateMapPinRequest) (*ViewMapPin, error)
 	mustEmbedUnimplementedMapsServer()
 }
 
@@ -60,6 +241,51 @@ type UnimplementedMapsServer struct {
 
 func (UnimplementedMapsServer) UpdateMap(context.Context, *UpdateMapRequest) (*ViewMap, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMap not implemented")
+}
+func (UnimplementedMapsServer) GetWorldMaps(context.Context, *GetWorldMapRequest) (*GetWorldMapResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorldMaps not implemented")
+}
+func (UnimplementedMapsServer) CreateWorldMap(context.Context, *CreateWorldMapRequest) (*CreateWorldMapResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateWorldMap not implemented")
+}
+func (UnimplementedMapsServer) DeleteWorldMap(context.Context, *DeleteWorldMapRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteWorldMap not implemented")
+}
+func (UnimplementedMapsServer) GetMapLayers(context.Context, *GetMapLayersRequest) (*GetMapLayersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMapLayers not implemented")
+}
+func (UnimplementedMapsServer) CreateMapLayer(context.Context, *CreateMapLayerRequest) (*ViewMapLayer, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMapLayer not implemented")
+}
+func (UnimplementedMapsServer) DeleteMapLayer(context.Context, *DeleteMapLayerRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMapLayer not implemented")
+}
+func (UnimplementedMapsServer) UpdateMapLayer(context.Context, *UpdateMapLayerRequest) (*ViewMapLayer, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMapLayer not implemented")
+}
+func (UnimplementedMapsServer) GetMapPinTypes(context.Context, *GetMapPinTypesRequest) (*GetMapPinTypesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMapPinTypes not implemented")
+}
+func (UnimplementedMapsServer) CreateMapPinType(context.Context, *CreateMapPinTypeRequest) (*MapPinType, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMapPinType not implemented")
+}
+func (UnimplementedMapsServer) DeleteMapPinType(context.Context, *DeleteMapPinTypeRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMapPinType not implemented")
+}
+func (UnimplementedMapsServer) UpdateMapPinType(context.Context, *UpdateMapPinTypeRequest) (*UpdateMapPinTypeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMapPinType not implemented")
+}
+func (UnimplementedMapsServer) GetMapPins(context.Context, *GetMapPinsRequest) (*GetMapPinsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMapPins not implemented")
+}
+func (UnimplementedMapsServer) CreateMapPin(context.Context, *CreateMapPinRequest) (*ViewMapPin, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMapPin not implemented")
+}
+func (UnimplementedMapsServer) DeleteMapPin(context.Context, *DeleteMapPinRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMapPin not implemented")
+}
+func (UnimplementedMapsServer) UpdateMapPin(context.Context, *UpdateMapPinRequest) (*ViewMapPin, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMapPin not implemented")
 }
 func (UnimplementedMapsServer) mustEmbedUnimplementedMapsServer() {}
 
@@ -92,6 +318,276 @@ func _Maps_UpdateMap_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Maps_GetWorldMaps_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorldMapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).GetWorldMaps(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_GetWorldMaps_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).GetWorldMaps(ctx, req.(*GetWorldMapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_CreateWorldMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateWorldMapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).CreateWorldMap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_CreateWorldMap_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).CreateWorldMap(ctx, req.(*CreateWorldMapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_DeleteWorldMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteWorldMapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).DeleteWorldMap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_DeleteWorldMap_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).DeleteWorldMap(ctx, req.(*DeleteWorldMapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_GetMapLayers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMapLayersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).GetMapLayers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_GetMapLayers_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).GetMapLayers(ctx, req.(*GetMapLayersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_CreateMapLayer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMapLayerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).CreateMapLayer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_CreateMapLayer_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).CreateMapLayer(ctx, req.(*CreateMapLayerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_DeleteMapLayer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMapLayerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).DeleteMapLayer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_DeleteMapLayer_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).DeleteMapLayer(ctx, req.(*DeleteMapLayerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_UpdateMapLayer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMapLayerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).UpdateMapLayer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_UpdateMapLayer_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).UpdateMapLayer(ctx, req.(*UpdateMapLayerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_GetMapPinTypes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMapPinTypesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).GetMapPinTypes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_GetMapPinTypes_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).GetMapPinTypes(ctx, req.(*GetMapPinTypesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_CreateMapPinType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMapPinTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).CreateMapPinType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_CreateMapPinType_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).CreateMapPinType(ctx, req.(*CreateMapPinTypeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_DeleteMapPinType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMapPinTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).DeleteMapPinType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_DeleteMapPinType_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).DeleteMapPinType(ctx, req.(*DeleteMapPinTypeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_UpdateMapPinType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMapPinTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).UpdateMapPinType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_UpdateMapPinType_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).UpdateMapPinType(ctx, req.(*UpdateMapPinTypeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_GetMapPins_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMapPinsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).GetMapPins(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_GetMapPins_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).GetMapPins(ctx, req.(*GetMapPinsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_CreateMapPin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMapPinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).CreateMapPin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_CreateMapPin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).CreateMapPin(ctx, req.(*CreateMapPinRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_DeleteMapPin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMapPinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).DeleteMapPin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_DeleteMapPin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).DeleteMapPin(ctx, req.(*DeleteMapPinRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_UpdateMapPin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMapPinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).UpdateMapPin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_UpdateMapPin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).UpdateMapPin(ctx, req.(*UpdateMapPinRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Maps_ServiceDesc is the grpc.ServiceDesc for Maps service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +598,66 @@ var Maps_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateMap",
 			Handler:    _Maps_UpdateMap_Handler,
+		},
+		{
+			MethodName: "GetWorldMaps",
+			Handler:    _Maps_GetWorldMaps_Handler,
+		},
+		{
+			MethodName: "CreateWorldMap",
+			Handler:    _Maps_CreateWorldMap_Handler,
+		},
+		{
+			MethodName: "DeleteWorldMap",
+			Handler:    _Maps_DeleteWorldMap_Handler,
+		},
+		{
+			MethodName: "GetMapLayers",
+			Handler:    _Maps_GetMapLayers_Handler,
+		},
+		{
+			MethodName: "CreateMapLayer",
+			Handler:    _Maps_CreateMapLayer_Handler,
+		},
+		{
+			MethodName: "DeleteMapLayer",
+			Handler:    _Maps_DeleteMapLayer_Handler,
+		},
+		{
+			MethodName: "UpdateMapLayer",
+			Handler:    _Maps_UpdateMapLayer_Handler,
+		},
+		{
+			MethodName: "GetMapPinTypes",
+			Handler:    _Maps_GetMapPinTypes_Handler,
+		},
+		{
+			MethodName: "CreateMapPinType",
+			Handler:    _Maps_CreateMapPinType_Handler,
+		},
+		{
+			MethodName: "DeleteMapPinType",
+			Handler:    _Maps_DeleteMapPinType_Handler,
+		},
+		{
+			MethodName: "UpdateMapPinType",
+			Handler:    _Maps_UpdateMapPinType_Handler,
+		},
+		{
+			MethodName: "GetMapPins",
+			Handler:    _Maps_GetMapPins_Handler,
+		},
+		{
+			MethodName: "CreateMapPin",
+			Handler:    _Maps_CreateMapPin_Handler,
+		},
+		{
+			MethodName: "DeleteMapPin",
+			Handler:    _Maps_DeleteMapPin_Handler,
+		},
+		{
+			MethodName: "UpdateMapPin",
+			Handler:    _Maps_UpdateMapPin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
