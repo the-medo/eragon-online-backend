@@ -54,7 +54,7 @@ message ViewMapLayer {
   string name = 2;
   int32 mapId = 3;
   int32 imageId = 4;
-  int32 imageUrl = 5;
+  string imageUrl = 5;
   bool isMain = 6;
   bool enabled = 7;
   bool sublayer = 8;

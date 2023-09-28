@@ -5065,8 +5065,7 @@
           "format": "int32"
         },
         "imageUrl": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string"
         },
         "isMain": {
           "type": "boolean"
