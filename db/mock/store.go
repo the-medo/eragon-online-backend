@@ -1032,6 +1032,21 @@ func (mr *MockStoreMockRecorder) GetLocations(arg0 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLocations", reflect.TypeOf((*MockStore)(nil).GetLocations), arg0)
 }
 
+// GetMapAssignments mocks base method.
+func (m *MockStore) GetMapAssignments(arg0 context.Context, arg1 int32) (db.GetMapAssignmentsRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMapAssignments", arg0, arg1)
+	ret0, _ := ret[0].(db.GetMapAssignmentsRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMapAssignments indicates an expected call of GetMapAssignments.
+func (mr *MockStoreMockRecorder) GetMapAssignments(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMapAssignments", reflect.TypeOf((*MockStore)(nil).GetMapAssignments), arg0, arg1)
+}
+
 // GetMapByID mocks base method.
 func (m *MockStore) GetMapByID(arg0 context.Context, arg1 int32) (db.ViewMap, error) {
 	m.ctrl.T.Helper()
@@ -1045,6 +1060,21 @@ func (m *MockStore) GetMapByID(arg0 context.Context, arg1 int32) (db.ViewMap, er
 func (mr *MockStoreMockRecorder) GetMapByID(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMapByID", reflect.TypeOf((*MockStore)(nil).GetMapByID), arg0, arg1)
+}
+
+// GetMapLayerByID mocks base method.
+func (m *MockStore) GetMapLayerByID(arg0 context.Context, arg1 int32) (db.ViewMapLayer, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMapLayerByID", arg0, arg1)
+	ret0, _ := ret[0].(db.ViewMapLayer)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMapLayerByID indicates an expected call of GetMapLayerByID.
+func (mr *MockStoreMockRecorder) GetMapLayerByID(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMapLayerByID", reflect.TypeOf((*MockStore)(nil).GetMapLayerByID), arg0, arg1)
 }
 
 // GetMapLayers mocks base method.

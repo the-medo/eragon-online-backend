@@ -71,7 +71,7 @@ WHERE world_id = sqlc.arg(world_id) AND map_id = sqlc.arg(map_id);
 
 -- name: CreateMapPinType :one
 INSERT INTO map_pin_types (map_id, shape, background_color, border_color, icon_color, icon, icon_size, width)
-VALUES (sqlc.arg(map_id), sqlc.arg(shape), sqlc.narg(background_color), sqlc.narg(border_color), sqlc.narg(icon_color), sqlc.narg(icon), sqlc.narg(icon_size), sqlc.narg(width))
+VALUES (sqlc.arg(map_id), sqlc.arg(shape), sqlc.arg(background_color), sqlc.arg(border_color), sqlc.arg(icon_color), sqlc.arg(icon), sqlc.arg(icon_size), sqlc.arg(width))
 RETURNING *;
 
 -- name: GetMapPinTypesForMap :many
