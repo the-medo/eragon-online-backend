@@ -911,9 +911,6 @@
                 "name": {
                   "type": "string"
                 },
-                "description": {
-                  "type": "string"
-                },
                 "locationId": {
                   "type": "integer",
                   "format": "int32"
@@ -1024,9 +1021,6 @@
                   "format": "int32"
                 },
                 "name": {
-                  "type": "string"
-                },
-                "description": {
                   "type": "string"
                 },
                 "locationId": {

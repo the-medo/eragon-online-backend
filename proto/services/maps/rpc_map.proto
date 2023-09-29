@@ -122,13 +122,12 @@ message GetMapPinsResponse {
 
 message CreateMapPinRequest {
   int32 mapId = 1;
-  int32 mapPinTypeId = 2;
+  optional int32 mapPinTypeId = 2;
   string name = 3;
-  string description = 4;
-  optional int32 locationId = 5;
-  optional int32 mapLayerId = 6;
-  int32 x = 7;
-  int32 y = 8;
+  optional int32 locationId = 4;
+  optional int32 mapLayerId = 5;
+  int32 x = 6;
+  int32 y = 7;
 }
 
 message DeleteMapPinRequest {
@@ -141,9 +140,8 @@ message UpdateMapPinRequest {
   int32 pinId = 2;
   optional int32 mapPinTypeId = 3;
   optional string name = 4;
-  optional string description = 5;
-  optional int32 locationId = 6;
-  optional int32 mapLayerId = 7;
-  optional int32 x = 8;
-  optional int32 y = 9;
+  optional int32 locationId = 5;
+  optional int32 mapLayerId = 6;
+  optional int32 x = 7;
+  optional int32 y = 8;
 }
