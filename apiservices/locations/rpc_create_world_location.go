@@ -9,6 +9,8 @@ import (
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func (server *ServiceLocations) CreateWorldLocation(ctx context.Context, request *pb.CreateWorldLocationRequest) (*pb.ViewLocation, error) {
@@ -17,9 +19,9 @@ func (server *ServiceLocations) CreateWorldLocation(ctx context.Context, request
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.AuthorizeUserCookie(ctx)
+	_, err := server.CheckWorldAdmin(ctx, request.GetWorldId(), false)
 	if err != nil {
-		return nil, e.UnauthenticatedError(err)
+		return nil, status.Errorf(codes.PermissionDenied, "failed to add world tag: %v", err)
 	}
 
 	argLocation := db.CreateLocationParams{

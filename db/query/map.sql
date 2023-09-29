@@ -39,11 +39,13 @@ RETURNING *;
 -- name: GetMapLayers :many
 SELECT * FROM view_map_layers WHERE map_id = sqlc.arg(map_id);
 
+-- name: GetMapLayerByID :one
+SELECT * FROM view_map_layers WHERE id = sqlc.arg(map_layer_id);
+
 -- name: UpdateMapLayer :one
 UPDATE map_layers
 SET
     name = COALESCE(sqlc.narg(name), name),
-    map_id = COALESCE(sqlc.narg(map_id), map_id),
     image_id = COALESCE(sqlc.narg(image_id), image_id),
     is_main = COALESCE(sqlc.narg(is_main), is_main),
     enabled = COALESCE(sqlc.narg(enabled), enabled),
@@ -116,3 +118,13 @@ RETURNING *;
 
 -- name: DeleteMapPin :exec
 DELETE FROM map_pins WHERE id = sqlc.arg(id);
+
+-- name: GetMapAssignments :one
+SELECT
+    CAST(MAX(COALESCE(wl.world_id, 0)) as integer) AS world_id,
+    0 AS quest_id
+FROM
+    maps m
+    LEFT JOIN world_maps wm ON m.id = wm.location_id
+WHERE m.id = sqlc.arg(map_id)
+GROUP BY m.id;
