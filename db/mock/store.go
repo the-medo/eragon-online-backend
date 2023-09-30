@@ -807,6 +807,36 @@ func (mr *MockStoreMockRecorder) GetChatMessages(arg0, arg1 interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetChatMessages", reflect.TypeOf((*MockStore)(nil).GetChatMessages), arg0, arg1)
 }
 
+// GetEntityGroupContents mocks base method.
+func (m *MockStore) GetEntityGroupContents(arg0 context.Context, arg1 int32) ([]db.GetEntityGroupContentsRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEntityGroupContents", arg0, arg1)
+	ret0, _ := ret[0].([]db.GetEntityGroupContentsRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEntityGroupContents indicates an expected call of GetEntityGroupContents.
+func (mr *MockStoreMockRecorder) GetEntityGroupContents(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntityGroupContents", reflect.TypeOf((*MockStore)(nil).GetEntityGroupContents), arg0, arg1)
+}
+
+// GetEntityIDsOfGroup mocks base method.
+func (m *MockStore) GetEntityIDsOfGroup(arg0 context.Context, arg1 int32) (db.GetEntityIDsOfGroupRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEntityIDsOfGroup", arg0, arg1)
+	ret0, _ := ret[0].(db.GetEntityIDsOfGroupRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEntityIDsOfGroup indicates an expected call of GetEntityIDsOfGroup.
+func (mr *MockStoreMockRecorder) GetEntityIDsOfGroup(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntityIDsOfGroup", reflect.TypeOf((*MockStore)(nil).GetEntityIDsOfGroup), arg0, arg1)
+}
+
 // GetEvaluationById mocks base method.
 func (m *MockStore) GetEvaluationById(arg0 context.Context, arg1 int32) (db.Evaluation, error) {
 	m.ctrl.T.Helper()

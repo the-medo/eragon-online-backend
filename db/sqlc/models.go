@@ -13,6 +13,52 @@ import (
 	"github.com/google/uuid"
 )
 
+type EntityType string
+
+const (
+	EntityTypeUnknown   EntityType = "unknown"
+	EntityTypePost      EntityType = "post"
+	EntityTypeMap       EntityType = "map"
+	EntityTypeLocation  EntityType = "location"
+	EntityTypeCharacter EntityType = "character"
+	EntityTypeImage     EntityType = "image"
+)
+
+func (e *EntityType) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = EntityType(s)
+	case string:
+		*e = EntityType(s)
+	default:
+		return fmt.Errorf("unsupported scan type for EntityType: %T", src)
+	}
+	return nil
+}
+
+type NullEntityType struct {
+	EntityType EntityType
+	Valid      bool // Valid is true if EntityType is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullEntityType) Scan(value interface{}) error {
+	if value == nil {
+		ns.EntityType, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.EntityType.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullEntityType) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.EntityType), nil
+}
+
 type EvaluationType string
 
 const (
@@ -193,6 +239,29 @@ type Chat struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type Entity struct {
+	ID         int32         `json:"id"`
+	Type       EntityType    `json:"type"`
+	PostID     sql.NullInt32 `json:"post_id"`
+	MapID      sql.NullInt32 `json:"map_id"`
+	LocationID sql.NullInt32 `json:"location_id"`
+	ImageID    sql.NullInt32 `json:"image_id"`
+}
+
+type EntityGroup struct {
+	ID          int32          `json:"id"`
+	Name        sql.NullString `json:"name"`
+	Description sql.NullString `json:"description"`
+}
+
+type EntityGroupContent struct {
+	ID                   int32         `json:"id"`
+	EntityGroupID        int32         `json:"entity_group_id"`
+	Position             int32         `json:"position"`
+	ContentEntityID      sql.NullInt32 `json:"content_entity_id"`
+	ContentEntityGroupID sql.NullInt32 `json:"content_entity_group_id"`
+}
+
 type Evaluation struct {
 	ID             int32          `json:"id"`
 	Name           string         `json:"name"`
@@ -292,6 +361,13 @@ type MenuItem struct {
 	Position          int32         `json:"position"`
 	IsMain            bool          `json:"is_main"`
 	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
+}
+
+type MenuItemEntityGroup struct {
+	MenuID        int32         `json:"menu_id"`
+	MenuItemID    sql.NullInt32 `json:"menu_item_id"`
+	EntityGroupID int32         `json:"entity_group_id"`
+	Position      int32         `json:"position"`
 }
 
 type MenuItemPost struct {
