@@ -107,3 +107,21 @@ SELECT * FROM view_menu_item_posts WHERE menu_item_id = sqlc.arg(menu_item_id);
 
 -- name: GetMenuItemPostsByMenuId :many
 SELECT * FROM view_menu_item_posts WHERE menu_id = sqlc.arg(menu_id);
+
+-- name: CreateMenuItemEntityGroup :one
+INSERT INTO menu_item_entity_groups (menu_id, menu_item_id, entity_group_id, position)
+VALUES (sqlc.arg(menu_id), sqlc.narg(menu_item_id), sqlc.arg(entity_group_id), sqlc.arg(position))
+RETURNING *;
+
+-- name: GetMenuItemEntityGroup :one
+SELECT * FROM menu_item_entity_groups WHERE menu_item_id = sqlc.arg(menu_item_id) AND entity_group_id = sqlc.arg(entity_group_id);
+
+-- name: UpdateMenuItemEntityGroup :one
+UPDATE menu_item_entity_groups
+SET
+    position = COALESCE(sqlc.narg(position), position)
+WHERE menu_item_id = sqlc.arg(menu_item_id) AND entity_group_id = sqlc.arg(entity_group_id)
+RETURNING *;
+
+-- name: DeleteMenuItemEntityGroup :exec
+DELETE FROM menu_item_entity_groups WHERE menu_item_id = sqlc.arg(menu_item_id) AND entity_group_id = sqlc.arg(entity_group_id);

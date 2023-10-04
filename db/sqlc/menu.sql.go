@@ -65,6 +65,36 @@ func (q *Queries) CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) 
 	return i, err
 }
 
+const createMenuItemEntityGroup = `-- name: CreateMenuItemEntityGroup :one
+INSERT INTO menu_item_entity_groups (menu_id, menu_item_id, entity_group_id, position)
+VALUES ($1, $2, $3, $4)
+RETURNING menu_id, menu_item_id, entity_group_id, position
+`
+
+type CreateMenuItemEntityGroupParams struct {
+	MenuID        int32         `json:"menu_id"`
+	MenuItemID    sql.NullInt32 `json:"menu_item_id"`
+	EntityGroupID int32         `json:"entity_group_id"`
+	Position      int32         `json:"position"`
+}
+
+func (q *Queries) CreateMenuItemEntityGroup(ctx context.Context, arg CreateMenuItemEntityGroupParams) (MenuItemEntityGroup, error) {
+	row := q.db.QueryRowContext(ctx, createMenuItemEntityGroup,
+		arg.MenuID,
+		arg.MenuItemID,
+		arg.EntityGroupID,
+		arg.Position,
+	)
+	var i MenuItemEntityGroup
+	err := row.Scan(
+		&i.MenuID,
+		&i.MenuItemID,
+		&i.EntityGroupID,
+		&i.Position,
+	)
+	return i, err
+}
+
 const createMenuItemPost = `-- name: CreateMenuItemPost :one
 WITH post_count AS (
     SELECT COUNT(*) AS count FROM menu_item_posts WHERE menu_item_id = COALESCE($2, 0)
@@ -129,6 +159,20 @@ func (q *Queries) DeleteMenuItem(ctx context.Context, menuItemID int32) error {
 	return err
 }
 
+const deleteMenuItemEntityGroup = `-- name: DeleteMenuItemEntityGroup :exec
+DELETE FROM menu_item_entity_groups WHERE menu_item_id = $1 AND entity_group_id = $2
+`
+
+type DeleteMenuItemEntityGroupParams struct {
+	MenuItemID    sql.NullInt32 `json:"menu_item_id"`
+	EntityGroupID int32         `json:"entity_group_id"`
+}
+
+func (q *Queries) DeleteMenuItemEntityGroup(ctx context.Context, arg DeleteMenuItemEntityGroupParams) error {
+	_, err := q.db.ExecContext(ctx, deleteMenuItemEntityGroup, arg.MenuItemID, arg.EntityGroupID)
+	return err
+}
+
 const deleteMenuItemPost = `-- name: DeleteMenuItemPost :exec
 WITH deleted_menu_item_post AS (
     DELETE FROM "menu_item_posts" d
@@ -184,6 +228,27 @@ func (q *Queries) GetMenuItemById(ctx context.Context, id int32) (MenuItem, erro
 		&i.Position,
 		&i.IsMain,
 		&i.DescriptionPostID,
+	)
+	return i, err
+}
+
+const getMenuItemEntityGroup = `-- name: GetMenuItemEntityGroup :one
+SELECT menu_id, menu_item_id, entity_group_id, position FROM menu_item_entity_groups WHERE menu_item_id = $1 AND entity_group_id = $2
+`
+
+type GetMenuItemEntityGroupParams struct {
+	MenuItemID    sql.NullInt32 `json:"menu_item_id"`
+	EntityGroupID int32         `json:"entity_group_id"`
+}
+
+func (q *Queries) GetMenuItemEntityGroup(ctx context.Context, arg GetMenuItemEntityGroupParams) (MenuItemEntityGroup, error) {
+	row := q.db.QueryRowContext(ctx, getMenuItemEntityGroup, arg.MenuItemID, arg.EntityGroupID)
+	var i MenuItemEntityGroup
+	err := row.Scan(
+		&i.MenuID,
+		&i.MenuItemID,
+		&i.EntityGroupID,
+		&i.Position,
 	)
 	return i, err
 }
@@ -479,6 +544,32 @@ func (q *Queries) UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) 
 		&i.Position,
 		&i.IsMain,
 		&i.DescriptionPostID,
+	)
+	return i, err
+}
+
+const updateMenuItemEntityGroup = `-- name: UpdateMenuItemEntityGroup :one
+UPDATE menu_item_entity_groups
+SET
+    position = COALESCE($1, position)
+WHERE menu_item_id = $2 AND entity_group_id = $3
+RETURNING menu_id, menu_item_id, entity_group_id, position
+`
+
+type UpdateMenuItemEntityGroupParams struct {
+	Position      sql.NullInt32 `json:"position"`
+	MenuItemID    sql.NullInt32 `json:"menu_item_id"`
+	EntityGroupID int32         `json:"entity_group_id"`
+}
+
+func (q *Queries) UpdateMenuItemEntityGroup(ctx context.Context, arg UpdateMenuItemEntityGroupParams) (MenuItemEntityGroup, error) {
+	row := q.db.QueryRowContext(ctx, updateMenuItemEntityGroup, arg.Position, arg.MenuItemID, arg.EntityGroupID)
+	var i MenuItemEntityGroup
+	err := row.Scan(
+		&i.MenuID,
+		&i.MenuItemID,
+		&i.EntityGroupID,
+		&i.Position,
 	)
 	return i, err
 }

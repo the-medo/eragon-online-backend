@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+enum EntityType {
+  UNKNOWN = 0;
+  POST = 1;
+  MAP = 2;
+  LOCATION = 3;
+  CHARACTER = 4;
+  IMAGE = 5;
+}
+
+message Entity {
+  int32 id = 1;
+  EntityType type = 2;
+  optional int32 post_id = 3;
+  optional int32 map_id = 4;
+  optional int32 location_id = 5;
+  optional int32 image_id = 6;
+}
+
+message EntityGroup {
+  int32 id = 1;
+  optional string name = 2;
+  optional string description = 3;
+}
+
+message EntityGroupContent {
+  int32 id = 1;
+  int32 entity_group_id = 2;
+  int32 position = 3;
+  optional int32 content_entity_id = 4;
+  optional int32 content_entity_group_id = 5;
+}
+
+message MenuItemEntityGroups {
+  int32 menu_id = 1;
+  optional int32 menu_item_id = 2;
+  int32 entity_group_id = 3;
+  int32 position = 4;
+}

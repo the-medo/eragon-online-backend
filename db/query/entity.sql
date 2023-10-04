@@ -44,3 +44,65 @@ FROM
     entity_data
 GROUP BY
     entity_group_id;
+
+-- name: CreateEntity :one
+INSERT INTO entities (type, post_id, map_id, location_id, image_id)
+VALUES (sqlc.arg(type), sqlc.narg(post_id), sqlc.narg(map_id), sqlc.narg(location_id), sqlc.narg(image_id))
+RETURNING *;
+
+-- name: GetEntityByID :one
+SELECT * FROM entities WHERE id = sqlc.arg(id);
+
+-- name: UpdateEntity :one
+UPDATE entities
+SET
+    type = COALESCE(sqlc.narg(type), type),
+    post_id = COALESCE(sqlc.narg(post_id), post_id),
+    map_id = COALESCE(sqlc.narg(map_id), map_id),
+    location_id = COALESCE(sqlc.narg(location_id), location_id),
+    image_id = COALESCE(sqlc.narg(image_id), image_id)
+WHERE id = sqlc.arg(id)
+RETURNING *;
+
+-- name: DeleteEntity :exec
+DELETE FROM entities WHERE id = sqlc.arg(id);
+
+-- name: CreateEntityGroup :one
+INSERT INTO entity_groups (name, description)
+VALUES (sqlc.arg(name), sqlc.arg(description))
+RETURNING *;
+
+-- name: GetEntityGroupByID :one
+SELECT * FROM entity_groups WHERE id = sqlc.arg(id);
+
+-- name: UpdateEntityGroup :one
+UPDATE entity_groups
+SET
+    name = COALESCE(sqlc.narg(name), name),
+    description = COALESCE(sqlc.narg(description), description)
+WHERE id = sqlc.arg(id)
+RETURNING *;
+
+-- name: DeleteEntityGroup :exec
+DELETE FROM entity_groups WHERE id = sqlc.arg(id);
+
+-- name: CreateEntityGroupContent :one
+INSERT INTO entity_group_content (entity_group_id, position, content_entity_id, content_entity_group_id)
+VALUES (sqlc.arg(entity_group_id), sqlc.arg(position), sqlc.narg(content_entity_id), sqlc.narg(content_entity_group_id))
+RETURNING *;
+
+-- name: GetEntityGroupContentByID :one
+SELECT * FROM entity_group_content WHERE id = sqlc.arg(id);
+
+-- name: UpdateEntityGroupContent :one
+UPDATE entity_group_content
+SET
+    entity_group_id = COALESCE(sqlc.narg(entity_group_id), entity_group_id),
+    position = COALESCE(sqlc.narg(position), position),
+    content_entity_id = COALESCE(sqlc.narg(content_entity_id), content_entity_id),
+    content_entity_group_id = COALESCE(sqlc.narg(content_entity_group_id), content_entity_group_id)
+WHERE id = sqlc.arg(id)
+RETURNING *;
+
+-- name: DeleteEntityGroupContent :exec
+DELETE FROM entity_group_content WHERE id = sqlc.arg(id);

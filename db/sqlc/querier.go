@@ -15,6 +15,9 @@ type Querier interface {
 	AddChatMessage(ctx context.Context, arg AddChatMessageParams) (Chat, error)
 	AddUserPasswordReset(ctx context.Context, arg AddUserPasswordResetParams) (UserPasswordReset, error)
 	AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error)
+	CreateEntity(ctx context.Context, arg CreateEntityParams) (Entity, error)
+	CreateEntityGroup(ctx context.Context, arg CreateEntityGroupParams) (EntityGroup, error)
+	CreateEntityGroupContent(ctx context.Context, arg CreateEntityGroupContentParams) (EntityGroupContent, error)
 	CreateEvaluationVote(ctx context.Context, arg CreateEvaluationVoteParams) (EvaluationVote, error)
 	CreateImage(ctx context.Context, arg CreateImageParams) (Image, error)
 	CreateLocation(ctx context.Context, arg CreateLocationParams) (Location, error)
@@ -25,6 +28,7 @@ type Querier interface {
 	CreateMapPinType(ctx context.Context, arg CreateMapPinTypeParams) (MapPinType, error)
 	CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, error)
 	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)
+	CreateMenuItemEntityGroup(ctx context.Context, arg CreateMenuItemEntityGroupParams) (MenuItemEntityGroup, error)
 	CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error)
 	CreatePost(ctx context.Context, arg CreatePostParams) (Post, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
@@ -40,6 +44,9 @@ type Querier interface {
 	CreateWorldTagAvailable(ctx context.Context, tag string) (WorldTagsAvailable, error)
 	DeleteAllWorldActivity(ctx context.Context, worldID int32) error
 	DeleteChatMessage(ctx context.Context, id int64) error
+	DeleteEntity(ctx context.Context, id int32) error
+	DeleteEntityGroup(ctx context.Context, id int32) error
+	DeleteEntityGroupContent(ctx context.Context, id int32) error
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
 	DeleteImage(ctx context.Context, id int32) error
 	DeleteLocation(ctx context.Context, id int32) error
@@ -49,6 +56,7 @@ type Querier interface {
 	DeleteMapPinType(ctx context.Context, id int32) error
 	DeleteMenu(ctx context.Context, id int32) error
 	DeleteMenuItem(ctx context.Context, menuItemID int32) error
+	DeleteMenuItemEntityGroup(ctx context.Context, arg DeleteMenuItemEntityGroupParams) error
 	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
 	DeletePost(ctx context.Context, postID int32) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
@@ -64,6 +72,9 @@ type Querier interface {
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
 	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
+	GetEntityByID(ctx context.Context, id int32) (Entity, error)
+	GetEntityGroupByID(ctx context.Context, id int32) (EntityGroup, error)
+	GetEntityGroupContentByID(ctx context.Context, id int32) (EntityGroupContent, error)
 	GetEntityGroupContents(ctx context.Context, entityGroupID int32) ([]GetEntityGroupContentsRow, error)
 	GetEntityIDsOfGroup(ctx context.Context, entityGroupID int32) (GetEntityIDsOfGroupRow, error)
 	GetEvaluationById(ctx context.Context, evaluationID int32) (Evaluation, error)
@@ -90,6 +101,7 @@ type Querier interface {
 	GetMapPins(ctx context.Context, mapID int32) ([]ViewMapPin, error)
 	GetMenu(ctx context.Context, id int32) (ViewMenu, error)
 	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)
+	GetMenuItemEntityGroup(ctx context.Context, arg GetMenuItemEntityGroupParams) (MenuItemEntityGroup, error)
 	GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams) (ViewMenuItemPost, error)
 	GetMenuItemPosts(ctx context.Context, menuItemID sql.NullInt32) ([]ViewMenuItemPost, error)
 	GetMenuItemPostsByMenuId(ctx context.Context, menuID int32) ([]ViewMenuItemPost, error)
@@ -134,6 +146,9 @@ type Querier interface {
 	MenuItemPostChangePositions(ctx context.Context, arg MenuItemPostChangePositionsParams) error
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
 	UnassignMenuItemPost(ctx context.Context, arg UnassignMenuItemPostParams) (MenuItemPost, error)
+	UpdateEntity(ctx context.Context, arg UpdateEntityParams) (Entity, error)
+	UpdateEntityGroup(ctx context.Context, arg UpdateEntityGroupParams) (EntityGroup, error)
+	UpdateEntityGroupContent(ctx context.Context, arg UpdateEntityGroupContentParams) (EntityGroupContent, error)
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
 	UpdateImage(ctx context.Context, arg UpdateImageParams) (Image, error)
 	UpdateLocation(ctx context.Context, arg UpdateLocationParams) (Location, error)
@@ -143,6 +158,7 @@ type Querier interface {
 	UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypeParams) (MapPinType, error)
 	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)
 	UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) (MenuItem, error)
+	UpdateMenuItemEntityGroup(ctx context.Context, arg UpdateMenuItemEntityGroupParams) (MenuItemEntityGroup, error)
 	UpdateMenuItemPost(ctx context.Context, arg UpdateMenuItemPostParams) (MenuItemPost, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)

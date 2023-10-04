@@ -7,9 +7,166 @@ package db
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/lib/pq"
 )
+
+const createEntity = `-- name: CreateEntity :one
+INSERT INTO entities (type, post_id, map_id, location_id, image_id)
+VALUES ($1, $2, $3, $4, $5)
+RETURNING id, type, post_id, map_id, location_id, image_id
+`
+
+type CreateEntityParams struct {
+	Type       EntityType    `json:"type"`
+	PostID     sql.NullInt32 `json:"post_id"`
+	MapID      sql.NullInt32 `json:"map_id"`
+	LocationID sql.NullInt32 `json:"location_id"`
+	ImageID    sql.NullInt32 `json:"image_id"`
+}
+
+func (q *Queries) CreateEntity(ctx context.Context, arg CreateEntityParams) (Entity, error) {
+	row := q.db.QueryRowContext(ctx, createEntity,
+		arg.Type,
+		arg.PostID,
+		arg.MapID,
+		arg.LocationID,
+		arg.ImageID,
+	)
+	var i Entity
+	err := row.Scan(
+		&i.ID,
+		&i.Type,
+		&i.PostID,
+		&i.MapID,
+		&i.LocationID,
+		&i.ImageID,
+	)
+	return i, err
+}
+
+const createEntityGroup = `-- name: CreateEntityGroup :one
+INSERT INTO entity_groups (name, description)
+VALUES ($1, $2)
+RETURNING id, name, description
+`
+
+type CreateEntityGroupParams struct {
+	Name        sql.NullString `json:"name"`
+	Description sql.NullString `json:"description"`
+}
+
+func (q *Queries) CreateEntityGroup(ctx context.Context, arg CreateEntityGroupParams) (EntityGroup, error) {
+	row := q.db.QueryRowContext(ctx, createEntityGroup, arg.Name, arg.Description)
+	var i EntityGroup
+	err := row.Scan(&i.ID, &i.Name, &i.Description)
+	return i, err
+}
+
+const createEntityGroupContent = `-- name: CreateEntityGroupContent :one
+INSERT INTO entity_group_content (entity_group_id, position, content_entity_id, content_entity_group_id)
+VALUES ($1, $2, $3, $4)
+RETURNING id, entity_group_id, position, content_entity_id, content_entity_group_id
+`
+
+type CreateEntityGroupContentParams struct {
+	EntityGroupID        int32         `json:"entity_group_id"`
+	Position             int32         `json:"position"`
+	ContentEntityID      sql.NullInt32 `json:"content_entity_id"`
+	ContentEntityGroupID sql.NullInt32 `json:"content_entity_group_id"`
+}
+
+func (q *Queries) CreateEntityGroupContent(ctx context.Context, arg CreateEntityGroupContentParams) (EntityGroupContent, error) {
+	row := q.db.QueryRowContext(ctx, createEntityGroupContent,
+		arg.EntityGroupID,
+		arg.Position,
+		arg.ContentEntityID,
+		arg.ContentEntityGroupID,
+	)
+	var i EntityGroupContent
+	err := row.Scan(
+		&i.ID,
+		&i.EntityGroupID,
+		&i.Position,
+		&i.ContentEntityID,
+		&i.ContentEntityGroupID,
+	)
+	return i, err
+}
+
+const deleteEntity = `-- name: DeleteEntity :exec
+DELETE FROM entities WHERE id = $1
+`
+
+func (q *Queries) DeleteEntity(ctx context.Context, id int32) error {
+	_, err := q.db.ExecContext(ctx, deleteEntity, id)
+	return err
+}
+
+const deleteEntityGroup = `-- name: DeleteEntityGroup :exec
+DELETE FROM entity_groups WHERE id = $1
+`
+
+func (q *Queries) DeleteEntityGroup(ctx context.Context, id int32) error {
+	_, err := q.db.ExecContext(ctx, deleteEntityGroup, id)
+	return err
+}
+
+const deleteEntityGroupContent = `-- name: DeleteEntityGroupContent :exec
+DELETE FROM entity_group_content WHERE id = $1
+`
+
+func (q *Queries) DeleteEntityGroupContent(ctx context.Context, id int32) error {
+	_, err := q.db.ExecContext(ctx, deleteEntityGroupContent, id)
+	return err
+}
+
+const getEntityByID = `-- name: GetEntityByID :one
+SELECT id, type, post_id, map_id, location_id, image_id FROM entities WHERE id = $1
+`
+
+func (q *Queries) GetEntityByID(ctx context.Context, id int32) (Entity, error) {
+	row := q.db.QueryRowContext(ctx, getEntityByID, id)
+	var i Entity
+	err := row.Scan(
+		&i.ID,
+		&i.Type,
+		&i.PostID,
+		&i.MapID,
+		&i.LocationID,
+		&i.ImageID,
+	)
+	return i, err
+}
+
+const getEntityGroupByID = `-- name: GetEntityGroupByID :one
+SELECT id, name, description FROM entity_groups WHERE id = $1
+`
+
+func (q *Queries) GetEntityGroupByID(ctx context.Context, id int32) (EntityGroup, error) {
+	row := q.db.QueryRowContext(ctx, getEntityGroupByID, id)
+	var i EntityGroup
+	err := row.Scan(&i.ID, &i.Name, &i.Description)
+	return i, err
+}
+
+const getEntityGroupContentByID = `-- name: GetEntityGroupContentByID :one
+SELECT id, entity_group_id, position, content_entity_id, content_entity_group_id FROM entity_group_content WHERE id = $1
+`
+
+func (q *Queries) GetEntityGroupContentByID(ctx context.Context, id int32) (EntityGroupContent, error) {
+	row := q.db.QueryRowContext(ctx, getEntityGroupContentByID, id)
+	var i EntityGroupContent
+	err := row.Scan(
+		&i.ID,
+		&i.EntityGroupID,
+		&i.Position,
+		&i.ContentEntityID,
+		&i.ContentEntityGroupID,
+	)
+	return i, err
+}
 
 const getEntityGroupContents = `-- name: GetEntityGroupContents :many
 WITH entity_data AS (
@@ -116,6 +273,108 @@ func (q *Queries) GetEntityIDsOfGroup(ctx context.Context, entityGroupID int32) 
 		pq.Array(&i.MapIds),
 		pq.Array(&i.LocationIds),
 		pq.Array(&i.ImageIds),
+	)
+	return i, err
+}
+
+const updateEntity = `-- name: UpdateEntity :one
+UPDATE entities
+SET
+    type = COALESCE($1, type),
+    post_id = COALESCE($2, post_id),
+    map_id = COALESCE($3, map_id),
+    location_id = COALESCE($4, location_id),
+    image_id = COALESCE($5, image_id)
+WHERE id = $6
+RETURNING id, type, post_id, map_id, location_id, image_id
+`
+
+type UpdateEntityParams struct {
+	Type       NullEntityType `json:"type"`
+	PostID     sql.NullInt32  `json:"post_id"`
+	MapID      sql.NullInt32  `json:"map_id"`
+	LocationID sql.NullInt32  `json:"location_id"`
+	ImageID    sql.NullInt32  `json:"image_id"`
+	ID         int32          `json:"id"`
+}
+
+func (q *Queries) UpdateEntity(ctx context.Context, arg UpdateEntityParams) (Entity, error) {
+	row := q.db.QueryRowContext(ctx, updateEntity,
+		arg.Type,
+		arg.PostID,
+		arg.MapID,
+		arg.LocationID,
+		arg.ImageID,
+		arg.ID,
+	)
+	var i Entity
+	err := row.Scan(
+		&i.ID,
+		&i.Type,
+		&i.PostID,
+		&i.MapID,
+		&i.LocationID,
+		&i.ImageID,
+	)
+	return i, err
+}
+
+const updateEntityGroup = `-- name: UpdateEntityGroup :one
+UPDATE entity_groups
+SET
+    name = COALESCE($1, name),
+    description = COALESCE($2, description)
+WHERE id = $3
+RETURNING id, name, description
+`
+
+type UpdateEntityGroupParams struct {
+	Name        sql.NullString `json:"name"`
+	Description sql.NullString `json:"description"`
+	ID          int32          `json:"id"`
+}
+
+func (q *Queries) UpdateEntityGroup(ctx context.Context, arg UpdateEntityGroupParams) (EntityGroup, error) {
+	row := q.db.QueryRowContext(ctx, updateEntityGroup, arg.Name, arg.Description, arg.ID)
+	var i EntityGroup
+	err := row.Scan(&i.ID, &i.Name, &i.Description)
+	return i, err
+}
+
+const updateEntityGroupContent = `-- name: UpdateEntityGroupContent :one
+UPDATE entity_group_content
+SET
+    entity_group_id = COALESCE($1, entity_group_id),
+    position = COALESCE($2, position),
+    content_entity_id = COALESCE($3, content_entity_id),
+    content_entity_group_id = COALESCE($4, content_entity_group_id)
+WHERE id = $5
+RETURNING id, entity_group_id, position, content_entity_id, content_entity_group_id
+`
+
+type UpdateEntityGroupContentParams struct {
+	EntityGroupID        sql.NullInt32 `json:"entity_group_id"`
+	Position             sql.NullInt32 `json:"position"`
+	ContentEntityID      sql.NullInt32 `json:"content_entity_id"`
+	ContentEntityGroupID sql.NullInt32 `json:"content_entity_group_id"`
+	ID                   int32         `json:"id"`
+}
+
+func (q *Queries) UpdateEntityGroupContent(ctx context.Context, arg UpdateEntityGroupContentParams) (EntityGroupContent, error) {
+	row := q.db.QueryRowContext(ctx, updateEntityGroupContent,
+		arg.EntityGroupID,
+		arg.Position,
+		arg.ContentEntityID,
+		arg.ContentEntityGroupID,
+		arg.ID,
+	)
+	var i EntityGroupContent
+	err := row.Scan(
+		&i.ID,
+		&i.EntityGroupID,
+		&i.Position,
+		&i.ContentEntityID,
+		&i.ContentEntityGroupID,
 	)
 	return i, err
 }
