@@ -96,7 +96,6 @@ UPDATE "menu_item_posts"
 SET "position" = "position" - 1
 WHERE
     "menu_item_id" = (SELECT menu_item_id FROM deleted_menu_item_post)
-    AND "post_id" = (SELECT post_id FROM deleted_menu_item_post)
     AND "position" > (SELECT position FROM deleted_menu_item_post);
 
 -- name: GetMenuItemPost :one
@@ -124,4 +123,13 @@ WHERE menu_item_id = sqlc.arg(menu_item_id) AND entity_group_id = sqlc.arg(entit
 RETURNING *;
 
 -- name: DeleteMenuItemEntityGroup :exec
-DELETE FROM menu_item_entity_groups WHERE menu_item_id = sqlc.arg(menu_item_id) AND entity_group_id = sqlc.arg(entity_group_id);
+WITH deleted_menu_item_entity_group AS (
+    DELETE FROM "menu_item_entity_groups" d
+        WHERE d.menu_item_id = sqlc.arg(menu_item_id) AND d.entity_group_id = sqlc.arg(entity_group_id)
+        RETURNING *
+)
+UPDATE "menu_item_entity_groups" mi
+SET "position" = "position" - 1
+WHERE
+    mi.menu_item_id = sqlc.arg(menu_item_id)
+    AND "position" > (SELECT position FROM deleted_menu_item_entity_group);

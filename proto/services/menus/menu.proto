@@ -35,3 +35,10 @@ message MenuItemPost {
   int32 position = 3;
   DataPost post = 4;
 }
+
+message MenuItemEntityGroups {
+  int32 menu_id = 1;
+  optional int32 menu_item_id = 2;
+  int32 entity_group_id = 3;
+  int32 position = 4;
+}

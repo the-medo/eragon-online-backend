@@ -3,6 +3,7 @@ syntax = "proto3";
 package pb;
 
 import "services/menus/menu.proto";
+import "services/entities/entity.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -109,3 +110,15 @@ message UpdateMenuPostsRequest {
 message UpdateMenuPostsResponse {
   repeated MenuItemPost menuItemPosts = 1;
 }
+
+message GetMenuItemContentRequest {
+  int32 menuId = 1;
+  int32 menuItemId = 2;
+}
+
+message GetMenuItemContentResponse {
+  repeated MenuItemEntityGroups menuItemEntityGroups = 1;
+  repeated EntityGroupContent content = 2;
+  EntityList entityList = 3;
+}
+

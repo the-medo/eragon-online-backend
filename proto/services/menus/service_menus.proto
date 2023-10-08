@@ -150,4 +150,14 @@ service Menus {
       summary: "Update menu posts";
     };
   };
+
+  rpc GetMenuItemContent(GetMenuItemContentRequest) returns (GetMenuItemContentResponse) {
+    option (google.api.http) = {
+      get: "/menus/{menuId}/items/{menuItemId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of entities for menu item - posts, maps, locations,...";
+      summary: "Get all entities for menu item";
+    };
+  };
 }

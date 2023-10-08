@@ -1,5 +1,11 @@
 syntax = "proto3";
 
+
+import "services/posts/post.proto";
+import "services/maps/map.proto";
+import "services/locations/location.proto";
+import "services/images/image.proto";
+
 package pb;
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
@@ -22,6 +28,14 @@ message Entity {
   optional int32 image_id = 6;
 }
 
+message EntityList {
+  repeated Entity entities = 1;
+  repeated DataPost posts = 2;
+  repeated ViewMap maps = 3;
+  repeated ViewLocation locations = 4;
+  repeated Image images = 5;
+}
+
 message EntityGroup {
   int32 id = 1;
   optional string name = 2;
@@ -34,11 +48,4 @@ message EntityGroupContent {
   int32 position = 3;
   optional int32 content_entity_id = 4;
   optional int32 content_entity_group_id = 5;
-}
-
-message MenuItemEntityGroups {
-  int32 menu_id = 1;
-  optional int32 menu_item_id = 2;
-  int32 entity_group_id = 3;
-  int32 position = 4;
 }

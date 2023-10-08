@@ -14,6 +14,9 @@
       "name": "Chat"
     },
     {
+      "name": "Entities"
+    },
+    {
       "name": "Evaluations"
     },
     {
@@ -156,6 +159,273 @@
         ],
         "tags": [
           "Chat"
+        ]
+      }
+    },
+    "/entities/groups": {
+      "post": {
+        "summary": "Create entity group",
+        "description": "creates entity group",
+        "operationId": "Entities_CreateEntityGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbEntityGroup"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateEntityGroupRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/groups/{entityGroupId}": {
+      "delete": {
+        "summary": "Delete entity group",
+        "description": "deletes an entity group",
+        "operationId": "Entities_DeleteEntityGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityGroupId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      },
+      "patch": {
+        "summary": "Update entity group",
+        "description": "updates entity group properties",
+        "operationId": "Entities_UpdateEntityGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbEntityGroup"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityGroupId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/groups/{entityGroupId}/content": {
+      "post": {
+        "summary": "Create entity group content",
+        "description": "creates content for an entity group",
+        "operationId": "Entities_CreateEntityGroupContent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbEntityGroupContent"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityGroupId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "contentEntityId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "contentEntityGroupId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/groups/{entityGroupId}/content/{contentId}": {
+      "delete": {
+        "summary": "Delete entity group content",
+        "description": "deletes content from an entity group",
+        "operationId": "Entities_DeleteEntityGroupContent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityGroupId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      },
+      "patch": {
+        "summary": "Update entity group content",
+        "description": "updates content of an entity group",
+        "operationId": "Entities_UpdateEntityGroupContent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbEntityGroupContent"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityGroupId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "position": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "contentEntityId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "contentEntityGroupId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Entities"
         ]
       }
     },
@@ -1258,6 +1528,44 @@
       }
     },
     "/menus/{menuId}/items/{menuItemId}": {
+      "get": {
+        "summary": "Get all entities for menu item",
+        "description": "gets list of entities for menu item - posts, maps, locations,...",
+        "operationId": "Menus_GetMenuItemContent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetMenuItemContentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "menuItemId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Menus"
+        ]
+      },
       "delete": {
         "summary": "Delete menu item",
         "description": "deletes menu item",
@@ -3950,6 +4258,17 @@
         }
       }
     },
+    "pbCreateEntityGroupRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
     "pbCreateOrUpdateEvaluationVoteResponse": {
       "type": "object",
       "properties": {
@@ -4197,6 +4516,126 @@
         }
       }
     },
+    "pbEntity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "$ref": "#/definitions/pbEntityType"
+        },
+        "postId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "mapId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "locationId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "imageId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbEntityGroup": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "pbEntityGroupContent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "entityGroupId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "contentEntityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "contentEntityGroupId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbEntityList": {
+      "type": "object",
+      "properties": {
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbEntity"
+          }
+        },
+        "posts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbDataPost"
+          }
+        },
+        "maps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewMap"
+          }
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewLocation"
+          }
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbImage"
+          }
+        }
+      }
+    },
+    "pbEntityType": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "POST",
+        "MAP",
+        "LOCATION",
+        "CHARACTER",
+        "IMAGE"
+      ],
+      "default": "UNKNOWN"
+    },
     "pbEvaluation": {
       "type": "object",
       "properties": {
@@ -4377,6 +4816,28 @@
             "type": "object",
             "$ref": "#/definitions/pbViewMapPin"
           }
+        }
+      }
+    },
+    "pbGetMenuItemContentResponse": {
+      "type": "object",
+      "properties": {
+        "menuItemEntityGroups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbMenuItemEntityGroups"
+          }
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbEntityGroupContent"
+          }
+        },
+        "entityList": {
+          "$ref": "#/definitions/pbEntityList"
         }
       }
     },
@@ -4699,6 +5160,27 @@
           "type": "boolean"
         },
         "descriptionPostId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbMenuItemEntityGroups": {
+      "type": "object",
+      "properties": {
+        "menuId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "menuItemId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "entityGroupId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
           "type": "integer",
           "format": "int32"
         }

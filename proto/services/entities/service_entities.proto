@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "services/entities/entity.proto";
+import "services/entities/rpc_entity.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Entities {
+  rpc CreateEntityGroup(CreateEntityGroupRequest) returns (EntityGroup) {
+    option (google.api.http) = {
+      post: "/entities/groups"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates entity group";
+      summary: "Create entity group";
+    };
+  };
+
+  rpc UpdateEntityGroup(UpdateEntityGroupRequest) returns (EntityGroup) {
+    option (google.api.http) = {
+      patch: "/entities/groups/{entityGroupId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates entity group properties";
+      summary: "Update entity group";
+    };
+  };
+
+  rpc DeleteEntityGroup(DeleteEntityGroupRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/entities/groups/{entityGroupId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes an entity group";
+      summary: "Delete entity group";
+    };
+  };
+
+  rpc CreateEntityGroupContent(CreateEntityGroupContentRequest) returns (EntityGroupContent) {
+    option (google.api.http) = {
+      post: "/entities/groups/{entityGroupId}/content"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates content for an entity group";
+      summary: "Create entity group content";
+    };
+  };
+
+  rpc UpdateEntityGroupContent(UpdateEntityGroupContentRequest) returns (EntityGroupContent) {
+    option (google.api.http) = {
+      patch: "/entities/groups/{entityGroupId}/content/{contentId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates content of an entity group";
+      summary: "Update entity group content";
+    };
+  };
+
+  rpc DeleteEntityGroupContent(DeleteEntityGroupContentRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/entities/groups/{entityGroupId}/content/{contentId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes content from an entity group";
+      summary: "Delete entity group content";
+    };
+  };
+}
