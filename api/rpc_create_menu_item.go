@@ -40,6 +40,28 @@ func (server *Server) CreateMenuItem(ctx context.Context, req *pb.CreateMenuItem
 		return nil, status.Errorf(codes.Internal, "failed to create menu item: %s", err)
 	}
 
+	arg2 := db.CreateEntityGroupParams{
+		Name:        sql.NullString{},
+		Description: sql.NullString{},
+	}
+
+	newEntityGroup, err := server.Store.CreateEntityGroup(ctx, arg2)
+	if err != nil {
+		return nil, err
+	}
+
+	arg3 := db.CreateMenuItemEntityGroupParams{
+		MenuItemID: sql.NullInt32{
+			Int32: menuItem.ID,
+			Valid: true,
+		},
+		EntityGroupID: newEntityGroup.ID,
+	}
+	_, err = server.Store.CreateMenuItemEntityGroup(ctx, arg3)
+	if err != nil {
+		return nil, err
+	}
+
 	rsp := converters.ConvertMenuItem(menuItem)
 
 	return rsp, nil

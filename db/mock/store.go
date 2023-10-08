@@ -1343,6 +1343,21 @@ func (mr *MockStoreMockRecorder) GetMenu(arg0, arg1 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenu", reflect.TypeOf((*MockStore)(nil).GetMenu), arg0, arg1)
 }
 
+// GetMenuIdOfEntityGroup mocks base method.
+func (m *MockStore) GetMenuIdOfEntityGroup(arg0 context.Context, arg1 int32) (int32, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMenuIdOfEntityGroup", arg0, arg1)
+	ret0, _ := ret[0].(int32)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMenuIdOfEntityGroup indicates an expected call of GetMenuIdOfEntityGroup.
+func (mr *MockStoreMockRecorder) GetMenuIdOfEntityGroup(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenuIdOfEntityGroup", reflect.TypeOf((*MockStore)(nil).GetMenuIdOfEntityGroup), arg0, arg1)
+}
+
 // GetMenuItemById mocks base method.
 func (m *MockStore) GetMenuItemById(arg0 context.Context, arg1 int32) (db.MenuItem, error) {
 	m.ctrl.T.Helper()

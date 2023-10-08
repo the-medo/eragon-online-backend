@@ -66,25 +66,22 @@ func (q *Queries) CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) 
 }
 
 const createMenuItemEntityGroup = `-- name: CreateMenuItemEntityGroup :one
+WITH existing_groups AS (
+    SELECT MAX(menu_id) as menu_id, MAX(position) + 1 as position FROM "menu_item_entity_groups" d
+    WHERE d.menu_item_id = $1
+)
 INSERT INTO menu_item_entity_groups (menu_id, menu_item_id, entity_group_id, position)
-VALUES ($1, $2, $3, $4)
+VALUES (existing_groups.menu_id, $1, $2, existing_groups.position)
 RETURNING menu_id, menu_item_id, entity_group_id, position
 `
 
 type CreateMenuItemEntityGroupParams struct {
-	MenuID        int32         `json:"menu_id"`
 	MenuItemID    sql.NullInt32 `json:"menu_item_id"`
 	EntityGroupID int32         `json:"entity_group_id"`
-	Position      int32         `json:"position"`
 }
 
 func (q *Queries) CreateMenuItemEntityGroup(ctx context.Context, arg CreateMenuItemEntityGroupParams) (MenuItemEntityGroup, error) {
-	row := q.db.QueryRowContext(ctx, createMenuItemEntityGroup,
-		arg.MenuID,
-		arg.MenuItemID,
-		arg.EntityGroupID,
-		arg.Position,
-	)
+	row := q.db.QueryRowContext(ctx, createMenuItemEntityGroup, arg.MenuItemID, arg.EntityGroupID)
 	var i MenuItemEntityGroup
 	err := row.Scan(
 		&i.MenuID,

@@ -4261,6 +4261,10 @@
     "pbCreateEntityGroupRequest": {
       "type": "object",
       "properties": {
+        "parentEntityGroupId": {
+          "type": "integer",
+          "format": "int32"
+        },
         "name": {
           "type": "string"
         },
@@ -4826,7 +4830,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbMenuItemEntityGroups"
+            "$ref": "#/definitions/pbMenuItemEntityGroup"
           }
         },
         "content": {
@@ -5165,7 +5169,7 @@
         }
       }
     },
-    "pbMenuItemEntityGroups": {
+    "pbMenuItemEntityGroup": {
       "type": "object",
       "properties": {
         "menuId": {

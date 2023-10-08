@@ -100,6 +100,7 @@ type Querier interface {
 	GetMapPinTypesForMap(ctx context.Context, mapID int32) ([]MapPinType, error)
 	GetMapPins(ctx context.Context, mapID int32) ([]ViewMapPin, error)
 	GetMenu(ctx context.Context, id int32) (ViewMenu, error)
+	GetMenuIdOfEntityGroup(ctx context.Context, entityGroupID int32) (int32, error)
 	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)
 	GetMenuItemEntityGroup(ctx context.Context, arg GetMenuItemEntityGroupParams) (MenuItemEntityGroup, error)
 	GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams) (ViewMenuItemPost, error)

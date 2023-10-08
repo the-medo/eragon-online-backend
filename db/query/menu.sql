@@ -108,8 +108,12 @@ SELECT * FROM view_menu_item_posts WHERE menu_item_id = sqlc.arg(menu_item_id);
 SELECT * FROM view_menu_item_posts WHERE menu_id = sqlc.arg(menu_id);
 
 -- name: CreateMenuItemEntityGroup :one
+WITH existing_groups AS (
+    SELECT MAX(menu_id) as menu_id, MAX(position) + 1 as position FROM "menu_item_entity_groups" d
+    WHERE d.menu_item_id = sqlc.arg(menu_item_id)
+)
 INSERT INTO menu_item_entity_groups (menu_id, menu_item_id, entity_group_id, position)
-VALUES (sqlc.arg(menu_id), sqlc.narg(menu_item_id), sqlc.arg(entity_group_id), sqlc.arg(position))
+VALUES (existing_groups.menu_id, sqlc.narg(menu_item_id), sqlc.arg(entity_group_id), existing_groups.position)
 RETURNING *;
 
 -- name: GetMenuItemEntityGroup :one

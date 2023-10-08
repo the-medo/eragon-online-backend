@@ -117,7 +117,7 @@ message GetMenuItemContentRequest {
 }
 
 message GetMenuItemContentResponse {
-  repeated MenuItemEntityGroups menuItemEntityGroups = 1;
+  repeated MenuItemEntityGroup menuItemEntityGroups = 1;
   repeated EntityGroupContent content = 2;
   EntityList entityList = 3;
 }

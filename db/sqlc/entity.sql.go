@@ -65,25 +65,23 @@ func (q *Queries) CreateEntityGroup(ctx context.Context, arg CreateEntityGroupPa
 }
 
 const createEntityGroupContent = `-- name: CreateEntityGroupContent :one
+WITH existing_group_content AS (
+    SELECT MAX(position) + 1 as position FROM "entity_group_content" d
+    WHERE d.entity_group_id = $1
+)
 INSERT INTO entity_group_content (entity_group_id, position, content_entity_id, content_entity_group_id)
-VALUES ($1, $2, $3, $4)
+VALUES ($1, existing_group_content.position, $2, $3)
 RETURNING id, entity_group_id, position, content_entity_id, content_entity_group_id
 `
 
 type CreateEntityGroupContentParams struct {
 	EntityGroupID        int32         `json:"entity_group_id"`
-	Position             int32         `json:"position"`
 	ContentEntityID      sql.NullInt32 `json:"content_entity_id"`
 	ContentEntityGroupID sql.NullInt32 `json:"content_entity_group_id"`
 }
 
 func (q *Queries) CreateEntityGroupContent(ctx context.Context, arg CreateEntityGroupContentParams) (EntityGroupContent, error) {
-	row := q.db.QueryRowContext(ctx, createEntityGroupContent,
-		arg.EntityGroupID,
-		arg.Position,
-		arg.ContentEntityID,
-		arg.ContentEntityGroupID,
-	)
+	row := q.db.QueryRowContext(ctx, createEntityGroupContent, arg.EntityGroupID, arg.ContentEntityID, arg.ContentEntityGroupID)
 	var i EntityGroupContent
 	err := row.Scan(
 		&i.ID,
@@ -284,6 +282,23 @@ func (q *Queries) GetEntityIDsOfGroup(ctx context.Context, entityGroupID int32) 
 		pq.Array(&i.ImageIds),
 	)
 	return i, err
+}
+
+const getMenuIdOfEntityGroup = `-- name: GetMenuIdOfEntityGroup :one
+WITH entity_data AS ( --functions dont work well with sqlc, this is a workaround
+    SELECT
+        m.id as menu_id
+    FROM
+        get_menu_id_of_entity_group($1) meg
+        JOIN menus m ON meg.menu_id = m.id
+) SELECT menu_id FROM entity_data
+`
+
+func (q *Queries) GetMenuIdOfEntityGroup(ctx context.Context, entityGroupID int32) (int32, error) {
+	row := q.db.QueryRowContext(ctx, getMenuIdOfEntityGroup, entityGroupID)
+	var menu_id int32
+	err := row.Scan(&menu_id)
+	return menu_id, err
 }
 
 const updateEntity = `-- name: UpdateEntity :one

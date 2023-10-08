@@ -87,8 +87,12 @@ RETURNING *;
 DELETE FROM entity_groups WHERE id = sqlc.arg(id);
 
 -- name: CreateEntityGroupContent :one
+WITH existing_group_content AS (
+    SELECT MAX(position) + 1 as position FROM "entity_group_content" d
+    WHERE d.entity_group_id = sqlc.arg(entity_group_id)
+)
 INSERT INTO entity_group_content (entity_group_id, position, content_entity_id, content_entity_group_id)
-VALUES (sqlc.arg(entity_group_id), sqlc.arg(position), sqlc.narg(content_entity_id), sqlc.narg(content_entity_group_id))
+VALUES (sqlc.arg(entity_group_id), existing_group_content.position, sqlc.narg(content_entity_id), sqlc.narg(content_entity_group_id))
 RETURNING *;
 
 -- name: GetEntityGroupContentByID :one
@@ -115,3 +119,13 @@ SET "position" = "position" - 1
 WHERE
     "entity_group_id" = (SELECT entity_group_id FROM deleted_entity_group_content)
     AND "position" > (SELECT position FROM deleted_entity_group_content);
+
+-- name: GetMenuIdOfEntityGroup :one
+WITH entity_data AS ( --functions dont work well with sqlc, this is a workaround
+    SELECT
+        m.id as menu_id
+    FROM
+        get_menu_id_of_entity_group(sqlc.arg(entity_group_id)) meg
+        JOIN menus m ON meg.menu_id = m.id
+) SELECT * FROM entity_data
+;
