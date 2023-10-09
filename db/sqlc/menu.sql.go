@@ -429,6 +429,21 @@ func (q *Queries) GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, e
 	return items, nil
 }
 
+const menuEntityGroupChangePositions = `-- name: MenuEntityGroupChangePositions :exec
+CALL move_menu_entity_groups($1, $2, $3)
+`
+
+type MenuEntityGroupChangePositionsParams struct {
+	MenuID         int32 `json:"menu_id"`
+	EntityGroupID  int32 `json:"entity_group_id"`
+	TargetPosition int32 `json:"target_position"`
+}
+
+func (q *Queries) MenuEntityGroupChangePositions(ctx context.Context, arg MenuEntityGroupChangePositionsParams) error {
+	_, err := q.db.ExecContext(ctx, menuEntityGroupChangePositions, arg.MenuID, arg.EntityGroupID, arg.TargetPosition)
+	return err
+}
+
 const menuItemChangePositions = `-- name: MenuItemChangePositions :exec
 CALL move_menu_item($1, $2)
 `

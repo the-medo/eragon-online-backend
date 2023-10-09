@@ -69,12 +69,14 @@ type Querier interface {
 	DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error
 	DeleteWorldTag(ctx context.Context, arg DeleteWorldTagParams) error
 	DeleteWorldTagAvailable(ctx context.Context, id int32) error
+	EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
 	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
 	GetEntityByID(ctx context.Context, id int32) (Entity, error)
 	GetEntityGroupByID(ctx context.Context, id int32) (EntityGroup, error)
 	GetEntityGroupContentByID(ctx context.Context, id int32) (EntityGroupContent, error)
+	GetEntityGroupContentCount(ctx context.Context, entityGroupID int32) (int64, error)
 	GetEntityGroupContents(ctx context.Context, entityGroupID int32) ([]GetEntityGroupContentsRow, error)
 	GetEntityIDsOfGroup(ctx context.Context, entityGroupID int32) (GetEntityIDsOfGroupRow, error)
 	GetEvaluationById(ctx context.Context, evaluationID int32) (Evaluation, error)
@@ -142,6 +144,7 @@ type Querier interface {
 	InsertWorldAdmin(ctx context.Context, arg InsertWorldAdminParams) (WorldAdmin, error)
 	IsWorldAdmin(ctx context.Context, arg IsWorldAdminParams) (WorldAdmin, error)
 	IsWorldSuperAdmin(ctx context.Context, arg IsWorldSuperAdminParams) (WorldAdmin, error)
+	MenuEntityGroupChangePositions(ctx context.Context, arg MenuEntityGroupChangePositionsParams) error
 	MenuItemChangePositions(ctx context.Context, arg MenuItemChangePositionsParams) error
 	MenuItemMoveGroupUp(ctx context.Context, menuItemID int32) error
 	MenuItemPostChangePositions(ctx context.Context, arg MenuItemPostChangePositionsParams) error

@@ -408,6 +408,10 @@
             "schema": {
               "type": "object",
               "properties": {
+                "newEntityGroupId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
                 "position": {
                   "type": "integer",
                   "format": "int32"

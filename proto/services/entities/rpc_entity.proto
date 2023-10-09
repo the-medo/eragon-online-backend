@@ -33,9 +33,10 @@ message CreateEntityGroupContentRequest {
 message UpdateEntityGroupContentRequest {
   int32 entityGroupId = 1;
   int32 contentId = 2;
-  optional int32 position = 3;
-  optional int32 contentEntityId = 4;
-  optional int32 contentEntityGroupId = 5;
+  optional int32 newEntityGroupId = 3;
+  optional int32 position = 4;
+  optional int32 contentEntityId = 5;
+  optional int32 contentEntityGroupId = 6;
 }
 
 message DeleteEntityGroupContentRequest {

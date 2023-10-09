@@ -878,6 +878,20 @@ func (mr *MockStoreMockRecorder) DeleteWorldTagAvailable(arg0, arg1 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorldTagAvailable", reflect.TypeOf((*MockStore)(nil).DeleteWorldTagAvailable), arg0, arg1)
 }
 
+// EntityGroupContentChangePositions mocks base method.
+func (m *MockStore) EntityGroupContentChangePositions(arg0 context.Context, arg1 db.EntityGroupContentChangePositionsParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "EntityGroupContentChangePositions", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// EntityGroupContentChangePositions indicates an expected call of EntityGroupContentChangePositions.
+func (mr *MockStoreMockRecorder) EntityGroupContentChangePositions(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EntityGroupContentChangePositions", reflect.TypeOf((*MockStore)(nil).EntityGroupContentChangePositions), arg0, arg1)
+}
+
 // GetAverageUserEvaluationsByType mocks base method.
 func (m *MockStore) GetAverageUserEvaluationsByType(arg0 context.Context, arg1 db.GetAverageUserEvaluationsByTypeParams) ([]db.GetAverageUserEvaluationsByTypeRow, error) {
 	m.ctrl.T.Helper()
@@ -966,6 +980,21 @@ func (m *MockStore) GetEntityGroupContentByID(arg0 context.Context, arg1 int32) 
 func (mr *MockStoreMockRecorder) GetEntityGroupContentByID(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntityGroupContentByID", reflect.TypeOf((*MockStore)(nil).GetEntityGroupContentByID), arg0, arg1)
+}
+
+// GetEntityGroupContentCount mocks base method.
+func (m *MockStore) GetEntityGroupContentCount(arg0 context.Context, arg1 int32) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEntityGroupContentCount", arg0, arg1)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEntityGroupContentCount indicates an expected call of GetEntityGroupContentCount.
+func (mr *MockStoreMockRecorder) GetEntityGroupContentCount(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntityGroupContentCount", reflect.TypeOf((*MockStore)(nil).GetEntityGroupContentCount), arg0, arg1)
 }
 
 // GetEntityGroupContents mocks base method.
@@ -1971,6 +2000,20 @@ func (m *MockStore) IsWorldSuperAdmin(arg0 context.Context, arg1 db.IsWorldSuper
 func (mr *MockStoreMockRecorder) IsWorldSuperAdmin(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsWorldSuperAdmin", reflect.TypeOf((*MockStore)(nil).IsWorldSuperAdmin), arg0, arg1)
+}
+
+// MenuEntityGroupChangePositions mocks base method.
+func (m *MockStore) MenuEntityGroupChangePositions(arg0 context.Context, arg1 db.MenuEntityGroupChangePositionsParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "MenuEntityGroupChangePositions", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// MenuEntityGroupChangePositions indicates an expected call of MenuEntityGroupChangePositions.
+func (mr *MockStoreMockRecorder) MenuEntityGroupChangePositions(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MenuEntityGroupChangePositions", reflect.TypeOf((*MockStore)(nil).MenuEntityGroupChangePositions), arg0, arg1)
 }
 
 // MenuItemChangePositions mocks base method.

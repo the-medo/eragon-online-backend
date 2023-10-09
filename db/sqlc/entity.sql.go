@@ -103,7 +103,7 @@ func (q *Queries) DeleteEntity(ctx context.Context, id int32) error {
 }
 
 const deleteEntityGroup = `-- name: DeleteEntityGroup :exec
-DELETE FROM entity_groups WHERE id = $1
+CALL delete_entity_group($1)
 `
 
 func (q *Queries) DeleteEntityGroup(ctx context.Context, id int32) error {
@@ -112,20 +112,25 @@ func (q *Queries) DeleteEntityGroup(ctx context.Context, id int32) error {
 }
 
 const deleteEntityGroupContent = `-- name: DeleteEntityGroupContent :exec
-WITH deleted_entity_group_content AS (
-    DELETE FROM "entity_group_content" d
-        WHERE d.id = $1
-        RETURNING id, entity_group_id, position, content_entity_id, content_entity_group_id
-)
-UPDATE "entity_group_content"
-SET "position" = "position" - 1
-WHERE
-    "entity_group_id" = (SELECT entity_group_id FROM deleted_entity_group_content)
-    AND "position" > (SELECT position FROM deleted_entity_group_content)
+CALL delete_entity_group_content($1, null, null)
 `
 
 func (q *Queries) DeleteEntityGroupContent(ctx context.Context, id int32) error {
 	_, err := q.db.ExecContext(ctx, deleteEntityGroupContent, id)
+	return err
+}
+
+const entityGroupContentChangePositions = `-- name: EntityGroupContentChangePositions :exec
+CALL move_entity_group_content($1, $2)
+`
+
+type EntityGroupContentChangePositionsParams struct {
+	ID             int32 `json:"id"`
+	TargetPosition int32 `json:"target_position"`
+}
+
+func (q *Queries) EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error {
+	_, err := q.db.ExecContext(ctx, entityGroupContentChangePositions, arg.ID, arg.TargetPosition)
 	return err
 }
 
@@ -173,6 +178,17 @@ func (q *Queries) GetEntityGroupContentByID(ctx context.Context, id int32) (Enti
 		&i.ContentEntityGroupID,
 	)
 	return i, err
+}
+
+const getEntityGroupContentCount = `-- name: GetEntityGroupContentCount :one
+SELECT COUNT(*) FROM "entity_group_content" WHERE entity_group_id = $1
+`
+
+func (q *Queries) GetEntityGroupContentCount(ctx context.Context, entityGroupID int32) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getEntityGroupContentCount, entityGroupID)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
 }
 
 const getEntityGroupContents = `-- name: GetEntityGroupContents :many
@@ -377,7 +393,7 @@ RETURNING id, entity_group_id, position, content_entity_id, content_entity_group
 `
 
 type UpdateEntityGroupContentParams struct {
-	EntityGroupID        sql.NullInt32 `json:"entity_group_id"`
+	NewEntityGroupID     sql.NullInt32 `json:"new_entity_group_id"`
 	Position             sql.NullInt32 `json:"position"`
 	ContentEntityID      sql.NullInt32 `json:"content_entity_id"`
 	ContentEntityGroupID sql.NullInt32 `json:"content_entity_group_id"`
@@ -386,7 +402,7 @@ type UpdateEntityGroupContentParams struct {
 
 func (q *Queries) UpdateEntityGroupContent(ctx context.Context, arg UpdateEntityGroupContentParams) (EntityGroupContent, error) {
 	row := q.db.QueryRowContext(ctx, updateEntityGroupContent,
-		arg.EntityGroupID,
+		arg.NewEntityGroupID,
 		arg.Position,
 		arg.ContentEntityID,
 		arg.ContentEntityGroupID,

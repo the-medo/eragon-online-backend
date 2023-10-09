@@ -59,6 +59,9 @@ CALL move_menu_item(sqlc.arg(menu_item_id), sqlc.arg(target_position));
 -- name: MenuItemMoveGroupUp :exec
 CALL move_group_up(sqlc.arg(menu_item_id));
 
+-- name: MenuEntityGroupChangePositions :exec
+CALL move_menu_entity_groups(sqlc.arg(menu_id), sqlc.arg(entity_group_id), sqlc.arg(target_position));
+
 -- name: CreateMenuItemPost :one
 WITH post_count AS (
     SELECT COUNT(*) AS count FROM menu_item_posts WHERE menu_item_id = COALESCE(sqlc.narg(menu_item_id), 0)

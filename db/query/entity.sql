@@ -84,7 +84,10 @@ WHERE id = sqlc.arg(id)
 RETURNING *;
 
 -- name: DeleteEntityGroup :exec
-DELETE FROM entity_groups WHERE id = sqlc.arg(id);
+CALL delete_entity_group(sqlc.arg(id));
+
+-- name: GetEntityGroupContentCount :one
+SELECT COUNT(*) FROM "entity_group_content" WHERE entity_group_id = sqlc.arg(entity_group_id);
 
 -- name: CreateEntityGroupContent :one
 WITH existing_group_content AS (
@@ -95,13 +98,16 @@ INSERT INTO entity_group_content (entity_group_id, position, content_entity_id, 
 VALUES (sqlc.arg(entity_group_id), existing_group_content.position, sqlc.narg(content_entity_id), sqlc.narg(content_entity_group_id))
 RETURNING *;
 
+-- name: EntityGroupContentChangePositions :exec
+CALL move_entity_group_content(sqlc.arg(id), sqlc.arg(target_position));
+
 -- name: GetEntityGroupContentByID :one
 SELECT * FROM entity_group_content WHERE id = sqlc.arg(id);
 
 -- name: UpdateEntityGroupContent :one
 UPDATE entity_group_content
 SET
-    entity_group_id = COALESCE(sqlc.narg(entity_group_id), entity_group_id),
+    entity_group_id = COALESCE(sqlc.narg(new_entity_group_id), entity_group_id),
     position = COALESCE(sqlc.narg(position), position),
     content_entity_id = COALESCE(sqlc.narg(content_entity_id), content_entity_id),
     content_entity_group_id = COALESCE(sqlc.narg(content_entity_group_id), content_entity_group_id)
@@ -109,16 +115,7 @@ WHERE id = sqlc.arg(id)
 RETURNING *;
 
 -- name: DeleteEntityGroupContent :exec
-WITH deleted_entity_group_content AS (
-    DELETE FROM "entity_group_content" d
-        WHERE d.id = sqlc.arg(id)
-        RETURNING *
-)
-UPDATE "entity_group_content"
-SET "position" = "position" - 1
-WHERE
-    "entity_group_id" = (SELECT entity_group_id FROM deleted_entity_group_content)
-    AND "position" > (SELECT position FROM deleted_entity_group_content);
+CALL delete_entity_group_content(sqlc.arg(id), null, null);
 
 -- name: GetMenuIdOfEntityGroup :one
 WITH entity_data AS ( --functions dont work well with sqlc, this is a workaround
