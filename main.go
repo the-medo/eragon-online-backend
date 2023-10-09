@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -37,6 +38,14 @@ func main() {
 
 	if config.Environment == "development" {
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	}
+
+	err = sentry.Init(sentry.ClientOptions{
+		Dsn:              config.SentryDsn,
+		TracesSampleRate: config.SentryTracesSampleRate,
+	})
+	if err != nil {
+		log.Fatal().Msgf("sentry.Init: %s", err)
 	}
 
 	conn, err := sql.Open(config.DBDriver, config.DBSource)

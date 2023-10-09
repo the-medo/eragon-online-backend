@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/aead/chacha20poly1305 v0.0.0-20201124145622-1a5aba2a8b29
 	github.com/cloudflare/cloudflare-go v0.75.0
+	github.com/getsentry/sentry-go v0.25.0
 	github.com/goccy/go-json v0.10.2
 	github.com/golang-migrate/migrate/v4 v4.16.2
 	github.com/golang/mock v1.6.0
