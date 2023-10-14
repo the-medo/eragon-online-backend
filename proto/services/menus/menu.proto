@@ -27,6 +27,7 @@ message MenuItem {
   int32 position = 5;
   optional bool isMain = 6;
   optional int32 descriptionPostId = 7;
+  optional int32 entityGroupId = 8;
 }
 
 message MenuItemPost {
@@ -34,11 +35,4 @@ message MenuItemPost {
   int32 postId = 2;
   int32 position = 3;
   DataPost post = 4;
-}
-
-message MenuItemEntityGroup {
-  int32 menu_id = 1;
-  int32 menu_item_id = 2;
-  int32 entity_group_id = 3;
-  int32 position = 4;
 }

@@ -28,7 +28,6 @@ type Querier interface {
 	CreateMapPinType(ctx context.Context, arg CreateMapPinTypeParams) (MapPinType, error)
 	CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, error)
 	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)
-	CreateMenuItemEntityGroup(ctx context.Context, arg CreateMenuItemEntityGroupParams) (MenuItemEntityGroup, error)
 	CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error)
 	CreatePost(ctx context.Context, arg CreatePostParams) (Post, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
@@ -56,7 +55,6 @@ type Querier interface {
 	DeleteMapPinType(ctx context.Context, id int32) error
 	DeleteMenu(ctx context.Context, id int32) error
 	DeleteMenuItem(ctx context.Context, menuItemID int32) error
-	DeleteMenuItemEntityGroup(ctx context.Context, arg DeleteMenuItemEntityGroupParams) error
 	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
 	DeletePost(ctx context.Context, postID int32) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
@@ -104,7 +102,6 @@ type Querier interface {
 	GetMenu(ctx context.Context, id int32) (ViewMenu, error)
 	GetMenuIdOfEntityGroup(ctx context.Context, entityGroupID int32) (int32, error)
 	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)
-	GetMenuItemEntityGroup(ctx context.Context, arg GetMenuItemEntityGroupParams) (MenuItemEntityGroup, error)
 	GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams) (ViewMenuItemPost, error)
 	GetMenuItemPosts(ctx context.Context, menuItemID sql.NullInt32) ([]ViewMenuItemPost, error)
 	GetMenuItemPostsByMenuId(ctx context.Context, menuID int32) ([]ViewMenuItemPost, error)
@@ -162,7 +159,6 @@ type Querier interface {
 	UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypeParams) (MapPinType, error)
 	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)
 	UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) (MenuItem, error)
-	UpdateMenuItemEntityGroup(ctx context.Context, arg UpdateMenuItemEntityGroupParams) (MenuItemEntityGroup, error)
 	UpdateMenuItemPost(ctx context.Context, arg UpdateMenuItemPostParams) (MenuItemPost, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)

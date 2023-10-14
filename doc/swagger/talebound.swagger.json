@@ -4833,8 +4833,8 @@
         "menuItemEntityGroups": {
           "type": "array",
           "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbMenuItemEntityGroup"
+            "type": "integer",
+            "format": "int32"
           }
         },
         "content": {
@@ -5170,25 +5170,8 @@
         "descriptionPostId": {
           "type": "integer",
           "format": "int32"
-        }
-      }
-    },
-    "pbMenuItemEntityGroup": {
-      "type": "object",
-      "properties": {
-        "menuId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "menuItemId": {
-          "type": "integer",
-          "format": "int32"
         },
         "entityGroupId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "position": {
           "type": "integer",
           "format": "int32"
         }

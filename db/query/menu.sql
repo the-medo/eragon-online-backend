@@ -18,8 +18,8 @@ DELETE FROM menus WHERE id = sqlc.arg(id);
 SELECT * FROM view_menus WHERE id = sqlc.arg(id);
 
 -- name: CreateMenuItem :one
-INSERT INTO menu_items (menu_id, menu_item_code, name, position, is_main, description_post_id)
-VALUES (sqlc.arg(menu_id), sqlc.arg(menu_item_code), sqlc.arg(name), sqlc.arg(position), sqlc.narg(is_main), sqlc.narg(description_post_id))
+INSERT INTO menu_items (menu_id, menu_item_code, name, position, is_main, description_post_id, entity_group_id)
+VALUES (sqlc.arg(menu_id), sqlc.arg(menu_item_code), sqlc.arg(name), sqlc.arg(position), sqlc.narg(is_main), sqlc.narg(description_post_id), sqlc.narg(entity_group_id))
 RETURNING *;
 
 -- name: UpdateMenuItem :one
@@ -29,7 +29,8 @@ SET
     name = COALESCE(sqlc.narg(name), name),
     -- position = COALESCE(sqlc.narg(position), position),
     is_main = COALESCE(sqlc.narg(is_main), is_main),
-    description_post_id = COALESCE(sqlc.narg(description_post_id), description_post_id)
+    description_post_id = COALESCE(sqlc.narg(description_post_id), description_post_id),
+    entity_group_id = COALESCE(sqlc.narg(entity_group_id), entity_group_id)
 WHERE id = sqlc.arg(id)
 RETURNING *;
 
@@ -109,34 +110,3 @@ SELECT * FROM view_menu_item_posts WHERE menu_item_id = sqlc.arg(menu_item_id);
 
 -- name: GetMenuItemPostsByMenuId :many
 SELECT * FROM view_menu_item_posts WHERE menu_id = sqlc.arg(menu_id);
-
--- name: CreateMenuItemEntityGroup :one
-WITH existing_groups AS (
-    SELECT MAX(menu_id) as menu_id, MAX(position) + 1 as position FROM "menu_item_entity_groups" d
-    WHERE d.menu_item_id = sqlc.arg(menu_item_id)
-)
-INSERT INTO menu_item_entity_groups (menu_id, menu_item_id, entity_group_id, position)
-VALUES (existing_groups.menu_id, sqlc.narg(menu_item_id), sqlc.arg(entity_group_id), existing_groups.position)
-RETURNING *;
-
--- name: GetMenuItemEntityGroup :one
-SELECT * FROM menu_item_entity_groups WHERE menu_item_id = sqlc.arg(menu_item_id) AND entity_group_id = sqlc.arg(entity_group_id);
-
--- name: UpdateMenuItemEntityGroup :one
-UPDATE menu_item_entity_groups
-SET
-    position = COALESCE(sqlc.narg(position), position)
-WHERE menu_item_id = sqlc.arg(menu_item_id) AND entity_group_id = sqlc.arg(entity_group_id)
-RETURNING *;
-
--- name: DeleteMenuItemEntityGroup :exec
-WITH deleted_menu_item_entity_group AS (
-    DELETE FROM "menu_item_entity_groups" d
-        WHERE d.menu_item_id = sqlc.arg(menu_item_id) AND d.entity_group_id = sqlc.arg(entity_group_id)
-        RETURNING *
-)
-UPDATE "menu_item_entity_groups" mi
-SET "position" = "position" - 1
-WHERE
-    mi.menu_item_id = sqlc.arg(menu_item_id)
-    AND "position" > (SELECT position FROM deleted_menu_item_entity_group);

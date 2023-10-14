@@ -49,7 +49,7 @@ func (q *Queries) CreateEntity(ctx context.Context, arg CreateEntityParams) (Ent
 const createEntityGroup = `-- name: CreateEntityGroup :one
 INSERT INTO entity_groups (name, description)
 VALUES ($1, $2)
-RETURNING id, name, description
+RETURNING id, name, description, style, direction
 `
 
 type CreateEntityGroupParams struct {
@@ -60,7 +60,13 @@ type CreateEntityGroupParams struct {
 func (q *Queries) CreateEntityGroup(ctx context.Context, arg CreateEntityGroupParams) (EntityGroup, error) {
 	row := q.db.QueryRowContext(ctx, createEntityGroup, arg.Name, arg.Description)
 	var i EntityGroup
-	err := row.Scan(&i.ID, &i.Name, &i.Description)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Description,
+		&i.Style,
+		&i.Direction,
+	)
 	return i, err
 }
 
@@ -153,13 +159,19 @@ func (q *Queries) GetEntityByID(ctx context.Context, id int32) (Entity, error) {
 }
 
 const getEntityGroupByID = `-- name: GetEntityGroupByID :one
-SELECT id, name, description FROM entity_groups WHERE id = $1
+SELECT id, name, description, style, direction FROM entity_groups WHERE id = $1
 `
 
 func (q *Queries) GetEntityGroupByID(ctx context.Context, id int32) (EntityGroup, error) {
 	row := q.db.QueryRowContext(ctx, getEntityGroupByID, id)
 	var i EntityGroup
-	err := row.Scan(&i.ID, &i.Name, &i.Description)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Description,
+		&i.Style,
+		&i.Direction,
+	)
 	return i, err
 }
 
@@ -365,7 +377,7 @@ SET
     name = COALESCE($1, name),
     description = COALESCE($2, description)
 WHERE id = $3
-RETURNING id, name, description
+RETURNING id, name, description, style, direction
 `
 
 type UpdateEntityGroupParams struct {
@@ -377,7 +389,13 @@ type UpdateEntityGroupParams struct {
 func (q *Queries) UpdateEntityGroup(ctx context.Context, arg UpdateEntityGroupParams) (EntityGroup, error) {
 	row := q.db.QueryRowContext(ctx, updateEntityGroup, arg.Name, arg.Description, arg.ID)
 	var i EntityGroup
-	err := row.Scan(&i.ID, &i.Name, &i.Description)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Description,
+		&i.Style,
+		&i.Direction,
+	)
 	return i, err
 }
 

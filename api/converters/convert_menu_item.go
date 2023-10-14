@@ -19,5 +19,9 @@ func ConvertMenuItem(menuItem db.MenuItem) *pb.MenuItem {
 		pbMenuItem.DescriptionPostId = &menuItem.DescriptionPostID.Int32
 	}
 
+	if menuItem.EntityGroupID.Valid == true {
+		pbMenuItem.EntityGroupId = &menuItem.EntityGroupID.Int32
+	}
+
 	return pbMenuItem
 }

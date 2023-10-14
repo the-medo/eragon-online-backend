@@ -252,6 +252,8 @@ type EntityGroup struct {
 	ID          int32          `json:"id"`
 	Name        sql.NullString `json:"name"`
 	Description sql.NullString `json:"description"`
+	Style       sql.NullString `json:"style"`
+	Direction   sql.NullString `json:"direction"`
 }
 
 type EntityGroupContent struct {
@@ -361,13 +363,7 @@ type MenuItem struct {
 	Position          int32         `json:"position"`
 	IsMain            bool          `json:"is_main"`
 	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
-}
-
-type MenuItemEntityGroup struct {
-	MenuID        int32         `json:"menu_id"`
-	MenuItemID    sql.NullInt32 `json:"menu_item_id"`
-	EntityGroupID int32         `json:"entity_group_id"`
-	Position      int32         `json:"position"`
+	EntityGroupID     sql.NullInt32 `json:"entity_group_id"`
 }
 
 type MenuItemPost struct {
