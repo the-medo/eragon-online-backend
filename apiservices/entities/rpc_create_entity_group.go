@@ -33,6 +33,14 @@ func (server *ServiceEntities) CreateEntityGroup(ctx context.Context, request *p
 			String: request.GetDescription(),
 			Valid:  request.Description != nil,
 		},
+		Style: sql.NullString{
+			String: request.GetStyle(),
+			Valid:  request.Style != nil,
+		},
+		Direction: sql.NullString{
+			String: request.GetDirection(),
+			Valid:  request.Direction != nil,
+		},
 	}
 
 	newEntityGroup, err := server.Store.CreateEntityGroup(ctx, arg)
@@ -59,12 +67,28 @@ func (server *ServiceEntities) CreateEntityGroup(ctx context.Context, request *p
 }
 
 func validateCreateEntityGroup(req *pb.CreateEntityGroupRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateUniversalName(req.GetName()); err != nil {
-		violations = append(violations, e.FieldViolation("name", err))
+	if req.Name != nil {
+		if err := validator.ValidateUniversalName(req.GetName()); err != nil {
+			violations = append(violations, e.FieldViolation("name", err))
+		}
 	}
 
-	if err := validator.ValidateUniversalDescription(req.GetDescription()); err != nil {
-		violations = append(violations, e.FieldViolation("description", err))
+	if req.Description != nil {
+		if err := validator.ValidateUniversalDescription(req.GetDescription()); err != nil {
+			violations = append(violations, e.FieldViolation("description", err))
+		}
+	}
+
+	if req.Style != nil {
+		if err := validator.ValidateEntityGroupStyle(req.GetStyle()); err != nil {
+			violations = append(violations, e.FieldViolation("style", err))
+		}
+	}
+
+	if req.Direction != nil {
+		if err := validator.ValidateEntityGroupDirection(req.GetDirection()); err != nil {
+			violations = append(violations, e.FieldViolation("direction", err))
+		}
 	}
 
 	return violations

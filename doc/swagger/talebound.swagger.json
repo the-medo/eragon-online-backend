@@ -267,6 +267,12 @@
                 },
                 "description": {
                   "type": "string"
+                },
+                "style": {
+                  "type": "string"
+                },
+                "direction": {
+                  "type": "string"
                 }
               }
             }
@@ -4273,6 +4279,12 @@
           "type": "string"
         },
         "description": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string"
+        },
+        "direction": {
           "type": "string"
         }
       }

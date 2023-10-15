@@ -11,12 +11,16 @@ message CreateEntityGroupRequest {
   int32 parentEntityGroupId = 1;
   optional string name = 2;
   optional string description = 3;
+  optional string style = 4;
+  optional string direction = 5;
 }
 
 message UpdateEntityGroupRequest {
   int32 entityGroupId = 1;
   optional string name = 2;
   optional string description = 3;
+  optional string style = 4;
+  optional string direction = 5;
 }
 
 

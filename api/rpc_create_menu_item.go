@@ -24,6 +24,27 @@ func (server *Server) CreateMenuItem(ctx context.Context, req *pb.CreateMenuItem
 		return nil, status.Errorf(codes.PermissionDenied, "failed create menu item: %v", err)
 	}
 
+	argCreateEntityGroup := db.CreateEntityGroupParams{
+		Name: sql.NullString{
+			String: req.GetName(),
+			Valid:  true,
+		},
+		Description: sql.NullString{},
+		Style: sql.NullString{
+			String: "framed",
+			Valid:  true,
+		},
+		Direction: sql.NullString{
+			String: "vertical",
+			Valid:  true,
+		},
+	}
+
+	newEntityGroup, err := server.Store.CreateEntityGroup(ctx, argCreateEntityGroup)
+	if err != nil {
+		return nil, err
+	}
+
 	arg := db.CreateMenuItemParams{
 		MenuID:       req.GetMenuId(),
 		MenuItemCode: req.GetCode(),
@@ -33,33 +54,15 @@ func (server *Server) CreateMenuItem(ctx context.Context, req *pb.CreateMenuItem
 			Bool:  req.GetIsMain(),
 			Valid: req.IsMain != nil,
 		},
+		EntityGroupID: sql.NullInt32{
+			Int32: newEntityGroup.ID,
+			Valid: true,
+		},
 	}
 
 	menuItem, err := server.Store.CreateMenuItem(ctx, arg)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create menu item: %s", err)
-	}
-
-	arg2 := db.CreateEntityGroupParams{
-		Name:        sql.NullString{},
-		Description: sql.NullString{},
-	}
-
-	newEntityGroup, err := server.Store.CreateEntityGroup(ctx, arg2)
-	if err != nil {
-		return nil, err
-	}
-
-	arg3 := db.CreateMenuItemEntityGroupParams{
-		MenuItemID: sql.NullInt32{
-			Int32: menuItem.ID,
-			Valid: true,
-		},
-		EntityGroupID: newEntityGroup.ID,
-	}
-	_, err = server.Store.CreateMenuItemEntityGroup(ctx, arg3)
-	if err != nil {
-		return nil, err
 	}
 
 	rsp := converters.ConvertMenuItem(menuItem)

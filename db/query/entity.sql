@@ -68,8 +68,8 @@ RETURNING *;
 DELETE FROM entities WHERE id = sqlc.arg(id);
 
 -- name: CreateEntityGroup :one
-INSERT INTO entity_groups (name, description)
-VALUES (sqlc.arg(name), sqlc.arg(description))
+INSERT INTO entity_groups (name, description, style, direction)
+VALUES (sqlc.arg(name), sqlc.arg(description), sqlc.arg(style), sqlc.arg(direction))
 RETURNING *;
 
 -- name: GetEntityGroupByID :one
@@ -79,7 +79,9 @@ SELECT * FROM entity_groups WHERE id = sqlc.arg(id);
 UPDATE entity_groups
 SET
     name = COALESCE(sqlc.narg(name), name),
-    description = COALESCE(sqlc.narg(description), description)
+    description = COALESCE(sqlc.narg(description), description),
+    style = COALESCE(sqlc.narg(style), style),
+    direction = COALESCE(sqlc.narg(direction), direction)
 WHERE id = sqlc.arg(id)
 RETURNING *;
 

@@ -47,18 +47,25 @@ func (q *Queries) CreateEntity(ctx context.Context, arg CreateEntityParams) (Ent
 }
 
 const createEntityGroup = `-- name: CreateEntityGroup :one
-INSERT INTO entity_groups (name, description)
-VALUES ($1, $2)
+INSERT INTO entity_groups (name, description, style, direction)
+VALUES ($1, $2, $3, $4)
 RETURNING id, name, description, style, direction
 `
 
 type CreateEntityGroupParams struct {
 	Name        sql.NullString `json:"name"`
 	Description sql.NullString `json:"description"`
+	Style       sql.NullString `json:"style"`
+	Direction   sql.NullString `json:"direction"`
 }
 
 func (q *Queries) CreateEntityGroup(ctx context.Context, arg CreateEntityGroupParams) (EntityGroup, error) {
-	row := q.db.QueryRowContext(ctx, createEntityGroup, arg.Name, arg.Description)
+	row := q.db.QueryRowContext(ctx, createEntityGroup,
+		arg.Name,
+		arg.Description,
+		arg.Style,
+		arg.Direction,
+	)
 	var i EntityGroup
 	err := row.Scan(
 		&i.ID,
@@ -375,19 +382,29 @@ const updateEntityGroup = `-- name: UpdateEntityGroup :one
 UPDATE entity_groups
 SET
     name = COALESCE($1, name),
-    description = COALESCE($2, description)
-WHERE id = $3
+    description = COALESCE($2, description),
+    style = COALESCE($3, style),
+    direction = COALESCE($4, direction)
+WHERE id = $5
 RETURNING id, name, description, style, direction
 `
 
 type UpdateEntityGroupParams struct {
 	Name        sql.NullString `json:"name"`
 	Description sql.NullString `json:"description"`
+	Style       sql.NullString `json:"style"`
+	Direction   sql.NullString `json:"direction"`
 	ID          int32          `json:"id"`
 }
 
 func (q *Queries) UpdateEntityGroup(ctx context.Context, arg UpdateEntityGroupParams) (EntityGroup, error) {
-	row := q.db.QueryRowContext(ctx, updateEntityGroup, arg.Name, arg.Description, arg.ID)
+	row := q.db.QueryRowContext(ctx, updateEntityGroup,
+		arg.Name,
+		arg.Description,
+		arg.Style,
+		arg.Direction,
+		arg.ID,
+	)
 	var i EntityGroup
 	err := row.Scan(
 		&i.ID,
