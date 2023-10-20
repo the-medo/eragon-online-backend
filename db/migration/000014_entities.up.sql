@@ -227,15 +227,60 @@ BEGIN
             CALL delete_entity_group_content(egc.id, egc.content_entity_id, egc.content_entity_group_id);
         END LOOP;
 
-    IF entity_group_content_id > 0 THEN
+    IF entity_group_content_id IS NOT NULL THEN
         CALL delete_entity_group_content_and_move(entity_group_content_id);
     END IF;
 
     -- then, we delete the entity group itself if it is not a main menu item group
-    IF is_main_menu_item_group == 0 THEN
+    IF is_main_menu_item_group IS NOT NULL AND is_main_menu_item_group = 0 THEN
         DELETE FROM entity_groups WHERE id = _entity_group_id;
     END IF;
-
-
 END;
 $$;
+
+
+CREATE OR REPLACE PROCEDURE delete_menu_item(_menu_item_id INT)
+    LANGUAGE plpgsql AS $$
+DECLARE
+    _entity_group_id INT;
+    _menu_id INT;
+    _position INT;
+BEGIN
+    -- Delete the menu item and get the entity_group_id
+    WITH deleted_item AS (
+        DELETE FROM "menu_items"
+            WHERE id = _menu_item_id
+            RETURNING entity_group_id, menu_id, position
+    )
+    SELECT entity_group_id, menu_id, position INTO _entity_group_id, _menu_id, _position FROM deleted_item;
+
+    UPDATE "menu_items"
+        SET "position" = "position" - 1
+    WHERE "menu_id" = _menu_id AND "position" > _position;
+
+
+    IF _entity_group_id IS NOT NULL THEN
+        CALL delete_entity_group(_entity_group_id);
+    END IF;
+END;
+$$;
+
+
+--script to create default entity group for each menu item
+DO $$
+DECLARE
+    menuItem RECORD;
+BEGIN
+    -- For each menu item
+    FOR menuItem IN (SELECT * FROM menu_items) LOOP
+            -- 1. Insert a new entity_group and get its id
+            INSERT INTO entity_groups(name, description)
+            VALUES (menuItem.name, 'Description of ' || menuItem.name) -- You can customize the name and description
+            RETURNING id INTO menuItem.entity_group_id;
+
+            -- 2. Update the menu_item's entity_group_id with the new entity_group's id
+            UPDATE menu_items
+            SET entity_group_id = menuItem.entity_group_id
+            WHERE id = menuItem.id;
+        END LOOP;
+END $$;

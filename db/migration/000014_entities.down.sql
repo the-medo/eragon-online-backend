@@ -1,3 +1,4 @@
+DROP PROCEDURE IF EXISTS delete_menu_item(INT);
 DROP PROCEDURE IF EXISTS delete_entity_group(INT);
 DROP PROCEDURE IF EXISTS delete_entity_group_content(INT, INT, INT);
 DROP PROCEDURE IF EXISTS delete_entity_group_content_and_move(INT);

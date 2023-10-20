@@ -141,7 +141,6 @@ type Querier interface {
 	InsertWorldAdmin(ctx context.Context, arg InsertWorldAdminParams) (WorldAdmin, error)
 	IsWorldAdmin(ctx context.Context, arg IsWorldAdminParams) (WorldAdmin, error)
 	IsWorldSuperAdmin(ctx context.Context, arg IsWorldSuperAdminParams) (WorldAdmin, error)
-	MenuEntityGroupChangePositions(ctx context.Context, arg MenuEntityGroupChangePositionsParams) error
 	MenuItemChangePositions(ctx context.Context, arg MenuItemChangePositionsParams) error
 	MenuItemMoveGroupUp(ctx context.Context, menuItemID int32) error
 	MenuItemPostChangePositions(ctx context.Context, arg MenuItemPostChangePositionsParams) error

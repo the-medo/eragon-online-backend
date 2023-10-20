@@ -116,15 +116,7 @@ func (q *Queries) DeleteMenu(ctx context.Context, id int32) error {
 }
 
 const deleteMenuItem = `-- name: DeleteMenuItem :exec
-WITH deleted_item AS (
-    DELETE FROM "menu_items" d
-        WHERE d.id = $1
-        RETURNING id, menu_id, menu_item_code, name, position, is_main, description_post_id, entity_group_id
-)
-UPDATE "menu_items"
-SET "position" = "position" - 1
-WHERE "menu_id" = (SELECT menu_id FROM deleted_item)
-  AND "position" > (SELECT position FROM deleted_item)
+CALL delete_menu_item($1)
 `
 
 func (q *Queries) DeleteMenuItem(ctx context.Context, menuItemID int32) error {
@@ -361,21 +353,6 @@ func (q *Queries) GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, e
 		return nil, err
 	}
 	return items, nil
-}
-
-const menuEntityGroupChangePositions = `-- name: MenuEntityGroupChangePositions :exec
-CALL move_menu_entity_groups($1, $2, $3)
-`
-
-type MenuEntityGroupChangePositionsParams struct {
-	MenuID         interface{} `json:"menu_id"`
-	EntityGroupID  interface{} `json:"entity_group_id"`
-	TargetPosition interface{} `json:"target_position"`
-}
-
-func (q *Queries) MenuEntityGroupChangePositions(ctx context.Context, arg MenuEntityGroupChangePositionsParams) error {
-	_, err := q.db.ExecContext(ctx, menuEntityGroupChangePositions, arg.MenuID, arg.EntityGroupID, arg.TargetPosition)
-	return err
 }
 
 const menuItemChangePositions = `-- name: MenuItemChangePositions :exec

@@ -35,15 +35,7 @@ WHERE id = sqlc.arg(id)
 RETURNING *;
 
 -- name: DeleteMenuItem :exec
-WITH deleted_item AS (
-    DELETE FROM "menu_items" d
-        WHERE d.id = sqlc.arg(menu_item_id)
-        RETURNING *
-)
-UPDATE "menu_items"
-SET "position" = "position" - 1
-WHERE "menu_id" = (SELECT menu_id FROM deleted_item)
-  AND "position" > (SELECT position FROM deleted_item);
+CALL delete_menu_item(sqlc.arg(menu_item_id));
 
 -- name: GetMenuItems :many
 SELECT * FROM menu_items WHERE menu_id = sqlc.arg(menu_id);
@@ -59,9 +51,6 @@ CALL move_menu_item(sqlc.arg(menu_item_id), sqlc.arg(target_position));
 
 -- name: MenuItemMoveGroupUp :exec
 CALL move_group_up(sqlc.arg(menu_item_id));
-
--- name: MenuEntityGroupChangePositions :exec
-CALL move_menu_entity_groups(sqlc.arg(menu_id), sqlc.arg(entity_group_id), sqlc.arg(target_position));
 
 -- name: CreateMenuItemPost :one
 WITH post_count AS (

@@ -1958,20 +1958,6 @@ func (mr *MockStoreMockRecorder) IsWorldSuperAdmin(arg0, arg1 interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsWorldSuperAdmin", reflect.TypeOf((*MockStore)(nil).IsWorldSuperAdmin), arg0, arg1)
 }
 
-// MenuEntityGroupChangePositions mocks base method.
-func (m *MockStore) MenuEntityGroupChangePositions(arg0 context.Context, arg1 db.MenuEntityGroupChangePositionsParams) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MenuEntityGroupChangePositions", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// MenuEntityGroupChangePositions indicates an expected call of MenuEntityGroupChangePositions.
-func (mr *MockStoreMockRecorder) MenuEntityGroupChangePositions(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MenuEntityGroupChangePositions", reflect.TypeOf((*MockStore)(nil).MenuEntityGroupChangePositions), arg0, arg1)
-}
-
 // MenuItemChangePositions mocks base method.
 func (m *MockStore) MenuItemChangePositions(arg0 context.Context, arg1 db.MenuItemChangePositionsParams) error {
 	m.ctrl.T.Helper()
