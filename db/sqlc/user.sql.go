@@ -230,7 +230,7 @@ func (q *Queries) GetUserRoles(ctx context.Context, userID int32) ([]GetUserRole
 
 const getUsers = `-- name: GetUsers :many
 SELECT
-    u.id, username, hashed_password, email, img_id, password_changed_at, u.created_at, is_email_verified, introduction_post_id, i.id, image_type_id, name, url, i.created_at, base_url, img_guid, user_id
+    u.id, username, hashed_password, email, img_id, password_changed_at, u.created_at, is_email_verified, introduction_post_id, i.id, image_type_id, name, url, i.created_at, base_url, img_guid, user_id, width, height
 FROM
     users AS u
     LEFT JOIN images i ON u.img_id = i.id
@@ -262,6 +262,8 @@ type GetUsersRow struct {
 	BaseUrl            sql.NullString `json:"base_url"`
 	ImgGuid            uuid.NullUUID  `json:"img_guid"`
 	UserID             sql.NullInt32  `json:"user_id"`
+	Width              sql.NullInt32  `json:"width"`
+	Height             sql.NullInt32  `json:"height"`
 }
 
 func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error) {
@@ -291,6 +293,8 @@ func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersR
 			&i.BaseUrl,
 			&i.ImgGuid,
 			&i.UserID,
+			&i.Width,
+			&i.Height,
 		); err != nil {
 			return nil, err
 		}

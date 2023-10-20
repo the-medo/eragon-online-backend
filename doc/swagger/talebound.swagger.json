@@ -5086,6 +5086,14 @@
         "userId": {
           "type": "integer",
           "format": "int32"
+        },
+        "width": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "height": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -5392,6 +5400,14 @@
           "format": "byte"
         },
         "imageTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "width": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "height": {
           "type": "integer",
           "format": "int32"
         }

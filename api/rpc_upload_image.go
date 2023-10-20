@@ -11,6 +11,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"image"
+	_ "image/png" // Import this to decode png images
 	"io"
 )
 
@@ -26,6 +28,17 @@ func (server *Server) UploadImage(ctx context.Context, request *pb.UploadImageRe
 	}
 
 	reader := bytes.NewReader(request.GetData())
+
+	decodedImg, _, err := image.DecodeConfig(reader)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to decode image: %v", err)
+	}
+	width := decodedImg.Width
+	height := decodedImg.Height
+
+	// Reset the reader to the beginning so it can be used again for uploading
+	reader.Seek(0, 0)
+
 	readCloser := io.NopCloser(reader)
 
 	defer func(readCloser io.ReadCloser) {
@@ -56,6 +69,8 @@ func (server *Server) UploadImage(ctx context.Context, request *pb.UploadImageRe
 		Filename:   img.Filename,
 		Variants:   img.Variants,
 		UploadedAt: timestamppb.New(img.Uploaded),
+		Width:      int32(width),  // assuming Width is int32 in your pb.UploadImageResponse
+		Height:     int32(height), // assuming Height is int32 in your pb.UploadImageResponse
 	}
 
 	return rsp, nil

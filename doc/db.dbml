@@ -57,6 +57,8 @@ Table images {
   url varchar [not null]
   base_url varchar [not null]
   created_at timestamptz [not null, default: `now()`]
+  width int [not null, default: 0]
+  height int [not null, default: 0]
 }
 
 Table users {

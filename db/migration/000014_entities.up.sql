@@ -50,6 +50,10 @@ ALTER TABLE "entity_group_content" ADD FOREIGN KEY ("content_entity_group_id") R
 -- add entity_group_id column into menu_items
 ALTER TABLE menu_items ADD COLUMN entity_group_id int;
 
+-- add dimension columns into images
+ALTER TABLE images ADD COLUMN width int NOT NULL DEFAULT 0;
+ALTER TABLE images ADD COLUMN height int NOT NULL  DEFAULT 0;
+
 ALTER TABLE menu_items ADD CONSTRAINT menu_items_entity_group_id_fkey FOREIGN KEY (entity_group_id) REFERENCES entity_groups(id);
 
 CREATE OR REPLACE FUNCTION get_recursive_entities(_main_entity_group_id INT)

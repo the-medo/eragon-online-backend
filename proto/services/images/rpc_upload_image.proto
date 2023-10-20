@@ -11,6 +11,8 @@ message UploadImageRequest {
   string filename = 1;
   bytes data = 2;
   int32 imageTypeId = 3;
+  int32 width = 4;
+  int32 height = 5;
 }
 
 message UploadImageResponse {
@@ -18,6 +20,8 @@ message UploadImageResponse {
   string filename = 2;
   repeated string variants = 3;
   google.protobuf.Timestamp uploadedAt = 4;
+  int32 width = 5;
+  int32 height = 6;
 }
 
 message UploadUserAvatarRequest {

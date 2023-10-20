@@ -8,7 +8,8 @@ DROP PROCEDURE IF EXISTS move_entity_group_content(INT, INT);
 
 DROP FUNCTION get_recursive_entities(_main_entity_group_id integer);
 
-
+ALTER TABLE "images" DROP COLUMN "height";
+ALTER TABLE "images" DROP COLUMN "width";
 ALTER TABLE "menu_items" DROP COLUMN "entity_group_id";
 
 DROP TABLE IF EXISTS "menu_item_entity_groups";

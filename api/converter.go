@@ -24,6 +24,8 @@ func convertImage(dbImage *db.Image) *pb.Image {
 		BaseUrl:     dbImage.BaseUrl,
 		CreatedAt:   timestamppb.New(dbImage.CreatedAt),
 		UserId:      dbImage.UserID,
+		Width:       dbImage.Width,
+		Height:      dbImage.Height,
 	}
 	return pbImage
 }

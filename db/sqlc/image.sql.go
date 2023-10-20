@@ -24,7 +24,7 @@ INSERT INTO images
 )
 VALUES
     ($1, $2, $3, $4, $5, $6)
-RETURNING id, image_type_id, name, url, created_at, base_url, img_guid, user_id
+RETURNING id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height
 `
 
 type CreateImageParams struct {
@@ -55,6 +55,8 @@ func (q *Queries) CreateImage(ctx context.Context, arg CreateImageParams) (Image
 		&i.BaseUrl,
 		&i.ImgGuid,
 		&i.UserID,
+		&i.Width,
+		&i.Height,
 	)
 	return i, err
 }
@@ -69,7 +71,7 @@ func (q *Queries) DeleteImage(ctx context.Context, id int32) error {
 }
 
 const getImageByGUID = `-- name: GetImageByGUID :one
-SELECT id, image_type_id, name, url, created_at, base_url, img_guid, user_id FROM images WHERE img_guid = $1 LIMIT 1
+SELECT id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height FROM images WHERE img_guid = $1 LIMIT 1
 `
 
 func (q *Queries) GetImageByGUID(ctx context.Context, imgGuid uuid.NullUUID) (Image, error) {
@@ -84,12 +86,14 @@ func (q *Queries) GetImageByGUID(ctx context.Context, imgGuid uuid.NullUUID) (Im
 		&i.BaseUrl,
 		&i.ImgGuid,
 		&i.UserID,
+		&i.Width,
+		&i.Height,
 	)
 	return i, err
 }
 
 const getImageById = `-- name: GetImageById :one
-SELECT id, image_type_id, name, url, created_at, base_url, img_guid, user_id FROM images WHERE id = $1 LIMIT 1
+SELECT id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height FROM images WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetImageById(ctx context.Context, id int32) (Image, error) {
@@ -104,13 +108,15 @@ func (q *Queries) GetImageById(ctx context.Context, id int32) (Image, error) {
 		&i.BaseUrl,
 		&i.ImgGuid,
 		&i.UserID,
+		&i.Width,
+		&i.Height,
 	)
 	return i, err
 }
 
 const getImages = `-- name: GetImages :many
 SELECT
-    id, image_type_id, name, url, created_at, base_url, img_guid, user_id
+    id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height
 FROM
     images
 WHERE
@@ -150,6 +156,8 @@ func (q *Queries) GetImages(ctx context.Context, arg GetImagesParams) ([]Image, 
 			&i.BaseUrl,
 			&i.ImgGuid,
 			&i.UserID,
+			&i.Width,
+			&i.Height,
 		); err != nil {
 			return nil, err
 		}
@@ -165,7 +173,7 @@ func (q *Queries) GetImages(ctx context.Context, arg GetImagesParams) ([]Image, 
 }
 
 const getImagesByImageTypeId = `-- name: GetImagesByImageTypeId :many
-SELECT id, image_type_id, name, url, created_at, base_url, img_guid, user_id FROM images WHERE image_type_id = $1
+SELECT id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height FROM images WHERE image_type_id = $1
 `
 
 func (q *Queries) GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.NullInt32) ([]Image, error) {
@@ -186,6 +194,8 @@ func (q *Queries) GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.Null
 			&i.BaseUrl,
 			&i.ImgGuid,
 			&i.UserID,
+			&i.Width,
+			&i.Height,
 		); err != nil {
 			return nil, err
 		}
@@ -230,7 +240,7 @@ SET
     user_id = COALESCE($6, user_id)
 WHERE
     id = $7
-RETURNING id, image_type_id, name, url, created_at, base_url, img_guid, user_id
+RETURNING id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height
 `
 
 type UpdateImageParams struct {
@@ -263,6 +273,8 @@ func (q *Queries) UpdateImage(ctx context.Context, arg UpdateImageParams) (Image
 		&i.BaseUrl,
 		&i.ImgGuid,
 		&i.UserID,
+		&i.Width,
+		&i.Height,
 	)
 	return i, err
 }

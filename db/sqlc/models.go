@@ -288,6 +288,8 @@ type Image struct {
 	BaseUrl     string         `json:"base_url"`
 	ImgGuid     uuid.NullUUID  `json:"img_guid"`
 	UserID      int32          `json:"user_id"`
+	Width       int32          `json:"width"`
+	Height      int32          `json:"height"`
 }
 
 type ImageType struct {
