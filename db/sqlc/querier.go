@@ -51,7 +51,10 @@ type Querier interface {
 	DeleteLocation(ctx context.Context, id int32) error
 	DeleteMap(ctx context.Context, id int32) error
 	DeleteMapLayer(ctx context.Context, id int32) error
+	DeleteMapLayersForMap(ctx context.Context, mapID int32) error
 	DeleteMapPin(ctx context.Context, id int32) error
+	DeleteMapPinForMap(ctx context.Context, mapID int32) error
+	DeleteMapPinForMapLayer(ctx context.Context, mapLayerID sql.NullInt32) error
 	DeleteMapPinType(ctx context.Context, id int32) error
 	DeleteMenu(ctx context.Context, id int32) error
 	DeleteMenuItem(ctx context.Context, menuItemID int32) error

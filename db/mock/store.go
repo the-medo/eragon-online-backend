@@ -625,6 +625,20 @@ func (mr *MockStoreMockRecorder) DeleteMapLayer(arg0, arg1 interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapLayer", reflect.TypeOf((*MockStore)(nil).DeleteMapLayer), arg0, arg1)
 }
 
+// DeleteMapLayersForMap mocks base method.
+func (m *MockStore) DeleteMapLayersForMap(arg0 context.Context, arg1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMapLayersForMap", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMapLayersForMap indicates an expected call of DeleteMapLayersForMap.
+func (mr *MockStoreMockRecorder) DeleteMapLayersForMap(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapLayersForMap", reflect.TypeOf((*MockStore)(nil).DeleteMapLayersForMap), arg0, arg1)
+}
+
 // DeleteMapPin mocks base method.
 func (m *MockStore) DeleteMapPin(arg0 context.Context, arg1 int32) error {
 	m.ctrl.T.Helper()
@@ -637,6 +651,34 @@ func (m *MockStore) DeleteMapPin(arg0 context.Context, arg1 int32) error {
 func (mr *MockStoreMockRecorder) DeleteMapPin(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapPin", reflect.TypeOf((*MockStore)(nil).DeleteMapPin), arg0, arg1)
+}
+
+// DeleteMapPinForMap mocks base method.
+func (m *MockStore) DeleteMapPinForMap(arg0 context.Context, arg1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMapPinForMap", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMapPinForMap indicates an expected call of DeleteMapPinForMap.
+func (mr *MockStoreMockRecorder) DeleteMapPinForMap(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapPinForMap", reflect.TypeOf((*MockStore)(nil).DeleteMapPinForMap), arg0, arg1)
+}
+
+// DeleteMapPinForMapLayer mocks base method.
+func (m *MockStore) DeleteMapPinForMapLayer(arg0 context.Context, arg1 sql.NullInt32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMapPinForMapLayer", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMapPinForMapLayer indicates an expected call of DeleteMapPinForMapLayer.
+func (mr *MockStoreMockRecorder) DeleteMapPinForMapLayer(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapPinForMapLayer", reflect.TypeOf((*MockStore)(nil).DeleteMapPinForMapLayer), arg0, arg1)
 }
 
 // DeleteMapPinType mocks base method.

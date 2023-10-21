@@ -205,12 +205,39 @@ func (q *Queries) DeleteMapLayer(ctx context.Context, id int32) error {
 	return err
 }
 
+const deleteMapLayersForMap = `-- name: DeleteMapLayersForMap :exec
+DELETE FROM map_layers WHERE map_id = $1
+`
+
+func (q *Queries) DeleteMapLayersForMap(ctx context.Context, mapID int32) error {
+	_, err := q.db.ExecContext(ctx, deleteMapLayersForMap, mapID)
+	return err
+}
+
 const deleteMapPin = `-- name: DeleteMapPin :exec
 DELETE FROM map_pins WHERE id = $1
 `
 
 func (q *Queries) DeleteMapPin(ctx context.Context, id int32) error {
 	_, err := q.db.ExecContext(ctx, deleteMapPin, id)
+	return err
+}
+
+const deleteMapPinForMap = `-- name: DeleteMapPinForMap :exec
+DELETE FROM map_pins WHERE map_id = $1
+`
+
+func (q *Queries) DeleteMapPinForMap(ctx context.Context, mapID int32) error {
+	_, err := q.db.ExecContext(ctx, deleteMapPinForMap, mapID)
+	return err
+}
+
+const deleteMapPinForMapLayer = `-- name: DeleteMapPinForMapLayer :exec
+DELETE FROM map_pins WHERE map_layer_id = $1
+`
+
+func (q *Queries) DeleteMapPinForMapLayer(ctx context.Context, mapLayerID sql.NullInt32) error {
+	_, err := q.db.ExecContext(ctx, deleteMapPinForMapLayer, mapLayerID)
 	return err
 }
 

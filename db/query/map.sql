@@ -56,6 +56,9 @@ RETURNING *;
 -- name: DeleteMapLayer :exec
 DELETE FROM map_layers WHERE id = sqlc.arg(id);
 
+-- name: DeleteMapLayersForMap :exec
+DELETE FROM map_layers WHERE map_id = sqlc.arg(map_id);
+
 -- name: CreateWorldMap :one
 INSERT INTO world_maps (world_id, map_id)
 VALUES (sqlc.arg(world_id), sqlc.arg(map_id))
@@ -118,6 +121,12 @@ RETURNING *;
 
 -- name: DeleteMapPin :exec
 DELETE FROM map_pins WHERE id = sqlc.arg(id);
+
+-- name: DeleteMapPinForMapLayer :exec
+DELETE FROM map_pins WHERE map_layer_id = sqlc.arg(map_layer_id);
+
+-- name: DeleteMapPinForMap :exec
+DELETE FROM map_pins WHERE map_id = sqlc.arg(map_id);
 
 -- name: GetMapAssignments :one
 SELECT

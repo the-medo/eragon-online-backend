@@ -23,12 +23,26 @@ func (server *ServiceMaps) DeleteWorldMap(ctx context.Context, request *pb.Delet
 		return nil, status.Errorf(codes.PermissionDenied, "failed to delete world map: %v", err)
 	}
 
+	err = server.Store.DeleteMapPinForMap(ctx, request.GetMapId())
+	if err != nil {
+		return nil, err
+	}
+	err = server.Store.DeleteMapLayersForMap(ctx, request.GetMapId())
+	if err != nil {
+		return nil, err
+	}
+
 	arg := db.DeleteWorldMapParams{
 		WorldID: request.GetWorldId(),
 		MapID:   request.GetMapId(),
 	}
 
 	err = server.Store.DeleteWorldMap(ctx, arg)
+	if err != nil {
+		return nil, err
+	}
+
+	err = server.Store.DeleteMap(ctx, request.GetMapId())
 	if err != nil {
 		return nil, err
 	}

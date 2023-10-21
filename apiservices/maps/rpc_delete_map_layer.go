@@ -2,6 +2,7 @@ package maps
 
 import (
 	"context"
+	"database/sql"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -19,6 +20,11 @@ func (server *ServiceMaps) DeleteMapLayer(ctx context.Context, request *pb.Delet
 	if err != nil {
 		return nil, err
 	}
+
+	err = server.Store.DeleteMapPinForMapLayer(ctx, sql.NullInt32{
+		Int32: request.GetLayerId(),
+		Valid: true,
+	})
 
 	err = server.Store.DeleteMapLayer(ctx, request.GetLayerId())
 	if err != nil {
