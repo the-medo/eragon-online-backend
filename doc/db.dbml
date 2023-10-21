@@ -417,9 +417,19 @@ Table map_pins {
   y int [not null]
 }
 
+Table map_pin_type_group {
+  id int [pk, increment]
+  name varchar [not null]
+}
+
+Table world_map_pin_type_groups {
+  world_id int [not null, ref: > worlds.id]
+  map_pin_type_group_id int [not null, ref: > map_pin_type_group.id]
+}
+
 Table map_pin_types {
   id int [pk, increment]
-  map_id int [not null, ref: > maps.id]
+  map_pin_type_group_id int [not null, ref: > map_pin_type_group.id]
   shape pin_shape [not null, default: "pin"]
   background_color varchar
   border_color varchar
@@ -427,6 +437,7 @@ Table map_pin_types {
   icon varchar
   icon_size int
   width int
+  section varchar [not null, default: "base"]
 }
 
 Table world_maps {
