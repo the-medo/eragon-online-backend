@@ -42,12 +42,37 @@ func (server *ServiceMaps) UpdateMapLayer(ctx context.Context, request *pb.Updat
 			}
 
 			if (mapRow.Width != imageRow.Width) || (mapRow.Height != imageRow.Height) {
-				return nil, e.InvalidArgumentError([]*errdetails.BadRequest_FieldViolation{
-					{
-						Field:       "image_id",
-						Description: "size of map layer image must be the same size as the map",
-					},
-				})
+				mapLayers, err := server.Store.GetMapLayers(ctx, request.GetMapId())
+				if err != nil {
+					return nil, err
+				}
+
+				// updating image to a new image that is of different size than map is allowed only in case of a single layer
+				if len(mapLayers) > 1 {
+					return nil, e.InvalidArgumentError([]*errdetails.BadRequest_FieldViolation{
+						{
+							Field:       "image_id",
+							Description: "size of map layer image must be the same size as the map",
+						},
+					})
+				} else { //if we are updating the only layer in the map, we need to update the map size as well
+					updateMapSizeArgs := db.UpdateMapParams{
+						ID: request.GetMapId(),
+						Width: sql.NullInt32{
+							Int32: imageRow.Width,
+							Valid: true,
+						},
+						Height: sql.NullInt32{
+							Int32: imageRow.Height,
+							Valid: true,
+						},
+					}
+
+					_, err := server.Store.UpdateMap(ctx, updateMapSizeArgs)
+					if err != nil {
+						return nil, err
+					}
+				}
 			}
 		}
 
