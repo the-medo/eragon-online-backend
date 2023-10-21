@@ -47,11 +47,13 @@ UPDATE map_layers
 SET
     name = COALESCE(sqlc.narg(name), name),
     image_id = COALESCE(sqlc.narg(image_id), image_id),
-    is_main = COALESCE(sqlc.narg(is_main), is_main),
     enabled = COALESCE(sqlc.narg(enabled), enabled),
     sublayer = COALESCE(sqlc.narg(sublayer), sublayer)
 WHERE id = sqlc.arg(id)
 RETURNING *;
+
+-- name: UpdateMapLayerIsMain :exec
+CALL update_map_layer_is_main(sqlc.arg(map_layer_id));
 
 -- name: DeleteMapLayer :exec
 DELETE FROM map_layers WHERE id = sqlc.arg(id);
@@ -122,10 +124,10 @@ RETURNING *;
 -- name: DeleteMapPin :exec
 DELETE FROM map_pins WHERE id = sqlc.arg(id);
 
--- name: DeleteMapPinForMapLayer :exec
+-- name: DeleteMapPinsForMapLayer :exec
 DELETE FROM map_pins WHERE map_layer_id = sqlc.arg(map_layer_id);
 
--- name: DeleteMapPinForMap :exec
+-- name: DeleteMapPinsForMap :exec
 DELETE FROM map_pins WHERE map_id = sqlc.arg(map_id);
 
 -- name: GetMapAssignments :one

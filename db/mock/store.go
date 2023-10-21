@@ -653,34 +653,6 @@ func (mr *MockStoreMockRecorder) DeleteMapPin(arg0, arg1 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapPin", reflect.TypeOf((*MockStore)(nil).DeleteMapPin), arg0, arg1)
 }
 
-// DeleteMapPinForMap mocks base method.
-func (m *MockStore) DeleteMapPinForMap(arg0 context.Context, arg1 int32) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteMapPinForMap", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteMapPinForMap indicates an expected call of DeleteMapPinForMap.
-func (mr *MockStoreMockRecorder) DeleteMapPinForMap(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapPinForMap", reflect.TypeOf((*MockStore)(nil).DeleteMapPinForMap), arg0, arg1)
-}
-
-// DeleteMapPinForMapLayer mocks base method.
-func (m *MockStore) DeleteMapPinForMapLayer(arg0 context.Context, arg1 sql.NullInt32) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteMapPinForMapLayer", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteMapPinForMapLayer indicates an expected call of DeleteMapPinForMapLayer.
-func (mr *MockStoreMockRecorder) DeleteMapPinForMapLayer(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapPinForMapLayer", reflect.TypeOf((*MockStore)(nil).DeleteMapPinForMapLayer), arg0, arg1)
-}
-
 // DeleteMapPinType mocks base method.
 func (m *MockStore) DeleteMapPinType(arg0 context.Context, arg1 int32) error {
 	m.ctrl.T.Helper()
@@ -693,6 +665,34 @@ func (m *MockStore) DeleteMapPinType(arg0 context.Context, arg1 int32) error {
 func (mr *MockStoreMockRecorder) DeleteMapPinType(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapPinType", reflect.TypeOf((*MockStore)(nil).DeleteMapPinType), arg0, arg1)
+}
+
+// DeleteMapPinsForMap mocks base method.
+func (m *MockStore) DeleteMapPinsForMap(arg0 context.Context, arg1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMapPinsForMap", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMapPinsForMap indicates an expected call of DeleteMapPinsForMap.
+func (mr *MockStoreMockRecorder) DeleteMapPinsForMap(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapPinsForMap", reflect.TypeOf((*MockStore)(nil).DeleteMapPinsForMap), arg0, arg1)
+}
+
+// DeleteMapPinsForMapLayer mocks base method.
+func (m *MockStore) DeleteMapPinsForMapLayer(arg0 context.Context, arg1 sql.NullInt32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMapPinsForMapLayer", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMapPinsForMapLayer indicates an expected call of DeleteMapPinsForMapLayer.
+func (mr *MockStoreMockRecorder) DeleteMapPinsForMapLayer(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMapPinsForMapLayer", reflect.TypeOf((*MockStore)(nil).DeleteMapPinsForMapLayer), arg0, arg1)
 }
 
 // DeleteMenu mocks base method.
@@ -2219,6 +2219,20 @@ func (m *MockStore) UpdateMapLayer(arg0 context.Context, arg1 db.UpdateMapLayerP
 func (mr *MockStoreMockRecorder) UpdateMapLayer(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMapLayer", reflect.TypeOf((*MockStore)(nil).UpdateMapLayer), arg0, arg1)
+}
+
+// UpdateMapLayerIsMain mocks base method.
+func (m *MockStore) UpdateMapLayerIsMain(arg0 context.Context, arg1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMapLayerIsMain", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateMapLayerIsMain indicates an expected call of UpdateMapLayerIsMain.
+func (mr *MockStoreMockRecorder) UpdateMapLayerIsMain(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMapLayerIsMain", reflect.TypeOf((*MockStore)(nil).UpdateMapLayerIsMain), arg0, arg1)
 }
 
 // UpdateMapPin mocks base method.

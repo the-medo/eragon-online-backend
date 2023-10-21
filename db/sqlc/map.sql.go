@@ -223,30 +223,30 @@ func (q *Queries) DeleteMapPin(ctx context.Context, id int32) error {
 	return err
 }
 
-const deleteMapPinForMap = `-- name: DeleteMapPinForMap :exec
-DELETE FROM map_pins WHERE map_id = $1
-`
-
-func (q *Queries) DeleteMapPinForMap(ctx context.Context, mapID int32) error {
-	_, err := q.db.ExecContext(ctx, deleteMapPinForMap, mapID)
-	return err
-}
-
-const deleteMapPinForMapLayer = `-- name: DeleteMapPinForMapLayer :exec
-DELETE FROM map_pins WHERE map_layer_id = $1
-`
-
-func (q *Queries) DeleteMapPinForMapLayer(ctx context.Context, mapLayerID sql.NullInt32) error {
-	_, err := q.db.ExecContext(ctx, deleteMapPinForMapLayer, mapLayerID)
-	return err
-}
-
 const deleteMapPinType = `-- name: DeleteMapPinType :exec
 DELETE FROM map_pin_types WHERE id = $1
 `
 
 func (q *Queries) DeleteMapPinType(ctx context.Context, id int32) error {
 	_, err := q.db.ExecContext(ctx, deleteMapPinType, id)
+	return err
+}
+
+const deleteMapPinsForMap = `-- name: DeleteMapPinsForMap :exec
+DELETE FROM map_pins WHERE map_id = $1
+`
+
+func (q *Queries) DeleteMapPinsForMap(ctx context.Context, mapID int32) error {
+	_, err := q.db.ExecContext(ctx, deleteMapPinsForMap, mapID)
+	return err
+}
+
+const deleteMapPinsForMapLayer = `-- name: DeleteMapPinsForMapLayer :exec
+DELETE FROM map_pins WHERE map_layer_id = $1
+`
+
+func (q *Queries) DeleteMapPinsForMapLayer(ctx context.Context, mapLayerID sql.NullInt32) error {
+	_, err := q.db.ExecContext(ctx, deleteMapPinsForMapLayer, mapLayerID)
 	return err
 }
 
@@ -560,17 +560,15 @@ UPDATE map_layers
 SET
     name = COALESCE($1, name),
     image_id = COALESCE($2, image_id),
-    is_main = COALESCE($3, is_main),
-    enabled = COALESCE($4, enabled),
-    sublayer = COALESCE($5, sublayer)
-WHERE id = $6
+    enabled = COALESCE($3, enabled),
+    sublayer = COALESCE($4, sublayer)
+WHERE id = $5
 RETURNING id, name, map_id, image_id, is_main, enabled, sublayer
 `
 
 type UpdateMapLayerParams struct {
 	Name     sql.NullString `json:"name"`
 	ImageID  sql.NullInt32  `json:"image_id"`
-	IsMain   sql.NullBool   `json:"is_main"`
 	Enabled  sql.NullBool   `json:"enabled"`
 	Sublayer sql.NullBool   `json:"sublayer"`
 	ID       int32          `json:"id"`
@@ -580,7 +578,6 @@ func (q *Queries) UpdateMapLayer(ctx context.Context, arg UpdateMapLayerParams) 
 	row := q.db.QueryRowContext(ctx, updateMapLayer,
 		arg.Name,
 		arg.ImageID,
-		arg.IsMain,
 		arg.Enabled,
 		arg.Sublayer,
 		arg.ID,
@@ -596,6 +593,15 @@ func (q *Queries) UpdateMapLayer(ctx context.Context, arg UpdateMapLayerParams) 
 		&i.Sublayer,
 	)
 	return i, err
+}
+
+const updateMapLayerIsMain = `-- name: UpdateMapLayerIsMain :exec
+CALL update_map_layer_is_main($1)
+`
+
+func (q *Queries) UpdateMapLayerIsMain(ctx context.Context, mapLayerID int32) error {
+	_, err := q.db.ExecContext(ctx, updateMapLayerIsMain, mapLayerID)
+	return err
 }
 
 const updateMapPin = `-- name: UpdateMapPin :one

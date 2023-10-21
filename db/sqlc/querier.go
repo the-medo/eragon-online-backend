@@ -53,9 +53,9 @@ type Querier interface {
 	DeleteMapLayer(ctx context.Context, id int32) error
 	DeleteMapLayersForMap(ctx context.Context, mapID int32) error
 	DeleteMapPin(ctx context.Context, id int32) error
-	DeleteMapPinForMap(ctx context.Context, mapID int32) error
-	DeleteMapPinForMapLayer(ctx context.Context, mapLayerID sql.NullInt32) error
 	DeleteMapPinType(ctx context.Context, id int32) error
+	DeleteMapPinsForMap(ctx context.Context, mapID int32) error
+	DeleteMapPinsForMapLayer(ctx context.Context, mapLayerID sql.NullInt32) error
 	DeleteMenu(ctx context.Context, id int32) error
 	DeleteMenuItem(ctx context.Context, menuItemID int32) error
 	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
@@ -157,6 +157,7 @@ type Querier interface {
 	UpdateLocation(ctx context.Context, arg UpdateLocationParams) (Location, error)
 	UpdateMap(ctx context.Context, arg UpdateMapParams) (Map, error)
 	UpdateMapLayer(ctx context.Context, arg UpdateMapLayerParams) (MapLayer, error)
+	UpdateMapLayerIsMain(ctx context.Context, mapLayerID int32) error
 	UpdateMapPin(ctx context.Context, arg UpdateMapPinParams) (MapPin, error)
 	UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypeParams) (MapPinType, error)
 	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)

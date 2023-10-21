@@ -22,57 +22,63 @@ func (server *ServiceMaps) UpdateMapLayer(ctx context.Context, request *pb.Updat
 		return nil, err
 	}
 
-	argLayer := db.UpdateMapLayerParams{
-		ID: request.GetLayerId(),
-		Name: sql.NullString{
-			String: request.GetName(),
-			Valid:  request.Name != nil,
-		},
-		ImageID: sql.NullInt32{
-			Int32: request.GetImageId(),
-			Valid: request.ImageId != nil,
-		},
-		IsMain: sql.NullBool{
-			Bool:  request.GetIsMain(),
-			Valid: request.IsMain != nil,
-		},
-		Enabled: sql.NullBool{
-			Bool:  request.GetEnabled(),
-			Valid: request.Enabled != nil,
-		},
-		Sublayer: sql.NullBool{
-			Bool:  request.GetSublayer(),
-			Valid: request.Sublayer != nil,
-		},
-	}
-
-	if request.ImageId != nil {
-		mapRow, err := server.Store.GetMapByID(ctx, request.GetMapId())
+	if request.IsMain != nil && request.GetIsMain() {
+		err = server.Store.UpdateMapLayerIsMain(ctx, request.GetLayerId())
 		if err != nil {
 			return nil, err
 		}
-		imageRow, err := server.Store.GetImageById(ctx, request.GetImageId())
+	}
+
+	if request.Name != nil || request.ImageId != nil || request.Enabled != nil || request.Sublayer != nil {
+
+		if request.ImageId != nil {
+			mapRow, err := server.Store.GetMapByID(ctx, request.GetMapId())
+			if err != nil {
+				return nil, err
+			}
+			imageRow, err := server.Store.GetImageById(ctx, request.GetImageId())
+			if err != nil {
+				return nil, err
+			}
+
+			if (mapRow.Width != imageRow.Width) || (mapRow.Height != imageRow.Height) {
+				return nil, e.InvalidArgumentError([]*errdetails.BadRequest_FieldViolation{
+					{
+						Field:       "image_id",
+						Description: "size of map layer image must be the same size as the map",
+					},
+				})
+			}
+		}
+
+		argLayer := db.UpdateMapLayerParams{
+			ID: request.GetLayerId(),
+			Name: sql.NullString{
+				String: request.GetName(),
+				Valid:  request.Name != nil,
+			},
+			ImageID: sql.NullInt32{
+				Int32: request.GetImageId(),
+				Valid: request.ImageId != nil,
+			},
+			Enabled: sql.NullBool{
+				Bool:  request.GetEnabled(),
+				Valid: request.Enabled != nil,
+			},
+			Sublayer: sql.NullBool{
+				Bool:  request.GetSublayer(),
+				Valid: request.Sublayer != nil,
+			},
+		}
+
+		_, err := server.Store.UpdateMapLayer(ctx, argLayer)
 		if err != nil {
 			return nil, err
 		}
 
-		if (mapRow.Width != imageRow.Width) || (mapRow.Height != imageRow.Height) {
-			return nil, e.InvalidArgumentError([]*errdetails.BadRequest_FieldViolation{
-				{
-					Field:       "image_id",
-					Description: "size of map layer image must be the same size as the map",
-				},
-			})
-		}
-
 	}
 
-	updatedLayer, err := server.Store.UpdateMapLayer(ctx, argLayer)
-	if err != nil {
-		return nil, err
-	}
-
-	viewMapLayer, err := server.Store.GetMapLayerByID(ctx, updatedLayer.ID)
+	viewMapLayer, err := server.Store.GetMapLayerByID(ctx, request.GetLayerId())
 	if err != nil {
 		return nil, err
 	}
