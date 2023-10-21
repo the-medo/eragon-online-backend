@@ -694,14 +694,6 @@
                 "description": {
                   "type": "string"
                 },
-                "width": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "height": {
-                  "type": "integer",
-                  "format": "int32"
-                },
                 "thumbnailImageId": {
                   "type": "integer",
                   "format": "int32"
@@ -4016,14 +4008,6 @@
                 },
                 "description": {
                   "type": "string"
-                },
-                "width": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "height": {
-                  "type": "integer",
-                  "format": "int32"
                 },
                 "thumbnailImageId": {
                   "type": "integer",

@@ -19,10 +19,8 @@ message CreateWorldMapRequest {
   string name = 2;
   optional string type = 3;
   optional string description = 4;
-  int32 width = 5;
-  int32 height = 6;
-  optional int32 thumbnailImageId = 7;
-  int32 layerImageId = 8;
+  optional int32 thumbnailImageId = 5;
+  int32 layerImageId = 6;
 }
 message CreateWorldMapResponse {
   ViewMap map = 1;
@@ -39,9 +37,7 @@ message UpdateMapRequest {
   optional string name = 2;
   optional string type = 3;
   optional string description = 4;
-  optional int32 width = 5;
-  optional int32 height = 6;
-  optional int32 thumbnailImageId = 7;
+  optional int32 thumbnailImageId = 5;
 }
 
 message GetMapLayersRequest {

@@ -24,6 +24,8 @@ func (server *ServiceMaps) CreateWorldMap(ctx context.Context, request *pb.Creat
 		return nil, status.Errorf(codes.PermissionDenied, "failed to add world tag: %v", err)
 	}
 
+	img, err := server.Store.GetImageById(ctx, request.GetLayerImageId())
+
 	argMap := db.CreateMapParams{
 		Name: request.GetName(),
 		Type: sql.NullString{
@@ -34,8 +36,8 @@ func (server *ServiceMaps) CreateWorldMap(ctx context.Context, request *pb.Creat
 			String: request.GetDescription(),
 			Valid:  request.Description != nil,
 		},
-		Width:  request.GetWidth(),
-		Height: request.GetHeight(),
+		Width:  img.Width,
+		Height: img.Height,
 		ThumbnailImageID: sql.NullInt32{
 			Int32: request.GetThumbnailImageId(),
 			Valid: request.ThumbnailImageId != nil,
@@ -99,14 +101,6 @@ func validateCreateWorldMap(req *pb.CreateWorldMapRequest) (violations []*errdet
 		if err := validator.ValidateUniversalDescription(req.GetDescription()); err != nil {
 			violations = append(violations, e.FieldViolation("description", err))
 		}
-	}
-
-	if err := validator.ValidateUniversalDimension(req.GetWidth()); err != nil {
-		violations = append(violations, e.FieldViolation("width", err))
-	}
-
-	if err := validator.ValidateUniversalDimension(req.GetHeight()); err != nil {
-		violations = append(violations, e.FieldViolation("height", err))
 	}
 
 	if err := validator.ValidateImageId(req.GetLayerImageId()); err != nil {

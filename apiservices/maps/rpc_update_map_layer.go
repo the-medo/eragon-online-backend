@@ -46,6 +46,27 @@ func (server *ServiceMaps) UpdateMapLayer(ctx context.Context, request *pb.Updat
 		},
 	}
 
+	if request.ImageId != nil {
+		mapRow, err := server.Store.GetMapByID(ctx, request.GetMapId())
+		if err != nil {
+			return nil, err
+		}
+		imageRow, err := server.Store.GetImageById(ctx, request.GetImageId())
+		if err != nil {
+			return nil, err
+		}
+
+		if (mapRow.Width != imageRow.Width) || (mapRow.Height != imageRow.Height) {
+			return nil, e.InvalidArgumentError([]*errdetails.BadRequest_FieldViolation{
+				{
+					Field:       "image_id",
+					Description: "size of map layer image must be the same size as the map",
+				},
+			})
+		}
+
+	}
+
 	updatedLayer, err := server.Store.UpdateMapLayer(ctx, argLayer)
 	if err != nil {
 		return nil, err

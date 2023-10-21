@@ -12,7 +12,9 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"image"
-	_ "image/png" // Import this to decode png images
+	_ "image/gif"  // Import this to decode gif images
+	_ "image/jpeg" // Import this to decode jpeg images
+	_ "image/png"  // Import this to decode png images
 	"io"
 )
 
@@ -36,8 +38,11 @@ func (server *Server) UploadImage(ctx context.Context, request *pb.UploadImageRe
 	width := decodedImg.Width
 	height := decodedImg.Height
 
-	// Reset the reader to the beginning so it can be used again for uploading
-	reader.Seek(0, 0)
+	// Reset the reader to the beginning, so it can be used again for uploading
+	_, err = reader.Seek(0, 0)
+	if err != nil {
+		return nil, err
+	}
 
 	readCloser := io.NopCloser(reader)
 

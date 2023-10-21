@@ -197,6 +197,8 @@ func convertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb
 		Url:     variantUrl,
 		BaseUrl: baseUrl,
 		UserID:  userId,
+		Width:   uploadImg.GetWidth(),
+		Height:  uploadImg.GetHeight(),
 	}
 
 	return rsp, nil

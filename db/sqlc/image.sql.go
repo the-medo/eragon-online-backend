@@ -20,10 +20,12 @@ INSERT INTO images
     name,
     url,
     base_url,
-    user_id
+    user_id,
+    width,
+    height
 )
 VALUES
-    ($1, $2, $3, $4, $5, $6)
+    ($1, $2, $3, $4, $5, $6, $7, $8)
 RETURNING id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height
 `
 
@@ -34,6 +36,8 @@ type CreateImageParams struct {
 	Url       string         `json:"url"`
 	BaseUrl   string         `json:"base_url"`
 	UserID    int32          `json:"user_id"`
+	Width     int32          `json:"width"`
+	Height    int32          `json:"height"`
 }
 
 func (q *Queries) CreateImage(ctx context.Context, arg CreateImageParams) (Image, error) {
@@ -44,6 +48,8 @@ func (q *Queries) CreateImage(ctx context.Context, arg CreateImageParams) (Image
 		arg.Url,
 		arg.BaseUrl,
 		arg.UserID,
+		arg.Width,
+		arg.Height,
 	)
 	var i Image
 	err := row.Scan(
@@ -237,9 +243,11 @@ SET
     name = COALESCE($3, name),
     url = COALESCE($4, url),
     base_url = COALESCE($5, base_url),
-    user_id = COALESCE($6, user_id)
+    user_id = COALESCE($6, user_id),
+    width = COALESCE($7, width),
+    height = COALESCE($8, height)
 WHERE
-    id = $7
+    id = $9
 RETURNING id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height
 `
 
@@ -250,6 +258,8 @@ type UpdateImageParams struct {
 	Url         string         `json:"url"`
 	BaseUrl     string         `json:"base_url"`
 	UserID      int32          `json:"user_id"`
+	Width       int32          `json:"width"`
+	Height      int32          `json:"height"`
 	ID          int32          `json:"id"`
 }
 
@@ -261,6 +271,8 @@ func (q *Queries) UpdateImage(ctx context.Context, arg UpdateImageParams) (Image
 		arg.Url,
 		arg.BaseUrl,
 		arg.UserID,
+		arg.Width,
+		arg.Height,
 		arg.ID,
 	)
 	var i Image
