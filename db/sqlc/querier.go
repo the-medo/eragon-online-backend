@@ -26,6 +26,7 @@ type Querier interface {
 	CreateMapPin(ctx context.Context, arg CreateMapPinParams) (MapPin, error)
 	//------------------------------------
 	CreateMapPinType(ctx context.Context, arg CreateMapPinTypeParams) (MapPinType, error)
+	CreateMapPinTypeGroup(ctx context.Context, name string) (MapPinTypeGroup, error)
 	CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, error)
 	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)
 	CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error)
@@ -38,6 +39,7 @@ type Querier interface {
 	CreateWorldImages(ctx context.Context, worldID int32) error
 	CreateWorldLocation(ctx context.Context, arg CreateWorldLocationParams) (WorldLocation, error)
 	CreateWorldMap(ctx context.Context, arg CreateWorldMapParams) (WorldMap, error)
+	CreateWorldMapPinTypeGroup(ctx context.Context, arg CreateWorldMapPinTypeGroupParams) (WorldMapPinTypeGroup, error)
 	CreateWorldMenu(ctx context.Context, arg CreateWorldMenuParams) (WorldMenu, error)
 	CreateWorldTag(ctx context.Context, arg CreateWorldTagParams) (WorldTag, error)
 	CreateWorldTagAvailable(ctx context.Context, tag string) (WorldTagsAvailable, error)
@@ -54,6 +56,7 @@ type Querier interface {
 	DeleteMapLayersForMap(ctx context.Context, mapID int32) error
 	DeleteMapPin(ctx context.Context, id int32) error
 	DeleteMapPinType(ctx context.Context, id int32) error
+	DeleteMapPinTypeGroup(ctx context.Context, id int32) error
 	DeleteMapPinsForMap(ctx context.Context, mapID int32) error
 	DeleteMapPinsForMapLayer(ctx context.Context, mapLayerID sql.NullInt32) error
 	DeleteMenu(ctx context.Context, id int32) error
@@ -67,6 +70,7 @@ type Querier interface {
 	DeleteWorldImages(ctx context.Context, worldID int32) error
 	DeleteWorldLocation(ctx context.Context, arg DeleteWorldLocationParams) error
 	DeleteWorldMap(ctx context.Context, arg DeleteWorldMapParams) error
+	DeleteWorldMapPinTypeGroup(ctx context.Context, arg DeleteWorldMapPinTypeGroupParams) error
 	DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error
 	DeleteWorldTag(ctx context.Context, arg DeleteWorldTagParams) error
 	DeleteWorldTagAvailable(ctx context.Context, id int32) error
@@ -100,7 +104,9 @@ type Querier interface {
 	GetMapLayerByID(ctx context.Context, mapLayerID int32) (ViewMapLayer, error)
 	GetMapLayers(ctx context.Context, mapID int32) ([]ViewMapLayer, error)
 	GetMapPinByID(ctx context.Context, id int32) (ViewMapPin, error)
+	GetMapPinTypeGroupIdForMap(ctx context.Context, mapID int32) (int32, error)
 	GetMapPinTypesForMap(ctx context.Context, mapID int32) ([]MapPinType, error)
+	GetMapPinTypesForWorld(ctx context.Context, worldID int32) ([]MapPinType, error)
 	GetMapPins(ctx context.Context, mapID int32) ([]ViewMapPin, error)
 	GetMenu(ctx context.Context, id int32) (ViewMenu, error)
 	GetMenuIdOfEntityGroup(ctx context.Context, entityGroupID int32) (int32, error)
@@ -160,6 +166,7 @@ type Querier interface {
 	UpdateMapLayerIsMain(ctx context.Context, mapLayerID int32) error
 	UpdateMapPin(ctx context.Context, arg UpdateMapPinParams) (MapPin, error)
 	UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypeParams) (MapPinType, error)
+	UpdateMapPinTypeGroup(ctx context.Context, arg UpdateMapPinTypeGroupParams) (MapPinTypeGroup, error)
 	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)
 	UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) (MenuItem, error)
 	UpdateMenuItemPost(ctx context.Context, arg UpdateMenuItemPostParams) (MenuItemPost, error)

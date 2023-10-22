@@ -75,12 +75,26 @@ WHERE world_id = sqlc.arg(world_id) AND map_id = sqlc.arg(map_id);
 --------------------------------------
 
 -- name: CreateMapPinType :one
-INSERT INTO map_pin_types (map_id, shape, background_color, border_color, icon_color, icon, icon_size, width)
-VALUES (sqlc.arg(map_id), sqlc.arg(shape), sqlc.arg(background_color), sqlc.arg(border_color), sqlc.arg(icon_color), sqlc.arg(icon), sqlc.arg(icon_size), sqlc.arg(width))
+INSERT INTO map_pin_types (shape, background_color, border_color, icon_color, icon, icon_size, width, map_pin_type_group_id, section)
+VALUES (sqlc.arg(shape), sqlc.arg(background_color), sqlc.arg(border_color), sqlc.arg(icon_color), sqlc.arg(icon), sqlc.arg(icon_size), sqlc.arg(width), sqlc.arg(map_pin_type_group_id), sqlc.arg(section) )
 RETURNING *;
 
 -- name: GetMapPinTypesForMap :many
-SELECT * FROM map_pin_types WHERE map_id = sqlc.arg(map_id);
+SELECT
+    mpt.*
+FROM
+    map_pin_types mpt
+    JOIN world_map_pin_type_groups wmptg ON mpt.map_pin_type_group_id = wmptg.map_pin_type_group_id
+    JOIN world_maps wm ON wmptg.world_id = wm.world_id
+WHERE wm.map_id = sqlc.arg(map_id);
+
+-- name: GetMapPinTypesForWorld :many
+SELECT
+    mpt.*
+FROM
+    map_pin_types mpt
+    JOIN world_map_pin_type_groups wmptg ON mpt.map_pin_type_group_id = wmptg.map_pin_type_group_id
+WHERE wmptg.world_id = sqlc.arg(world_id);
 
 -- name: UpdateMapPinType :one
 UPDATE map_pin_types
@@ -91,7 +105,8 @@ SET
     icon_color = COALESCE(sqlc.narg(icon_color), icon_color),
     icon = COALESCE(sqlc.narg(icon), icon),
     icon_size = COALESCE(sqlc.narg(icon_size), icon_size),
-    width = COALESCE(sqlc.narg(width), width)
+    width = COALESCE(sqlc.narg(width), width),
+    section = COALESCE(sqlc.narg(section), section)
 WHERE id = sqlc.arg(id)
 RETURNING *;
 
@@ -139,3 +154,22 @@ FROM
     LEFT JOIN world_maps wm ON m.id = wm.location_id
 WHERE m.id = sqlc.arg(map_id)
 GROUP BY m.id;
+
+-- name: CreateMapPinTypeGroup :one
+INSERT INTO map_pin_type_group (name) VALUES (sqlc.arg(name)) RETURNING *;
+
+-- name: UpdateMapPinTypeGroup :one
+UPDATE map_pin_type_group SET name = COALESCE(sqlc.narg(name), name) WHERE id = sqlc.arg(id) RETURNING *;
+
+-- name: DeleteMapPinTypeGroup :exec
+DELETE FROM map_pin_type_group WHERE id = sqlc.arg(id);
+
+-- name: GetMapPinTypeGroupIdForMap :one
+SELECT
+    CAST(MAX(wmptg.map_pin_type_group_id) as integer) AS map_pin_type_group_id
+FROM
+    world_maps wm
+    JOIN world_map_pin_type_groups wmptg ON wm.world_id = wmptg.world_id
+WHERE
+    wm.map_id = sqlc.arg(map_id)
+;

@@ -8,9 +8,10 @@ import (
 // ConvertMapPinType converts a db.MapPinType to pb.MapPinType
 func ConvertMapPinType(mapPinType db.MapPinType) *pb.MapPinType {
 	pbType := &pb.MapPinType{
-		Id:    mapPinType.ID,
-		MapId: mapPinType.MapID,
-		Shape: ConvertPinShapeToPB(mapPinType.Shape),
+		Id:                mapPinType.ID,
+		MapPinTypeGroupId: mapPinType.MapPinTypeGroupID,
+		Shape:             ConvertPinShapeToPB(mapPinType.Shape),
+		Section:           mapPinType.Section,
 	}
 
 	if mapPinType.BackgroundColor.Valid {

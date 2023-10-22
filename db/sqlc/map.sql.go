@@ -126,26 +126,26 @@ func (q *Queries) CreateMapPin(ctx context.Context, arg CreateMapPinParams) (Map
 
 const createMapPinType = `-- name: CreateMapPinType :one
 
-INSERT INTO map_pin_types (map_id, shape, background_color, border_color, icon_color, icon, icon_size, width)
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-RETURNING id, map_id, shape, background_color, border_color, icon_color, icon, icon_size, width
+INSERT INTO map_pin_types (shape, background_color, border_color, icon_color, icon, icon_size, width, map_pin_type_group_id, section)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 )
+RETURNING id, shape, background_color, border_color, icon_color, icon, icon_size, width, section, map_pin_type_group_id
 `
 
 type CreateMapPinTypeParams struct {
-	MapID           int32          `json:"map_id"`
-	Shape           PinShape       `json:"shape"`
-	BackgroundColor sql.NullString `json:"background_color"`
-	BorderColor     sql.NullString `json:"border_color"`
-	IconColor       sql.NullString `json:"icon_color"`
-	Icon            sql.NullString `json:"icon"`
-	IconSize        sql.NullInt32  `json:"icon_size"`
-	Width           sql.NullInt32  `json:"width"`
+	Shape             PinShape       `json:"shape"`
+	BackgroundColor   sql.NullString `json:"background_color"`
+	BorderColor       sql.NullString `json:"border_color"`
+	IconColor         sql.NullString `json:"icon_color"`
+	Icon              sql.NullString `json:"icon"`
+	IconSize          sql.NullInt32  `json:"icon_size"`
+	Width             sql.NullInt32  `json:"width"`
+	MapPinTypeGroupID int32          `json:"map_pin_type_group_id"`
+	Section           string         `json:"section"`
 }
 
 // ------------------------------------
 func (q *Queries) CreateMapPinType(ctx context.Context, arg CreateMapPinTypeParams) (MapPinType, error) {
 	row := q.db.QueryRowContext(ctx, createMapPinType,
-		arg.MapID,
 		arg.Shape,
 		arg.BackgroundColor,
 		arg.BorderColor,
@@ -153,11 +153,12 @@ func (q *Queries) CreateMapPinType(ctx context.Context, arg CreateMapPinTypePara
 		arg.Icon,
 		arg.IconSize,
 		arg.Width,
+		arg.MapPinTypeGroupID,
+		arg.Section,
 	)
 	var i MapPinType
 	err := row.Scan(
 		&i.ID,
-		&i.MapID,
 		&i.Shape,
 		&i.BackgroundColor,
 		&i.BorderColor,
@@ -165,7 +166,20 @@ func (q *Queries) CreateMapPinType(ctx context.Context, arg CreateMapPinTypePara
 		&i.Icon,
 		&i.IconSize,
 		&i.Width,
+		&i.Section,
+		&i.MapPinTypeGroupID,
 	)
+	return i, err
+}
+
+const createMapPinTypeGroup = `-- name: CreateMapPinTypeGroup :one
+INSERT INTO map_pin_type_group (name) VALUES ($1) RETURNING id, name
+`
+
+func (q *Queries) CreateMapPinTypeGroup(ctx context.Context, name string) (MapPinTypeGroup, error) {
+	row := q.db.QueryRowContext(ctx, createMapPinTypeGroup, name)
+	var i MapPinTypeGroup
+	err := row.Scan(&i.ID, &i.Name)
 	return i, err
 }
 
@@ -229,6 +243,15 @@ DELETE FROM map_pin_types WHERE id = $1
 
 func (q *Queries) DeleteMapPinType(ctx context.Context, id int32) error {
 	_, err := q.db.ExecContext(ctx, deleteMapPinType, id)
+	return err
+}
+
+const deleteMapPinTypeGroup = `-- name: DeleteMapPinTypeGroup :exec
+DELETE FROM map_pin_type_group WHERE id = $1
+`
+
+func (q *Queries) DeleteMapPinTypeGroup(ctx context.Context, id int32) error {
+	_, err := q.db.ExecContext(ctx, deleteMapPinTypeGroup, id)
 	return err
 }
 
@@ -389,8 +412,31 @@ func (q *Queries) GetMapPinByID(ctx context.Context, id int32) (ViewMapPin, erro
 	return i, err
 }
 
+const getMapPinTypeGroupIdForMap = `-- name: GetMapPinTypeGroupIdForMap :one
+SELECT
+    CAST(MAX(wmptg.map_pin_type_group_id) as integer) AS map_pin_type_group_id
+FROM
+    world_maps wm
+    JOIN world_map_pin_type_groups wmptg ON wm.world_id = wmptg.world_id
+WHERE
+    wm.map_id = $1
+`
+
+func (q *Queries) GetMapPinTypeGroupIdForMap(ctx context.Context, mapID int32) (int32, error) {
+	row := q.db.QueryRowContext(ctx, getMapPinTypeGroupIdForMap, mapID)
+	var map_pin_type_group_id int32
+	err := row.Scan(&map_pin_type_group_id)
+	return map_pin_type_group_id, err
+}
+
 const getMapPinTypesForMap = `-- name: GetMapPinTypesForMap :many
-SELECT id, map_id, shape, background_color, border_color, icon_color, icon, icon_size, width FROM map_pin_types WHERE map_id = $1
+SELECT
+    mpt.id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.section, mpt.map_pin_type_group_id
+FROM
+    map_pin_types mpt
+    JOIN world_map_pin_type_groups wmptg ON mpt.map_pin_type_group_id = wmptg.map_pin_type_group_id
+    JOIN world_maps wm ON wmptg.world_id = wm.world_id
+WHERE wm.map_id = $1
 `
 
 func (q *Queries) GetMapPinTypesForMap(ctx context.Context, mapID int32) ([]MapPinType, error) {
@@ -404,7 +450,6 @@ func (q *Queries) GetMapPinTypesForMap(ctx context.Context, mapID int32) ([]MapP
 		var i MapPinType
 		if err := rows.Scan(
 			&i.ID,
-			&i.MapID,
 			&i.Shape,
 			&i.BackgroundColor,
 			&i.BorderColor,
@@ -412,6 +457,51 @@ func (q *Queries) GetMapPinTypesForMap(ctx context.Context, mapID int32) ([]MapP
 			&i.Icon,
 			&i.IconSize,
 			&i.Width,
+			&i.Section,
+			&i.MapPinTypeGroupID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getMapPinTypesForWorld = `-- name: GetMapPinTypesForWorld :many
+SELECT
+    mpt.id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.section, mpt.map_pin_type_group_id
+FROM
+    map_pin_types mpt
+    JOIN world_map_pin_type_groups wmptg ON mpt.map_pin_type_group_id = wmptg.map_pin_type_group_id
+WHERE wmptg.world_id = $1
+`
+
+func (q *Queries) GetMapPinTypesForWorld(ctx context.Context, worldID int32) ([]MapPinType, error) {
+	rows, err := q.db.QueryContext(ctx, getMapPinTypesForWorld, worldID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []MapPinType{}
+	for rows.Next() {
+		var i MapPinType
+		if err := rows.Scan(
+			&i.ID,
+			&i.Shape,
+			&i.BackgroundColor,
+			&i.BorderColor,
+			&i.IconColor,
+			&i.Icon,
+			&i.IconSize,
+			&i.Width,
+			&i.Section,
+			&i.MapPinTypeGroupID,
 		); err != nil {
 			return nil, err
 		}
@@ -660,9 +750,10 @@ SET
     icon_color = COALESCE($4, icon_color),
     icon = COALESCE($5, icon),
     icon_size = COALESCE($6, icon_size),
-    width = COALESCE($7, width)
-WHERE id = $8
-RETURNING id, map_id, shape, background_color, border_color, icon_color, icon, icon_size, width
+    width = COALESCE($7, width),
+    section = COALESCE($8, section)
+WHERE id = $9
+RETURNING id, shape, background_color, border_color, icon_color, icon, icon_size, width, section, map_pin_type_group_id
 `
 
 type UpdateMapPinTypeParams struct {
@@ -673,6 +764,7 @@ type UpdateMapPinTypeParams struct {
 	Icon            sql.NullString `json:"icon"`
 	IconSize        sql.NullInt32  `json:"icon_size"`
 	Width           sql.NullInt32  `json:"width"`
+	Section         sql.NullString `json:"section"`
 	ID              int32          `json:"id"`
 }
 
@@ -685,12 +777,12 @@ func (q *Queries) UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypePara
 		arg.Icon,
 		arg.IconSize,
 		arg.Width,
+		arg.Section,
 		arg.ID,
 	)
 	var i MapPinType
 	err := row.Scan(
 		&i.ID,
-		&i.MapID,
 		&i.Shape,
 		&i.BackgroundColor,
 		&i.BorderColor,
@@ -698,6 +790,24 @@ func (q *Queries) UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypePara
 		&i.Icon,
 		&i.IconSize,
 		&i.Width,
+		&i.Section,
+		&i.MapPinTypeGroupID,
 	)
+	return i, err
+}
+
+const updateMapPinTypeGroup = `-- name: UpdateMapPinTypeGroup :one
+UPDATE map_pin_type_group SET name = COALESCE($1, name) WHERE id = $2 RETURNING id, name
+`
+
+type UpdateMapPinTypeGroupParams struct {
+	Name sql.NullString `json:"name"`
+	ID   int32          `json:"id"`
+}
+
+func (q *Queries) UpdateMapPinTypeGroup(ctx context.Context, arg UpdateMapPinTypeGroupParams) (MapPinTypeGroup, error) {
+	row := q.db.QueryRowContext(ctx, updateMapPinTypeGroup, arg.Name, arg.ID)
+	var i MapPinTypeGroup
+	err := row.Scan(&i.ID, &i.Name)
 	return i, err
 }

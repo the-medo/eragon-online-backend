@@ -104,3 +104,9 @@ SELECT * FROM world_admins WHERE user_id = @user_id AND world_id = @world_id AND
 
 -- name: IsWorldSuperAdmin :one
 SELECT * FROM world_admins WHERE user_id = @user_id AND world_id = @world_id AND approved = 1 AND super_admin = 1;
+
+-- name: CreateWorldMapPinTypeGroup :one
+INSERT INTO world_map_pin_type_groups (world_id, map_pin_type_group_id) VALUES (sqlc.arg(world_id), sqlc.arg(map_pin_type_group_id)) RETURNING *;
+
+-- name: DeleteWorldMapPinTypeGroup :exec
+DELETE FROM world_map_pin_type_groups WHERE world_id = sqlc.arg(world_id) AND map_pin_type_group_id = sqlc.arg(map_pin_type_group_id);

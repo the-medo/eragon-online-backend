@@ -45,6 +45,22 @@ func (q *Queries) CreateWorld(ctx context.Context, arg CreateWorldParams) (World
 	return i, err
 }
 
+const createWorldMapPinTypeGroup = `-- name: CreateWorldMapPinTypeGroup :one
+INSERT INTO world_map_pin_type_groups (world_id, map_pin_type_group_id) VALUES ($1, $2) RETURNING world_id, map_pin_type_group_id
+`
+
+type CreateWorldMapPinTypeGroupParams struct {
+	WorldID           int32 `json:"world_id"`
+	MapPinTypeGroupID int32 `json:"map_pin_type_group_id"`
+}
+
+func (q *Queries) CreateWorldMapPinTypeGroup(ctx context.Context, arg CreateWorldMapPinTypeGroupParams) (WorldMapPinTypeGroup, error) {
+	row := q.db.QueryRowContext(ctx, createWorldMapPinTypeGroup, arg.WorldID, arg.MapPinTypeGroupID)
+	var i WorldMapPinTypeGroup
+	err := row.Scan(&i.WorldID, &i.MapPinTypeGroupID)
+	return i, err
+}
+
 const deleteWorld = `-- name: DeleteWorld :exec
 DELETE FROM worlds WHERE id = $1
 `
@@ -65,6 +81,20 @@ type DeleteWorldAdminParams struct {
 
 func (q *Queries) DeleteWorldAdmin(ctx context.Context, arg DeleteWorldAdminParams) error {
 	_, err := q.db.ExecContext(ctx, deleteWorldAdmin, arg.WorldID, arg.UserID)
+	return err
+}
+
+const deleteWorldMapPinTypeGroup = `-- name: DeleteWorldMapPinTypeGroup :exec
+DELETE FROM world_map_pin_type_groups WHERE world_id = $1 AND map_pin_type_group_id = $2
+`
+
+type DeleteWorldMapPinTypeGroupParams struct {
+	WorldID           int32 `json:"world_id"`
+	MapPinTypeGroupID int32 `json:"map_pin_type_group_id"`
+}
+
+func (q *Queries) DeleteWorldMapPinTypeGroup(ctx context.Context, arg DeleteWorldMapPinTypeGroupParams) error {
+	_, err := q.db.ExecContext(ctx, deleteWorldMapPinTypeGroup, arg.WorldID, arg.MapPinTypeGroupID)
 	return err
 }
 

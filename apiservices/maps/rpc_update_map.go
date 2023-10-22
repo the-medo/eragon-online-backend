@@ -36,14 +36,6 @@ func (server *ServiceMaps) UpdateMap(ctx context.Context, request *pb.UpdateMapR
 			String: request.GetDescription(),
 			Valid:  request.Description != nil,
 		},
-		Width: sql.NullInt32{
-			Int32: request.GetWidth(),
-			Valid: request.Width != nil,
-		},
-		Height: sql.NullInt32{
-			Int32: request.GetHeight(),
-			Valid: request.Height != nil,
-		},
 		ThumbnailImageID: sql.NullInt32{
 			Int32: request.GetThumbnailImageId(),
 			Valid: request.ThumbnailImageId != nil,
@@ -85,18 +77,6 @@ func validateUpdateMap(req *pb.UpdateMapRequest) (violations []*errdetails.BadRe
 	if req.Description != nil {
 		if err := validator.ValidateUniversalDescription(req.GetDescription()); err != nil {
 			violations = append(violations, e.FieldViolation("description", err))
-		}
-	}
-
-	if req.Width != nil {
-		if err := validator.ValidateUniversalDimension(req.GetWidth()); err != nil {
-			violations = append(violations, e.FieldViolation("width", err))
-		}
-	}
-
-	if req.Height != nil {
-		if err := validator.ValidateUniversalDimension(req.GetHeight()); err != nil {
-			violations = append(violations, e.FieldViolation("height", err))
 		}
 	}
 

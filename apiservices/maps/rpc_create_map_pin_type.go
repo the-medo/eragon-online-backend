@@ -22,9 +22,14 @@ func (server *ServiceMaps) CreateMapPinType(ctx context.Context, request *pb.Cre
 		return nil, err
 	}
 
+	mapPinTypeGroupId, err := server.Store.GetMapPinTypeGroupIdForMap(ctx, request.GetMapId())
+	if err != nil {
+		return nil, err
+	}
+
 	argPinType := db.CreateMapPinTypeParams{
-		MapID: request.GetMapId(),
-		Shape: converters.ConvertPinShapeToDB(request.GetShape()),
+		MapPinTypeGroupID: mapPinTypeGroupId,
+		Shape:             converters.ConvertPinShapeToDB(request.GetShape()),
 		BackgroundColor: sql.NullString{
 			String: request.GetBackgroundColor(),
 			Valid:  true,
@@ -49,6 +54,7 @@ func (server *ServiceMaps) CreateMapPinType(ctx context.Context, request *pb.Cre
 			Int32: request.GetWidth(),
 			Valid: true,
 		},
+		Section: request.GetSection(),
 	}
 
 	newPinType, err := server.Store.CreateMapPinType(ctx, argPinType)

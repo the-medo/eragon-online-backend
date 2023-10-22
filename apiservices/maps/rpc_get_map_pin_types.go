@@ -20,6 +20,7 @@ func (server *ServiceMaps) GetMapPinTypes(ctx context.Context, request *pb.GetMa
 		return nil, err
 	}
 
+	// currently works only for world map, not quest maps
 	pinTypeRows, err := server.Store.GetMapPinTypesForMap(ctx, request.GetMapId())
 	if err != nil {
 		return nil, err

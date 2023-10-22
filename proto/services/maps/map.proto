@@ -62,7 +62,7 @@ message ViewMapLayer {
 
 message MapPinType {
   int32 id = 1;
-  int32 mapId = 2;
+  int32 mapPinTypeGroupId = 2;
   PinShape shape = 3;
   string backgroundColor = 4;
   string borderColor = 5;
@@ -70,6 +70,7 @@ message MapPinType {
   string icon = 7;
   int32 iconSize = 8;
   int32 width = 9;
+  string section = 10;
 }
 
 message MapPin {

@@ -87,6 +87,7 @@ message CreateMapPinTypeRequest {
   string icon = 6;
   int32 iconSize = 7;
   int32 width = 8;
+  string section = 9;
 }
 
 message DeleteMapPinTypeRequest {
@@ -104,7 +105,9 @@ message UpdateMapPinTypeRequest {
   optional string icon = 7;
   optional int32 iconSize = 8;
   optional int32 width = 9;
+  optional string section = 10;
 }
+
 message UpdateMapPinTypeResponse {
   MapPinType pinType = 1;
 }

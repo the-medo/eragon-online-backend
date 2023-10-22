@@ -340,15 +340,21 @@ type MapPin struct {
 }
 
 type MapPinType struct {
-	ID              int32          `json:"id"`
-	MapID           int32          `json:"map_id"`
-	Shape           PinShape       `json:"shape"`
-	BackgroundColor sql.NullString `json:"background_color"`
-	BorderColor     sql.NullString `json:"border_color"`
-	IconColor       sql.NullString `json:"icon_color"`
-	Icon            sql.NullString `json:"icon"`
-	IconSize        sql.NullInt32  `json:"icon_size"`
-	Width           sql.NullInt32  `json:"width"`
+	ID                int32          `json:"id"`
+	Shape             PinShape       `json:"shape"`
+	BackgroundColor   sql.NullString `json:"background_color"`
+	BorderColor       sql.NullString `json:"border_color"`
+	IconColor         sql.NullString `json:"icon_color"`
+	Icon              sql.NullString `json:"icon"`
+	IconSize          sql.NullInt32  `json:"icon_size"`
+	Width             sql.NullInt32  `json:"width"`
+	Section           string         `json:"section"`
+	MapPinTypeGroupID int32          `json:"map_pin_type_group_id"`
+}
+
+type MapPinTypeGroup struct {
+	ID   int32  `json:"id"`
+	Name string `json:"name"`
 }
 
 type Menu struct {
@@ -697,6 +703,11 @@ type WorldLocation struct {
 type WorldMap struct {
 	WorldID int32 `json:"world_id"`
 	MapID   int32 `json:"map_id"`
+}
+
+type WorldMapPinTypeGroup struct {
+	WorldID           int32 `json:"world_id"`
+	MapPinTypeGroupID int32 `json:"map_pin_type_group_id"`
 }
 
 type WorldMenu struct {

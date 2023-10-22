@@ -63,6 +63,7 @@ BEGIN
 END $$;
 
 ALTER TABLE "map_pin_types" ADD FOREIGN KEY ("map_pin_type_group_id") REFERENCES "map_pin_type_group" ("id");
+ALTER TABLE "map_pin_types" ALTER COLUMN "map_pin_type_group_id" SET NOT NULL;
 
 ALTER TABLE "map_pin_types" DROP COLUMN map_id;
 

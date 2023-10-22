@@ -989,6 +989,9 @@
                 "width": {
                   "type": "integer",
                   "format": "int32"
+                },
+                "section": {
+                  "type": "string"
                 }
               }
             }
@@ -1101,6 +1104,9 @@
                 "width": {
                   "type": "integer",
                   "format": "int32"
+                },
+                "section": {
+                  "type": "string"
                 }
               }
             }
@@ -5118,7 +5124,7 @@
           "type": "integer",
           "format": "int32"
         },
-        "mapId": {
+        "mapPinTypeGroupId": {
           "type": "integer",
           "format": "int32"
         },
@@ -5144,6 +5150,9 @@
         "width": {
           "type": "integer",
           "format": "int32"
+        },
+        "section": {
+          "type": "string"
         }
       }
     },
