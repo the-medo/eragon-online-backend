@@ -3,6 +3,16 @@ INSERT INTO maps (name, type, description, width, height, thumbnail_image_id)
 VALUES (sqlc.arg(name), sqlc.narg(type), sqlc.narg(description), sqlc.arg(width), sqlc.arg(height), sqlc.narg(thumbnail_image_id))
 RETURNING *;
 
+-- name: GetMaps :many
+SELECT
+    vm.*
+FROM
+    view_maps vm
+    LEFT JOIN world_maps wm ON wm.map_id = vm.id
+WHERE
+    wm.world_id = sqlc.narg(world_id);
+;
+
 -- name: GetWorldMaps :many
 SELECT
     vm.*
@@ -29,7 +39,7 @@ WHERE id = sqlc.arg(id)
 RETURNING *;
 
 -- name: DeleteMap :exec
-DELETE FROM maps WHERE id = sqlc.arg(id);
+CALL delete_map(sqlc.arg(id));
 
 -- name: CreateMapLayer :one
 INSERT INTO map_layers (name, map_id, image_id, is_main, enabled, sublayer)

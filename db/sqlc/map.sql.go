@@ -202,7 +202,7 @@ func (q *Queries) CreateWorldMap(ctx context.Context, arg CreateWorldMapParams) 
 }
 
 const deleteMap = `-- name: DeleteMap :exec
-DELETE FROM maps WHERE id = $1
+CALL delete_map($1)
 `
 
 func (q *Queries) DeleteMap(ctx context.Context, id int32) error {
@@ -543,6 +543,48 @@ func (q *Queries) GetMapPins(ctx context.Context, mapID int32) ([]ViewMapPin, er
 			&i.LocationDescription,
 			&i.LocationThumbnailImageID,
 			&i.LocationThumbnailImageUrl,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getMaps = `-- name: GetMaps :many
+SELECT
+    vm.id, vm.name, vm.type, vm.description, vm.width, vm.height, vm.thumbnail_image_id, vm.thumbnail_image_url
+FROM
+    view_maps vm
+    LEFT JOIN world_maps wm ON wm.map_id = vm.id
+WHERE
+    wm.world_id = $1
+`
+
+func (q *Queries) GetMaps(ctx context.Context, worldID sql.NullInt32) ([]ViewMap, error) {
+	rows, err := q.db.QueryContext(ctx, getMaps, worldID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ViewMap{}
+	for rows.Next() {
+		var i ViewMap
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Type,
+			&i.Description,
+			&i.Width,
+			&i.Height,
+			&i.ThumbnailImageID,
+			&i.ThumbnailImageUrl,
 		); err != nil {
 			return nil, err
 		}

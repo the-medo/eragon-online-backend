@@ -20,10 +20,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Maps_GetMaps_FullMethodName          = "/pb.Maps/GetMaps"
+	Maps_CreateMap_FullMethodName        = "/pb.Maps/CreateMap"
 	Maps_UpdateMap_FullMethodName        = "/pb.Maps/UpdateMap"
-	Maps_GetWorldMaps_FullMethodName     = "/pb.Maps/GetWorldMaps"
-	Maps_CreateWorldMap_FullMethodName   = "/pb.Maps/CreateWorldMap"
-	Maps_DeleteWorldMap_FullMethodName   = "/pb.Maps/DeleteWorldMap"
+	Maps_DeleteMap_FullMethodName        = "/pb.Maps/DeleteMap"
 	Maps_GetMapLayers_FullMethodName     = "/pb.Maps/GetMapLayers"
 	Maps_CreateMapLayer_FullMethodName   = "/pb.Maps/CreateMapLayer"
 	Maps_DeleteMapLayer_FullMethodName   = "/pb.Maps/DeleteMapLayer"
@@ -42,10 +42,10 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MapsClient interface {
+	GetMaps(ctx context.Context, in *GetMapsRequest, opts ...grpc.CallOption) (*GetMapsResponse, error)
+	CreateMap(ctx context.Context, in *CreateMapRequest, opts ...grpc.CallOption) (*CreateMapResponse, error)
 	UpdateMap(ctx context.Context, in *UpdateMapRequest, opts ...grpc.CallOption) (*ViewMap, error)
-	GetWorldMaps(ctx context.Context, in *GetWorldMapRequest, opts ...grpc.CallOption) (*GetWorldMapResponse, error)
-	CreateWorldMap(ctx context.Context, in *CreateWorldMapRequest, opts ...grpc.CallOption) (*CreateWorldMapResponse, error)
-	DeleteWorldMap(ctx context.Context, in *DeleteWorldMapRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteMap(ctx context.Context, in *DeleteMapRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetMapLayers(ctx context.Context, in *GetMapLayersRequest, opts ...grpc.CallOption) (*GetMapLayersResponse, error)
 	CreateMapLayer(ctx context.Context, in *CreateMapLayerRequest, opts ...grpc.CallOption) (*ViewMapLayer, error)
 	DeleteMapLayer(ctx context.Context, in *DeleteMapLayerRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -68,6 +68,24 @@ func NewMapsClient(cc grpc.ClientConnInterface) MapsClient {
 	return &mapsClient{cc}
 }
 
+func (c *mapsClient) GetMaps(ctx context.Context, in *GetMapsRequest, opts ...grpc.CallOption) (*GetMapsResponse, error) {
+	out := new(GetMapsResponse)
+	err := c.cc.Invoke(ctx, Maps_GetMaps_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mapsClient) CreateMap(ctx context.Context, in *CreateMapRequest, opts ...grpc.CallOption) (*CreateMapResponse, error) {
+	out := new(CreateMapResponse)
+	err := c.cc.Invoke(ctx, Maps_CreateMap_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *mapsClient) UpdateMap(ctx context.Context, in *UpdateMapRequest, opts ...grpc.CallOption) (*ViewMap, error) {
 	out := new(ViewMap)
 	err := c.cc.Invoke(ctx, Maps_UpdateMap_FullMethodName, in, out, opts...)
@@ -77,27 +95,9 @@ func (c *mapsClient) UpdateMap(ctx context.Context, in *UpdateMapRequest, opts .
 	return out, nil
 }
 
-func (c *mapsClient) GetWorldMaps(ctx context.Context, in *GetWorldMapRequest, opts ...grpc.CallOption) (*GetWorldMapResponse, error) {
-	out := new(GetWorldMapResponse)
-	err := c.cc.Invoke(ctx, Maps_GetWorldMaps_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *mapsClient) CreateWorldMap(ctx context.Context, in *CreateWorldMapRequest, opts ...grpc.CallOption) (*CreateWorldMapResponse, error) {
-	out := new(CreateWorldMapResponse)
-	err := c.cc.Invoke(ctx, Maps_CreateWorldMap_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *mapsClient) DeleteWorldMap(ctx context.Context, in *DeleteWorldMapRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *mapsClient) DeleteMap(ctx context.Context, in *DeleteMapRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Maps_DeleteWorldMap_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Maps_DeleteMap_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -216,10 +216,10 @@ func (c *mapsClient) UpdateMapPin(ctx context.Context, in *UpdateMapPinRequest, 
 // All implementations must embed UnimplementedMapsServer
 // for forward compatibility
 type MapsServer interface {
+	GetMaps(context.Context, *GetMapsRequest) (*GetMapsResponse, error)
+	CreateMap(context.Context, *CreateMapRequest) (*CreateMapResponse, error)
 	UpdateMap(context.Context, *UpdateMapRequest) (*ViewMap, error)
-	GetWorldMaps(context.Context, *GetWorldMapRequest) (*GetWorldMapResponse, error)
-	CreateWorldMap(context.Context, *CreateWorldMapRequest) (*CreateWorldMapResponse, error)
-	DeleteWorldMap(context.Context, *DeleteWorldMapRequest) (*emptypb.Empty, error)
+	DeleteMap(context.Context, *DeleteMapRequest) (*emptypb.Empty, error)
 	GetMapLayers(context.Context, *GetMapLayersRequest) (*GetMapLayersResponse, error)
 	CreateMapLayer(context.Context, *CreateMapLayerRequest) (*ViewMapLayer, error)
 	DeleteMapLayer(context.Context, *DeleteMapLayerRequest) (*emptypb.Empty, error)
@@ -239,17 +239,17 @@ type MapsServer interface {
 type UnimplementedMapsServer struct {
 }
 
+func (UnimplementedMapsServer) GetMaps(context.Context, *GetMapsRequest) (*GetMapsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMaps not implemented")
+}
+func (UnimplementedMapsServer) CreateMap(context.Context, *CreateMapRequest) (*CreateMapResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMap not implemented")
+}
 func (UnimplementedMapsServer) UpdateMap(context.Context, *UpdateMapRequest) (*ViewMap, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMap not implemented")
 }
-func (UnimplementedMapsServer) GetWorldMaps(context.Context, *GetWorldMapRequest) (*GetWorldMapResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWorldMaps not implemented")
-}
-func (UnimplementedMapsServer) CreateWorldMap(context.Context, *CreateWorldMapRequest) (*CreateWorldMapResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateWorldMap not implemented")
-}
-func (UnimplementedMapsServer) DeleteWorldMap(context.Context, *DeleteWorldMapRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteWorldMap not implemented")
+func (UnimplementedMapsServer) DeleteMap(context.Context, *DeleteMapRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMap not implemented")
 }
 func (UnimplementedMapsServer) GetMapLayers(context.Context, *GetMapLayersRequest) (*GetMapLayersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMapLayers not implemented")
@@ -300,6 +300,42 @@ func RegisterMapsServer(s grpc.ServiceRegistrar, srv MapsServer) {
 	s.RegisterService(&Maps_ServiceDesc, srv)
 }
 
+func _Maps_GetMaps_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMapsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).GetMaps(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_GetMaps_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).GetMaps(ctx, req.(*GetMapsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Maps_CreateMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).CreateMap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_CreateMap_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).CreateMap(ctx, req.(*CreateMapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Maps_UpdateMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateMapRequest)
 	if err := dec(in); err != nil {
@@ -318,56 +354,20 @@ func _Maps_UpdateMap_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Maps_GetWorldMaps_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetWorldMapRequest)
+func _Maps_DeleteMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMapRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MapsServer).GetWorldMaps(ctx, in)
+		return srv.(MapsServer).DeleteMap(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Maps_GetWorldMaps_FullMethodName,
+		FullMethod: Maps_DeleteMap_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MapsServer).GetWorldMaps(ctx, req.(*GetWorldMapRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Maps_CreateWorldMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateWorldMapRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MapsServer).CreateWorldMap(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Maps_CreateWorldMap_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MapsServer).CreateWorldMap(ctx, req.(*CreateWorldMapRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Maps_DeleteWorldMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteWorldMapRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MapsServer).DeleteWorldMap(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Maps_DeleteWorldMap_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MapsServer).DeleteWorldMap(ctx, req.(*DeleteWorldMapRequest))
+		return srv.(MapsServer).DeleteMap(ctx, req.(*DeleteMapRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -596,20 +596,20 @@ var Maps_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*MapsServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "GetMaps",
+			Handler:    _Maps_GetMaps_Handler,
+		},
+		{
+			MethodName: "CreateMap",
+			Handler:    _Maps_CreateMap_Handler,
+		},
+		{
 			MethodName: "UpdateMap",
 			Handler:    _Maps_UpdateMap_Handler,
 		},
 		{
-			MethodName: "GetWorldMaps",
-			Handler:    _Maps_GetWorldMaps_Handler,
-		},
-		{
-			MethodName: "CreateWorldMap",
-			Handler:    _Maps_CreateWorldMap_Handler,
-		},
-		{
-			MethodName: "DeleteWorldMap",
-			Handler:    _Maps_DeleteWorldMap_Handler,
+			MethodName: "DeleteMap",
+			Handler:    _Maps_DeleteMap_Handler,
 		},
 		{
 			MethodName: "GetMapLayers",

@@ -7,29 +7,30 @@ import "services/maps/map.proto";
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 
-message GetWorldMapRequest {
-  int32 worldId = 1;
+message GetMapsRequest {
+  MapPlacement placement = 1;
 }
-message GetWorldMapResponse {
+
+message GetMapsResponse {
   repeated ViewMap maps = 1;
 }
 
-message CreateWorldMapRequest {
-  int32 worldId = 1;
+message CreateMapRequest {
+  MapPlacement placement = 1;
   string name = 2;
   optional string type = 3;
   optional string description = 4;
   optional int32 thumbnailImageId = 5;
   int32 layerImageId = 6;
 }
-message CreateWorldMapResponse {
+
+message CreateMapResponse {
   ViewMap map = 1;
   ViewMapLayer layer = 2;
 }
 
-message DeleteWorldMapRequest {
-  int32 worldId = 1;
-  int32 mapId = 2;
+message DeleteMapRequest {
+  int32 mapId = 1;
 }
 
 message UpdateMapRequest {

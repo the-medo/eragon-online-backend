@@ -1,0 +1,2 @@
+DROP PROCEDURE IF EXISTS delete_map(INT);
+DROP PROCEDURE IF EXISTS delete_location(INT);

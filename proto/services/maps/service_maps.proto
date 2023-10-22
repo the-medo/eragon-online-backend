@@ -13,6 +13,27 @@ import "google/protobuf/empty.proto";
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 service Maps {
+  rpc GetMaps(GetMapsRequest) returns (GetMapsResponse) {
+    option (google.api.http) = {
+      get: "/maps"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns maps based on placement (world or quest)";
+      summary: "Get maps";
+    };
+  };
+
+  rpc CreateMap(CreateMapRequest) returns (CreateMapResponse) {
+    option (google.api.http) = {
+      post: "/maps"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates a new map for world or quest";
+      summary: "Create map";
+    };
+  };
+
   rpc UpdateMap(UpdateMapRequest) returns (ViewMap) {
     option (google.api.http) = {
       patch: "/maps/{mapId}"
@@ -24,35 +45,13 @@ service Maps {
     };
   };
 
-
-  rpc GetWorldMaps(GetWorldMapRequest) returns (GetWorldMapResponse) {
+  rpc DeleteMap(DeleteMapRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      get: "/worlds/{worldId}/maps"
+      delete: "/maps/{mapId}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "returns maps of the world";
-      summary: "Get world maps";
-    };
-  };
-
-  rpc CreateWorldMap(CreateWorldMapRequest) returns (CreateWorldMapResponse) {
-    option (google.api.http) = {
-      post: "/worlds/{worldId}/maps"
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "creates a new map for the world";
-      summary: "Create world map";
-    };
-  };
-
-  rpc DeleteWorldMap(DeleteWorldMapRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/worlds/{worldId}/maps/{mapId}"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "deletes a map from the world";
-      summary: "Delete world map";
+      description: "deletes a map from the world or quest";
+      summary: "Delete map";
     };
   };
 

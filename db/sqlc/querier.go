@@ -109,6 +109,7 @@ type Querier interface {
 	GetMapPinTypesForMap(ctx context.Context, mapID int32) ([]MapPinType, error)
 	GetMapPinTypesForWorld(ctx context.Context, worldID int32) ([]MapPinType, error)
 	GetMapPins(ctx context.Context, mapID int32) ([]ViewMapPin, error)
+	GetMaps(ctx context.Context, worldID sql.NullInt32) ([]ViewMap, error)
 	GetMenu(ctx context.Context, id int32) (ViewMenu, error)
 	GetMenuIdOfEntityGroup(ctx context.Context, entityGroupID int32) (int32, error)
 	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)

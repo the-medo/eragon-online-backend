@@ -755,7 +755,111 @@
         ]
       }
     },
+    "/maps": {
+      "get": {
+        "summary": "Get maps",
+        "description": "returns maps based on placement (world or quest)",
+        "operationId": "Maps_GetMaps",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetMapsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "placement.worldId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "placement.questId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      },
+      "post": {
+        "summary": "Create map",
+        "description": "creates a new map for world or quest",
+        "operationId": "Maps_CreateMap",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateMapResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateMapRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      }
+    },
     "/maps/{mapId}": {
+      "delete": {
+        "summary": "Delete map",
+        "description": "deletes a map from the world or quest",
+        "operationId": "Maps_DeleteMap",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      },
       "patch": {
         "summary": "Update map",
         "description": "updates map properties",
@@ -3922,138 +4026,6 @@
         ]
       }
     },
-    "/worlds/{worldId}/maps": {
-      "get": {
-        "summary": "Get world maps",
-        "description": "returns maps of the world",
-        "operationId": "Maps_GetWorldMaps",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetWorldMapResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Maps"
-        ]
-      },
-      "post": {
-        "summary": "Create world map",
-        "description": "creates a new map for the world",
-        "operationId": "Maps_CreateWorldMap",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCreateWorldMapResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "type": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "thumbnailImageId": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "layerImageId": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Maps"
-        ]
-      }
-    },
-    "/worlds/{worldId}/maps/{mapId}": {
-      "delete": {
-        "summary": "Delete world map",
-        "description": "deletes a map from the world",
-        "operationId": "Maps_DeleteWorldMap",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "mapId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Maps"
-        ]
-      }
-    },
     "/worlds/{worldId}/tags": {
       "delete": {
         "summary": "Remove world tag",
@@ -4278,6 +4250,42 @@
         }
       }
     },
+    "pbCreateMapRequest": {
+      "type": "object",
+      "properties": {
+        "placement": {
+          "$ref": "#/definitions/pbMapPlacement"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "thumbnailImageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "layerImageId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateMapResponse": {
+      "type": "object",
+      "properties": {
+        "map": {
+          "$ref": "#/definitions/pbViewMap"
+        },
+        "layer": {
+          "$ref": "#/definitions/pbViewMapLayer"
+        }
+      }
+    },
     "pbCreateOrUpdateEvaluationVoteResponse": {
       "type": "object",
       "properties": {
@@ -4326,17 +4334,6 @@
       "properties": {
         "user": {
           "$ref": "#/definitions/pbUser"
-        }
-      }
-    },
-    "pbCreateWorldMapResponse": {
-      "type": "object",
-      "properties": {
-        "map": {
-          "$ref": "#/definitions/pbViewMap"
-        },
-        "layer": {
-          "$ref": "#/definitions/pbViewMapLayer"
         }
       }
     },
@@ -4840,6 +4837,18 @@
         }
       }
     },
+    "pbGetMapsResponse": {
+      "type": "object",
+      "properties": {
+        "maps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewMap"
+          }
+        }
+      }
+    },
     "pbGetMenuItemContentResponse": {
       "type": "object",
       "properties": {
@@ -4978,18 +4987,6 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbWorldActivity"
-          }
-        }
-      }
-    },
-    "pbGetWorldMapResponse": {
-      "type": "object",
-      "properties": {
-        "maps": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbViewMap"
           }
         }
       }
@@ -5165,6 +5162,19 @@
         },
         "section": {
           "type": "string"
+        }
+      }
+    },
+    "pbMapPlacement": {
+      "type": "object",
+      "properties": {
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "questId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
