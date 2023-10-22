@@ -111,6 +111,8 @@ func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.Ta
 	pb.RegisterUsersServer(grpcServer, server)
 	pb.RegisterVerifyServer(grpcServer, server)
 	pb.RegisterWorldsServer(grpcServer, server)
+	pb.RegisterLocationsServer(grpcServer, server)
+	pb.RegisterMapsServer(grpcServer, server)
 
 	reflection.Register(grpcServer)
 
@@ -162,6 +164,8 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	err = pb.RegisterUsersHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterVerifyHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterWorldsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterLocationsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterMapsHandlerServer(ctx, grpcMux, server)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot register handler server")
 	}
