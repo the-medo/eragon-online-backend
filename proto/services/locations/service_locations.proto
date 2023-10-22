@@ -24,30 +24,30 @@ service Locations {
     };
   };
 
-  rpc GetWorldLocations(GetWorldLocationsRequest) returns (GetWorldLocationResponse) {
+  rpc GetLocations(GetLocationsRequest) returns (GetLocationsResponse) {
     option (google.api.http) = {
-      get: "/worlds/{worldId}/locations"
+      get: "/locations"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "returns world locations";
-      summary: "Get world locations";
+      description: "returns locations based on placement (world or quest)";
+      summary: "Get locations";
     };
   };
 
-  rpc CreateWorldLocation(CreateWorldLocationRequest) returns (ViewLocation) {
+  rpc CreateLocation(CreateLocationRequest) returns (ViewLocation) {
     option (google.api.http) = {
-      post: "/worlds/{worldId}/locations"
+      post: "/locations"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "creates a new location in the world";
-      summary: "Create world location";
+      description: "creates a new location in the world or a quest";
+      summary: "Create location";
     };
   };
 
-  rpc DeleteWorldLocation(DeleteWorldLocationRequest) returns (google.protobuf.Empty) {
+  rpc DeleteLocation(DeleteLocationRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/worlds/{worldId}/locations"
+      delete: "/locations"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "deletes location from the world";

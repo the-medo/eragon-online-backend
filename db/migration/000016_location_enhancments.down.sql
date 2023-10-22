@@ -1,0 +1,2 @@
+
+DROP PROCEDURE IF EXISTS delete_location(INT);

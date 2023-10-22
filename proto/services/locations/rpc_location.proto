@@ -6,10 +6,11 @@ import "services/locations/location.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
-message GetWorldLocationsRequest {
-  int32 worldId = 1;
+message GetLocationsRequest {
+  LocationPlacement placement = 1;
 }
-message GetWorldLocationResponse {
+
+message GetLocationsResponse {
   repeated ViewLocation locations = 1;
 }
 
@@ -21,16 +22,15 @@ message UpdateLocationRequest {
   optional int32 thumbnailImageId = 5;
 }
 
-message CreateWorldLocationRequest {
-  int32 worldId = 1;
+message CreateLocationRequest {
+  LocationPlacement placement = 1;
   string name = 2;
   optional string description = 3;
   optional int32 thumbnailImageId = 4;
 }
 
-message DeleteWorldLocationRequest {
-  int32 worldId = 1;
-  int32 locationId = 2;
+message DeleteLocationRequest {
+  int32 locationId = 1;
 }
 
 

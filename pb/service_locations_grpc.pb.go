@@ -20,10 +20,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Locations_UpdateLocation_FullMethodName      = "/pb.Locations/UpdateLocation"
-	Locations_GetWorldLocations_FullMethodName   = "/pb.Locations/GetWorldLocations"
-	Locations_CreateWorldLocation_FullMethodName = "/pb.Locations/CreateWorldLocation"
-	Locations_DeleteWorldLocation_FullMethodName = "/pb.Locations/DeleteWorldLocation"
+	Locations_UpdateLocation_FullMethodName = "/pb.Locations/UpdateLocation"
+	Locations_GetLocations_FullMethodName   = "/pb.Locations/GetLocations"
+	Locations_CreateLocation_FullMethodName = "/pb.Locations/CreateLocation"
+	Locations_DeleteLocation_FullMethodName = "/pb.Locations/DeleteLocation"
 )
 
 // LocationsClient is the client API for Locations service.
@@ -31,9 +31,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LocationsClient interface {
 	UpdateLocation(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error)
-	GetWorldLocations(ctx context.Context, in *GetWorldLocationsRequest, opts ...grpc.CallOption) (*GetWorldLocationResponse, error)
-	CreateWorldLocation(ctx context.Context, in *CreateWorldLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error)
-	DeleteWorldLocation(ctx context.Context, in *DeleteWorldLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetLocations(ctx context.Context, in *GetLocationsRequest, opts ...grpc.CallOption) (*GetLocationsResponse, error)
+	CreateLocation(ctx context.Context, in *CreateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error)
+	DeleteLocation(ctx context.Context, in *DeleteLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type locationsClient struct {
@@ -53,27 +53,27 @@ func (c *locationsClient) UpdateLocation(ctx context.Context, in *UpdateLocation
 	return out, nil
 }
 
-func (c *locationsClient) GetWorldLocations(ctx context.Context, in *GetWorldLocationsRequest, opts ...grpc.CallOption) (*GetWorldLocationResponse, error) {
-	out := new(GetWorldLocationResponse)
-	err := c.cc.Invoke(ctx, Locations_GetWorldLocations_FullMethodName, in, out, opts...)
+func (c *locationsClient) GetLocations(ctx context.Context, in *GetLocationsRequest, opts ...grpc.CallOption) (*GetLocationsResponse, error) {
+	out := new(GetLocationsResponse)
+	err := c.cc.Invoke(ctx, Locations_GetLocations_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *locationsClient) CreateWorldLocation(ctx context.Context, in *CreateWorldLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error) {
+func (c *locationsClient) CreateLocation(ctx context.Context, in *CreateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error) {
 	out := new(ViewLocation)
-	err := c.cc.Invoke(ctx, Locations_CreateWorldLocation_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Locations_CreateLocation_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *locationsClient) DeleteWorldLocation(ctx context.Context, in *DeleteWorldLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *locationsClient) DeleteLocation(ctx context.Context, in *DeleteLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Locations_DeleteWorldLocation_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Locations_DeleteLocation_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -85,9 +85,9 @@ func (c *locationsClient) DeleteWorldLocation(ctx context.Context, in *DeleteWor
 // for forward compatibility
 type LocationsServer interface {
 	UpdateLocation(context.Context, *UpdateLocationRequest) (*ViewLocation, error)
-	GetWorldLocations(context.Context, *GetWorldLocationsRequest) (*GetWorldLocationResponse, error)
-	CreateWorldLocation(context.Context, *CreateWorldLocationRequest) (*ViewLocation, error)
-	DeleteWorldLocation(context.Context, *DeleteWorldLocationRequest) (*emptypb.Empty, error)
+	GetLocations(context.Context, *GetLocationsRequest) (*GetLocationsResponse, error)
+	CreateLocation(context.Context, *CreateLocationRequest) (*ViewLocation, error)
+	DeleteLocation(context.Context, *DeleteLocationRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedLocationsServer()
 }
 
@@ -98,14 +98,14 @@ type UnimplementedLocationsServer struct {
 func (UnimplementedLocationsServer) UpdateLocation(context.Context, *UpdateLocationRequest) (*ViewLocation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateLocation not implemented")
 }
-func (UnimplementedLocationsServer) GetWorldLocations(context.Context, *GetWorldLocationsRequest) (*GetWorldLocationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWorldLocations not implemented")
+func (UnimplementedLocationsServer) GetLocations(context.Context, *GetLocationsRequest) (*GetLocationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLocations not implemented")
 }
-func (UnimplementedLocationsServer) CreateWorldLocation(context.Context, *CreateWorldLocationRequest) (*ViewLocation, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateWorldLocation not implemented")
+func (UnimplementedLocationsServer) CreateLocation(context.Context, *CreateLocationRequest) (*ViewLocation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateLocation not implemented")
 }
-func (UnimplementedLocationsServer) DeleteWorldLocation(context.Context, *DeleteWorldLocationRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteWorldLocation not implemented")
+func (UnimplementedLocationsServer) DeleteLocation(context.Context, *DeleteLocationRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteLocation not implemented")
 }
 func (UnimplementedLocationsServer) mustEmbedUnimplementedLocationsServer() {}
 
@@ -138,56 +138,56 @@ func _Locations_UpdateLocation_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Locations_GetWorldLocations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetWorldLocationsRequest)
+func _Locations_GetLocations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLocationsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LocationsServer).GetWorldLocations(ctx, in)
+		return srv.(LocationsServer).GetLocations(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Locations_GetWorldLocations_FullMethodName,
+		FullMethod: Locations_GetLocations_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LocationsServer).GetWorldLocations(ctx, req.(*GetWorldLocationsRequest))
+		return srv.(LocationsServer).GetLocations(ctx, req.(*GetLocationsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Locations_CreateWorldLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateWorldLocationRequest)
+func _Locations_CreateLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateLocationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LocationsServer).CreateWorldLocation(ctx, in)
+		return srv.(LocationsServer).CreateLocation(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Locations_CreateWorldLocation_FullMethodName,
+		FullMethod: Locations_CreateLocation_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LocationsServer).CreateWorldLocation(ctx, req.(*CreateWorldLocationRequest))
+		return srv.(LocationsServer).CreateLocation(ctx, req.(*CreateLocationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Locations_DeleteWorldLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteWorldLocationRequest)
+func _Locations_DeleteLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteLocationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LocationsServer).DeleteWorldLocation(ctx, in)
+		return srv.(LocationsServer).DeleteLocation(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Locations_DeleteWorldLocation_FullMethodName,
+		FullMethod: Locations_DeleteLocation_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LocationsServer).DeleteWorldLocation(ctx, req.(*DeleteWorldLocationRequest))
+		return srv.(LocationsServer).DeleteLocation(ctx, req.(*DeleteLocationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -204,16 +204,16 @@ var Locations_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Locations_UpdateLocation_Handler,
 		},
 		{
-			MethodName: "GetWorldLocations",
-			Handler:    _Locations_GetWorldLocations_Handler,
+			MethodName: "GetLocations",
+			Handler:    _Locations_GetLocations_Handler,
 		},
 		{
-			MethodName: "CreateWorldLocation",
-			Handler:    _Locations_CreateWorldLocation_Handler,
+			MethodName: "CreateLocation",
+			Handler:    _Locations_CreateLocation_Handler,
 		},
 		{
-			MethodName: "DeleteWorldLocation",
-			Handler:    _Locations_DeleteWorldLocation_Handler,
+			MethodName: "DeleteLocation",
+			Handler:    _Locations_DeleteLocation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

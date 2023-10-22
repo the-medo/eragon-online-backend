@@ -60,7 +60,7 @@ func (q *Queries) CreateWorldLocation(ctx context.Context, arg CreateWorldLocati
 }
 
 const deleteLocation = `-- name: DeleteLocation :exec
-DELETE FROM locations WHERE id = $1
+CALL delete_location($1)
 `
 
 func (q *Queries) DeleteLocation(ctx context.Context, id int32) error {
@@ -130,6 +130,46 @@ SELECT id, name, description, post_id, thumbnail_image_id, thumbnail_image_url F
 
 func (q *Queries) GetLocations(ctx context.Context) ([]ViewLocation, error) {
 	rows, err := q.db.QueryContext(ctx, getLocations)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ViewLocation{}
+	for rows.Next() {
+		var i ViewLocation
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Description,
+			&i.PostID,
+			&i.ThumbnailImageID,
+			&i.ThumbnailImageUrl,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getLocationsForPlacement = `-- name: GetLocationsForPlacement :many
+SELECT
+    vl.id, vl.name, vl.description, vl.post_id, vl.thumbnail_image_id, vl.thumbnail_image_url
+FROM
+    view_locations vl
+    LEFT JOIN world_locations wl ON vl.id = wl.location_id
+    --LEFT JOIN quest_locations ql ON vl.id = ql.location_id
+WHERE wl.world_id = $1 --OR ql.quest_id = sqlc.arg(quest_id);
+`
+
+func (q *Queries) GetLocationsForPlacement(ctx context.Context, worldID int32) ([]ViewLocation, error) {
+	rows, err := q.db.QueryContext(ctx, getLocationsForPlacement, worldID)
 	if err != nil {
 		return nil, err
 	}

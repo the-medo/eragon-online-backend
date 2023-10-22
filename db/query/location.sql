@@ -6,6 +6,16 @@ RETURNING *;
 -- name: GetLocations :many
 SELECT * FROM view_locations;
 
+-- name: GetLocationsForPlacement :many
+SELECT
+    vl.*
+FROM
+    view_locations vl
+    LEFT JOIN world_locations wl ON vl.id = wl.location_id
+    --LEFT JOIN quest_locations ql ON vl.id = ql.location_id
+WHERE wl.world_id = sqlc.arg(world_id) --OR ql.quest_id = sqlc.arg(quest_id);
+;
+
 -- name: GetLocationByID :one
 SELECT * FROM view_locations WHERE id = sqlc.arg(id);
 
@@ -20,7 +30,7 @@ WHERE id = sqlc.arg(id)
 RETURNING *;
 
 -- name: DeleteLocation :exec
-DELETE FROM locations WHERE id = sqlc.arg(id);
+CALL delete_location(sqlc.arg(id));
 
 -- name: CreateWorldLocation :one
 INSERT INTO world_locations (world_id, location_id)

@@ -1323,6 +1323,21 @@ func (mr *MockStoreMockRecorder) GetLocations(arg0 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLocations", reflect.TypeOf((*MockStore)(nil).GetLocations), arg0)
 }
 
+// GetLocationsForPlacement mocks base method.
+func (m *MockStore) GetLocationsForPlacement(arg0 context.Context, arg1 int32) ([]db.ViewLocation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetLocationsForPlacement", arg0, arg1)
+	ret0, _ := ret[0].([]db.ViewLocation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetLocationsForPlacement indicates an expected call of GetLocationsForPlacement.
+func (mr *MockStoreMockRecorder) GetLocationsForPlacement(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLocationsForPlacement", reflect.TypeOf((*MockStore)(nil).GetLocationsForPlacement), arg0, arg1)
+}
+
 // GetMapAssignments mocks base method.
 func (m *MockStore) GetMapAssignments(arg0 context.Context, arg1 int32) (db.GetMapAssignmentsRow, error) {
 	m.ctrl.T.Helper()

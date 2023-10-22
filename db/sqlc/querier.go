@@ -99,6 +99,7 @@ type Querier interface {
 	GetLocationAssignments(ctx context.Context, locationID int32) (GetLocationAssignmentsRow, error)
 	GetLocationByID(ctx context.Context, id int32) (ViewLocation, error)
 	GetLocations(ctx context.Context) ([]ViewLocation, error)
+	GetLocationsForPlacement(ctx context.Context, worldID int32) ([]ViewLocation, error)
 	GetMapAssignments(ctx context.Context, mapID int32) (GetMapAssignmentsRow, error)
 	GetMapByID(ctx context.Context, id int32) (ViewMap, error)
 	GetMapLayerByID(ctx context.Context, mapLayerID int32) (ViewMapLayer, error)
