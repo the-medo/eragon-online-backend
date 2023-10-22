@@ -125,6 +125,32 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
+		mapPinTypeGroup, err := q.CreateMapPinTypeGroup(ctx, "World - "+fmt.Sprint(world.Name))
+		if err != nil {
+			return err
+		}
+
+		_, err = q.CreateWorldMapPinTypeGroup(ctx, CreateWorldMapPinTypeGroupParams{
+			WorldID:           world.ID,
+			MapPinTypeGroupID: mapPinTypeGroup.ID,
+		})
+		if err != nil {
+			return err
+		}
+
+		_, err = q.CreateMapPinType(ctx, CreateMapPinTypeParams{
+			MapPinTypeGroupID: mapPinTypeGroup.ID,
+			Shape:             PinShapePin,
+			BackgroundColor:   sql.NullString{String: "#ffffff", Valid: true},
+			BorderColor:       sql.NullString{String: "#000000", Valid: true},
+			IconColor:         sql.NullString{String: "#000000", Valid: true},
+			Width:             sql.NullInt32{Int32: 24, Valid: true},
+			Section:           "Base",
+		})
+		if err != nil {
+			return err
+		}
+
 		result = ViewWorld{
 			ID:               world.ID,
 			Name:             world.Name,
