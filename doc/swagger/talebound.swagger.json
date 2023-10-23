@@ -615,14 +615,14 @@
         },
         "parameters": [
           {
-            "name": "placement.worldId",
+            "name": "worldId",
             "in": "query",
             "required": false,
             "type": "integer",
             "format": "int32"
           },
           {
-            "name": "placement.questId",
+            "name": "questId",
             "in": "query",
             "required": false,
             "type": "integer",
