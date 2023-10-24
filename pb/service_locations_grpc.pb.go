@@ -20,10 +20,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Locations_UpdateLocation_FullMethodName = "/pb.Locations/UpdateLocation"
-	Locations_GetLocations_FullMethodName   = "/pb.Locations/GetLocations"
-	Locations_CreateLocation_FullMethodName = "/pb.Locations/CreateLocation"
-	Locations_DeleteLocation_FullMethodName = "/pb.Locations/DeleteLocation"
+	Locations_UpdateLocation_FullMethodName     = "/pb.Locations/UpdateLocation"
+	Locations_GetLocations_FullMethodName       = "/pb.Locations/GetLocations"
+	Locations_CreateLocation_FullMethodName     = "/pb.Locations/CreateLocation"
+	Locations_DeleteLocation_FullMethodName     = "/pb.Locations/DeleteLocation"
+	Locations_DeleteBulkLocation_FullMethodName = "/pb.Locations/DeleteBulkLocation"
 )
 
 // LocationsClient is the client API for Locations service.
@@ -34,6 +35,7 @@ type LocationsClient interface {
 	GetLocations(ctx context.Context, in *LocationPlacement, opts ...grpc.CallOption) (*GetLocationsResponse, error)
 	CreateLocation(ctx context.Context, in *CreateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error)
 	DeleteLocation(ctx context.Context, in *DeleteLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteBulkLocation(ctx context.Context, in *DeleteBulkLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type locationsClient struct {
@@ -80,6 +82,15 @@ func (c *locationsClient) DeleteLocation(ctx context.Context, in *DeleteLocation
 	return out, nil
 }
 
+func (c *locationsClient) DeleteBulkLocation(ctx context.Context, in *DeleteBulkLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Locations_DeleteBulkLocation_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LocationsServer is the server API for Locations service.
 // All implementations must embed UnimplementedLocationsServer
 // for forward compatibility
@@ -88,6 +99,7 @@ type LocationsServer interface {
 	GetLocations(context.Context, *LocationPlacement) (*GetLocationsResponse, error)
 	CreateLocation(context.Context, *CreateLocationRequest) (*ViewLocation, error)
 	DeleteLocation(context.Context, *DeleteLocationRequest) (*emptypb.Empty, error)
+	DeleteBulkLocation(context.Context, *DeleteBulkLocationRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedLocationsServer()
 }
 
@@ -106,6 +118,9 @@ func (UnimplementedLocationsServer) CreateLocation(context.Context, *CreateLocat
 }
 func (UnimplementedLocationsServer) DeleteLocation(context.Context, *DeleteLocationRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteLocation not implemented")
+}
+func (UnimplementedLocationsServer) DeleteBulkLocation(context.Context, *DeleteBulkLocationRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBulkLocation not implemented")
 }
 func (UnimplementedLocationsServer) mustEmbedUnimplementedLocationsServer() {}
 
@@ -192,6 +207,24 @@ func _Locations_DeleteLocation_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Locations_DeleteBulkLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBulkLocationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LocationsServer).DeleteBulkLocation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Locations_DeleteBulkLocation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LocationsServer).DeleteBulkLocation(ctx, req.(*DeleteBulkLocationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Locations_ServiceDesc is the grpc.ServiceDesc for Locations service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -214,6 +247,10 @@ var Locations_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteLocation",
 			Handler:    _Locations_DeleteLocation_Handler,
+		},
+		{
+			MethodName: "DeleteBulkLocation",
+			Handler:    _Locations_DeleteBulkLocation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

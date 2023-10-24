@@ -264,6 +264,53 @@ func (x *CreateLocationRequest) GetThumbnailImageId() int32 {
 	return 0
 }
 
+type DeleteBulkLocationRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	LocationIds []int32 `protobuf:"varint,1,rep,packed,name=locationIds,proto3" json:"locationIds,omitempty"`
+}
+
+func (x *DeleteBulkLocationRequest) Reset() {
+	*x = DeleteBulkLocationRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_services_locations_rpc_location_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteBulkLocationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBulkLocationRequest) ProtoMessage() {}
+
+func (x *DeleteBulkLocationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_services_locations_rpc_location_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBulkLocationRequest.ProtoReflect.Descriptor instead.
+func (*DeleteBulkLocationRequest) Descriptor() ([]byte, []int) {
+	return file_services_locations_rpc_location_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *DeleteBulkLocationRequest) GetLocationIds() []int32 {
+	if x != nil {
+		return x.LocationIds
+	}
+	return nil
+}
+
 type DeleteLocationRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -275,7 +322,7 @@ type DeleteLocationRequest struct {
 func (x *DeleteLocationRequest) Reset() {
 	*x = DeleteLocationRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_services_locations_rpc_location_proto_msgTypes[4]
+		mi := &file_services_locations_rpc_location_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -288,7 +335,7 @@ func (x *DeleteLocationRequest) String() string {
 func (*DeleteLocationRequest) ProtoMessage() {}
 
 func (x *DeleteLocationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_services_locations_rpc_location_proto_msgTypes[4]
+	mi := &file_services_locations_rpc_location_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -301,7 +348,7 @@ func (x *DeleteLocationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteLocationRequest.ProtoReflect.Descriptor instead.
 func (*DeleteLocationRequest) Descriptor() ([]byte, []int) {
-	return file_services_locations_rpc_location_proto_rawDescGZIP(), []int{4}
+	return file_services_locations_rpc_location_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DeleteLocationRequest) GetLocationId() int32 {
@@ -358,13 +405,17 @@ var file_services_locations_rpc_location_proto_rawDesc = []byte{
 	0x6e, 0x61, 0x69, 0x6c, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x49, 0x64, 0x88, 0x01, 0x01, 0x42, 0x0e,
 	0x0a, 0x0c, 0x5f, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x13,
 	0x0a, 0x11, 0x5f, 0x74, 0x68, 0x75, 0x6d, 0x62, 0x6e, 0x61, 0x69, 0x6c, 0x49, 0x6d, 0x61, 0x67,
-	0x65, 0x49, 0x64, 0x22, 0x37, 0x0a, 0x15, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4c, 0x6f, 0x63,
-	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1e, 0x0a, 0x0a,
-	0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05,
-	0x52, 0x0a, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x42, 0x2a, 0x5a, 0x28,
-	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d,
-	0x65, 0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61,
-	0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x49, 0x64, 0x22, 0x3d, 0x0a, 0x19, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x75, 0x6c,
+	0x6b, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x20, 0x0a, 0x0b, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x73, 0x18,
+	0x01, 0x20, 0x03, 0x28, 0x05, 0x52, 0x0b, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49,
+	0x64, 0x73, 0x22, 0x37, 0x0a, 0x15, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4c, 0x6f, 0x63, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1e, 0x0a, 0x0a, 0x6c,
+	0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52,
+	0x0a, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x42, 0x2a, 0x5a, 0x28, 0x67,
+	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d, 0x65,
+	0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61, 0x63,
+	0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -379,20 +430,21 @@ func file_services_locations_rpc_location_proto_rawDescGZIP() []byte {
 	return file_services_locations_rpc_location_proto_rawDescData
 }
 
-var file_services_locations_rpc_location_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_services_locations_rpc_location_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_services_locations_rpc_location_proto_goTypes = []interface{}{
-	(*GetLocationsRequest)(nil),   // 0: pb.GetLocationsRequest
-	(*GetLocationsResponse)(nil),  // 1: pb.GetLocationsResponse
-	(*UpdateLocationRequest)(nil), // 2: pb.UpdateLocationRequest
-	(*CreateLocationRequest)(nil), // 3: pb.CreateLocationRequest
-	(*DeleteLocationRequest)(nil), // 4: pb.DeleteLocationRequest
-	(*LocationPlacement)(nil),     // 5: pb.LocationPlacement
-	(*ViewLocation)(nil),          // 6: pb.ViewLocation
+	(*GetLocationsRequest)(nil),       // 0: pb.GetLocationsRequest
+	(*GetLocationsResponse)(nil),      // 1: pb.GetLocationsResponse
+	(*UpdateLocationRequest)(nil),     // 2: pb.UpdateLocationRequest
+	(*CreateLocationRequest)(nil),     // 3: pb.CreateLocationRequest
+	(*DeleteBulkLocationRequest)(nil), // 4: pb.DeleteBulkLocationRequest
+	(*DeleteLocationRequest)(nil),     // 5: pb.DeleteLocationRequest
+	(*LocationPlacement)(nil),         // 6: pb.LocationPlacement
+	(*ViewLocation)(nil),              // 7: pb.ViewLocation
 }
 var file_services_locations_rpc_location_proto_depIdxs = []int32{
-	5, // 0: pb.GetLocationsRequest.placement:type_name -> pb.LocationPlacement
-	6, // 1: pb.GetLocationsResponse.locations:type_name -> pb.ViewLocation
-	5, // 2: pb.CreateLocationRequest.placement:type_name -> pb.LocationPlacement
+	6, // 0: pb.GetLocationsRequest.placement:type_name -> pb.LocationPlacement
+	7, // 1: pb.GetLocationsResponse.locations:type_name -> pb.ViewLocation
+	6, // 2: pb.CreateLocationRequest.placement:type_name -> pb.LocationPlacement
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -456,6 +508,18 @@ func file_services_locations_rpc_location_proto_init() {
 			}
 		}
 		file_services_locations_rpc_location_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteBulkLocationRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_services_locations_rpc_location_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteLocationRequest); i {
 			case 0:
 				return &v.state
@@ -476,7 +540,7 @@ func file_services_locations_rpc_location_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_services_locations_rpc_location_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

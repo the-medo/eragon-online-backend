@@ -47,11 +47,21 @@ service Locations {
 
   rpc DeleteLocation(DeleteLocationRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
+      delete: "/locations/{locationId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes location from the world or quest";
+      summary: "Delete location";
+    };
+  };
+
+  rpc DeleteBulkLocation(DeleteBulkLocationRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
       delete: "/locations"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "deletes location from the world";
-      summary: "Delete world location";
+      description: "deletes multiple locations from the world or quest";
+      summary: "Delete multiple locations";
     };
   };
 }
