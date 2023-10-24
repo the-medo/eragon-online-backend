@@ -22,7 +22,7 @@ func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.
 	if request.GetPlacement().WorldId != nil {
 		_, err := server.CheckWorldAdmin(ctx, request.GetPlacement().GetWorldId(), false)
 		if err != nil {
-			return nil, status.Errorf(codes.PermissionDenied, "failed to add world tag: %v", err)
+			return nil, status.Errorf(codes.PermissionDenied, "failed to create location: %v", err)
 		}
 	}
 
@@ -38,7 +38,7 @@ func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.
 		},
 		ThumbnailImageID: sql.NullInt32{
 			Int32: request.GetThumbnailImageId(),
-			Valid: true,
+			Valid: request.ThumbnailImageId != nil,
 		},
 	}
 
