@@ -44,6 +44,7 @@ func (q *Queries) CreateLocation(ctx context.Context, arg CreateLocationParams) 
 const createWorldLocation = `-- name: CreateWorldLocation :one
 INSERT INTO world_locations (world_id, location_id)
 VALUES ($1, $2)
+ON CONFLICT (world_id, location_id) DO NOTHING
 RETURNING world_id, location_id
 `
 
@@ -107,7 +108,7 @@ func (q *Queries) GetLocationAssignments(ctx context.Context, locationID int32) 
 }
 
 const getLocationByID = `-- name: GetLocationByID :one
-SELECT id, name, description, post_id, thumbnail_image_id, thumbnail_image_url FROM view_locations WHERE id = $1
+SELECT id, name, description, post_id, thumbnail_image_id, thumbnail_image_url, post_title FROM view_locations WHERE id = $1
 `
 
 func (q *Queries) GetLocationByID(ctx context.Context, id int32) (ViewLocation, error) {
@@ -120,12 +121,13 @@ func (q *Queries) GetLocationByID(ctx context.Context, id int32) (ViewLocation, 
 		&i.PostID,
 		&i.ThumbnailImageID,
 		&i.ThumbnailImageUrl,
+		&i.PostTitle,
 	)
 	return i, err
 }
 
 const getLocations = `-- name: GetLocations :many
-SELECT id, name, description, post_id, thumbnail_image_id, thumbnail_image_url FROM view_locations
+SELECT id, name, description, post_id, thumbnail_image_id, thumbnail_image_url, post_title FROM view_locations
 `
 
 func (q *Queries) GetLocations(ctx context.Context) ([]ViewLocation, error) {
@@ -144,6 +146,7 @@ func (q *Queries) GetLocations(ctx context.Context) ([]ViewLocation, error) {
 			&i.PostID,
 			&i.ThumbnailImageID,
 			&i.ThumbnailImageUrl,
+			&i.PostTitle,
 		); err != nil {
 			return nil, err
 		}
@@ -160,7 +163,7 @@ func (q *Queries) GetLocations(ctx context.Context) ([]ViewLocation, error) {
 
 const getLocationsForPlacement = `-- name: GetLocationsForPlacement :many
 SELECT
-    vl.id, vl.name, vl.description, vl.post_id, vl.thumbnail_image_id, vl.thumbnail_image_url
+    vl.id, vl.name, vl.description, vl.post_id, vl.thumbnail_image_id, vl.thumbnail_image_url, vl.post_title
 FROM
     view_locations vl
     LEFT JOIN world_locations wl ON vl.id = wl.location_id
@@ -184,6 +187,7 @@ func (q *Queries) GetLocationsForPlacement(ctx context.Context, worldID int32) (
 			&i.PostID,
 			&i.ThumbnailImageID,
 			&i.ThumbnailImageUrl,
+			&i.PostTitle,
 		); err != nil {
 			return nil, err
 		}
@@ -199,7 +203,7 @@ func (q *Queries) GetLocationsForPlacement(ctx context.Context, worldID int32) (
 }
 
 const getWorldLocations = `-- name: GetWorldLocations :many
-SELECT l.id, l.name, l.description, l.post_id, l.thumbnail_image_id, l.thumbnail_image_url
+SELECT l.id, l.name, l.description, l.post_id, l.thumbnail_image_id, l.thumbnail_image_url, l.post_title
 FROM view_locations l
     JOIN world_locations wl ON l.id = wl.location_id
 WHERE wl.world_id = $1
@@ -221,6 +225,7 @@ func (q *Queries) GetWorldLocations(ctx context.Context, worldID int32) ([]ViewL
 			&i.PostID,
 			&i.ThumbnailImageID,
 			&i.ThumbnailImageUrl,
+			&i.PostTitle,
 		); err != nil {
 			return nil, err
 		}

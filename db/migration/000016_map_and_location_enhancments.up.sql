@@ -56,3 +56,28 @@ BEGIN
     DELETE FROM maps WHERE id = p_map_id;
 END;
 $$;
+
+DROP VIEW view_locations;
+CREATE VIEW view_locations AS
+SELECT
+    l.*,
+    i.url as thumbnail_image_url,
+    p.title as post_title
+FROM
+    locations l
+    LEFT JOIN images i ON l.thumbnail_image_id = i.id
+    LEFT JOIN posts p ON l.post_id = p.id
+;
+
+
+CREATE TABLE "world_posts" (
+    "world_id" int NOT NULL,
+    "post_id" int NOT NULL
+);
+ALTER TABLE "world_posts" ADD FOREIGN KEY ("world_id") REFERENCES "worlds" ("id");
+ALTER TABLE "world_posts" ADD FOREIGN KEY ("post_id") REFERENCES "posts" ("id");
+CREATE UNIQUE INDEX ON "world_posts" ("world_id", "post_id");
+
+CREATE UNIQUE INDEX ON "world_map_pin_type_groups" ("world_id", "map_pin_type_group_id");
+CREATE UNIQUE INDEX ON "world_maps" ("world_id", "map_id");
+CREATE UNIQUE INDEX ON "world_locations" ("world_id", "location_id");

@@ -19,6 +19,10 @@ func ConvertViewLocation(viewLocation db.ViewLocation) *pb.ViewLocation {
 		pbLocation.PostId = &viewLocation.PostID.Int32
 	}
 
+	if viewLocation.PostTitle.Valid == true {
+		pbLocation.PostTitle = &viewLocation.PostTitle.String
+	}
+
 	if viewLocation.ThumbnailImageID.Valid == true {
 		pbLocation.ThumbnailImageId = &viewLocation.ThumbnailImageID.Int32
 	}

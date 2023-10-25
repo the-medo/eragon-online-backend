@@ -69,6 +69,25 @@ func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, e
 	return i, err
 }
 
+const createWorldPost = `-- name: CreateWorldPost :one
+INSERT INTO world_posts (world_id, post_id)
+VALUES ($1, $2)
+ON CONFLICT (world_id, post_id) DO NOTHING
+RETURNING world_id, post_id
+`
+
+type CreateWorldPostParams struct {
+	WorldID int32 `json:"world_id"`
+	PostID  int32 `json:"post_id"`
+}
+
+func (q *Queries) CreateWorldPost(ctx context.Context, arg CreateWorldPostParams) (WorldPost, error) {
+	row := q.db.QueryRowContext(ctx, createWorldPost, arg.WorldID, arg.PostID)
+	var i WorldPost
+	err := row.Scan(&i.WorldID, &i.PostID)
+	return i, err
+}
+
 const deletePost = `-- name: DeletePost :exec
 UPDATE posts
 SET
@@ -79,6 +98,21 @@ WHERE
 
 func (q *Queries) DeletePost(ctx context.Context, postID int32) error {
 	_, err := q.db.ExecContext(ctx, deletePost, postID)
+	return err
+}
+
+const deleteWorldPost = `-- name: DeleteWorldPost :exec
+DELETE FROM world_posts
+WHERE world_id = $1 AND post_id = $2
+`
+
+type DeleteWorldPostParams struct {
+	WorldID int32 `json:"world_id"`
+	PostID  int32 `json:"post_id"`
+}
+
+func (q *Queries) DeleteWorldPost(ctx context.Context, arg DeleteWorldPostParams) error {
+	_, err := q.db.ExecContext(ctx, deleteWorldPost, arg.WorldID, arg.PostID)
 	return err
 }
 

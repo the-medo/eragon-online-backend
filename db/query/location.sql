@@ -35,6 +35,7 @@ CALL delete_location(sqlc.arg(id));
 -- name: CreateWorldLocation :one
 INSERT INTO world_locations (world_id, location_id)
 VALUES (sqlc.arg(world_id), sqlc.arg(location_id))
+ON CONFLICT (world_id, location_id) DO NOTHING
 RETURNING *;
 
 -- name: GetWorldLocations :many

@@ -134,3 +134,14 @@ SELECT
     description,
     thumbnail_img_id
 FROM post_history WHERE id = sqlc.arg(post_history_id);
+
+
+-- name: CreateWorldPost :one
+INSERT INTO world_posts (world_id, post_id)
+VALUES (sqlc.arg(world_id), sqlc.arg(post_id))
+ON CONFLICT (world_id, post_id) DO NOTHING
+RETURNING *;
+
+-- name: DeleteWorldPost :exec
+DELETE FROM world_posts
+WHERE world_id = sqlc.arg(world_id) AND post_id = sqlc.arg(post_id);

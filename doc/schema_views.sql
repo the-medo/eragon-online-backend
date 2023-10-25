@@ -81,6 +81,17 @@ CREATE VIEW view_menu_item_posts AS
 SELECT * FROM menu_item_posts mip JOIN view_posts vp ON mip.post_id = vp.id;
 
 
+CREATE VIEW view_locations AS
+SELECT
+    l.*,
+    i.url as thumbnail_image_url,
+    p.title as post_title
+FROM
+    locations l
+        LEFT JOIN images i ON l.thumbnail_image_id = i.id
+        LEFT JOIN posts p ON l.post_id = p.id
+;
+
 CREATE VIEW view_maps AS
 SELECT
     m.*,
@@ -89,17 +100,6 @@ FROM
     maps m
         LEFT JOIN images i ON m.thumbnail_image_id = i.id
 ;
-
-
-CREATE VIEW view_locations AS
-SELECT
-    l.*,
-    i.url as thumbnail_image_url
-FROM
-    locations l
-        LEFT JOIN images i ON l.thumbnail_image_id = i.id
-;
-
 
 CREATE VIEW view_map_layers AS
 SELECT

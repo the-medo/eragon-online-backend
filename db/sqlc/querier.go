@@ -41,6 +41,7 @@ type Querier interface {
 	CreateWorldMap(ctx context.Context, arg CreateWorldMapParams) (WorldMap, error)
 	CreateWorldMapPinTypeGroup(ctx context.Context, arg CreateWorldMapPinTypeGroupParams) (WorldMapPinTypeGroup, error)
 	CreateWorldMenu(ctx context.Context, arg CreateWorldMenuParams) (WorldMenu, error)
+	CreateWorldPost(ctx context.Context, arg CreateWorldPostParams) (WorldPost, error)
 	CreateWorldTag(ctx context.Context, arg CreateWorldTagParams) (WorldTag, error)
 	CreateWorldTagAvailable(ctx context.Context, tag string) (WorldTagsAvailable, error)
 	DeleteAllWorldActivity(ctx context.Context, worldID int32) error
@@ -72,6 +73,7 @@ type Querier interface {
 	DeleteWorldMap(ctx context.Context, arg DeleteWorldMapParams) error
 	DeleteWorldMapPinTypeGroup(ctx context.Context, arg DeleteWorldMapPinTypeGroupParams) error
 	DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error
+	DeleteWorldPost(ctx context.Context, arg DeleteWorldPostParams) error
 	DeleteWorldTag(ctx context.Context, arg DeleteWorldTagParams) error
 	DeleteWorldTagAvailable(ctx context.Context, id int32) error
 	EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error

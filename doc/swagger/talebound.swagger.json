@@ -5550,6 +5550,9 @@
           "type": "integer",
           "format": "int32"
         },
+        "postTitle": {
+          "type": "string"
+        },
         "thumbnailImageId": {
           "type": "integer",
           "format": "int32"

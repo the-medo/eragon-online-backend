@@ -425,6 +425,10 @@ Table map_pin_type_group {
 Table world_map_pin_type_groups {
   world_id int [not null, ref: > worlds.id]
   map_pin_type_group_id int [not null, ref: > map_pin_type_group.id]
+
+  indexes {
+    (world_id, map_pin_type_group_id) [unique]
+  }
 }
 
 Table map_pin_types {
@@ -443,11 +447,28 @@ Table map_pin_types {
 Table world_maps {
   world_id int [not null, ref: > worlds.id]
   map_id int [not null, ref: > maps.id]
+
+  indexes {
+    (world_id, map_id) [unique]
+  }
 }
 
 Table world_locations {
   world_id int [not null, ref: > worlds.id]
   location_id int [not null, ref: > locations.id]
+
+  indexes {
+    (world_id, location_id) [unique]
+  }
+}
+
+Table world_posts {
+  world_id int [not null, ref: > worlds.id]
+  post_id int [not null, ref: > posts.id]
+
+  indexes {
+    (world_id, post_id) [unique]
+  }
 }
 
 Table entities {

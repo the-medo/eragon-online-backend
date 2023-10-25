@@ -528,6 +528,7 @@ type ViewLocation struct {
 	PostID            sql.NullInt32  `json:"post_id"`
 	ThumbnailImageID  sql.NullInt32  `json:"thumbnail_image_id"`
 	ThumbnailImageUrl sql.NullString `json:"thumbnail_image_url"`
+	PostTitle         sql.NullString `json:"post_title"`
 }
 
 type ViewMap struct {
@@ -713,6 +714,11 @@ type WorldMapPinTypeGroup struct {
 type WorldMenu struct {
 	WorldID int32 `json:"world_id"`
 	MenuID  int32 `json:"menu_id"`
+}
+
+type WorldPost struct {
+	WorldID int32 `json:"world_id"`
+	PostID  int32 `json:"post_id"`
 }
 
 type WorldTag struct {
