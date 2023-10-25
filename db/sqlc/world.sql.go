@@ -46,7 +46,10 @@ func (q *Queries) CreateWorld(ctx context.Context, arg CreateWorldParams) (World
 }
 
 const createWorldMapPinTypeGroup = `-- name: CreateWorldMapPinTypeGroup :one
-INSERT INTO world_map_pin_type_groups (world_id, map_pin_type_group_id) VALUES ($1, $2) RETURNING world_id, map_pin_type_group_id
+INSERT INTO world_map_pin_type_groups (world_id, map_pin_type_group_id)
+VALUES ($1, $2)
+ON CONFLICT (world_id, map_pin_type_group_id) DO NOTHING
+RETURNING world_id, map_pin_type_group_id
 `
 
 type CreateWorldMapPinTypeGroupParams struct {

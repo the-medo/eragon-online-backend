@@ -169,3 +169,64 @@ BEGIN
 
 END;
 $$;
+
+CREATE OR REPLACE PROCEDURE delete_location(p_location_id INT)
+    LANGUAGE plpgsql
+AS $$
+DECLARE
+    _egc RECORD;
+BEGIN
+    -- remove location from associated map pins
+    UPDATE map_pins SET location_id = NULL WHERE location_id = p_location_id;
+
+    -- Delete all the entities of the location
+    FOR _egc IN (
+        SELECT
+            content.id as entity_group_content_id,
+            e.id as entity_id
+        FROM
+            entity_group_content content
+                JOIN entities e ON e.id = content.content_entity_id
+        WHERE
+                e.location_id = p_location_id
+    ) LOOP
+            CALL delete_entity_group_content(_egc.entity_group_content_id, _egc.entity_id, NULL);
+        END LOOP;
+
+    DELETE FROM world_locations WHERE location_id = p_location_id;
+
+    DELETE FROM locations WHERE id = p_location_id;
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE assign_post_by_menu_id(p_post_id integer, p_menu_id integer)
+    LANGUAGE plpgsql AS $$
+DECLARE
+    v_world_id INT;
+    v_quest_id INT;
+    v_character_id INT;
+    v_system_id INT;
+BEGIN
+
+    SELECT "world_id", "quest_id", "character_id", "system_id" INTO v_world_id, v_quest_id, v_character_id, v_system_id
+    FROM "view_connections_menus"
+    WHERE "menu_id" = p_menu_id;
+
+    IF v_world_id > 0 THEN
+        INSERT INTO world_posts (world_id, post_id) VALUES (v_world_id, p_post_id) ON CONFLICT DO NOTHING;
+    END IF;
+
+    IF v_quest_id > 0 THEN
+        RAISE EXCEPTION 'Assigning posts into quest is not implemented yet';
+    END IF;
+
+    IF v_character_id > 0 THEN
+        RAISE EXCEPTION 'Assigning posts into character is not implemented yet';
+    END IF;
+
+    IF v_system_id > 0 THEN
+        RAISE EXCEPTION 'Assigning posts into system is not implemented yet';
+    END IF;
+
+END;
+$$;

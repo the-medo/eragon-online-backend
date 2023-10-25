@@ -12,6 +12,7 @@ import (
 const createWorldMenu = `-- name: CreateWorldMenu :one
 INSERT INTO world_menu (world_id, menu_id)
 VALUES ($1, $2)
+ON CONFLICT (world_id, menu_id) DO NOTHING
 RETURNING world_id, menu_id
 `
 

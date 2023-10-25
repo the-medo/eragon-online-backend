@@ -50,7 +50,7 @@ BEGIN
         INSERT INTO map_pin_type_group(name) VALUES ('World - ' || world.name)
         RETURNING id INTO _map_pin_type_group_id;
 
-        INSERT INTO world_map_pin_type_groups(world_id, map_pin_type_group_id) VALUES (world.id, _map_pin_type_group_id);
+        INSERT INTO world_map_pin_type_groups(world_id, map_pin_type_group_id) VALUES (world.id, _map_pin_type_group_id) ON CONFLICT (world_id, map_pin_type_group_id) DO NOTHING;
 
         -- 2. Update existing map_pin_types in this world to have the new map_pin_type_group_id
         UPDATE map_pin_types

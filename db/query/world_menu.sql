@@ -2,6 +2,7 @@
 -- name: CreateWorldMenu :one
 INSERT INTO world_menu (world_id, menu_id)
 VALUES (sqlc.arg(world_id), sqlc.arg(menu_id))
+ON CONFLICT (world_id, menu_id) DO NOTHING
 RETURNING *;
 
 -- name: DeleteWorldMenu :exec

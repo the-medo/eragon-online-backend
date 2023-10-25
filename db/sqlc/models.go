@@ -521,6 +521,21 @@ type VerifyEmail struct {
 	ExpiredAt  time.Time `json:"expired_at"`
 }
 
+type ViewConnectionsMenu struct {
+	MenuID      int32       `json:"menu_id"`
+	WorldID     int32       `json:"world_id"`
+	QuestID     interface{} `json:"quest_id"`
+	CharacterID interface{} `json:"character_id"`
+	SystemID    interface{} `json:"system_id"`
+}
+
+type ViewConnectionsWorldPost struct {
+	WorldID    int32         `json:"world_id"`
+	PostID     sql.NullInt32 `json:"post_id"`
+	HelperName interface{}   `json:"helper_name"`
+	HelperID   int32         `json:"helper_id"`
+}
+
 type ViewLocation struct {
 	ID                int32          `json:"id"`
 	Name              string         `json:"name"`

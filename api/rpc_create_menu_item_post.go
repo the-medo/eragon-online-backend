@@ -58,6 +58,14 @@ func (server *Server) CreateMenuItemPost(ctx context.Context, req *pb.CreateMenu
 		return nil, status.Errorf(codes.Internal, "failed to create menu item post [CreatePost]: %s", err)
 	}
 
+	err = server.Store.AssignPostByMenuId(ctx, db.AssignPostByMenuIdParams{
+		PostID: newPost.ID,
+		MenuID: req.GetMenuId(),
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to assign post: %s", err)
+	}
+
 	post, err := server.Store.GetPostById(ctx, newPost.ID)
 
 	rsp := &pb.MenuItemPost{

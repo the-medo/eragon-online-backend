@@ -186,6 +186,7 @@ func (q *Queries) CreateMapPinTypeGroup(ctx context.Context, name string) (MapPi
 const createWorldMap = `-- name: CreateWorldMap :one
 INSERT INTO world_maps (world_id, map_id)
 VALUES ($1, $2)
+ON CONFLICT (world_id, map_id) DO NOTHING
 RETURNING world_id, map_id
 `
 

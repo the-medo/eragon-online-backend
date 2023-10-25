@@ -1,10 +1,13 @@
+DROP PROCEDURE IF EXISTS assign_post_by_menu_id(INT, INT);
+
 DROP INDEX world_map_pin_type_groups_world_id_map_pin_type_group_id_idx;
 DROP INDEX world_maps_world_id_map_id_idx;
 DROP INDEX world_locations_world_id_location_id_idx;
 
-
 DROP TABLE IF EXISTS world_posts;
 
+DROP VIEW view_connections_menus;
+DROP VIEW view_connections_world_posts;
 DROP VIEW view_locations;
 CREATE VIEW view_locations AS
 SELECT

@@ -74,6 +74,7 @@ DELETE FROM map_layers WHERE map_id = sqlc.arg(map_id);
 -- name: CreateWorldMap :one
 INSERT INTO world_maps (world_id, map_id)
 VALUES (sqlc.arg(world_id), sqlc.arg(map_id))
+ON CONFLICT (world_id, map_id) DO NOTHING
 RETURNING *;
 
 -- name: DeleteWorldMap :exec

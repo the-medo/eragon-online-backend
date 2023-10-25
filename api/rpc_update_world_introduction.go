@@ -59,6 +59,17 @@ func (server *Server) UpdateWorldIntroduction(ctx context.Context, req *pb.Updat
 			},
 		}
 		_, err = server.Store.UpdateWorld(ctx, updateWorldArg)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to update world: %s", err)
+		}
+
+		_, err = server.Store.CreateWorldPost(ctx, db.CreateWorldPostParams{
+			WorldID: req.WorldId,
+			PostID:  post.ID,
+		})
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to create world post: %s", err)
+		}
 
 		viewPost, err := server.Store.GetPostById(ctx, post.ID)
 		if err != nil {

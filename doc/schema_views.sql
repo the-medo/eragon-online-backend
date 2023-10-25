@@ -109,3 +109,80 @@ FROM
     map_layers ml
         LEFT JOIN images i ON ml.image_id = i.id
 ;
+
+
+CREATE VIEW view_connections_world_posts AS
+SELECT
+    wl.world_id as world_id,
+    l.post_id as post_id,
+    'locations' as helper_name,
+    l.id as helper_id
+FROM
+    world_locations wl
+    JOIN locations l ON wl.location_id = l.id JOIN posts p ON l.post_id = p.id
+WHERE l.post_id IS NOT NULL
+
+UNION ALL
+
+SELECT
+    wm.world_id as world_id,
+    mip.post_id,
+    'menu_item_posts',
+    mip.menu_id
+FROM
+    world_menu wm
+    JOIN menu_item_posts mip ON mip.menu_id = wm.menu_id
+
+UNION ALL
+
+SELECT
+    wm.world_id,
+    mi.description_post_id,
+    'menu_items',
+    mi.id
+FROM
+    world_menu wm
+    JOIN menu_items mi ON mi.menu_id = wm.menu_id
+WHERE mi.description_post_id IS NOT NULL
+
+UNION ALL
+
+SELECT
+    id,
+    description_post_id,
+    'worlds',
+    id
+FROM
+    worlds
+WHERE description_post_id IS NOT NULL
+
+UNION ALL
+
+SELECT
+    wm.world_id,
+    e.post_id,
+    'entities',
+    e.id
+FROM
+    world_menu wm
+    JOIN menu_items mi ON mi.menu_id = wm.menu_id
+    JOIN get_recursive_entities(mi.entity_group_id) re ON 1 = 1
+    JOIN entities e ON e.id = re.content_entity_id
+WHERE e.post_id IS NOT NULL
+;
+
+
+CREATE VIEW view_connections_menus AS
+SELECT
+    m.id as menu_id,
+    COALESCE(wm.world_id, 0) as world_id,
+    0 as quest_id,
+    0 as character_id,
+    0 as system_id
+FROM
+    menus m
+        LEFT JOIN world_menu wm ON m.id = wm.menu_id
+--     LEFT JOIN quest_menu q ON m.id = q.menu_id
+--     LEFT JOIN character_menu c ON m.id = c.menu_id
+--     LEFT JOIN system_menu s ON m.id = s.menu_id
+;

@@ -10,6 +10,20 @@ import (
 	"database/sql"
 )
 
+const assignPostByMenuId = `-- name: AssignPostByMenuId :exec
+CALL assign_post_by_menu_id($1, $2)
+`
+
+type AssignPostByMenuIdParams struct {
+	PostID int32 `json:"post_id"`
+	MenuID int32 `json:"menu_id"`
+}
+
+func (q *Queries) AssignPostByMenuId(ctx context.Context, arg AssignPostByMenuIdParams) error {
+	_, err := q.db.ExecContext(ctx, assignPostByMenuId, arg.PostID, arg.MenuID)
+	return err
+}
+
 const createMenu = `-- name: CreateMenu :one
 INSERT INTO menus (menu_code, menu_header_img_id)
 VALUES ($1, $2)

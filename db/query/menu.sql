@@ -99,3 +99,6 @@ SELECT * FROM view_menu_item_posts WHERE menu_item_id = sqlc.arg(menu_item_id);
 
 -- name: GetMenuItemPostsByMenuId :many
 SELECT * FROM view_menu_item_posts WHERE menu_id = sqlc.arg(menu_id);
+
+-- name: AssignPostByMenuId :exec
+CALL assign_post_by_menu_id(sqlc.arg(post_id), sqlc.arg(menu_id));
