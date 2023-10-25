@@ -17,7 +17,7 @@ func (server *ServiceLocations) DeleteBulkLocation(ctx context.Context, request 
 
 	//TODO: probably not the best way to do this
 	for _, locationId := range request.GetLocationIds() {
-		err := server.CheckLocationAccess(ctx, locationId, false)
+		_, _, err := server.CheckLocationAccess(ctx, locationId, false)
 		if err != nil {
 			return nil, err
 		}

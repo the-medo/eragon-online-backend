@@ -791,6 +791,39 @@
         ]
       }
     },
+    "/locations/{locationId}/posts": {
+      "post": {
+        "summary": "Create post for location",
+        "description": "creates a new post and assigns it to location in the world or a quest",
+        "operationId": "Locations_CreateLocationPost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewLocation"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Locations"
+        ]
+      }
+    },
     "/maps": {
       "get": {
         "summary": "Get maps",

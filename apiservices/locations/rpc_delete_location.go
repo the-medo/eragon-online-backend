@@ -15,7 +15,7 @@ func (server *ServiceLocations) DeleteLocation(ctx context.Context, request *pb.
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	err := server.CheckLocationAccess(ctx, request.GetLocationId(), false)
+	_, _, err := server.CheckLocationAccess(ctx, request.GetLocationId(), false)
 	if err != nil {
 		return nil, err
 	}

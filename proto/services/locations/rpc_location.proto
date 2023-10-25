@@ -29,6 +29,10 @@ message CreateLocationRequest {
   optional int32 thumbnailImageId = 4;
 }
 
+message CreateLocationPostRequest {
+  int32 locationId = 1;
+}
+
 message DeleteBulkLocationRequest {
   repeated int32 locationIds = 1;
 }

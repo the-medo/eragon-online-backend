@@ -64,4 +64,14 @@ service Locations {
       summary: "Delete multiple locations";
     };
   };
+
+  rpc CreateLocationPost(CreateLocationPostRequest) returns (ViewLocation) {
+    option (google.api.http) = {
+      post: "/locations/{locationId}/posts"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates a new post and assigns it to location in the world or a quest";
+      summary: "Create post for location";
+    };
+  };
 }

@@ -25,6 +25,7 @@ const (
 	Locations_CreateLocation_FullMethodName     = "/pb.Locations/CreateLocation"
 	Locations_DeleteLocation_FullMethodName     = "/pb.Locations/DeleteLocation"
 	Locations_DeleteBulkLocation_FullMethodName = "/pb.Locations/DeleteBulkLocation"
+	Locations_CreateLocationPost_FullMethodName = "/pb.Locations/CreateLocationPost"
 )
 
 // LocationsClient is the client API for Locations service.
@@ -36,6 +37,7 @@ type LocationsClient interface {
 	CreateLocation(ctx context.Context, in *CreateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error)
 	DeleteLocation(ctx context.Context, in *DeleteLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteBulkLocation(ctx context.Context, in *DeleteBulkLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateLocationPost(ctx context.Context, in *CreateLocationPostRequest, opts ...grpc.CallOption) (*ViewLocation, error)
 }
 
 type locationsClient struct {
@@ -91,6 +93,15 @@ func (c *locationsClient) DeleteBulkLocation(ctx context.Context, in *DeleteBulk
 	return out, nil
 }
 
+func (c *locationsClient) CreateLocationPost(ctx context.Context, in *CreateLocationPostRequest, opts ...grpc.CallOption) (*ViewLocation, error) {
+	out := new(ViewLocation)
+	err := c.cc.Invoke(ctx, Locations_CreateLocationPost_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LocationsServer is the server API for Locations service.
 // All implementations must embed UnimplementedLocationsServer
 // for forward compatibility
@@ -100,6 +111,7 @@ type LocationsServer interface {
 	CreateLocation(context.Context, *CreateLocationRequest) (*ViewLocation, error)
 	DeleteLocation(context.Context, *DeleteLocationRequest) (*emptypb.Empty, error)
 	DeleteBulkLocation(context.Context, *DeleteBulkLocationRequest) (*emptypb.Empty, error)
+	CreateLocationPost(context.Context, *CreateLocationPostRequest) (*ViewLocation, error)
 	mustEmbedUnimplementedLocationsServer()
 }
 
@@ -121,6 +133,9 @@ func (UnimplementedLocationsServer) DeleteLocation(context.Context, *DeleteLocat
 }
 func (UnimplementedLocationsServer) DeleteBulkLocation(context.Context, *DeleteBulkLocationRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBulkLocation not implemented")
+}
+func (UnimplementedLocationsServer) CreateLocationPost(context.Context, *CreateLocationPostRequest) (*ViewLocation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateLocationPost not implemented")
 }
 func (UnimplementedLocationsServer) mustEmbedUnimplementedLocationsServer() {}
 
@@ -225,6 +240,24 @@ func _Locations_DeleteBulkLocation_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Locations_CreateLocationPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateLocationPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LocationsServer).CreateLocationPost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Locations_CreateLocationPost_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LocationsServer).CreateLocationPost(ctx, req.(*CreateLocationPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Locations_ServiceDesc is the grpc.ServiceDesc for Locations service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -251,6 +284,10 @@ var Locations_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteBulkLocation",
 			Handler:    _Locations_DeleteBulkLocation_Handler,
+		},
+		{
+			MethodName: "CreateLocationPost",
+			Handler:    _Locations_CreateLocationPost_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
