@@ -2315,6 +2315,58 @@
       }
     },
     "/posts": {
+      "get": {
+        "summary": "Get posts",
+        "description": "returns posts based on placement",
+        "operationId": "Posts_GetPostsByPlacement",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetPostsByPlacementResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "questId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "characterId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "systemId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Posts"
+        ]
+      },
       "post": {
         "summary": "Create post",
         "description": "create completely new post",
@@ -5025,6 +5077,22 @@
             "type": "object",
             "$ref": "#/definitions/pbDataPostType"
           }
+        }
+      }
+    },
+    "pbGetPostsByPlacementResponse": {
+      "type": "object",
+      "properties": {
+        "posts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbPost"
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

@@ -125,6 +125,7 @@ type Querier interface {
 	GetPostHistoryByPostId(ctx context.Context, postID int32) ([]GetPostHistoryByPostIdRow, error)
 	GetPostTypeById(ctx context.Context, postTypeID int32) (PostType, error)
 	GetPostTypes(ctx context.Context) ([]PostType, error)
+	GetPostsByPlacement(ctx context.Context, arg GetPostsByPlacementParams) ([]GetPostsByPlacementRow, error)
 	GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdParams) ([]ViewPost, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUserByEmail(ctx context.Context, email string) (ViewUser, error)

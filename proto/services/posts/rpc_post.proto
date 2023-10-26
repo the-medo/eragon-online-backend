@@ -1,12 +1,24 @@
 syntax = "proto3";
 
 import "services/posts/post.proto";
+import "services/placements/placement.proto";
 
 package pb;
 
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
+
+message GetPostsByPlacementRequest {
+  Placement placement = 1;
+  optional int32 limit = 2;
+  optional int32 offset = 3;
+}
+
+message GetPostsByPlacementResponse {
+  repeated Post posts = 1;
+  int32 totalCount = 2;
+}
 
 message GetPostByIdRequest {
   int32 postId = 1;

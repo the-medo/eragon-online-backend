@@ -41,6 +41,25 @@ ORDER BY created_at DESC
 LIMIT @page_limit
 OFFSET @page_offset;
 
+-- name: GetPostsByPlacement :many
+WITH cte AS (
+    SELECT
+        vp.*
+    FROM
+        view_posts vp
+        LEFT JOIN world_posts wp ON vp.id = wp.post_id
+    WHERE
+        wp.world_id = sqlc.narg(world_id) AND
+        vp.deleted_at IS NULL
+)
+SELECT
+    (SELECT count(*) FROM cte) as total_count,
+    cte.*
+FROM cte
+ORDER BY created_at DESC
+LIMIT @page_limit
+OFFSET @page_offset;
+
 -- name: UpdatePost :one
 UPDATE posts
 SET

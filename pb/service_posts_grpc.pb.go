@@ -19,18 +19,20 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Posts_GetPostById_FullMethodName        = "/pb.Posts/GetPostById"
-	Posts_GetPostHistory_FullMethodName     = "/pb.Posts/GetPostHistory"
-	Posts_GetPostHistoryById_FullMethodName = "/pb.Posts/GetPostHistoryById"
-	Posts_CreatePost_FullMethodName         = "/pb.Posts/CreatePost"
-	Posts_UpdatePost_FullMethodName         = "/pb.Posts/UpdatePost"
-	Posts_DeletePost_FullMethodName         = "/pb.Posts/DeletePost"
+	Posts_GetPostsByPlacement_FullMethodName = "/pb.Posts/GetPostsByPlacement"
+	Posts_GetPostById_FullMethodName         = "/pb.Posts/GetPostById"
+	Posts_GetPostHistory_FullMethodName      = "/pb.Posts/GetPostHistory"
+	Posts_GetPostHistoryById_FullMethodName  = "/pb.Posts/GetPostHistoryById"
+	Posts_CreatePost_FullMethodName          = "/pb.Posts/CreatePost"
+	Posts_UpdatePost_FullMethodName          = "/pb.Posts/UpdatePost"
+	Posts_DeletePost_FullMethodName          = "/pb.Posts/DeletePost"
 )
 
 // PostsClient is the client API for Posts service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostsClient interface {
+	GetPostsByPlacement(ctx context.Context, in *Placement, opts ...grpc.CallOption) (*GetPostsByPlacementResponse, error)
 	GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*Post, error)
 	GetPostHistory(ctx context.Context, in *GetPostHistoryRequest, opts ...grpc.CallOption) (*GetPostHistoryResponse, error)
 	GetPostHistoryById(ctx context.Context, in *GetPostHistoryByIdRequest, opts ...grpc.CallOption) (*HistoryPost, error)
@@ -45,6 +47,15 @@ type postsClient struct {
 
 func NewPostsClient(cc grpc.ClientConnInterface) PostsClient {
 	return &postsClient{cc}
+}
+
+func (c *postsClient) GetPostsByPlacement(ctx context.Context, in *Placement, opts ...grpc.CallOption) (*GetPostsByPlacementResponse, error) {
+	out := new(GetPostsByPlacementResponse)
+	err := c.cc.Invoke(ctx, Posts_GetPostsByPlacement_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *postsClient) GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*Post, error) {
@@ -105,6 +116,7 @@ func (c *postsClient) DeletePost(ctx context.Context, in *DeletePostRequest, opt
 // All implementations must embed UnimplementedPostsServer
 // for forward compatibility
 type PostsServer interface {
+	GetPostsByPlacement(context.Context, *Placement) (*GetPostsByPlacementResponse, error)
 	GetPostById(context.Context, *GetPostByIdRequest) (*Post, error)
 	GetPostHistory(context.Context, *GetPostHistoryRequest) (*GetPostHistoryResponse, error)
 	GetPostHistoryById(context.Context, *GetPostHistoryByIdRequest) (*HistoryPost, error)
@@ -118,6 +130,9 @@ type PostsServer interface {
 type UnimplementedPostsServer struct {
 }
 
+func (UnimplementedPostsServer) GetPostsByPlacement(context.Context, *Placement) (*GetPostsByPlacementResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPostsByPlacement not implemented")
+}
 func (UnimplementedPostsServer) GetPostById(context.Context, *GetPostByIdRequest) (*Post, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostById not implemented")
 }
@@ -147,6 +162,24 @@ type UnsafePostsServer interface {
 
 func RegisterPostsServer(s grpc.ServiceRegistrar, srv PostsServer) {
 	s.RegisterService(&Posts_ServiceDesc, srv)
+}
+
+func _Posts_GetPostsByPlacement_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Placement)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostsServer).GetPostsByPlacement(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Posts_GetPostsByPlacement_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostsServer).GetPostsByPlacement(ctx, req.(*Placement))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Posts_GetPostById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -264,6 +297,10 @@ var Posts_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.Posts",
 	HandlerType: (*PostsServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetPostsByPlacement",
+			Handler:    _Posts_GetPostsByPlacement_Handler,
+		},
 		{
 			MethodName: "GetPostById",
 			Handler:    _Posts_GetPostById_Handler,

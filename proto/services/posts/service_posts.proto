@@ -8,11 +8,23 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "services/posts/rpc_post.proto";
 import "services/posts/post.proto";
 import "services/posts/rpc_post_history.proto";
+import "services/placements/placement.proto";
 
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 service Posts {
+
+
+  rpc GetPostsByPlacement(Placement) returns (GetPostsByPlacementResponse) {
+    option (google.api.http) = {
+      get: "/posts"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns posts based on placement";
+      summary: "Get posts";
+    };
+  };
 
   rpc GetPostById(GetPostByIdRequest) returns (Post) {
     option (google.api.http) = {

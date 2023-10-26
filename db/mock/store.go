@@ -1711,6 +1711,21 @@ func (mr *MockStoreMockRecorder) GetPostTypes(arg0 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostTypes", reflect.TypeOf((*MockStore)(nil).GetPostTypes), arg0)
 }
 
+// GetPostsByPlacement mocks base method.
+func (m *MockStore) GetPostsByPlacement(arg0 context.Context, arg1 db.GetPostsByPlacementParams) ([]db.GetPostsByPlacementRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPostsByPlacement", arg0, arg1)
+	ret0, _ := ret[0].([]db.GetPostsByPlacementRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPostsByPlacement indicates an expected call of GetPostsByPlacement.
+func (mr *MockStoreMockRecorder) GetPostsByPlacement(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostsByPlacement", reflect.TypeOf((*MockStore)(nil).GetPostsByPlacement), arg0, arg1)
+}
+
 // GetPostsByUserId mocks base method.
 func (m *MockStore) GetPostsByUserId(arg0 context.Context, arg1 db.GetPostsByUserIdParams) ([]db.ViewPost, error) {
 	m.ctrl.T.Helper()

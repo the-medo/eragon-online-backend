@@ -10,7 +10,7 @@ func ConvertMenuItemPost(menuItemPost db.MenuItemPost, post db.ViewPost) *pb.Men
 		MenuItemId: menuItemPost.MenuItemID.Int32,
 		PostId:     menuItemPost.PostID,
 		Position:   menuItemPost.Position,
-		Post:       ConvertViewPost(post),
+		Post:       ConvertViewPostToDataPost(post),
 	}
 
 	return pbMenuItemPost

@@ -327,6 +327,95 @@ func (q *Queries) GetPostTypes(ctx context.Context) ([]PostType, error) {
 	return items, nil
 }
 
+const getPostsByPlacement = `-- name: GetPostsByPlacement :many
+WITH cte AS (
+    SELECT
+        vp.id, vp.post_type_id, vp.user_id, vp.title, vp.content, vp.created_at, vp.deleted_at, vp.last_updated_at, vp.last_updated_user_id, vp.is_draft, vp.is_private, vp.description, vp.thumbnail_img_id, vp.post_type_name, vp.post_type_draftable, vp.post_type_privatable, vp.thumbnail_img_url
+    FROM
+        view_posts vp
+        LEFT JOIN world_posts wp ON vp.id = wp.post_id
+    WHERE
+        wp.world_id = $3 AND
+        vp.deleted_at IS NULL
+)
+SELECT
+    (SELECT count(*) FROM cte) as total_count,
+    cte.id, cte.post_type_id, cte.user_id, cte.title, cte.content, cte.created_at, cte.deleted_at, cte.last_updated_at, cte.last_updated_user_id, cte.is_draft, cte.is_private, cte.description, cte.thumbnail_img_id, cte.post_type_name, cte.post_type_draftable, cte.post_type_privatable, cte.thumbnail_img_url
+FROM cte
+ORDER BY created_at DESC
+LIMIT $2
+OFFSET $1
+`
+
+type GetPostsByPlacementParams struct {
+	PageOffset int32         `json:"page_offset"`
+	PageLimit  int32         `json:"page_limit"`
+	WorldID    sql.NullInt32 `json:"world_id"`
+}
+
+type GetPostsByPlacementRow struct {
+	TotalCount         int64          `json:"total_count"`
+	ID                 int32          `json:"id"`
+	PostTypeID         int32          `json:"post_type_id"`
+	UserID             int32          `json:"user_id"`
+	Title              string         `json:"title"`
+	Content            string         `json:"content"`
+	CreatedAt          time.Time      `json:"created_at"`
+	DeletedAt          sql.NullTime   `json:"deleted_at"`
+	LastUpdatedAt      sql.NullTime   `json:"last_updated_at"`
+	LastUpdatedUserID  sql.NullInt32  `json:"last_updated_user_id"`
+	IsDraft            bool           `json:"is_draft"`
+	IsPrivate          bool           `json:"is_private"`
+	Description        sql.NullString `json:"description"`
+	ThumbnailImgID     sql.NullInt32  `json:"thumbnail_img_id"`
+	PostTypeName       string         `json:"post_type_name"`
+	PostTypeDraftable  bool           `json:"post_type_draftable"`
+	PostTypePrivatable bool           `json:"post_type_privatable"`
+	ThumbnailImgUrl    sql.NullString `json:"thumbnail_img_url"`
+}
+
+func (q *Queries) GetPostsByPlacement(ctx context.Context, arg GetPostsByPlacementParams) ([]GetPostsByPlacementRow, error) {
+	rows, err := q.db.QueryContext(ctx, getPostsByPlacement, arg.PageOffset, arg.PageLimit, arg.WorldID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetPostsByPlacementRow{}
+	for rows.Next() {
+		var i GetPostsByPlacementRow
+		if err := rows.Scan(
+			&i.TotalCount,
+			&i.ID,
+			&i.PostTypeID,
+			&i.UserID,
+			&i.Title,
+			&i.Content,
+			&i.CreatedAt,
+			&i.DeletedAt,
+			&i.LastUpdatedAt,
+			&i.LastUpdatedUserID,
+			&i.IsDraft,
+			&i.IsPrivate,
+			&i.Description,
+			&i.ThumbnailImgID,
+			&i.PostTypeName,
+			&i.PostTypeDraftable,
+			&i.PostTypePrivatable,
+			&i.ThumbnailImgUrl,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getPostsByUserId = `-- name: GetPostsByUserId :many
 SELECT
     id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url
