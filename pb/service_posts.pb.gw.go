@@ -36,7 +36,7 @@ var (
 )
 
 func request_Posts_GetPostsByPlacement_0(ctx context.Context, marshaler runtime.Marshaler, client PostsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Placement
+	var protoReq GetPostsByPlacementRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -52,7 +52,7 @@ func request_Posts_GetPostsByPlacement_0(ctx context.Context, marshaler runtime.
 }
 
 func local_request_Posts_GetPostsByPlacement_0(ctx context.Context, marshaler runtime.Marshaler, server PostsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Placement
+	var protoReq GetPostsByPlacementRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {

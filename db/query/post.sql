@@ -53,7 +53,7 @@ WITH cte AS (
         vp.deleted_at IS NULL
 )
 SELECT
-    (SELECT count(*) FROM cte) as total_count,
+    CAST((SELECT count(*) FROM cte) as integer) as total_count,
     cte.*
 FROM cte
 ORDER BY created_at DESC

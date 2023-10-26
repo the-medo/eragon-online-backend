@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 import "services/posts/post.proto";
-import "services/placements/placement.proto";
 
 package pb;
 
@@ -10,9 +9,12 @@ option go_package = "github.com/the-medo/talebound-backend/pb";
 
 
 message GetPostsByPlacementRequest {
-  Placement placement = 1;
-  optional int32 limit = 2;
-  optional int32 offset = 3;
+  optional int32 worldId = 1;
+  optional int32 questId = 2;
+  optional int32 characterId = 3;
+  optional int32 systemId = 4;
+  optional int32 limit = 5;
+  optional int32 offset = 6;
 }
 
 message GetPostsByPlacementResponse {

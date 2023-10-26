@@ -339,7 +339,7 @@ WITH cte AS (
         vp.deleted_at IS NULL
 )
 SELECT
-    (SELECT count(*) FROM cte) as total_count,
+    CAST((SELECT count(*) FROM cte) as integer) as total_count,
     cte.id, cte.post_type_id, cte.user_id, cte.title, cte.content, cte.created_at, cte.deleted_at, cte.last_updated_at, cte.last_updated_user_id, cte.is_draft, cte.is_private, cte.description, cte.thumbnail_img_id, cte.post_type_name, cte.post_type_draftable, cte.post_type_privatable, cte.thumbnail_img_url
 FROM cte
 ORDER BY created_at DESC
@@ -354,7 +354,7 @@ type GetPostsByPlacementParams struct {
 }
 
 type GetPostsByPlacementRow struct {
-	TotalCount         int64          `json:"total_count"`
+	TotalCount         int32          `json:"total_count"`
 	ID                 int32          `json:"id"`
 	PostTypeID         int32          `json:"post_type_id"`
 	UserID             int32          `json:"user_id"`
