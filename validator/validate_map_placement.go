@@ -5,7 +5,7 @@ import (
 	"github.com/the-medo/talebound-backend/pb"
 )
 
-func ValidateMapPlacement(placement *pb.MapPlacement) error {
+func ValidateMapPlacement(placement *pb.Placement) error {
 	inputCount := 0
 
 	if placement.WorldId != nil {

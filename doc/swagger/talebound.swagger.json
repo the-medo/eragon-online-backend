@@ -597,7 +597,7 @@
     "/locations": {
       "get": {
         "summary": "Get locations",
-        "description": "returns locations based on placement (world or quest)",
+        "description": "returns locations based on placements (world or quest)",
         "operationId": "Locations_GetLocations",
         "responses": {
           "200": {
@@ -623,6 +623,20 @@
           },
           {
             "name": "questId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "characterId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "systemId",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -827,7 +841,7 @@
     "/maps": {
       "get": {
         "summary": "Get maps",
-        "description": "returns maps based on placement (world or quest)",
+        "description": "returns maps based on placements (world or quest)",
         "operationId": "Maps_GetMaps",
         "responses": {
           "200": {
@@ -853,6 +867,20 @@
           },
           {
             "name": "placement.questId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "placement.characterId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "placement.systemId",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -4305,7 +4333,7 @@
       "type": "object",
       "properties": {
         "placement": {
-          "$ref": "#/definitions/pbLocationPlacement"
+          "$ref": "#/definitions/pbPlacement"
         },
         "name": {
           "type": "string"
@@ -4323,7 +4351,7 @@
       "type": "object",
       "properties": {
         "placement": {
-          "$ref": "#/definitions/pbMapPlacement"
+          "$ref": "#/definitions/pbPlacement"
         },
         "name": {
           "type": "string"
@@ -5152,19 +5180,6 @@
         }
       }
     },
-    "pbLocationPlacement": {
-      "type": "object",
-      "properties": {
-        "worldId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "questId": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
     "pbLoginUserRequest": {
       "type": "object",
       "properties": {
@@ -5231,19 +5246,6 @@
         },
         "section": {
           "type": "string"
-        }
-      }
-    },
-    "pbMapPlacement": {
-      "type": "object",
-      "properties": {
-        "worldId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "questId": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     },
@@ -5317,6 +5319,27 @@
         "CLOUD"
       ],
       "default": "SQUARE"
+    },
+    "pbPlacement": {
+      "type": "object",
+      "properties": {
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "questId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "characterId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "systemId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
     },
     "pbPost": {
       "type": "object",

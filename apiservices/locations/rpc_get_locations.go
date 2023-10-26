@@ -9,7 +9,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *ServiceLocations) GetLocations(ctx context.Context, req *pb.LocationPlacement) (*pb.GetLocationsResponse, error) {
+func (server *ServiceLocations) GetLocations(ctx context.Context, req *pb.Placement) (*pb.GetLocationsResponse, error) {
 	violations := validateGetLocations(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -31,10 +31,10 @@ func (server *ServiceLocations) GetLocations(ctx context.Context, req *pb.Locati
 	return rsp, nil
 }
 
-func validateGetLocations(req *pb.LocationPlacement) (violations []*errdetails.BadRequest_FieldViolation) {
+func validateGetLocations(req *pb.Placement) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateLocationPlacement(req); err != nil {
-		violations = append(violations, e.FieldViolation("placement", err))
+		violations = append(violations, e.FieldViolation("placements", err))
 	}
 
 	return violations

@@ -21,8 +21,3 @@ message ViewLocation {
   optional int32 thumbnailImageId = 6;
   optional string thumbnailImageUrl = 7;
 }
-
-message LocationPlacement {
-  optional int32 worldId = 1;
-  optional int32 questId = 2;
-}

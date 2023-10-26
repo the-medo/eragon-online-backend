@@ -73,7 +73,7 @@ func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.
 
 func validateCreateLocation(req *pb.CreateLocationRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateLocationPlacement(req.GetPlacement()); err != nil {
-		violations = append(violations, e.FieldViolation("placement", err))
+		violations = append(violations, e.FieldViolation("placements", err))
 	}
 
 	if err := validator.ValidateLocationName(req.GetName()); err != nil {

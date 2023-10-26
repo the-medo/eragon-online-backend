@@ -103,7 +103,7 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 func validateCreateMap(req *pb.CreateMapRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
 	if err := validator.ValidateMapPlacement(req.Placement); err != nil {
-		violations = append(violations, e.FieldViolation("placement", err))
+		violations = append(violations, e.FieldViolation("placements", err))
 	}
 
 	if err := validator.ValidateUniversalName(req.GetName()); err != nil {

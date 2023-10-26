@@ -15,9 +15,9 @@ type ServiceLocations struct {
 	*srv.ServiceCore
 }
 
-func (server *ServiceLocations) CheckLocationAccess(ctx context.Context, locationId int32, needsSuperAdmin bool) (*token.Payload, *pb.LocationPlacement, error) {
+func (server *ServiceLocations) CheckLocationAccess(ctx context.Context, locationId int32, needsSuperAdmin bool) (*token.Payload, *pb.Placement, error) {
 	var authPayload *token.Payload = nil
-	var locationPlacement *pb.LocationPlacement = &pb.LocationPlacement{}
+	var locationPlacement = &pb.Placement{}
 
 	assignments, err := server.Store.GetLocationAssignments(ctx, locationId)
 	if assignments.WorldID > 0 {

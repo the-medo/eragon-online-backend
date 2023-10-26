@@ -38,7 +38,7 @@ func (server *ServiceMaps) GetMaps(ctx context.Context, req *pb.GetMapsRequest) 
 
 func validateGetMaps(req *pb.GetMapsRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateMapPlacement(req.GetPlacement()); err != nil {
-		violations = append(violations, e.FieldViolation("placement", err))
+		violations = append(violations, e.FieldViolation("placements", err))
 	}
 
 	return violations

@@ -99,8 +99,3 @@ message ViewMapPin {
   optional int32 locationThumbnailImageId = 12;
   optional string locationThumbnailImageUrl = 13;
 }
-
-message MapPlacement {
-  optional int32 worldId = 1;
-  optional int32 questId = 2;
-}
