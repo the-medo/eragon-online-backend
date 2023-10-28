@@ -16,9 +16,10 @@ func ConvertModuleTypeTag(tag db.ModuleTypeTagsAvailable) *pb.Tag {
 
 func ConvertViewTag(tag db.ViewModuleTypeTagsAvailable) *pb.ViewTag {
 	pbTag := &pb.ViewTag{
-		Id:    tag.ID,
-		Tag:   tag.Tag,
-		Count: tag.Count,
+		Id:         tag.ID,
+		Tag:        tag.Tag,
+		ModuleType: ConvertModuleTypeToPB(tag.ModuleType),
+		Count:      tag.Count,
 	}
 	return pbTag
 }

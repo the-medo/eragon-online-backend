@@ -2,6 +2,7 @@ package tags
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -24,7 +25,7 @@ func (server *ServiceTags) CreateModuleTypeAvailableTag(ctx context.Context, req
 	}
 
 	tag, err := server.Store.CreateModuleTypeTagAvailable(ctx, db.CreateModuleTypeTagAvailableParams{
-		ModuleType: db.ModuleType(req.GetModuleType()),
+		ModuleType: converters.ConvertModuleTypeToDB(req.GetModuleType()),
 		Tag:        req.GetTag(),
 	})
 	if err != nil {
@@ -32,9 +33,10 @@ func (server *ServiceTags) CreateModuleTypeAvailableTag(ctx context.Context, req
 	}
 
 	rsp := &pb.ViewTag{
-		Id:    tag.ID,
-		Tag:   tag.Tag,
-		Count: 0,
+		Id:         tag.ID,
+		Tag:        tag.Tag,
+		ModuleType: converters.ConvertModuleTypeToPB(tag.ModuleType),
+		Count:      0,
 	}
 
 	return rsp, nil

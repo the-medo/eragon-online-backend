@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
-	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
@@ -15,7 +14,7 @@ func (server *ServiceTags) GetModuleTypeAvailableTags(ctx context.Context, req *
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	tagRows, err := server.Store.GetModuleTypeTagsAvailable(ctx, db.ModuleType(req.GetModuleType()))
+	tagRows, err := server.Store.GetModuleTypeTagsAvailable(ctx, converters.ConvertModuleTypeToDB(req.GetModuleType()))
 
 	if err != nil {
 		return nil, err

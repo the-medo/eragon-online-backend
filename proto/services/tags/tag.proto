@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package pb;
 
+import "services/modules/module.proto";
+
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 message Tag {
@@ -12,5 +14,6 @@ message Tag {
 message ViewTag {
   int32 id = 1;
   string tag = 2;
-  int32 count = 3;
+  ModuleType moduleType = 3;
+  int32 count = 4;
 }

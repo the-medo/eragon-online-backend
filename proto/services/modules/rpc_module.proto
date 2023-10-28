@@ -1,15 +1,19 @@
 syntax = "proto3";
 
-package pb;
-
 import "services/modules/module.proto";
+
+package pb;
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 message GetModuleIdRequest {
-  Module module = 1;
+  optional int32 worldId = 1;
+  optional int32 questId = 2;
+  optional int32 characterId = 3;
+  optional int32 systemId = 4;
 }
 
 message GetModuleIdResponse {
-  int32 id = 1;
+  int32 moduleId = 1;
+  ModuleType moduleType = 2;
 }
