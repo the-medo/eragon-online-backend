@@ -6,7 +6,7 @@ RETURNING *;
 -- name: GetLocations :many
 SELECT * FROM view_locations;
 
--- name: GetLocationsForPlacement :many
+-- name: GetLocationsByModule :many
 SELECT
     vl.*
 FROM

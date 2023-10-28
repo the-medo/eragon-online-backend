@@ -28,23 +28,23 @@ CREATE TABLE "module_tags_available" (
 );
 ALTER TABLE "module_tags_available" ADD FOREIGN KEY ("module_id") REFERENCES "modules" ("id");
 
-CREATE TABLE "asset_tags" (
-    "asset_id" int NOT NULL,
+CREATE TABLE "entity_tags" (
+    "entity_id" int NOT NULL,
     "tag_id" int NOT NULL
 );
-ALTER TABLE "asset_tags" ADD FOREIGN KEY ("asset_id") REFERENCES "entities" ("id");
-ALTER TABLE "asset_tags" ADD FOREIGN KEY ("tag_id") REFERENCES "module_tags_available" ("id");
-CREATE UNIQUE INDEX ON "asset_tags" ("asset_id", "tag_id");
+ALTER TABLE "entity_tags" ADD FOREIGN KEY ("entity_id") REFERENCES "entities" ("id");
+ALTER TABLE "entity_tags" ADD FOREIGN KEY ("tag_id") REFERENCES "module_tags_available" ("id");
+CREATE UNIQUE INDEX ON "entity_tags" ("entity_id", "tag_id");
 
 
 
 -- add module_id to entities and fill it with world data
 ALTER TABLE "entities" ADD COLUMN module_id int;
 
-WITH asset_modules AS (
+WITH entity_modules AS (
     SELECT
         p.id as module_id,
-        e.content_entity_id as asset_id
+        e.content_entity_id as entity_id
     FROM
         world_menu wm
         JOIN modules p ON wm.world_id = p.world_id
@@ -55,11 +55,11 @@ WITH asset_modules AS (
 ) UPDATE
     "entities"
 SET
-    "module_id" = asset_modules.module_id
+    "module_id" = entity_modules.module_id
 FROM
-    asset_modules
+    entity_modules
 WHERE
-    id = asset_modules.asset_id;
+    id = entity_modules.entity_id;
 
 ALTER TABLE "entities" ADD FOREIGN KEY ("module_id") REFERENCES "modules" ("id");
 ALTER TABLE "entities" ALTER COLUMN "module_id" SET NOT NULL;

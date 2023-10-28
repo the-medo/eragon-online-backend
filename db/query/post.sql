@@ -41,7 +41,7 @@ ORDER BY created_at DESC
 LIMIT @page_limit
 OFFSET @page_offset;
 
--- name: GetPostsByPlacement :many
+-- name: GetPostsByModule :many
 WITH cte AS (
     SELECT
         vp.*

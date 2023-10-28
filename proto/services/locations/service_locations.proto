@@ -7,7 +7,7 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "services/locations/rpc_location.proto";
 import "services/locations/location.proto";
-import "services/placements/placement.proto";
+import "services/modules/module.proto";
 import "google/protobuf/empty.proto";
 
 
@@ -25,12 +25,12 @@ service Locations {
     };
   };
 
-  rpc GetLocations(Placement) returns (GetLocationsResponse) {
+  rpc GetLocations(Module) returns (GetLocationsResponse) {
     option (google.api.http) = {
       get: "/locations"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "returns locations based on placements (world or quest)";
+      description: "returns locations based on modules (world or quest)";
       summary: "Get locations";
     };
   };

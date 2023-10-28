@@ -8,7 +8,7 @@ package pb;
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 
-message GetPostsByPlacementRequest {
+message GetPostsByModuleRequest {
   optional int32 worldId = 1;
   optional int32 questId = 2;
   optional int32 characterId = 3;
@@ -17,7 +17,7 @@ message GetPostsByPlacementRequest {
   optional int32 offset = 6;
 }
 
-message GetPostsByPlacementResponse {
+message GetPostsByModuleResponse {
   repeated Post posts = 1;
   int32 totalCount = 2;
 }

@@ -14,12 +14,12 @@ option go_package = "github.com/the-medo/talebound-backend/pb";
 
 service Posts {
 
-  rpc GetPostsByPlacement(GetPostsByPlacementRequest) returns (GetPostsByPlacementResponse) {
+  rpc GetPostsByModule(GetPostsByModuleRequest) returns (GetPostsByModuleResponse) {
     option (google.api.http) = {
       get: "/posts"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "returns posts based on placement";
+      description: "returns posts based on module";
       summary: "Get posts";
     };
   };

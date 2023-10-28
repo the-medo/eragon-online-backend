@@ -17,8 +17,8 @@ func (server *ServiceMaps) GetMaps(ctx context.Context, req *pb.GetMapsRequest) 
 	}
 
 	mapRows, err := server.Store.GetMaps(ctx, sql.NullInt32{
-		Int32: req.GetPlacement().GetWorldId(),
-		Valid: req.GetPlacement().GetWorldId() != 0,
+		Int32: req.GetModule().GetWorldId(),
+		Valid: req.GetModule().GetWorldId() != 0,
 	})
 
 	if err != nil {
@@ -37,8 +37,8 @@ func (server *ServiceMaps) GetMaps(ctx context.Context, req *pb.GetMapsRequest) 
 }
 
 func validateGetMaps(req *pb.GetMapsRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateMapPlacement(req.GetPlacement()); err != nil {
-		violations = append(violations, e.FieldViolation("placements", err))
+	if err := validator.ValidateMapModule(req.GetModule()); err != nil {
+		violations = append(violations, e.FieldViolation("modules", err))
 	}
 
 	return violations

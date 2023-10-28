@@ -19,14 +19,14 @@ func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	if request.GetPlacement().WorldId != nil {
-		_, err := server.CheckWorldAdmin(ctx, request.GetPlacement().GetWorldId(), false)
+	if request.GetModule().WorldId != nil {
+		_, err := server.CheckWorldAdmin(ctx, request.GetModule().GetWorldId(), false)
 		if err != nil {
 			return nil, status.Errorf(codes.PermissionDenied, "failed to create location: %v", err)
 		}
 	}
 
-	if request.GetPlacement().QuestId != nil {
+	if request.GetModule().QuestId != nil {
 		return nil, status.Error(codes.Internal, "creating locations for quests is not implemented yet")
 	}
 
@@ -46,10 +46,10 @@ func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.
 
 	createdLocationId := int32(0)
 
-	if request.GetPlacement().WorldId != nil {
+	if request.GetModule().WorldId != nil {
 
 		arg := db.CreateWorldLocationParams{
-			WorldID:    request.GetPlacement().GetWorldId(),
+			WorldID:    request.GetModule().GetWorldId(),
 			LocationID: location.ID,
 		}
 
@@ -72,8 +72,8 @@ func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.
 }
 
 func validateCreateLocation(req *pb.CreateLocationRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateLocationPlacement(req.GetPlacement()); err != nil {
-		violations = append(violations, e.FieldViolation("placements", err))
+	if err := validator.ValidateLocationModule(req.GetModule()); err != nil {
+		violations = append(violations, e.FieldViolation("modules", err))
 	}
 
 	if err := validator.ValidateLocationName(req.GetName()); err != nil {

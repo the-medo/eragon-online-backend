@@ -47,7 +47,7 @@ func ConvertViewPostToDataPost(viewPost db.ViewPost) *pb.DataPost {
 	return pbPost
 }
 
-func ConvertViewPostByPlacementToPost(viewPost db.GetPostsByPlacementRow) *pb.Post {
+func ConvertViewPostByModuleToPost(viewPost db.GetPostsByModuleRow) *pb.Post {
 	pbPost := &pb.Post{
 		Post: &pb.DataPost{
 			Id:         viewPost.ID,

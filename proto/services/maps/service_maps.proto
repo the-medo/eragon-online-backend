@@ -18,7 +18,7 @@ service Maps {
       get: "/maps"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "returns maps based on placements (world or quest)";
+      description: "returns maps based on modules (world or quest)";
       summary: "Get maps";
     };
   };

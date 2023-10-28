@@ -19,14 +19,14 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	if request.GetPlacement().WorldId != nil {
-		_, err := server.CheckWorldAdmin(ctx, request.GetPlacement().GetWorldId(), false)
+	if request.GetModule().WorldId != nil {
+		_, err := server.CheckWorldAdmin(ctx, request.GetModule().GetWorldId(), false)
 		if err != nil {
 			return nil, status.Errorf(codes.PermissionDenied, "failed to create map: %v", err)
 		}
 	}
 
-	if request.GetPlacement().QuestId != nil {
+	if request.GetModule().QuestId != nil {
 		return nil, status.Error(codes.Internal, "creating maps for quests is not implemented yet")
 	}
 
@@ -55,9 +55,9 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 		return nil, err
 	}
 
-	if request.GetPlacement().WorldId != nil {
+	if request.GetModule().WorldId != nil {
 		arg := db.CreateWorldMapParams{
-			WorldID: request.GetPlacement().GetWorldId(),
+			WorldID: request.GetModule().GetWorldId(),
 			MapID:   newMap.ID,
 		}
 
@@ -102,8 +102,8 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 
 func validateCreateMap(req *pb.CreateMapRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
-	if err := validator.ValidateMapPlacement(req.Placement); err != nil {
-		violations = append(violations, e.FieldViolation("placements", err))
+	if err := validator.ValidateMapModule(req.Module); err != nil {
+		violations = append(violations, e.FieldViolation("modules", err))
 	}
 
 	if err := validator.ValidateUniversalName(req.GetName()); err != nil {

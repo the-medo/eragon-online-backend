@@ -161,7 +161,7 @@ func (q *Queries) GetLocations(ctx context.Context) ([]ViewLocation, error) {
 	return items, nil
 }
 
-const getLocationsForPlacement = `-- name: GetLocationsForPlacement :many
+const getLocationsByModule = `-- name: GetLocationsByModule :many
 SELECT
     vl.id, vl.name, vl.description, vl.post_id, vl.thumbnail_image_id, vl.thumbnail_image_url, vl.post_title
 FROM
@@ -171,8 +171,8 @@ FROM
 WHERE wl.world_id = $1 --OR ql.quest_id = sqlc.arg(quest_id);
 `
 
-func (q *Queries) GetLocationsForPlacement(ctx context.Context, worldID int32) ([]ViewLocation, error) {
-	rows, err := q.db.QueryContext(ctx, getLocationsForPlacement, worldID)
+func (q *Queries) GetLocationsByModule(ctx context.Context, worldID int32) ([]ViewLocation, error) {
+	rows, err := q.db.QueryContext(ctx, getLocationsByModule, worldID)
 	if err != nil {
 		return nil, err
 	}

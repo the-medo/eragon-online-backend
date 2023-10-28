@@ -18,7 +18,7 @@ func (server *ServiceLocations) CreateLocationPost(ctx context.Context, request 
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	authPayload, locationPlacement, err := server.CheckLocationAccess(ctx, request.GetLocationId(), false)
+	authPayload, locationModule, err := server.CheckLocationAccess(ctx, request.GetLocationId(), false)
 	if err != nil {
 		return nil, err
 	}
@@ -51,9 +51,9 @@ func (server *ServiceLocations) CreateLocationPost(ctx context.Context, request 
 		return nil, err
 	}
 
-	if locationPlacement.WorldId != nil && locationPlacement.GetWorldId() > 0 {
+	if locationModule.WorldId != nil && locationModule.GetWorldId() > 0 {
 		_, err := server.Store.CreateWorldPost(ctx, db.CreateWorldPostParams{
-			WorldID: locationPlacement.GetWorldId(),
+			WorldID: locationModule.GetWorldId(),
 			PostID:  newPost.ID,
 		})
 		if err != nil {

@@ -327,7 +327,7 @@ func (q *Queries) GetPostTypes(ctx context.Context) ([]PostType, error) {
 	return items, nil
 }
 
-const getPostsByPlacement = `-- name: GetPostsByPlacement :many
+const getPostsByModule = `-- name: GetPostsByModule :many
 WITH cte AS (
     SELECT
         vp.id, vp.post_type_id, vp.user_id, vp.title, vp.content, vp.created_at, vp.deleted_at, vp.last_updated_at, vp.last_updated_user_id, vp.is_draft, vp.is_private, vp.description, vp.thumbnail_img_id, vp.post_type_name, vp.post_type_draftable, vp.post_type_privatable, vp.thumbnail_img_url
@@ -347,13 +347,13 @@ LIMIT $2
 OFFSET $1
 `
 
-type GetPostsByPlacementParams struct {
+type GetPostsByModuleParams struct {
 	PageOffset int32         `json:"page_offset"`
 	PageLimit  int32         `json:"page_limit"`
 	WorldID    sql.NullInt32 `json:"world_id"`
 }
 
-type GetPostsByPlacementRow struct {
+type GetPostsByModuleRow struct {
 	TotalCount         int32          `json:"total_count"`
 	ID                 int32          `json:"id"`
 	PostTypeID         int32          `json:"post_type_id"`
@@ -374,15 +374,15 @@ type GetPostsByPlacementRow struct {
 	ThumbnailImgUrl    sql.NullString `json:"thumbnail_img_url"`
 }
 
-func (q *Queries) GetPostsByPlacement(ctx context.Context, arg GetPostsByPlacementParams) ([]GetPostsByPlacementRow, error) {
-	rows, err := q.db.QueryContext(ctx, getPostsByPlacement, arg.PageOffset, arg.PageLimit, arg.WorldID)
+func (q *Queries) GetPostsByModule(ctx context.Context, arg GetPostsByModuleParams) ([]GetPostsByModuleRow, error) {
+	rows, err := q.db.QueryContext(ctx, getPostsByModule, arg.PageOffset, arg.PageLimit, arg.WorldID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []GetPostsByPlacementRow{}
+	items := []GetPostsByModuleRow{}
 	for rows.Next() {
-		var i GetPostsByPlacementRow
+		var i GetPostsByModuleRow
 		if err := rows.Scan(
 			&i.TotalCount,
 			&i.ID,

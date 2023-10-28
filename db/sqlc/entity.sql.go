@@ -15,7 +15,7 @@ import (
 const createEntity = `-- name: CreateEntity :one
 INSERT INTO entities (type, post_id, map_id, location_id, image_id)
 VALUES ($1, $2, $3, $4, $5)
-RETURNING id, type, post_id, map_id, location_id, image_id
+RETURNING id, type, post_id, map_id, location_id, image_id, module_id
 `
 
 type CreateEntityParams struct {
@@ -42,6 +42,7 @@ func (q *Queries) CreateEntity(ctx context.Context, arg CreateEntityParams) (Ent
 		&i.MapID,
 		&i.LocationID,
 		&i.ImageID,
+		&i.ModuleID,
 	)
 	return i, err
 }
@@ -148,7 +149,7 @@ func (q *Queries) EntityGroupContentChangePositions(ctx context.Context, arg Ent
 }
 
 const getEntityByID = `-- name: GetEntityByID :one
-SELECT id, type, post_id, map_id, location_id, image_id FROM entities WHERE id = $1
+SELECT id, type, post_id, map_id, location_id, image_id, module_id FROM entities WHERE id = $1
 `
 
 func (q *Queries) GetEntityByID(ctx context.Context, id int32) (Entity, error) {
@@ -161,6 +162,7 @@ func (q *Queries) GetEntityByID(ctx context.Context, id int32) (Entity, error) {
 		&i.MapID,
 		&i.LocationID,
 		&i.ImageID,
+		&i.ModuleID,
 	)
 	return i, err
 }
@@ -345,7 +347,7 @@ SET
     location_id = COALESCE($4, location_id),
     image_id = COALESCE($5, image_id)
 WHERE id = $6
-RETURNING id, type, post_id, map_id, location_id, image_id
+RETURNING id, type, post_id, map_id, location_id, image_id, module_id
 `
 
 type UpdateEntityParams struct {
@@ -374,6 +376,7 @@ func (q *Queries) UpdateEntity(ctx context.Context, arg UpdateEntityParams) (Ent
 		&i.MapID,
 		&i.LocationID,
 		&i.ImageID,
+		&i.ModuleID,
 	)
 	return i, err
 }

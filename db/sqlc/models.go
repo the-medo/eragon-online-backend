@@ -246,6 +246,7 @@ type Entity struct {
 	MapID      sql.NullInt32 `json:"map_id"`
 	LocationID sql.NullInt32 `json:"location_id"`
 	ImageID    sql.NullInt32 `json:"image_id"`
+	ModuleID   int32         `json:"module_id"`
 }
 
 type EntityGroup struct {
@@ -262,6 +263,11 @@ type EntityGroupContent struct {
 	Position             int32         `json:"position"`
 	ContentEntityID      sql.NullInt32 `json:"content_entity_id"`
 	ContentEntityGroupID sql.NullInt32 `json:"content_entity_group_id"`
+}
+
+type EntityTag struct {
+	EntityID int32 `json:"entity_id"`
+	TagID    int32 `json:"tag_id"`
 }
 
 type Evaluation struct {
@@ -381,6 +387,20 @@ type MenuItemPost struct {
 	Position   int32         `json:"position"`
 }
 
+type Module struct {
+	ID          int32         `json:"id"`
+	WorldID     sql.NullInt32 `json:"world_id"`
+	SystemID    sql.NullInt32 `json:"system_id"`
+	CharacterID sql.NullInt32 `json:"character_id"`
+	QuestID     sql.NullInt32 `json:"quest_id"`
+}
+
+type ModuleTagsAvailable struct {
+	ID       int32  `json:"id"`
+	ModuleID int32  `json:"module_id"`
+	Tag      string `json:"tag"`
+}
+
 type Post struct {
 	ID                int32          `json:"id"`
 	PostTypeID        int32          `json:"post_type_id"`
@@ -425,6 +445,10 @@ type Property struct {
 	ID      int32  `json:"id"`
 	WorldID int32  `json:"world_id"`
 	Name    string `json:"name"`
+}
+
+type Quest struct {
+	ID int32 `json:"id"`
 }
 
 type Race struct {
@@ -485,6 +509,10 @@ type SkillRequirementSkill struct {
 	SkillRequirementID int32 `json:"skill_requirement_id"`
 	SkillID            int32 `json:"skill_id"`
 	Level              int32 `json:"level"`
+}
+
+type System struct {
+	ID int32 `json:"id"`
 }
 
 type User struct {

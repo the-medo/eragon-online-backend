@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-10-28T12:54:38.870Z
+-- Generated at: 2023-10-28T14:03:20.713Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -427,8 +427,8 @@ CREATE TABLE "module_tags_available" (
   "tag" varchar UNIQUE NOT NULL
 );
 
-CREATE TABLE "asset_tags" (
-  "asset_id" int NOT NULL,
+CREATE TABLE "entity_tags" (
+  "entity_id" int NOT NULL,
   "tag_id" int NOT NULL
 );
 
@@ -490,7 +490,7 @@ CREATE UNIQUE INDEX ON "world_locations" ("world_id", "location_id");
 
 CREATE UNIQUE INDEX ON "world_posts" ("world_id", "post_id");
 
-CREATE UNIQUE INDEX ON "asset_tags" ("asset_id", "tag_id");
+CREATE UNIQUE INDEX ON "entity_tags" ("entity_id", "tag_id");
 
 COMMENT ON COLUMN "image_types"."variant" IS 'Variant name from cloudflare. ';
 
@@ -666,9 +666,9 @@ ALTER TABLE "modules" ADD FOREIGN KEY ("quest_id") REFERENCES "quests" ("id");
 
 ALTER TABLE "module_tags_available" ADD FOREIGN KEY ("module_id") REFERENCES "modules" ("id");
 
-ALTER TABLE "asset_tags" ADD FOREIGN KEY ("asset_id") REFERENCES "entities" ("id");
+ALTER TABLE "entity_tags" ADD FOREIGN KEY ("entity_id") REFERENCES "entities" ("id");
 
-ALTER TABLE "asset_tags" ADD FOREIGN KEY ("tag_id") REFERENCES "module_tags_available" ("id");
+ALTER TABLE "entity_tags" ADD FOREIGN KEY ("tag_id") REFERENCES "module_tags_available" ("id");
 
 ALTER TABLE "entities" ADD FOREIGN KEY ("module_id") REFERENCES "modules" ("id");
 

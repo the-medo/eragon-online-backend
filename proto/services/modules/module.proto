@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message Module {
+  optional int32 worldId = 1;
+  optional int32 questId = 2;
+  optional int32 characterId = 3;
+  optional int32 systemId = 4;
+}

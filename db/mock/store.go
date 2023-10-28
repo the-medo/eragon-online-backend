@@ -1366,19 +1366,19 @@ func (mr *MockStoreMockRecorder) GetLocations(arg0 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLocations", reflect.TypeOf((*MockStore)(nil).GetLocations), arg0)
 }
 
-// GetLocationsForPlacement mocks base method.
-func (m *MockStore) GetLocationsForPlacement(arg0 context.Context, arg1 int32) ([]db.ViewLocation, error) {
+// GetLocationsByModule mocks base method.
+func (m *MockStore) GetLocationsByModule(arg0 context.Context, arg1 int32) ([]db.ViewLocation, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLocationsForPlacement", arg0, arg1)
+	ret := m.ctrl.Call(m, "GetLocationsByModule", arg0, arg1)
 	ret0, _ := ret[0].([]db.ViewLocation)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetLocationsForPlacement indicates an expected call of GetLocationsForPlacement.
-func (mr *MockStoreMockRecorder) GetLocationsForPlacement(arg0, arg1 interface{}) *gomock.Call {
+// GetLocationsByModule indicates an expected call of GetLocationsByModule.
+func (mr *MockStoreMockRecorder) GetLocationsByModule(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLocationsForPlacement", reflect.TypeOf((*MockStore)(nil).GetLocationsForPlacement), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLocationsByModule", reflect.TypeOf((*MockStore)(nil).GetLocationsByModule), arg0, arg1)
 }
 
 // GetMapAssignments mocks base method.
@@ -1711,19 +1711,19 @@ func (mr *MockStoreMockRecorder) GetPostTypes(arg0 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostTypes", reflect.TypeOf((*MockStore)(nil).GetPostTypes), arg0)
 }
 
-// GetPostsByPlacement mocks base method.
-func (m *MockStore) GetPostsByPlacement(arg0 context.Context, arg1 db.GetPostsByPlacementParams) ([]db.GetPostsByPlacementRow, error) {
+// GetPostsByModule mocks base method.
+func (m *MockStore) GetPostsByModule(arg0 context.Context, arg1 db.GetPostsByModuleParams) ([]db.GetPostsByModuleRow, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetPostsByPlacement", arg0, arg1)
-	ret0, _ := ret[0].([]db.GetPostsByPlacementRow)
+	ret := m.ctrl.Call(m, "GetPostsByModule", arg0, arg1)
+	ret0, _ := ret[0].([]db.GetPostsByModuleRow)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetPostsByPlacement indicates an expected call of GetPostsByPlacement.
-func (mr *MockStoreMockRecorder) GetPostsByPlacement(arg0, arg1 interface{}) *gomock.Call {
+// GetPostsByModule indicates an expected call of GetPostsByModule.
+func (mr *MockStoreMockRecorder) GetPostsByModule(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostsByPlacement", reflect.TypeOf((*MockStore)(nil).GetPostsByPlacement), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostsByModule", reflect.TypeOf((*MockStore)(nil).GetPostsByModule), arg0, arg1)
 }
 
 // GetPostsByUserId mocks base method.

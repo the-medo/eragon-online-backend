@@ -9,13 +9,13 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *ServiceLocations) GetLocations(ctx context.Context, req *pb.Placement) (*pb.GetLocationsResponse, error) {
+func (server *ServiceLocations) GetLocations(ctx context.Context, req *pb.Module) (*pb.GetLocationsResponse, error) {
 	violations := validateGetLocations(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	locationRows, err := server.Store.GetLocationsForPlacement(ctx, req.GetWorldId())
+	locationRows, err := server.Store.GetLocationsByModule(ctx, req.GetWorldId())
 	if err != nil {
 		return nil, err
 	}
@@ -31,10 +31,10 @@ func (server *ServiceLocations) GetLocations(ctx context.Context, req *pb.Placem
 	return rsp, nil
 }
 
-func validateGetLocations(req *pb.Placement) (violations []*errdetails.BadRequest_FieldViolation) {
+func validateGetLocations(req *pb.Module) (violations []*errdetails.BadRequest_FieldViolation) {
 
-	if err := validator.ValidateLocationPlacement(req); err != nil {
-		violations = append(violations, e.FieldViolation("placements", err))
+	if err := validator.ValidateLocationModule(req); err != nil {
+		violations = append(violations, e.FieldViolation("modules", err))
 	}
 
 	return violations

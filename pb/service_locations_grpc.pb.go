@@ -33,7 +33,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LocationsClient interface {
 	UpdateLocation(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error)
-	GetLocations(ctx context.Context, in *Placement, opts ...grpc.CallOption) (*GetLocationsResponse, error)
+	GetLocations(ctx context.Context, in *Module, opts ...grpc.CallOption) (*GetLocationsResponse, error)
 	CreateLocation(ctx context.Context, in *CreateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error)
 	DeleteLocation(ctx context.Context, in *DeleteLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteBulkLocation(ctx context.Context, in *DeleteBulkLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -57,7 +57,7 @@ func (c *locationsClient) UpdateLocation(ctx context.Context, in *UpdateLocation
 	return out, nil
 }
 
-func (c *locationsClient) GetLocations(ctx context.Context, in *Placement, opts ...grpc.CallOption) (*GetLocationsResponse, error) {
+func (c *locationsClient) GetLocations(ctx context.Context, in *Module, opts ...grpc.CallOption) (*GetLocationsResponse, error) {
 	out := new(GetLocationsResponse)
 	err := c.cc.Invoke(ctx, Locations_GetLocations_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -107,7 +107,7 @@ func (c *locationsClient) CreateLocationPost(ctx context.Context, in *CreateLoca
 // for forward compatibility
 type LocationsServer interface {
 	UpdateLocation(context.Context, *UpdateLocationRequest) (*ViewLocation, error)
-	GetLocations(context.Context, *Placement) (*GetLocationsResponse, error)
+	GetLocations(context.Context, *Module) (*GetLocationsResponse, error)
 	CreateLocation(context.Context, *CreateLocationRequest) (*ViewLocation, error)
 	DeleteLocation(context.Context, *DeleteLocationRequest) (*emptypb.Empty, error)
 	DeleteBulkLocation(context.Context, *DeleteBulkLocationRequest) (*emptypb.Empty, error)
@@ -122,7 +122,7 @@ type UnimplementedLocationsServer struct {
 func (UnimplementedLocationsServer) UpdateLocation(context.Context, *UpdateLocationRequest) (*ViewLocation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateLocation not implemented")
 }
-func (UnimplementedLocationsServer) GetLocations(context.Context, *Placement) (*GetLocationsResponse, error) {
+func (UnimplementedLocationsServer) GetLocations(context.Context, *Module) (*GetLocationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLocations not implemented")
 }
 func (UnimplementedLocationsServer) CreateLocation(context.Context, *CreateLocationRequest) (*ViewLocation, error) {
@@ -169,7 +169,7 @@ func _Locations_UpdateLocation_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _Locations_GetLocations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Placement)
+	in := new(Module)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -181,7 +181,7 @@ func _Locations_GetLocations_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: Locations_GetLocations_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LocationsServer).GetLocations(ctx, req.(*Placement))
+		return srv.(LocationsServer).GetLocations(ctx, req.(*Module))
 	}
 	return interceptor(ctx, in, info, handler)
 }

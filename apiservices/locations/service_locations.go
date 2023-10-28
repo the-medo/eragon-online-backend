@@ -15,13 +15,13 @@ type ServiceLocations struct {
 	*srv.ServiceCore
 }
 
-func (server *ServiceLocations) CheckLocationAccess(ctx context.Context, locationId int32, needsSuperAdmin bool) (*token.Payload, *pb.Placement, error) {
+func (server *ServiceLocations) CheckLocationAccess(ctx context.Context, locationId int32, needsSuperAdmin bool) (*token.Payload, *pb.Module, error) {
 	var authPayload *token.Payload = nil
-	var locationPlacement = &pb.Placement{}
+	var locationModule = &pb.Module{}
 
 	assignments, err := server.Store.GetLocationAssignments(ctx, locationId)
 	if assignments.WorldID > 0 {
-		locationPlacement.WorldId = &assignments.WorldID
+		locationModule.WorldId = &assignments.WorldID
 		authPayload, err = server.CheckWorldAdmin(ctx, assignments.WorldID, needsSuperAdmin)
 		if err != nil {
 			return nil, nil, status.Errorf(codes.PermissionDenied, "failed to get location access - not world admin: %v", err)
@@ -33,7 +33,7 @@ func (server *ServiceLocations) CheckLocationAccess(ctx context.Context, locatio
 		return nil, nil, e.UnauthenticatedError(err)
 	}
 
-	return authPayload, locationPlacement, nil
+	return authPayload, locationModule, nil
 }
 
 func NewLocationsService(core *srv.ServiceCore) *ServiceLocations {

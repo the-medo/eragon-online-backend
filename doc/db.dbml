@@ -493,12 +493,12 @@ Table module_tags_available {
   tag varchar [not null, unique]
 }
 
-Table asset_tags {
-  asset_id int [not null, ref: > entities.id]
+Table entity_tags {
+  entity_id int [not null, ref: > entities.id]
   tag_id int [not null, ref: > module_tags_available.id]
 
   indexes {
-    (asset_id, tag_id) [unique]
+    (entity_id, tag_id) [unique]
   }
 }
 

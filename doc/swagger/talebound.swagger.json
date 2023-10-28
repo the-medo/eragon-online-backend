@@ -597,7 +597,7 @@
     "/locations": {
       "get": {
         "summary": "Get locations",
-        "description": "returns locations based on placements (world or quest)",
+        "description": "returns locations based on modules (world or quest)",
         "operationId": "Locations_GetLocations",
         "responses": {
           "200": {
@@ -841,7 +841,7 @@
     "/maps": {
       "get": {
         "summary": "Get maps",
-        "description": "returns maps based on placements (world or quest)",
+        "description": "returns maps based on modules (world or quest)",
         "operationId": "Maps_GetMaps",
         "responses": {
           "200": {
@@ -859,28 +859,28 @@
         },
         "parameters": [
           {
-            "name": "placement.worldId",
+            "name": "module.worldId",
             "in": "query",
             "required": false,
             "type": "integer",
             "format": "int32"
           },
           {
-            "name": "placement.questId",
+            "name": "module.questId",
             "in": "query",
             "required": false,
             "type": "integer",
             "format": "int32"
           },
           {
-            "name": "placement.characterId",
+            "name": "module.characterId",
             "in": "query",
             "required": false,
             "type": "integer",
             "format": "int32"
           },
           {
-            "name": "placement.systemId",
+            "name": "module.systemId",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -2317,13 +2317,13 @@
     "/posts": {
       "get": {
         "summary": "Get posts",
-        "description": "returns posts based on placement",
-        "operationId": "Posts_GetPostsByPlacement",
+        "description": "returns posts based on module",
+        "operationId": "Posts_GetPostsByModule",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbGetPostsByPlacementResponse"
+              "$ref": "#/definitions/pbGetPostsByModuleResponse"
             }
           },
           "default": {
@@ -4398,8 +4398,8 @@
     "pbCreateLocationRequest": {
       "type": "object",
       "properties": {
-        "placement": {
-          "$ref": "#/definitions/pbPlacement"
+        "module": {
+          "$ref": "#/definitions/pbModule"
         },
         "name": {
           "type": "string"
@@ -4416,8 +4416,8 @@
     "pbCreateMapRequest": {
       "type": "object",
       "properties": {
-        "placement": {
-          "$ref": "#/definitions/pbPlacement"
+        "module": {
+          "$ref": "#/definitions/pbModule"
         },
         "name": {
           "type": "string"
@@ -4689,6 +4689,10 @@
       "type": "object",
       "properties": {
         "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleId": {
           "type": "integer",
           "format": "int32"
         },
@@ -5094,7 +5098,7 @@
         }
       }
     },
-    "pbGetPostsByPlacementResponse": {
+    "pbGetPostsByModuleResponse": {
       "type": "object",
       "properties": {
         "posts": {
@@ -5385,24 +5389,7 @@
         }
       }
     },
-    "pbPinShape": {
-      "type": "string",
-      "enum": [
-        "SQUARE",
-        "TRIANGLE",
-        "PIN",
-        "CIRCLE",
-        "HEXAGON",
-        "OCTAGON",
-        "STAR",
-        "DIAMOND",
-        "PENTAGON",
-        "HEART",
-        "CLOUD"
-      ],
-      "default": "SQUARE"
-    },
-    "pbPlacement": {
+    "pbModule": {
       "type": "object",
       "properties": {
         "worldId": {
@@ -5422,6 +5409,23 @@
           "format": "int32"
         }
       }
+    },
+    "pbPinShape": {
+      "type": "string",
+      "enum": [
+        "SQUARE",
+        "TRIANGLE",
+        "PIN",
+        "CIRCLE",
+        "HEXAGON",
+        "OCTAGON",
+        "STAR",
+        "DIAMOND",
+        "PENTAGON",
+        "HEART",
+        "CLOUD"
+      ],
+      "default": "SQUARE"
     },
     "pbPost": {
       "type": "object",

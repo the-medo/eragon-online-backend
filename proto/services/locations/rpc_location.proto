@@ -3,12 +3,12 @@ syntax = "proto3";
 package pb;
 
 import "services/locations/location.proto";
-import "services/placements/placement.proto";
+import "services/modules/module.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 message GetLocationsRequest {
-  Placement placement = 1;
+  Module module = 1;
 }
 
 message GetLocationsResponse {
@@ -24,7 +24,7 @@ message UpdateLocationRequest {
 }
 
 message CreateLocationRequest {
-  Placement placement = 1;
+  Module module = 1;
   string name = 2;
   optional string description = 3;
   optional int32 thumbnailImageId = 4;
