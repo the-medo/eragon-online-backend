@@ -32,6 +32,9 @@
       "name": "Menus"
     },
     {
+      "name": "Modules"
+    },
+    {
       "name": "PostTypes"
     },
     {
@@ -2290,6 +2293,60 @@
         ]
       }
     },
+    "/modules/id": {
+      "get": {
+        "summary": "Get id of the module",
+        "description": "gets id of the module (based on world id, quest id,...)",
+        "operationId": "Modules_GetModuleId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetModuleIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "module.worldId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "module.questId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "module.characterId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "module.systemId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Modules"
+        ]
+      }
+    },
     "/post_types": {
       "get": {
         "summary": "Get post types",
@@ -2615,16 +2672,16 @@
         ]
       }
     },
-    "/tags/worlds": {
+    "/tags/available": {
       "get": {
-        "summary": "Get available world tags",
-        "description": "gets list of tags, that are usable for worlds",
-        "operationId": "Tags_GetAvailableWorldTags",
+        "summary": "Get available tags for module type",
+        "description": "gets list of tags, that are usable for module type",
+        "operationId": "Tags_GetModuleTypeAvailableTags",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbGetAvailableWorldTagsResponse"
+              "$ref": "#/definitions/pbGetModuleTypeAvailableTagsResponse"
             }
           },
           "default": {
@@ -2634,14 +2691,30 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "moduleType",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "MODULE_TYPE_UNKNOWN",
+              "MODULE_TYPE_WORLD",
+              "MODULE_TYPE_QUEST",
+              "MODULE_TYPE_SYSTEM",
+              "MODULE_TYPE_CHARACTER"
+            ],
+            "default": "MODULE_TYPE_UNKNOWN"
+          }
+        ],
         "tags": [
           "Tags"
         ]
       },
       "post": {
-        "summary": "Create available world tag",
-        "description": "creates new tag, that can be assigned to worlds",
-        "operationId": "Tags_CreateAvailableWorldTag",
+        "summary": "Create module-available tag",
+        "description": "creates new tag, that can be assigned to modules of given type",
+        "operationId": "Tags_CreateModuleTypeAvailableTag",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2662,7 +2735,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbCreateAvailableWorldTagRequest"
+              "$ref": "#/definitions/pbCreateModuleTypeAvailableTagRequest"
             }
           }
         ],
@@ -2671,11 +2744,11 @@
         ]
       }
     },
-    "/tags/worlds/{tagId}": {
+    "/tags/available/{tagId}": {
       "delete": {
         "summary": "Delete available world tag",
         "description": "deletes available world tag and removes all its assignments",
-        "operationId": "Tags_DeleteAvailableWorldTag",
+        "operationId": "Tags_DeleteModuleTypeAvailableTag",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2705,9 +2778,9 @@
         ]
       },
       "patch": {
-        "summary": "Update available world tag",
-        "description": "updates world-assignable tag",
-        "operationId": "Tags_UpdateAvailableWorldTag",
+        "summary": "Update module-available tag",
+        "description": "updates module-assignable tag",
+        "operationId": "Tags_UpdateModuleTypeAvailableTag",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2742,6 +2815,94 @@
                 }
               }
             }
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/tags/module/{moduleId}": {
+      "post": {
+        "summary": "Add tag world",
+        "description": "assigns one tag to the world",
+        "operationId": "Tags_CreateModuleTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateModuleTagResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tagId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/tags/module/{moduleId}/tag/{tagId}": {
+      "delete": {
+        "summary": "Remove world tag",
+        "description": "removes tag from the world",
+        "operationId": "Tags_DeleteModuleTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "tagId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "tags": [
@@ -4188,92 +4349,6 @@
           "Worlds"
         ]
       }
-    },
-    "/worlds/{worldId}/tags": {
-      "delete": {
-        "summary": "Remove world tag",
-        "description": "removes tag from the world",
-        "operationId": "Worlds_RemoveWorldTag",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "tagId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Worlds"
-        ]
-      },
-      "post": {
-        "summary": "Add tag world",
-        "description": "assigns one tag to the world",
-        "operationId": "Worlds_AddWorldTag",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbTag"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "tagId": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Worlds"
-        ]
-      }
     }
   },
   "definitions": {
@@ -4366,14 +4441,6 @@
         }
       }
     },
-    "pbCreateAvailableWorldTagRequest": {
-      "type": "object",
-      "properties": {
-        "tag": {
-          "type": "string"
-        }
-      }
-    },
     "pbCreateEntityGroupRequest": {
       "type": "object",
       "properties": {
@@ -4446,6 +4513,30 @@
         },
         "layer": {
           "$ref": "#/definitions/pbViewMapLayer"
+        }
+      }
+    },
+    "pbCreateModuleTagResponse": {
+      "type": "object",
+      "properties": {
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tagId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateModuleTypeAvailableTagRequest": {
+      "type": "object",
+      "properties": {
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "tag": {
+          "type": "string"
         }
       }
     },
@@ -4800,14 +4891,14 @@
     "pbEntityType": {
       "type": "string",
       "enum": [
-        "UNKNOWN",
-        "POST",
-        "MAP",
-        "LOCATION",
-        "CHARACTER",
-        "IMAGE"
+        "ENTITY_TYPE_UNKNOWN",
+        "ENTITY_TYPE_POST",
+        "ENTITY_TYPE_MAP",
+        "ENTITY_TYPE_LOCATION",
+        "ENTITY_TYPE_CHARACTER",
+        "ENTITY_TYPE_IMAGE"
       ],
-      "default": "UNKNOWN"
+      "default": "ENTITY_TYPE_UNKNOWN"
     },
     "pbEvaluation": {
       "type": "object",
@@ -4857,18 +4948,6 @@
         "createdAt": {
           "type": "string",
           "format": "date-time"
-        }
-      }
-    },
-    "pbGetAvailableWorldTagsResponse": {
-      "type": "object",
-      "properties": {
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbViewTag"
-          }
         }
       }
     },
@@ -5070,6 +5149,27 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbMenuItem"
+          }
+        }
+      }
+    },
+    "pbGetModuleIdResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbGetModuleTypeAvailableTagsResponse": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewTag"
           }
         }
       }
@@ -5410,6 +5510,17 @@
         }
       }
     },
+    "pbModuleType": {
+      "type": "string",
+      "enum": [
+        "MODULE_TYPE_UNKNOWN",
+        "MODULE_TYPE_WORLD",
+        "MODULE_TYPE_QUEST",
+        "MODULE_TYPE_SYSTEM",
+        "MODULE_TYPE_CHARACTER"
+      ],
+      "default": "MODULE_TYPE_UNKNOWN"
+    },
     "pbPinShape": {
       "type": "string",
       "enum": [
@@ -5512,18 +5623,6 @@
           "type": "string"
         },
         "description": {
-          "type": "string"
-        }
-      }
-    },
-    "pbTag": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "tag": {
           "type": "string"
         }
       }

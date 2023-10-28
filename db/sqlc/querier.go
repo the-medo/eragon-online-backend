@@ -31,6 +31,8 @@ type Querier interface {
 	CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, error)
 	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)
 	CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error)
+	CreateModuleTag(ctx context.Context, arg CreateModuleTagParams) (ModuleTag, error)
+	CreateModuleTypeTagAvailable(ctx context.Context, arg CreateModuleTypeTagAvailableParams) (ModuleTypeTagsAvailable, error)
 	CreatePost(ctx context.Context, arg CreatePostParams) (Post, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
@@ -43,8 +45,6 @@ type Querier interface {
 	CreateWorldMapPinTypeGroup(ctx context.Context, arg CreateWorldMapPinTypeGroupParams) (WorldMapPinTypeGroup, error)
 	CreateWorldMenu(ctx context.Context, arg CreateWorldMenuParams) (WorldMenu, error)
 	CreateWorldPost(ctx context.Context, arg CreateWorldPostParams) (WorldPost, error)
-	CreateWorldTag(ctx context.Context, arg CreateWorldTagParams) (WorldTag, error)
-	CreateWorldTagAvailable(ctx context.Context, tag string) (WorldTagsAvailable, error)
 	DeleteAllWorldActivity(ctx context.Context, worldID int32) error
 	DeleteChatMessage(ctx context.Context, id int64) error
 	DeleteEntity(ctx context.Context, id int32) error
@@ -64,6 +64,8 @@ type Querier interface {
 	DeleteMenu(ctx context.Context, id int32) error
 	DeleteMenuItem(ctx context.Context, menuItemID int32) error
 	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
+	DeleteModuleTag(ctx context.Context, arg DeleteModuleTagParams) error
+	DeleteModuleTypeTagAvailable(ctx context.Context, id int32) error
 	DeletePost(ctx context.Context, postID int32) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
 	DeleteWorld(ctx context.Context, worldID int32) error
@@ -75,8 +77,6 @@ type Querier interface {
 	DeleteWorldMapPinTypeGroup(ctx context.Context, arg DeleteWorldMapPinTypeGroupParams) error
 	DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error
 	DeleteWorldPost(ctx context.Context, arg DeleteWorldPostParams) error
-	DeleteWorldTag(ctx context.Context, arg DeleteWorldTagParams) error
-	DeleteWorldTagAvailable(ctx context.Context, id int32) error
 	EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
@@ -120,6 +120,8 @@ type Querier interface {
 	GetMenuItemPosts(ctx context.Context, menuItemID sql.NullInt32) ([]ViewMenuItemPost, error)
 	GetMenuItemPostsByMenuId(ctx context.Context, menuID int32) ([]ViewMenuItemPost, error)
 	GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, error)
+	GetModuleTypeTagAvailable(ctx context.Context, tagID int32) (ViewModuleTypeTagsAvailable, error)
+	GetModuleTypeTagsAvailable(ctx context.Context, moduleType ModuleType) ([]ViewModuleTypeTagsAvailable, error)
 	GetPostById(ctx context.Context, postID int32) (ViewPost, error)
 	GetPostHistoryById(ctx context.Context, postHistoryID int32) (GetPostHistoryByIdRow, error)
 	GetPostHistoryByPostId(ctx context.Context, postID int32) ([]GetPostHistoryByPostIdRow, error)
@@ -143,11 +145,6 @@ type Querier interface {
 	GetWorldMenu(ctx context.Context, arg GetWorldMenuParams) (WorldMenu, error)
 	GetWorldMenuByMenuId(ctx context.Context, menuID int32) (WorldMenu, error)
 	GetWorldMonthlyActivity(ctx context.Context, arg GetWorldMonthlyActivityParams) ([]GetWorldMonthlyActivityRow, error)
-	GetWorldTag(ctx context.Context, arg GetWorldTagParams) (WorldTag, error)
-	GetWorldTagAvailable(ctx context.Context, tagID int32) (ViewWorldTagsAvailable, error)
-	GetWorldTagCount(ctx context.Context) ([]GetWorldTagCountRow, error)
-	GetWorldTags(ctx context.Context) ([]WorldTag, error)
-	GetWorldTagsAvailable(ctx context.Context) ([]ViewWorldTagsAvailable, error)
 	GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWorld, error)
 	GetWorldsCount(ctx context.Context, arg GetWorldsCountParams) (int64, error)
 	GetWorldsOfUser(ctx context.Context, userID int32) ([]GetWorldsOfUserRow, error)
@@ -176,6 +173,7 @@ type Querier interface {
 	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)
 	UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) (MenuItem, error)
 	UpdateMenuItemPost(ctx context.Context, arg UpdateMenuItemPostParams) (MenuItemPost, error)
+	UpdateModuleTypeTagAvailable(ctx context.Context, arg UpdateModuleTypeTagAvailableParams) (ModuleTypeTagsAvailable, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)
@@ -183,7 +181,6 @@ type Querier interface {
 	UpdateWorldActivity(ctx context.Context, arg UpdateWorldActivityParams) (WorldActivity, error)
 	UpdateWorldAdmin(ctx context.Context, arg UpdateWorldAdminParams) (WorldAdmin, error)
 	UpdateWorldImages(ctx context.Context, arg UpdateWorldImagesParams) (WorldImage, error)
-	UpdateWorldTagAvailable(ctx context.Context, arg UpdateWorldTagAvailableParams) (WorldTagsAvailable, error)
 }
 
 var _ Querier = (*Queries)(nil)

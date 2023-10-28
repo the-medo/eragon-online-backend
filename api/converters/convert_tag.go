@@ -5,7 +5,7 @@ import (
 	"github.com/the-medo/talebound-backend/pb"
 )
 
-func ConvertTag(tag db.WorldTagsAvailable) *pb.Tag {
+func ConvertModuleTypeTag(tag db.ModuleTypeTagsAvailable) *pb.Tag {
 	pbTag := &pb.Tag{
 		Id:  tag.ID,
 		Tag: tag.Tag,
@@ -14,7 +14,7 @@ func ConvertTag(tag db.WorldTagsAvailable) *pb.Tag {
 	return pbTag
 }
 
-func ConvertViewTag(tag db.ViewWorldTagsAvailable) *pb.ViewTag {
+func ConvertViewTag(tag db.ViewModuleTypeTagsAvailable) *pb.ViewTag {
 	pbTag := &pb.ViewTag{
 		Id:    tag.ID,
 		Tag:   tag.Tag,
@@ -23,7 +23,7 @@ func ConvertViewTag(tag db.ViewWorldTagsAvailable) *pb.ViewTag {
 	return pbTag
 }
 
-func ConvertViewTagToTag(tag db.ViewWorldTagsAvailable) *pb.Tag {
+func ConvertViewTagToTag(tag db.ViewModuleTypeTagsAvailable) *pb.Tag {
 	pbTag := &pb.Tag{
 		Id:  tag.ID,
 		Tag: tag.Tag,

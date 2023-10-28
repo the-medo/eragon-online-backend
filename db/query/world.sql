@@ -46,9 +46,6 @@ SELECT COUNT(*) FROM view_worlds
 WHERE (@is_public::boolean IS NULL OR public = @is_public) AND
     (array_length(@tags::varchar[], 1) IS NULL OR tags @> @tags::varchar[]);
 
--- name: GetWorldTagCount :many
-SELECT tag_id, COUNT(*) as count FROM world_tags GROUP BY tag_id;
-
 -- name: InsertWorldAdmin :one
 INSERT INTO world_admins (
     world_id,

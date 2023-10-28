@@ -4,6 +4,14 @@ package pb;
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
+enum ModuleType {
+  MODULE_TYPE_UNKNOWN = 0;
+  MODULE_TYPE_WORLD = 1;
+  MODULE_TYPE_QUEST = 2;
+  MODULE_TYPE_SYSTEM = 3;
+  MODULE_TYPE_CHARACTER = 4;
+}
+
 message Module {
   optional int32 worldId = 1;
   optional int32 questId = 2;

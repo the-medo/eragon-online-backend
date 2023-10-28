@@ -23,8 +23,6 @@ const (
 	Worlds_CreateWorld_FullMethodName             = "/pb.Worlds/CreateWorld"
 	Worlds_UpdateWorld_FullMethodName             = "/pb.Worlds/UpdateWorld"
 	Worlds_UploadWorldImage_FullMethodName        = "/pb.Worlds/UploadWorldImage"
-	Worlds_AddWorldTag_FullMethodName             = "/pb.Worlds/AddWorldTag"
-	Worlds_RemoveWorldTag_FullMethodName          = "/pb.Worlds/RemoveWorldTag"
 	Worlds_GetWorldAdmins_FullMethodName          = "/pb.Worlds/GetWorldAdmins"
 	Worlds_CreateWorldAdmin_FullMethodName        = "/pb.Worlds/CreateWorldAdmin"
 	Worlds_UpdateWorldAdmin_FullMethodName        = "/pb.Worlds/UpdateWorldAdmin"
@@ -43,8 +41,6 @@ type WorldsClient interface {
 	CreateWorld(ctx context.Context, in *CreateWorldRequest, opts ...grpc.CallOption) (*World, error)
 	UpdateWorld(ctx context.Context, in *UpdateWorldRequest, opts ...grpc.CallOption) (*World, error)
 	UploadWorldImage(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error)
-	AddWorldTag(ctx context.Context, in *AddWorldTagRequest, opts ...grpc.CallOption) (*Tag, error)
-	RemoveWorldTag(ctx context.Context, in *RemoveWorldTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetWorldAdmins(ctx context.Context, in *GetWorldAdminsRequest, opts ...grpc.CallOption) (*GetWorldAdminsResponse, error)
 	CreateWorldAdmin(ctx context.Context, in *CreateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error)
 	UpdateWorldAdmin(ctx context.Context, in *UpdateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error)
@@ -85,24 +81,6 @@ func (c *worldsClient) UpdateWorld(ctx context.Context, in *UpdateWorldRequest, 
 func (c *worldsClient) UploadWorldImage(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error) {
 	out := new(Image)
 	err := c.cc.Invoke(ctx, Worlds_UploadWorldImage_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *worldsClient) AddWorldTag(ctx context.Context, in *AddWorldTagRequest, opts ...grpc.CallOption) (*Tag, error) {
-	out := new(Tag)
-	err := c.cc.Invoke(ctx, Worlds_AddWorldTag_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *worldsClient) RemoveWorldTag(ctx context.Context, in *RemoveWorldTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Worlds_RemoveWorldTag_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -197,8 +175,6 @@ type WorldsServer interface {
 	CreateWorld(context.Context, *CreateWorldRequest) (*World, error)
 	UpdateWorld(context.Context, *UpdateWorldRequest) (*World, error)
 	UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error)
-	AddWorldTag(context.Context, *AddWorldTagRequest) (*Tag, error)
-	RemoveWorldTag(context.Context, *RemoveWorldTagRequest) (*emptypb.Empty, error)
 	GetWorldAdmins(context.Context, *GetWorldAdminsRequest) (*GetWorldAdminsResponse, error)
 	CreateWorldAdmin(context.Context, *CreateWorldAdminRequest) (*WorldAdmin, error)
 	UpdateWorldAdmin(context.Context, *UpdateWorldAdminRequest) (*WorldAdmin, error)
@@ -223,12 +199,6 @@ func (UnimplementedWorldsServer) UpdateWorld(context.Context, *UpdateWorldReques
 }
 func (UnimplementedWorldsServer) UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadWorldImage not implemented")
-}
-func (UnimplementedWorldsServer) AddWorldTag(context.Context, *AddWorldTagRequest) (*Tag, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddWorldTag not implemented")
-}
-func (UnimplementedWorldsServer) RemoveWorldTag(context.Context, *RemoveWorldTagRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RemoveWorldTag not implemented")
 }
 func (UnimplementedWorldsServer) GetWorldAdmins(context.Context, *GetWorldAdminsRequest) (*GetWorldAdminsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWorldAdmins not implemented")
@@ -320,42 +290,6 @@ func _Worlds_UploadWorldImage_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(WorldsServer).UploadWorldImage(ctx, req.(*UploadWorldImageRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Worlds_AddWorldTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddWorldTagRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WorldsServer).AddWorldTag(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Worlds_AddWorldTag_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorldsServer).AddWorldTag(ctx, req.(*AddWorldTagRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Worlds_RemoveWorldTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RemoveWorldTagRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WorldsServer).RemoveWorldTag(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Worlds_RemoveWorldTag_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorldsServer).RemoveWorldTag(ctx, req.(*RemoveWorldTagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -540,14 +474,6 @@ var Worlds_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UploadWorldImage",
 			Handler:    _Worlds_UploadWorldImage_Handler,
-		},
-		{
-			MethodName: "AddWorldTag",
-			Handler:    _Worlds_AddWorldTag_Handler,
-		},
-		{
-			MethodName: "RemoveWorldTag",
-			Handler:    _Worlds_RemoveWorldTag_Handler,
 		},
 		{
 			MethodName: "GetWorldAdmins",

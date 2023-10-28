@@ -3,7 +3,6 @@ syntax = "proto3";
 package pb;
 
 import "services/worlds/world.proto";
-import "services/tags/tag.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
@@ -49,33 +48,6 @@ message UploadWorldImageRequest {
 message TagUsage {
   int32 tagId = 1;
   int32 count = 2;
-}
-
-message GetAvailableWorldTagsResponse {
-  repeated ViewTag tags = 1;
-}
-
-message CreateAvailableWorldTagRequest {
-  string tag = 1;
-}
-
-message UpdateAvailableWorldTagRequest {
-  int32 tagId = 1;
-  string newTag = 2;
-}
-
-message DeleteAvailableWorldTagRequest {
-  int32 tagId = 1;
-}
-
-message AddWorldTagRequest {
-  int32 worldId = 1;
-  int32 tagId = 2;
-}
-
-message RemoveWorldTagRequest {
-  int32 worldId = 1;
-  int32 tagId = 2;
 }
 
 message GetWorldAdminsRequest {

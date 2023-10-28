@@ -20,20 +20,24 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Tags_GetAvailableWorldTags_FullMethodName   = "/pb.Tags/GetAvailableWorldTags"
-	Tags_CreateAvailableWorldTag_FullMethodName = "/pb.Tags/CreateAvailableWorldTag"
-	Tags_UpdateAvailableWorldTag_FullMethodName = "/pb.Tags/UpdateAvailableWorldTag"
-	Tags_DeleteAvailableWorldTag_FullMethodName = "/pb.Tags/DeleteAvailableWorldTag"
+	Tags_GetModuleTypeAvailableTags_FullMethodName   = "/pb.Tags/GetModuleTypeAvailableTags"
+	Tags_CreateModuleTypeAvailableTag_FullMethodName = "/pb.Tags/CreateModuleTypeAvailableTag"
+	Tags_UpdateModuleTypeAvailableTag_FullMethodName = "/pb.Tags/UpdateModuleTypeAvailableTag"
+	Tags_DeleteModuleTypeAvailableTag_FullMethodName = "/pb.Tags/DeleteModuleTypeAvailableTag"
+	Tags_CreateModuleTag_FullMethodName              = "/pb.Tags/CreateModuleTag"
+	Tags_DeleteModuleTag_FullMethodName              = "/pb.Tags/DeleteModuleTag"
 )
 
 // TagsClient is the client API for Tags service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TagsClient interface {
-	GetAvailableWorldTags(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAvailableWorldTagsResponse, error)
-	CreateAvailableWorldTag(ctx context.Context, in *CreateAvailableWorldTagRequest, opts ...grpc.CallOption) (*ViewTag, error)
-	UpdateAvailableWorldTag(ctx context.Context, in *UpdateAvailableWorldTagRequest, opts ...grpc.CallOption) (*ViewTag, error)
-	DeleteAvailableWorldTag(ctx context.Context, in *DeleteAvailableWorldTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetModuleTypeAvailableTags(ctx context.Context, in *GetModuleTypeAvailableTagsRequest, opts ...grpc.CallOption) (*GetModuleTypeAvailableTagsResponse, error)
+	CreateModuleTypeAvailableTag(ctx context.Context, in *CreateModuleTypeAvailableTagRequest, opts ...grpc.CallOption) (*ViewTag, error)
+	UpdateModuleTypeAvailableTag(ctx context.Context, in *UpdateModuleTypeAvailableTagRequest, opts ...grpc.CallOption) (*ViewTag, error)
+	DeleteModuleTypeAvailableTag(ctx context.Context, in *DeleteModuleTypeAvailableTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateModuleTag(ctx context.Context, in *CreateModuleTagRequest, opts ...grpc.CallOption) (*CreateModuleTagResponse, error)
+	DeleteModuleTag(ctx context.Context, in *DeleteModuleTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type tagsClient struct {
@@ -44,36 +48,54 @@ func NewTagsClient(cc grpc.ClientConnInterface) TagsClient {
 	return &tagsClient{cc}
 }
 
-func (c *tagsClient) GetAvailableWorldTags(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAvailableWorldTagsResponse, error) {
-	out := new(GetAvailableWorldTagsResponse)
-	err := c.cc.Invoke(ctx, Tags_GetAvailableWorldTags_FullMethodName, in, out, opts...)
+func (c *tagsClient) GetModuleTypeAvailableTags(ctx context.Context, in *GetModuleTypeAvailableTagsRequest, opts ...grpc.CallOption) (*GetModuleTypeAvailableTagsResponse, error) {
+	out := new(GetModuleTypeAvailableTagsResponse)
+	err := c.cc.Invoke(ctx, Tags_GetModuleTypeAvailableTags_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *tagsClient) CreateAvailableWorldTag(ctx context.Context, in *CreateAvailableWorldTagRequest, opts ...grpc.CallOption) (*ViewTag, error) {
+func (c *tagsClient) CreateModuleTypeAvailableTag(ctx context.Context, in *CreateModuleTypeAvailableTagRequest, opts ...grpc.CallOption) (*ViewTag, error) {
 	out := new(ViewTag)
-	err := c.cc.Invoke(ctx, Tags_CreateAvailableWorldTag_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Tags_CreateModuleTypeAvailableTag_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *tagsClient) UpdateAvailableWorldTag(ctx context.Context, in *UpdateAvailableWorldTagRequest, opts ...grpc.CallOption) (*ViewTag, error) {
+func (c *tagsClient) UpdateModuleTypeAvailableTag(ctx context.Context, in *UpdateModuleTypeAvailableTagRequest, opts ...grpc.CallOption) (*ViewTag, error) {
 	out := new(ViewTag)
-	err := c.cc.Invoke(ctx, Tags_UpdateAvailableWorldTag_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Tags_UpdateModuleTypeAvailableTag_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *tagsClient) DeleteAvailableWorldTag(ctx context.Context, in *DeleteAvailableWorldTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *tagsClient) DeleteModuleTypeAvailableTag(ctx context.Context, in *DeleteModuleTypeAvailableTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Tags_DeleteAvailableWorldTag_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Tags_DeleteModuleTypeAvailableTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tagsClient) CreateModuleTag(ctx context.Context, in *CreateModuleTagRequest, opts ...grpc.CallOption) (*CreateModuleTagResponse, error) {
+	out := new(CreateModuleTagResponse)
+	err := c.cc.Invoke(ctx, Tags_CreateModuleTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tagsClient) DeleteModuleTag(ctx context.Context, in *DeleteModuleTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Tags_DeleteModuleTag_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -84,10 +106,12 @@ func (c *tagsClient) DeleteAvailableWorldTag(ctx context.Context, in *DeleteAvai
 // All implementations must embed UnimplementedTagsServer
 // for forward compatibility
 type TagsServer interface {
-	GetAvailableWorldTags(context.Context, *emptypb.Empty) (*GetAvailableWorldTagsResponse, error)
-	CreateAvailableWorldTag(context.Context, *CreateAvailableWorldTagRequest) (*ViewTag, error)
-	UpdateAvailableWorldTag(context.Context, *UpdateAvailableWorldTagRequest) (*ViewTag, error)
-	DeleteAvailableWorldTag(context.Context, *DeleteAvailableWorldTagRequest) (*emptypb.Empty, error)
+	GetModuleTypeAvailableTags(context.Context, *GetModuleTypeAvailableTagsRequest) (*GetModuleTypeAvailableTagsResponse, error)
+	CreateModuleTypeAvailableTag(context.Context, *CreateModuleTypeAvailableTagRequest) (*ViewTag, error)
+	UpdateModuleTypeAvailableTag(context.Context, *UpdateModuleTypeAvailableTagRequest) (*ViewTag, error)
+	DeleteModuleTypeAvailableTag(context.Context, *DeleteModuleTypeAvailableTagRequest) (*emptypb.Empty, error)
+	CreateModuleTag(context.Context, *CreateModuleTagRequest) (*CreateModuleTagResponse, error)
+	DeleteModuleTag(context.Context, *DeleteModuleTagRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedTagsServer()
 }
 
@@ -95,17 +119,23 @@ type TagsServer interface {
 type UnimplementedTagsServer struct {
 }
 
-func (UnimplementedTagsServer) GetAvailableWorldTags(context.Context, *emptypb.Empty) (*GetAvailableWorldTagsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAvailableWorldTags not implemented")
+func (UnimplementedTagsServer) GetModuleTypeAvailableTags(context.Context, *GetModuleTypeAvailableTagsRequest) (*GetModuleTypeAvailableTagsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetModuleTypeAvailableTags not implemented")
 }
-func (UnimplementedTagsServer) CreateAvailableWorldTag(context.Context, *CreateAvailableWorldTagRequest) (*ViewTag, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateAvailableWorldTag not implemented")
+func (UnimplementedTagsServer) CreateModuleTypeAvailableTag(context.Context, *CreateModuleTypeAvailableTagRequest) (*ViewTag, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateModuleTypeAvailableTag not implemented")
 }
-func (UnimplementedTagsServer) UpdateAvailableWorldTag(context.Context, *UpdateAvailableWorldTagRequest) (*ViewTag, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateAvailableWorldTag not implemented")
+func (UnimplementedTagsServer) UpdateModuleTypeAvailableTag(context.Context, *UpdateModuleTypeAvailableTagRequest) (*ViewTag, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateModuleTypeAvailableTag not implemented")
 }
-func (UnimplementedTagsServer) DeleteAvailableWorldTag(context.Context, *DeleteAvailableWorldTagRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteAvailableWorldTag not implemented")
+func (UnimplementedTagsServer) DeleteModuleTypeAvailableTag(context.Context, *DeleteModuleTypeAvailableTagRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteModuleTypeAvailableTag not implemented")
+}
+func (UnimplementedTagsServer) CreateModuleTag(context.Context, *CreateModuleTagRequest) (*CreateModuleTagResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateModuleTag not implemented")
+}
+func (UnimplementedTagsServer) DeleteModuleTag(context.Context, *DeleteModuleTagRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteModuleTag not implemented")
 }
 func (UnimplementedTagsServer) mustEmbedUnimplementedTagsServer() {}
 
@@ -120,74 +150,110 @@ func RegisterTagsServer(s grpc.ServiceRegistrar, srv TagsServer) {
 	s.RegisterService(&Tags_ServiceDesc, srv)
 }
 
-func _Tags_GetAvailableWorldTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+func _Tags_GetModuleTypeAvailableTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetModuleTypeAvailableTagsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TagsServer).GetAvailableWorldTags(ctx, in)
+		return srv.(TagsServer).GetModuleTypeAvailableTags(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Tags_GetAvailableWorldTags_FullMethodName,
+		FullMethod: Tags_GetModuleTypeAvailableTags_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TagsServer).GetAvailableWorldTags(ctx, req.(*emptypb.Empty))
+		return srv.(TagsServer).GetModuleTypeAvailableTags(ctx, req.(*GetModuleTypeAvailableTagsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Tags_CreateAvailableWorldTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateAvailableWorldTagRequest)
+func _Tags_CreateModuleTypeAvailableTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateModuleTypeAvailableTagRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TagsServer).CreateAvailableWorldTag(ctx, in)
+		return srv.(TagsServer).CreateModuleTypeAvailableTag(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Tags_CreateAvailableWorldTag_FullMethodName,
+		FullMethod: Tags_CreateModuleTypeAvailableTag_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TagsServer).CreateAvailableWorldTag(ctx, req.(*CreateAvailableWorldTagRequest))
+		return srv.(TagsServer).CreateModuleTypeAvailableTag(ctx, req.(*CreateModuleTypeAvailableTagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Tags_UpdateAvailableWorldTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateAvailableWorldTagRequest)
+func _Tags_UpdateModuleTypeAvailableTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateModuleTypeAvailableTagRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TagsServer).UpdateAvailableWorldTag(ctx, in)
+		return srv.(TagsServer).UpdateModuleTypeAvailableTag(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Tags_UpdateAvailableWorldTag_FullMethodName,
+		FullMethod: Tags_UpdateModuleTypeAvailableTag_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TagsServer).UpdateAvailableWorldTag(ctx, req.(*UpdateAvailableWorldTagRequest))
+		return srv.(TagsServer).UpdateModuleTypeAvailableTag(ctx, req.(*UpdateModuleTypeAvailableTagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Tags_DeleteAvailableWorldTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteAvailableWorldTagRequest)
+func _Tags_DeleteModuleTypeAvailableTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteModuleTypeAvailableTagRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TagsServer).DeleteAvailableWorldTag(ctx, in)
+		return srv.(TagsServer).DeleteModuleTypeAvailableTag(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Tags_DeleteAvailableWorldTag_FullMethodName,
+		FullMethod: Tags_DeleteModuleTypeAvailableTag_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TagsServer).DeleteAvailableWorldTag(ctx, req.(*DeleteAvailableWorldTagRequest))
+		return srv.(TagsServer).DeleteModuleTypeAvailableTag(ctx, req.(*DeleteModuleTypeAvailableTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Tags_CreateModuleTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateModuleTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TagsServer).CreateModuleTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Tags_CreateModuleTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TagsServer).CreateModuleTag(ctx, req.(*CreateModuleTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Tags_DeleteModuleTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteModuleTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TagsServer).DeleteModuleTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Tags_DeleteModuleTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TagsServer).DeleteModuleTag(ctx, req.(*DeleteModuleTagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -200,20 +266,28 @@ var Tags_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*TagsServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetAvailableWorldTags",
-			Handler:    _Tags_GetAvailableWorldTags_Handler,
+			MethodName: "GetModuleTypeAvailableTags",
+			Handler:    _Tags_GetModuleTypeAvailableTags_Handler,
 		},
 		{
-			MethodName: "CreateAvailableWorldTag",
-			Handler:    _Tags_CreateAvailableWorldTag_Handler,
+			MethodName: "CreateModuleTypeAvailableTag",
+			Handler:    _Tags_CreateModuleTypeAvailableTag_Handler,
 		},
 		{
-			MethodName: "UpdateAvailableWorldTag",
-			Handler:    _Tags_UpdateAvailableWorldTag_Handler,
+			MethodName: "UpdateModuleTypeAvailableTag",
+			Handler:    _Tags_UpdateModuleTypeAvailableTag_Handler,
 		},
 		{
-			MethodName: "DeleteAvailableWorldTag",
-			Handler:    _Tags_DeleteAvailableWorldTag_Handler,
+			MethodName: "DeleteModuleTypeAvailableTag",
+			Handler:    _Tags_DeleteModuleTypeAvailableTag_Handler,
+		},
+		{
+			MethodName: "CreateModuleTag",
+			Handler:    _Tags_CreateModuleTag_Handler,
+		},
+		{
+			MethodName: "DeleteModuleTag",
+			Handler:    _Tags_DeleteModuleTag_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -6,53 +6,74 @@ import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "google/protobuf/empty.proto";
-import "services/worlds/rpc_world.proto";
 import "services/tags/tag.proto";
+import "services/tags/rpc_tag.proto";
 
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 service Tags {
 
-  rpc GetAvailableWorldTags(google.protobuf.Empty) returns (GetAvailableWorldTagsResponse) {
+  rpc GetModuleTypeAvailableTags(GetModuleTypeAvailableTagsRequest) returns (GetModuleTypeAvailableTagsResponse) {
     option (google.api.http) = {
-      get: "/tags/worlds"
+      get: "/tags/available"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "gets list of tags, that are usable for worlds";
-      summary: "Get available world tags";
+      description: "gets list of tags, that are usable for module type";
+      summary: "Get available tags for module type";
     };
   };
 
-  rpc CreateAvailableWorldTag(CreateAvailableWorldTagRequest) returns (ViewTag) {
+  rpc CreateModuleTypeAvailableTag(CreateModuleTypeAvailableTagRequest) returns (ViewTag) {
     option (google.api.http) = {
-      post: "/tags/worlds"
+      post: "/tags/available"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "creates new tag, that can be assigned to worlds";
-      summary: "Create available world tag";
+      description: "creates new tag, that can be assigned to modules of given type";
+      summary: "Create module-available tag";
     };
   };
 
-  rpc UpdateAvailableWorldTag(UpdateAvailableWorldTagRequest) returns (ViewTag) {
+  rpc UpdateModuleTypeAvailableTag(UpdateModuleTypeAvailableTagRequest) returns (ViewTag) {
     option (google.api.http) = {
-      patch: "/tags/worlds/{tagId}"
+      patch: "/tags/available/{tagId}"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "updates world-assignable tag";
-      summary: "Update available world tag";
+      description: "updates module-assignable tag";
+      summary: "Update module-available tag";
     };
   };
 
-  rpc DeleteAvailableWorldTag(DeleteAvailableWorldTagRequest) returns (google.protobuf.Empty) {
+  rpc DeleteModuleTypeAvailableTag(DeleteModuleTypeAvailableTagRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/tags/worlds/{tagId}"
+      delete: "/tags/available/{tagId}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "deletes available world tag and removes all its assignments";
       summary: "Delete available world tag";
+    };
+  };
+
+  rpc CreateModuleTag(CreateModuleTagRequest) returns (CreateModuleTagResponse) {
+    option (google.api.http) = {
+      post: "/tags/module/{moduleId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "assigns one tag to the world";
+      summary: "Add tag world";
+    };
+  };
+
+  rpc DeleteModuleTag(DeleteModuleTagRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/tags/module/{moduleId}/tag/{tagId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "removes tag from the world";
+      summary: "Remove world tag";
     };
   };
 }

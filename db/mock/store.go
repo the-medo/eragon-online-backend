@@ -306,6 +306,36 @@ func (mr *MockStoreMockRecorder) CreateMenuItemPost(arg0, arg1 interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMenuItemPost", reflect.TypeOf((*MockStore)(nil).CreateMenuItemPost), arg0, arg1)
 }
 
+// CreateModuleTag mocks base method.
+func (m *MockStore) CreateModuleTag(arg0 context.Context, arg1 db.CreateModuleTagParams) (db.ModuleTag, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateModuleTag", arg0, arg1)
+	ret0, _ := ret[0].(db.ModuleTag)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateModuleTag indicates an expected call of CreateModuleTag.
+func (mr *MockStoreMockRecorder) CreateModuleTag(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateModuleTag", reflect.TypeOf((*MockStore)(nil).CreateModuleTag), arg0, arg1)
+}
+
+// CreateModuleTypeTagAvailable mocks base method.
+func (m *MockStore) CreateModuleTypeTagAvailable(arg0 context.Context, arg1 db.CreateModuleTypeTagAvailableParams) (db.ModuleTypeTagsAvailable, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateModuleTypeTagAvailable", arg0, arg1)
+	ret0, _ := ret[0].(db.ModuleTypeTagsAvailable)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateModuleTypeTagAvailable indicates an expected call of CreateModuleTypeTagAvailable.
+func (mr *MockStoreMockRecorder) CreateModuleTypeTagAvailable(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateModuleTypeTagAvailable", reflect.TypeOf((*MockStore)(nil).CreateModuleTypeTagAvailable), arg0, arg1)
+}
+
 // CreatePost mocks base method.
 func (m *MockStore) CreatePost(arg0 context.Context, arg1 db.CreatePostParams) (db.Post, error) {
 	m.ctrl.T.Helper()
@@ -497,36 +527,6 @@ func (m *MockStore) CreateWorldPost(arg0 context.Context, arg1 db.CreateWorldPos
 func (mr *MockStoreMockRecorder) CreateWorldPost(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorldPost", reflect.TypeOf((*MockStore)(nil).CreateWorldPost), arg0, arg1)
-}
-
-// CreateWorldTag mocks base method.
-func (m *MockStore) CreateWorldTag(arg0 context.Context, arg1 db.CreateWorldTagParams) (db.WorldTag, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateWorldTag", arg0, arg1)
-	ret0, _ := ret[0].(db.WorldTag)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CreateWorldTag indicates an expected call of CreateWorldTag.
-func (mr *MockStoreMockRecorder) CreateWorldTag(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorldTag", reflect.TypeOf((*MockStore)(nil).CreateWorldTag), arg0, arg1)
-}
-
-// CreateWorldTagAvailable mocks base method.
-func (m *MockStore) CreateWorldTagAvailable(arg0 context.Context, arg1 string) (db.WorldTagsAvailable, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateWorldTagAvailable", arg0, arg1)
-	ret0, _ := ret[0].(db.WorldTagsAvailable)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CreateWorldTagAvailable indicates an expected call of CreateWorldTagAvailable.
-func (mr *MockStoreMockRecorder) CreateWorldTagAvailable(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorldTagAvailable", reflect.TypeOf((*MockStore)(nil).CreateWorldTagAvailable), arg0, arg1)
 }
 
 // CreateWorldTx mocks base method.
@@ -810,6 +810,34 @@ func (mr *MockStoreMockRecorder) DeleteMenuItemPost(arg0, arg1 interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMenuItemPost", reflect.TypeOf((*MockStore)(nil).DeleteMenuItemPost), arg0, arg1)
 }
 
+// DeleteModuleTag mocks base method.
+func (m *MockStore) DeleteModuleTag(arg0 context.Context, arg1 db.DeleteModuleTagParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteModuleTag", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteModuleTag indicates an expected call of DeleteModuleTag.
+func (mr *MockStoreMockRecorder) DeleteModuleTag(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteModuleTag", reflect.TypeOf((*MockStore)(nil).DeleteModuleTag), arg0, arg1)
+}
+
+// DeleteModuleTypeTagAvailable mocks base method.
+func (m *MockStore) DeleteModuleTypeTagAvailable(arg0 context.Context, arg1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteModuleTypeTagAvailable", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteModuleTypeTagAvailable indicates an expected call of DeleteModuleTypeTagAvailable.
+func (mr *MockStoreMockRecorder) DeleteModuleTypeTagAvailable(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteModuleTypeTagAvailable", reflect.TypeOf((*MockStore)(nil).DeleteModuleTypeTagAvailable), arg0, arg1)
+}
+
 // DeletePost mocks base method.
 func (m *MockStore) DeletePost(arg0 context.Context, arg1 int32) error {
 	m.ctrl.T.Helper()
@@ -962,34 +990,6 @@ func (m *MockStore) DeleteWorldPost(arg0 context.Context, arg1 db.DeleteWorldPos
 func (mr *MockStoreMockRecorder) DeleteWorldPost(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorldPost", reflect.TypeOf((*MockStore)(nil).DeleteWorldPost), arg0, arg1)
-}
-
-// DeleteWorldTag mocks base method.
-func (m *MockStore) DeleteWorldTag(arg0 context.Context, arg1 db.DeleteWorldTagParams) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteWorldTag", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteWorldTag indicates an expected call of DeleteWorldTag.
-func (mr *MockStoreMockRecorder) DeleteWorldTag(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorldTag", reflect.TypeOf((*MockStore)(nil).DeleteWorldTag), arg0, arg1)
-}
-
-// DeleteWorldTagAvailable mocks base method.
-func (m *MockStore) DeleteWorldTagAvailable(arg0 context.Context, arg1 int32) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteWorldTagAvailable", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteWorldTagAvailable indicates an expected call of DeleteWorldTagAvailable.
-func (mr *MockStoreMockRecorder) DeleteWorldTagAvailable(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorldTagAvailable", reflect.TypeOf((*MockStore)(nil).DeleteWorldTagAvailable), arg0, arg1)
 }
 
 // EntityGroupContentChangePositions mocks base method.
@@ -1636,6 +1636,36 @@ func (mr *MockStoreMockRecorder) GetMenuItems(arg0, arg1 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenuItems", reflect.TypeOf((*MockStore)(nil).GetMenuItems), arg0, arg1)
 }
 
+// GetModuleTypeTagAvailable mocks base method.
+func (m *MockStore) GetModuleTypeTagAvailable(arg0 context.Context, arg1 int32) (db.ViewModuleTypeTagsAvailable, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetModuleTypeTagAvailable", arg0, arg1)
+	ret0, _ := ret[0].(db.ViewModuleTypeTagsAvailable)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetModuleTypeTagAvailable indicates an expected call of GetModuleTypeTagAvailable.
+func (mr *MockStoreMockRecorder) GetModuleTypeTagAvailable(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetModuleTypeTagAvailable", reflect.TypeOf((*MockStore)(nil).GetModuleTypeTagAvailable), arg0, arg1)
+}
+
+// GetModuleTypeTagsAvailable mocks base method.
+func (m *MockStore) GetModuleTypeTagsAvailable(arg0 context.Context, arg1 db.ModuleType) ([]db.ViewModuleTypeTagsAvailable, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetModuleTypeTagsAvailable", arg0, arg1)
+	ret0, _ := ret[0].([]db.ViewModuleTypeTagsAvailable)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetModuleTypeTagsAvailable indicates an expected call of GetModuleTypeTagsAvailable.
+func (mr *MockStoreMockRecorder) GetModuleTypeTagsAvailable(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetModuleTypeTagsAvailable", reflect.TypeOf((*MockStore)(nil).GetModuleTypeTagsAvailable), arg0, arg1)
+}
+
 // GetPostById mocks base method.
 func (m *MockStore) GetPostById(arg0 context.Context, arg1 int32) (db.ViewPost, error) {
 	m.ctrl.T.Helper()
@@ -1979,81 +2009,6 @@ func (m *MockStore) GetWorldMonthlyActivity(arg0 context.Context, arg1 db.GetWor
 func (mr *MockStoreMockRecorder) GetWorldMonthlyActivity(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldMonthlyActivity", reflect.TypeOf((*MockStore)(nil).GetWorldMonthlyActivity), arg0, arg1)
-}
-
-// GetWorldTag mocks base method.
-func (m *MockStore) GetWorldTag(arg0 context.Context, arg1 db.GetWorldTagParams) (db.WorldTag, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetWorldTag", arg0, arg1)
-	ret0, _ := ret[0].(db.WorldTag)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetWorldTag indicates an expected call of GetWorldTag.
-func (mr *MockStoreMockRecorder) GetWorldTag(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldTag", reflect.TypeOf((*MockStore)(nil).GetWorldTag), arg0, arg1)
-}
-
-// GetWorldTagAvailable mocks base method.
-func (m *MockStore) GetWorldTagAvailable(arg0 context.Context, arg1 int32) (db.ViewWorldTagsAvailable, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetWorldTagAvailable", arg0, arg1)
-	ret0, _ := ret[0].(db.ViewWorldTagsAvailable)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetWorldTagAvailable indicates an expected call of GetWorldTagAvailable.
-func (mr *MockStoreMockRecorder) GetWorldTagAvailable(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldTagAvailable", reflect.TypeOf((*MockStore)(nil).GetWorldTagAvailable), arg0, arg1)
-}
-
-// GetWorldTagCount mocks base method.
-func (m *MockStore) GetWorldTagCount(arg0 context.Context) ([]db.GetWorldTagCountRow, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetWorldTagCount", arg0)
-	ret0, _ := ret[0].([]db.GetWorldTagCountRow)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetWorldTagCount indicates an expected call of GetWorldTagCount.
-func (mr *MockStoreMockRecorder) GetWorldTagCount(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldTagCount", reflect.TypeOf((*MockStore)(nil).GetWorldTagCount), arg0)
-}
-
-// GetWorldTags mocks base method.
-func (m *MockStore) GetWorldTags(arg0 context.Context) ([]db.WorldTag, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetWorldTags", arg0)
-	ret0, _ := ret[0].([]db.WorldTag)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetWorldTags indicates an expected call of GetWorldTags.
-func (mr *MockStoreMockRecorder) GetWorldTags(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldTags", reflect.TypeOf((*MockStore)(nil).GetWorldTags), arg0)
-}
-
-// GetWorldTagsAvailable mocks base method.
-func (m *MockStore) GetWorldTagsAvailable(arg0 context.Context) ([]db.ViewWorldTagsAvailable, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetWorldTagsAvailable", arg0)
-	ret0, _ := ret[0].([]db.ViewWorldTagsAvailable)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetWorldTagsAvailable indicates an expected call of GetWorldTagsAvailable.
-func (mr *MockStoreMockRecorder) GetWorldTagsAvailable(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldTagsAvailable", reflect.TypeOf((*MockStore)(nil).GetWorldTagsAvailable), arg0)
 }
 
 // GetWorlds mocks base method.
@@ -2501,6 +2456,21 @@ func (mr *MockStoreMockRecorder) UpdateMenuItemPost(arg0, arg1 interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMenuItemPost", reflect.TypeOf((*MockStore)(nil).UpdateMenuItemPost), arg0, arg1)
 }
 
+// UpdateModuleTypeTagAvailable mocks base method.
+func (m *MockStore) UpdateModuleTypeTagAvailable(arg0 context.Context, arg1 db.UpdateModuleTypeTagAvailableParams) (db.ModuleTypeTagsAvailable, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateModuleTypeTagAvailable", arg0, arg1)
+	ret0, _ := ret[0].(db.ModuleTypeTagsAvailable)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateModuleTypeTagAvailable indicates an expected call of UpdateModuleTypeTagAvailable.
+func (mr *MockStoreMockRecorder) UpdateModuleTypeTagAvailable(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateModuleTypeTagAvailable", reflect.TypeOf((*MockStore)(nil).UpdateModuleTypeTagAvailable), arg0, arg1)
+}
+
 // UpdatePost mocks base method.
 func (m *MockStore) UpdatePost(arg0 context.Context, arg1 db.UpdatePostParams) (db.Post, error) {
 	m.ctrl.T.Helper()
@@ -2604,21 +2574,6 @@ func (m *MockStore) UpdateWorldImages(arg0 context.Context, arg1 db.UpdateWorldI
 func (mr *MockStoreMockRecorder) UpdateWorldImages(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWorldImages", reflect.TypeOf((*MockStore)(nil).UpdateWorldImages), arg0, arg1)
-}
-
-// UpdateWorldTagAvailable mocks base method.
-func (m *MockStore) UpdateWorldTagAvailable(arg0 context.Context, arg1 db.UpdateWorldTagAvailableParams) (db.WorldTagsAvailable, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateWorldTagAvailable", arg0, arg1)
-	ret0, _ := ret[0].(db.WorldTagsAvailable)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateWorldTagAvailable indicates an expected call of UpdateWorldTagAvailable.
-func (mr *MockStoreMockRecorder) UpdateWorldTagAvailable(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWorldTagAvailable", reflect.TypeOf((*MockStore)(nil).UpdateWorldTagAvailable), arg0, arg1)
 }
 
 // VerifyEmailTx mocks base method.

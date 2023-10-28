@@ -155,6 +155,51 @@ func (ns NullImageVariant) Value() (driver.Value, error) {
 	return string(ns.ImageVariant), nil
 }
 
+type ModuleType string
+
+const (
+	ModuleTypeUnknown   ModuleType = "unknown"
+	ModuleTypeWorld     ModuleType = "world"
+	ModuleTypeQuest     ModuleType = "quest"
+	ModuleTypeCharacter ModuleType = "character"
+	ModuleTypeSystem    ModuleType = "system"
+)
+
+func (e *ModuleType) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = ModuleType(s)
+	case string:
+		*e = ModuleType(s)
+	default:
+		return fmt.Errorf("unsupported scan type for ModuleType: %T", src)
+	}
+	return nil
+}
+
+type NullModuleType struct {
+	ModuleType ModuleType
+	Valid      bool // Valid is true if ModuleType is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullModuleType) Scan(value interface{}) error {
+	if value == nil {
+		ns.ModuleType, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.ModuleType.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullModuleType) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.ModuleType), nil
+}
+
 type PinShape string
 
 const (
@@ -265,6 +310,7 @@ type EntityGroupContent struct {
 	ContentEntityGroupID sql.NullInt32 `json:"content_entity_group_id"`
 }
 
+// Assignments of module_entity_tags_available to entities
 type EntityTag struct {
 	EntityID int32 `json:"entity_id"`
 	TagID    int32 `json:"tag_id"`
@@ -387,18 +433,34 @@ type MenuItemPost struct {
 	Position   int32         `json:"position"`
 }
 
+// Groups higher-level sections into one table. Contains worlds, quests, characters and play systems.
 type Module struct {
 	ID          int32         `json:"id"`
 	WorldID     sql.NullInt32 `json:"world_id"`
 	SystemID    sql.NullInt32 `json:"system_id"`
 	CharacterID sql.NullInt32 `json:"character_id"`
 	QuestID     sql.NullInt32 `json:"quest_id"`
+	ModuleType  ModuleType    `json:"module_type"`
 }
 
-type ModuleTagsAvailable struct {
+// Contains tags, that are possible to assign to ANY entity inside of a module. One module can only have one set of tags, that are usable for any entity type inside of that module.
+type ModuleEntityTagsAvailable struct {
 	ID       int32  `json:"id"`
 	ModuleID int32  `json:"module_id"`
 	Tag      string `json:"tag"`
+}
+
+// Tag assignments for modules. So, if you are looking for what tags are assigned to a world, you can look here.
+type ModuleTag struct {
+	ModuleID int32 `json:"module_id"`
+	TagID    int32 `json:"tag_id"`
+}
+
+// Contains all tags, that are available for module TYPE - so, users can mark their worlds / quests / ... with these tags. These are NOT for marking entities.
+type ModuleTypeTagsAvailable struct {
+	ID         int32      `json:"id"`
+	ModuleType ModuleType `json:"module_type"`
+	Tag        string     `json:"tag"`
 }
 
 type Post struct {
@@ -643,6 +705,13 @@ type ViewMenuItemPost struct {
 	ThumbnailImgUrl    sql.NullString `json:"thumbnail_img_url"`
 }
 
+type ViewModuleTypeTagsAvailable struct {
+	ID         int32      `json:"id"`
+	ModuleType ModuleType `json:"module_type"`
+	Tag        string     `json:"tag"`
+	Count      int32      `json:"count"`
+}
+
 type ViewPost struct {
 	ID                 int32          `json:"id"`
 	PostTypeID         int32          `json:"post_type_id"`
@@ -695,12 +764,6 @@ type ViewWorld struct {
 	ActivityQuestCount    int32          `json:"activity_quest_count"`
 	ActivityResourceCount int32          `json:"activity_resource_count"`
 	WorldMenuID           int32          `json:"world_menu_id"`
-}
-
-type ViewWorldTagsAvailable struct {
-	ID    int32  `json:"id"`
-	Tag   string `json:"tag"`
-	Count int32  `json:"count"`
 }
 
 type World struct {
@@ -762,14 +825,4 @@ type WorldMenu struct {
 type WorldPost struct {
 	WorldID int32 `json:"world_id"`
 	PostID  int32 `json:"post_id"`
-}
-
-type WorldTag struct {
-	WorldID int32 `json:"world_id"`
-	TagID   int32 `json:"tag_id"`
-}
-
-type WorldTagsAvailable struct {
-	ID  int32  `json:"id"`
-	Tag string `json:"tag"`
 }

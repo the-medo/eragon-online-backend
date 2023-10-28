@@ -11,12 +11,12 @@ package pb;
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 enum EntityType {
-  UNKNOWN = 0;
-  POST = 1;
-  MAP = 2;
-  LOCATION = 3;
-  CHARACTER = 4;
-  IMAGE = 5;
+  ENTITY_TYPE_UNKNOWN = 0;
+  ENTITY_TYPE_POST = 1;
+  ENTITY_TYPE_MAP = 2;
+  ENTITY_TYPE_LOCATION = 3;
+  ENTITY_TYPE_CHARACTER = 4;
+  ENTITY_TYPE_IMAGE = 5;
 }
 
 message Entity {

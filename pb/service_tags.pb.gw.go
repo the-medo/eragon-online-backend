@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // Suppress "imported and not used" errors
@@ -32,26 +31,44 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_Tags_GetAvailableWorldTags_0(ctx context.Context, marshaler runtime.Marshaler, client TagsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq emptypb.Empty
+var (
+	filter_Tags_GetModuleTypeAvailableTags_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
+func request_Tags_GetModuleTypeAvailableTags_0(ctx context.Context, marshaler runtime.Marshaler, client TagsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetModuleTypeAvailableTagsRequest
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.GetAvailableWorldTags(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Tags_GetModuleTypeAvailableTags_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.GetModuleTypeAvailableTags(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Tags_GetAvailableWorldTags_0(ctx context.Context, marshaler runtime.Marshaler, server TagsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq emptypb.Empty
+func local_request_Tags_GetModuleTypeAvailableTags_0(ctx context.Context, marshaler runtime.Marshaler, server TagsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetModuleTypeAvailableTagsRequest
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.GetAvailableWorldTags(ctx, &protoReq)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Tags_GetModuleTypeAvailableTags_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.GetModuleTypeAvailableTags(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_Tags_CreateAvailableWorldTag_0(ctx context.Context, marshaler runtime.Marshaler, client TagsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateAvailableWorldTagRequest
+func request_Tags_CreateModuleTypeAvailableTag_0(ctx context.Context, marshaler runtime.Marshaler, client TagsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateModuleTypeAvailableTagRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -62,13 +79,13 @@ func request_Tags_CreateAvailableWorldTag_0(ctx context.Context, marshaler runti
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.CreateAvailableWorldTag(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.CreateModuleTypeAvailableTag(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Tags_CreateAvailableWorldTag_0(ctx context.Context, marshaler runtime.Marshaler, server TagsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateAvailableWorldTagRequest
+func local_request_Tags_CreateModuleTypeAvailableTag_0(ctx context.Context, marshaler runtime.Marshaler, server TagsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateModuleTypeAvailableTagRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -79,47 +96,13 @@ func local_request_Tags_CreateAvailableWorldTag_0(ctx context.Context, marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.CreateAvailableWorldTag(ctx, &protoReq)
+	msg, err := server.CreateModuleTypeAvailableTag(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_Tags_UpdateAvailableWorldTag_0(ctx context.Context, marshaler runtime.Marshaler, client TagsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UpdateAvailableWorldTagRequest
-	var metadata runtime.ServerMetadata
-
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
-	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["tagId"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tagId")
-	}
-
-	protoReq.TagId, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tagId", err)
-	}
-
-	msg, err := client.UpdateAvailableWorldTag(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_Tags_UpdateAvailableWorldTag_0(ctx context.Context, marshaler runtime.Marshaler, server TagsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UpdateAvailableWorldTagRequest
+func request_Tags_UpdateModuleTypeAvailableTag_0(ctx context.Context, marshaler runtime.Marshaler, client TagsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateModuleTypeAvailableTagRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -147,13 +130,47 @@ func local_request_Tags_UpdateAvailableWorldTag_0(ctx context.Context, marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tagId", err)
 	}
 
-	msg, err := server.UpdateAvailableWorldTag(ctx, &protoReq)
+	msg, err := client.UpdateModuleTypeAvailableTag(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func request_Tags_DeleteAvailableWorldTag_0(ctx context.Context, marshaler runtime.Marshaler, client TagsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteAvailableWorldTagRequest
+func local_request_Tags_UpdateModuleTypeAvailableTag_0(ctx context.Context, marshaler runtime.Marshaler, server TagsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateModuleTypeAvailableTagRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["tagId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tagId")
+	}
+
+	protoReq.TagId, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tagId", err)
+	}
+
+	msg, err := server.UpdateModuleTypeAvailableTag(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_Tags_DeleteModuleTypeAvailableTag_0(ctx context.Context, marshaler runtime.Marshaler, client TagsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteModuleTypeAvailableTagRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -173,13 +190,13 @@ func request_Tags_DeleteAvailableWorldTag_0(ctx context.Context, marshaler runti
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tagId", err)
 	}
 
-	msg, err := client.DeleteAvailableWorldTag(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.DeleteModuleTypeAvailableTag(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Tags_DeleteAvailableWorldTag_0(ctx context.Context, marshaler runtime.Marshaler, server TagsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteAvailableWorldTagRequest
+func local_request_Tags_DeleteModuleTypeAvailableTag_0(ctx context.Context, marshaler runtime.Marshaler, server TagsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteModuleTypeAvailableTagRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -199,7 +216,147 @@ func local_request_Tags_DeleteAvailableWorldTag_0(ctx context.Context, marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tagId", err)
 	}
 
-	msg, err := server.DeleteAvailableWorldTag(ctx, &protoReq)
+	msg, err := server.DeleteModuleTypeAvailableTag(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_Tags_CreateModuleTag_0(ctx context.Context, marshaler runtime.Marshaler, client TagsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateModuleTagRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["moduleId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "moduleId")
+	}
+
+	protoReq.ModuleId, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "moduleId", err)
+	}
+
+	msg, err := client.CreateModuleTag(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Tags_CreateModuleTag_0(ctx context.Context, marshaler runtime.Marshaler, server TagsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateModuleTagRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["moduleId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "moduleId")
+	}
+
+	protoReq.ModuleId, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "moduleId", err)
+	}
+
+	msg, err := server.CreateModuleTag(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_Tags_DeleteModuleTag_0(ctx context.Context, marshaler runtime.Marshaler, client TagsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteModuleTagRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["moduleId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "moduleId")
+	}
+
+	protoReq.ModuleId, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "moduleId", err)
+	}
+
+	val, ok = pathParams["tagId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tagId")
+	}
+
+	protoReq.TagId, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tagId", err)
+	}
+
+	msg, err := client.DeleteModuleTag(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Tags_DeleteModuleTag_0(ctx context.Context, marshaler runtime.Marshaler, server TagsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteModuleTagRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["moduleId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "moduleId")
+	}
+
+	protoReq.ModuleId, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "moduleId", err)
+	}
+
+	val, ok = pathParams["tagId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tagId")
+	}
+
+	protoReq.TagId, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tagId", err)
+	}
+
+	msg, err := server.DeleteModuleTag(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -210,7 +367,7 @@ func local_request_Tags_DeleteAvailableWorldTag_0(ctx context.Context, marshaler
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterTagsHandlerFromEndpoint instead.
 func RegisterTagsHandlerServer(ctx context.Context, mux *runtime.ServeMux, server TagsServer) error {
 
-	mux.Handle("GET", pattern_Tags_GetAvailableWorldTags_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Tags_GetModuleTypeAvailableTags_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -218,12 +375,12 @@ func RegisterTagsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Tags/GetAvailableWorldTags", runtime.WithHTTPPathPattern("/tags/worlds"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Tags/GetModuleTypeAvailableTags", runtime.WithHTTPPathPattern("/tags/available"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Tags_GetAvailableWorldTags_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Tags_GetModuleTypeAvailableTags_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -231,11 +388,11 @@ func RegisterTagsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 			return
 		}
 
-		forward_Tags_GetAvailableWorldTags_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Tags_GetModuleTypeAvailableTags_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_Tags_CreateAvailableWorldTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Tags_CreateModuleTypeAvailableTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -243,12 +400,12 @@ func RegisterTagsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Tags/CreateAvailableWorldTag", runtime.WithHTTPPathPattern("/tags/worlds"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Tags/CreateModuleTypeAvailableTag", runtime.WithHTTPPathPattern("/tags/available"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Tags_CreateAvailableWorldTag_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Tags_CreateModuleTypeAvailableTag_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -256,11 +413,11 @@ func RegisterTagsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 			return
 		}
 
-		forward_Tags_CreateAvailableWorldTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Tags_CreateModuleTypeAvailableTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("PATCH", pattern_Tags_UpdateAvailableWorldTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PATCH", pattern_Tags_UpdateModuleTypeAvailableTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -268,12 +425,12 @@ func RegisterTagsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Tags/UpdateAvailableWorldTag", runtime.WithHTTPPathPattern("/tags/worlds/{tagId}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Tags/UpdateModuleTypeAvailableTag", runtime.WithHTTPPathPattern("/tags/available/{tagId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Tags_UpdateAvailableWorldTag_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Tags_UpdateModuleTypeAvailableTag_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -281,11 +438,11 @@ func RegisterTagsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 			return
 		}
 
-		forward_Tags_UpdateAvailableWorldTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Tags_UpdateModuleTypeAvailableTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("DELETE", pattern_Tags_DeleteAvailableWorldTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("DELETE", pattern_Tags_DeleteModuleTypeAvailableTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -293,12 +450,12 @@ func RegisterTagsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Tags/DeleteAvailableWorldTag", runtime.WithHTTPPathPattern("/tags/worlds/{tagId}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Tags/DeleteModuleTypeAvailableTag", runtime.WithHTTPPathPattern("/tags/available/{tagId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Tags_DeleteAvailableWorldTag_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Tags_DeleteModuleTypeAvailableTag_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -306,7 +463,57 @@ func RegisterTagsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 			return
 		}
 
-		forward_Tags_DeleteAvailableWorldTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Tags_DeleteModuleTypeAvailableTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_Tags_CreateModuleTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Tags/CreateModuleTag", runtime.WithHTTPPathPattern("/tags/module/{moduleId}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Tags_CreateModuleTag_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Tags_CreateModuleTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_Tags_DeleteModuleTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Tags/DeleteModuleTag", runtime.WithHTTPPathPattern("/tags/module/{moduleId}/tag/{tagId}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Tags_DeleteModuleTag_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Tags_DeleteModuleTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -351,91 +558,135 @@ func RegisterTagsHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.
 // "TagsClient" to call the correct interceptors.
 func RegisterTagsHandlerClient(ctx context.Context, mux *runtime.ServeMux, client TagsClient) error {
 
-	mux.Handle("GET", pattern_Tags_GetAvailableWorldTags_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Tags_GetModuleTypeAvailableTags_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Tags/GetAvailableWorldTags", runtime.WithHTTPPathPattern("/tags/worlds"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Tags/GetModuleTypeAvailableTags", runtime.WithHTTPPathPattern("/tags/available"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Tags_GetAvailableWorldTags_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Tags_GetModuleTypeAvailableTags_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Tags_GetAvailableWorldTags_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Tags_GetModuleTypeAvailableTags_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_Tags_CreateAvailableWorldTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Tags_CreateModuleTypeAvailableTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Tags/CreateAvailableWorldTag", runtime.WithHTTPPathPattern("/tags/worlds"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Tags/CreateModuleTypeAvailableTag", runtime.WithHTTPPathPattern("/tags/available"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Tags_CreateAvailableWorldTag_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Tags_CreateModuleTypeAvailableTag_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Tags_CreateAvailableWorldTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Tags_CreateModuleTypeAvailableTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("PATCH", pattern_Tags_UpdateAvailableWorldTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PATCH", pattern_Tags_UpdateModuleTypeAvailableTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Tags/UpdateAvailableWorldTag", runtime.WithHTTPPathPattern("/tags/worlds/{tagId}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Tags/UpdateModuleTypeAvailableTag", runtime.WithHTTPPathPattern("/tags/available/{tagId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Tags_UpdateAvailableWorldTag_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Tags_UpdateModuleTypeAvailableTag_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Tags_UpdateAvailableWorldTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Tags_UpdateModuleTypeAvailableTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("DELETE", pattern_Tags_DeleteAvailableWorldTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("DELETE", pattern_Tags_DeleteModuleTypeAvailableTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Tags/DeleteAvailableWorldTag", runtime.WithHTTPPathPattern("/tags/worlds/{tagId}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Tags/DeleteModuleTypeAvailableTag", runtime.WithHTTPPathPattern("/tags/available/{tagId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Tags_DeleteAvailableWorldTag_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Tags_DeleteModuleTypeAvailableTag_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Tags_DeleteAvailableWorldTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Tags_DeleteModuleTypeAvailableTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_Tags_CreateModuleTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Tags/CreateModuleTag", runtime.WithHTTPPathPattern("/tags/module/{moduleId}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Tags_CreateModuleTag_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Tags_CreateModuleTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_Tags_DeleteModuleTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Tags/DeleteModuleTag", runtime.WithHTTPPathPattern("/tags/module/{moduleId}/tag/{tagId}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Tags_DeleteModuleTag_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Tags_DeleteModuleTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -443,21 +694,29 @@ func RegisterTagsHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 }
 
 var (
-	pattern_Tags_GetAvailableWorldTags_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"tags", "worlds"}, ""))
+	pattern_Tags_GetModuleTypeAvailableTags_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"tags", "available"}, ""))
 
-	pattern_Tags_CreateAvailableWorldTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"tags", "worlds"}, ""))
+	pattern_Tags_CreateModuleTypeAvailableTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"tags", "available"}, ""))
 
-	pattern_Tags_UpdateAvailableWorldTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"tags", "worlds", "tagId"}, ""))
+	pattern_Tags_UpdateModuleTypeAvailableTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"tags", "available", "tagId"}, ""))
 
-	pattern_Tags_DeleteAvailableWorldTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"tags", "worlds", "tagId"}, ""))
+	pattern_Tags_DeleteModuleTypeAvailableTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"tags", "available", "tagId"}, ""))
+
+	pattern_Tags_CreateModuleTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"tags", "module", "moduleId"}, ""))
+
+	pattern_Tags_DeleteModuleTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"tags", "module", "moduleId", "tag", "tagId"}, ""))
 )
 
 var (
-	forward_Tags_GetAvailableWorldTags_0 = runtime.ForwardResponseMessage
+	forward_Tags_GetModuleTypeAvailableTags_0 = runtime.ForwardResponseMessage
 
-	forward_Tags_CreateAvailableWorldTag_0 = runtime.ForwardResponseMessage
+	forward_Tags_CreateModuleTypeAvailableTag_0 = runtime.ForwardResponseMessage
 
-	forward_Tags_UpdateAvailableWorldTag_0 = runtime.ForwardResponseMessage
+	forward_Tags_UpdateModuleTypeAvailableTag_0 = runtime.ForwardResponseMessage
 
-	forward_Tags_DeleteAvailableWorldTag_0 = runtime.ForwardResponseMessage
+	forward_Tags_DeleteModuleTypeAvailableTag_0 = runtime.ForwardResponseMessage
+
+	forward_Tags_CreateModuleTag_0 = runtime.ForwardResponseMessage
+
+	forward_Tags_DeleteModuleTag_0 = runtime.ForwardResponseMessage
 )

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "services/modules/rpc_module.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Modules {
+  rpc GetModuleId(GetModuleIdRequest) returns (GetModuleIdResponse) {
+    option (google.api.http) = {
+      get: "/modules/id"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets id of the module (based on world id, quest id,...)";
+      summary: "Get id of the module";
+    };
+  };
+}

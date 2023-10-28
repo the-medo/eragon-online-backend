@@ -2,9 +2,12 @@ package api
 
 import (
 	"fmt"
+	"github.com/the-medo/talebound-backend/apiservices/entities"
 	"github.com/the-medo/talebound-backend/apiservices/locations"
 	"github.com/the-medo/talebound-backend/apiservices/maps"
+	"github.com/the-medo/talebound-backend/apiservices/modules"
 	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/tags"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/token"
@@ -16,13 +19,15 @@ import (
 type Server struct {
 	*locations.ServiceLocations
 	*maps.ServiceMaps
+	*modules.ServiceModules
+	*entities.ServiceEntities
+	*tags.ServiceTags
 	pb.UnimplementedChatServer
 	pb.UnimplementedEvaluationsServer
 	pb.UnimplementedImagesServer
 	pb.UnimplementedMenusServer
 	pb.UnimplementedPostTypesServer
 	pb.UnimplementedPostsServer
-	pb.UnimplementedTagsServer
 	pb.UnimplementedUsersServer
 	pb.UnimplementedVerifyServer
 	pb.UnimplementedWorldsServer
@@ -43,6 +48,9 @@ func NewServer(config util.Config, store db.Store, taskDistributor worker.TaskDi
 	server := &Server{
 		ServiceLocations: locations.NewLocationsService(serverCore),
 		ServiceMaps:      maps.NewMapsService(serverCore),
+		ServiceModules:   modules.NewModulesService(serverCore),
+		ServiceEntities:  entities.NewEntitiesService(serverCore),
+		ServiceTags:      tags.NewTagsService(serverCore),
 		Config:           serverCore.Config,
 		Store:            serverCore.Store,
 		TaskDistributor:  serverCore.TaskDistributor,
