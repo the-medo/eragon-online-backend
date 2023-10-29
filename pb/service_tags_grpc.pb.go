@@ -20,12 +20,18 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Tags_GetModuleTypeAvailableTags_FullMethodName   = "/pb.Tags/GetModuleTypeAvailableTags"
-	Tags_CreateModuleTypeAvailableTag_FullMethodName = "/pb.Tags/CreateModuleTypeAvailableTag"
-	Tags_UpdateModuleTypeAvailableTag_FullMethodName = "/pb.Tags/UpdateModuleTypeAvailableTag"
-	Tags_DeleteModuleTypeAvailableTag_FullMethodName = "/pb.Tags/DeleteModuleTypeAvailableTag"
-	Tags_CreateModuleTag_FullMethodName              = "/pb.Tags/CreateModuleTag"
-	Tags_DeleteModuleTag_FullMethodName              = "/pb.Tags/DeleteModuleTag"
+	Tags_GetModuleTypeAvailableTags_FullMethodName     = "/pb.Tags/GetModuleTypeAvailableTags"
+	Tags_CreateModuleTypeAvailableTag_FullMethodName   = "/pb.Tags/CreateModuleTypeAvailableTag"
+	Tags_UpdateModuleTypeAvailableTag_FullMethodName   = "/pb.Tags/UpdateModuleTypeAvailableTag"
+	Tags_DeleteModuleTypeAvailableTag_FullMethodName   = "/pb.Tags/DeleteModuleTypeAvailableTag"
+	Tags_CreateModuleTag_FullMethodName                = "/pb.Tags/CreateModuleTag"
+	Tags_DeleteModuleTag_FullMethodName                = "/pb.Tags/DeleteModuleTag"
+	Tags_GetModuleEntityAvailableTags_FullMethodName   = "/pb.Tags/GetModuleEntityAvailableTags"
+	Tags_CreateModuleEntityAvailableTag_FullMethodName = "/pb.Tags/CreateModuleEntityAvailableTag"
+	Tags_UpdateModuleEntityAvailableTag_FullMethodName = "/pb.Tags/UpdateModuleEntityAvailableTag"
+	Tags_DeleteModuleEntityAvailableTag_FullMethodName = "/pb.Tags/DeleteModuleEntityAvailableTag"
+	Tags_CreateEntityTag_FullMethodName                = "/pb.Tags/CreateEntityTag"
+	Tags_DeleteEntityTag_FullMethodName                = "/pb.Tags/DeleteEntityTag"
 )
 
 // TagsClient is the client API for Tags service.
@@ -38,6 +44,12 @@ type TagsClient interface {
 	DeleteModuleTypeAvailableTag(ctx context.Context, in *DeleteModuleTypeAvailableTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CreateModuleTag(ctx context.Context, in *CreateModuleTagRequest, opts ...grpc.CallOption) (*CreateModuleTagResponse, error)
 	DeleteModuleTag(ctx context.Context, in *DeleteModuleTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetModuleEntityAvailableTags(ctx context.Context, in *GetModuleEntityAvailableTagsRequest, opts ...grpc.CallOption) (*GetModuleEntityAvailableTagsResponse, error)
+	CreateModuleEntityAvailableTag(ctx context.Context, in *CreateModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*Tag, error)
+	UpdateModuleEntityAvailableTag(ctx context.Context, in *UpdateModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*Tag, error)
+	DeleteModuleEntityAvailableTag(ctx context.Context, in *DeleteModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateEntityTag(ctx context.Context, in *CreateEntityTagRequest, opts ...grpc.CallOption) (*CreateEntityTagResponse, error)
+	DeleteEntityTag(ctx context.Context, in *DeleteEntityTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type tagsClient struct {
@@ -102,6 +114,60 @@ func (c *tagsClient) DeleteModuleTag(ctx context.Context, in *DeleteModuleTagReq
 	return out, nil
 }
 
+func (c *tagsClient) GetModuleEntityAvailableTags(ctx context.Context, in *GetModuleEntityAvailableTagsRequest, opts ...grpc.CallOption) (*GetModuleEntityAvailableTagsResponse, error) {
+	out := new(GetModuleEntityAvailableTagsResponse)
+	err := c.cc.Invoke(ctx, Tags_GetModuleEntityAvailableTags_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tagsClient) CreateModuleEntityAvailableTag(ctx context.Context, in *CreateModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*Tag, error) {
+	out := new(Tag)
+	err := c.cc.Invoke(ctx, Tags_CreateModuleEntityAvailableTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tagsClient) UpdateModuleEntityAvailableTag(ctx context.Context, in *UpdateModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*Tag, error) {
+	out := new(Tag)
+	err := c.cc.Invoke(ctx, Tags_UpdateModuleEntityAvailableTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tagsClient) DeleteModuleEntityAvailableTag(ctx context.Context, in *DeleteModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Tags_DeleteModuleEntityAvailableTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tagsClient) CreateEntityTag(ctx context.Context, in *CreateEntityTagRequest, opts ...grpc.CallOption) (*CreateEntityTagResponse, error) {
+	out := new(CreateEntityTagResponse)
+	err := c.cc.Invoke(ctx, Tags_CreateEntityTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tagsClient) DeleteEntityTag(ctx context.Context, in *DeleteEntityTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Tags_DeleteEntityTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TagsServer is the server API for Tags service.
 // All implementations must embed UnimplementedTagsServer
 // for forward compatibility
@@ -112,6 +178,12 @@ type TagsServer interface {
 	DeleteModuleTypeAvailableTag(context.Context, *DeleteModuleTypeAvailableTagRequest) (*emptypb.Empty, error)
 	CreateModuleTag(context.Context, *CreateModuleTagRequest) (*CreateModuleTagResponse, error)
 	DeleteModuleTag(context.Context, *DeleteModuleTagRequest) (*emptypb.Empty, error)
+	GetModuleEntityAvailableTags(context.Context, *GetModuleEntityAvailableTagsRequest) (*GetModuleEntityAvailableTagsResponse, error)
+	CreateModuleEntityAvailableTag(context.Context, *CreateModuleEntityAvailableTagRequest) (*Tag, error)
+	UpdateModuleEntityAvailableTag(context.Context, *UpdateModuleEntityAvailableTagRequest) (*Tag, error)
+	DeleteModuleEntityAvailableTag(context.Context, *DeleteModuleEntityAvailableTagRequest) (*emptypb.Empty, error)
+	CreateEntityTag(context.Context, *CreateEntityTagRequest) (*CreateEntityTagResponse, error)
+	DeleteEntityTag(context.Context, *DeleteEntityTagRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedTagsServer()
 }
 
@@ -136,6 +208,24 @@ func (UnimplementedTagsServer) CreateModuleTag(context.Context, *CreateModuleTag
 }
 func (UnimplementedTagsServer) DeleteModuleTag(context.Context, *DeleteModuleTagRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteModuleTag not implemented")
+}
+func (UnimplementedTagsServer) GetModuleEntityAvailableTags(context.Context, *GetModuleEntityAvailableTagsRequest) (*GetModuleEntityAvailableTagsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetModuleEntityAvailableTags not implemented")
+}
+func (UnimplementedTagsServer) CreateModuleEntityAvailableTag(context.Context, *CreateModuleEntityAvailableTagRequest) (*Tag, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateModuleEntityAvailableTag not implemented")
+}
+func (UnimplementedTagsServer) UpdateModuleEntityAvailableTag(context.Context, *UpdateModuleEntityAvailableTagRequest) (*Tag, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateModuleEntityAvailableTag not implemented")
+}
+func (UnimplementedTagsServer) DeleteModuleEntityAvailableTag(context.Context, *DeleteModuleEntityAvailableTagRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteModuleEntityAvailableTag not implemented")
+}
+func (UnimplementedTagsServer) CreateEntityTag(context.Context, *CreateEntityTagRequest) (*CreateEntityTagResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateEntityTag not implemented")
+}
+func (UnimplementedTagsServer) DeleteEntityTag(context.Context, *DeleteEntityTagRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteEntityTag not implemented")
 }
 func (UnimplementedTagsServer) mustEmbedUnimplementedTagsServer() {}
 
@@ -258,6 +348,114 @@ func _Tags_DeleteModuleTag_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Tags_GetModuleEntityAvailableTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetModuleEntityAvailableTagsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TagsServer).GetModuleEntityAvailableTags(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Tags_GetModuleEntityAvailableTags_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TagsServer).GetModuleEntityAvailableTags(ctx, req.(*GetModuleEntityAvailableTagsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Tags_CreateModuleEntityAvailableTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateModuleEntityAvailableTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TagsServer).CreateModuleEntityAvailableTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Tags_CreateModuleEntityAvailableTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TagsServer).CreateModuleEntityAvailableTag(ctx, req.(*CreateModuleEntityAvailableTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Tags_UpdateModuleEntityAvailableTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateModuleEntityAvailableTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TagsServer).UpdateModuleEntityAvailableTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Tags_UpdateModuleEntityAvailableTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TagsServer).UpdateModuleEntityAvailableTag(ctx, req.(*UpdateModuleEntityAvailableTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Tags_DeleteModuleEntityAvailableTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteModuleEntityAvailableTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TagsServer).DeleteModuleEntityAvailableTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Tags_DeleteModuleEntityAvailableTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TagsServer).DeleteModuleEntityAvailableTag(ctx, req.(*DeleteModuleEntityAvailableTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Tags_CreateEntityTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateEntityTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TagsServer).CreateEntityTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Tags_CreateEntityTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TagsServer).CreateEntityTag(ctx, req.(*CreateEntityTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Tags_DeleteEntityTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteEntityTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TagsServer).DeleteEntityTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Tags_DeleteEntityTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TagsServer).DeleteEntityTag(ctx, req.(*DeleteEntityTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Tags_ServiceDesc is the grpc.ServiceDesc for Tags service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -288,6 +486,30 @@ var Tags_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteModuleTag",
 			Handler:    _Tags_DeleteModuleTag_Handler,
+		},
+		{
+			MethodName: "GetModuleEntityAvailableTags",
+			Handler:    _Tags_GetModuleEntityAvailableTags_Handler,
+		},
+		{
+			MethodName: "CreateModuleEntityAvailableTag",
+			Handler:    _Tags_CreateModuleEntityAvailableTag_Handler,
+		},
+		{
+			MethodName: "UpdateModuleEntityAvailableTag",
+			Handler:    _Tags_UpdateModuleEntityAvailableTag_Handler,
+		},
+		{
+			MethodName: "DeleteModuleEntityAvailableTag",
+			Handler:    _Tags_DeleteModuleEntityAvailableTag_Handler,
+		},
+		{
+			MethodName: "CreateEntityTag",
+			Handler:    _Tags_CreateEntityTag_Handler,
+		},
+		{
+			MethodName: "DeleteEntityTag",
+			Handler:    _Tags_DeleteEntityTag_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

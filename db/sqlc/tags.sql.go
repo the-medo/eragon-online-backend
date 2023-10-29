@@ -10,6 +10,42 @@ import (
 	"database/sql"
 )
 
+const createEntityTag = `-- name: CreateEntityTag :one
+INSERT INTO entity_tags (entity_id, tag_id)
+VALUES ($1, $2)
+RETURNING entity_id, tag_id
+`
+
+type CreateEntityTagParams struct {
+	EntityID int32 `json:"entity_id"`
+	TagID    int32 `json:"tag_id"`
+}
+
+func (q *Queries) CreateEntityTag(ctx context.Context, arg CreateEntityTagParams) (EntityTag, error) {
+	row := q.db.QueryRowContext(ctx, createEntityTag, arg.EntityID, arg.TagID)
+	var i EntityTag
+	err := row.Scan(&i.EntityID, &i.TagID)
+	return i, err
+}
+
+const createModuleEntityTagAvailable = `-- name: CreateModuleEntityTagAvailable :one
+INSERT INTO module_entity_tags_available (module_id, tag)
+VALUES ($1, $2)
+RETURNING id, module_id, tag
+`
+
+type CreateModuleEntityTagAvailableParams struct {
+	ModuleID int32  `json:"module_id"`
+	Tag      string `json:"tag"`
+}
+
+func (q *Queries) CreateModuleEntityTagAvailable(ctx context.Context, arg CreateModuleEntityTagAvailableParams) (ModuleEntityTagsAvailable, error) {
+	row := q.db.QueryRowContext(ctx, createModuleEntityTagAvailable, arg.ModuleID, arg.Tag)
+	var i ModuleEntityTagsAvailable
+	err := row.Scan(&i.ID, &i.ModuleID, &i.Tag)
+	return i, err
+}
+
 const createModuleTag = `-- name: CreateModuleTag :one
 INSERT INTO module_tags (module_id, tag_id)
 VALUES ($1, $2)
@@ -46,6 +82,33 @@ func (q *Queries) CreateModuleTypeTagAvailable(ctx context.Context, arg CreateMo
 	return i, err
 }
 
+const deleteEntityTag = `-- name: DeleteEntityTag :exec
+DELETE FROM entity_tags
+WHERE
+        entity_id = COALESCE($1, entity_id) AND
+        tag_id = COALESCE($2, tag_id) AND
+    (NOT ($1 IS NULL AND $2 IS NULL))
+`
+
+type DeleteEntityTagParams struct {
+	EntityID sql.NullInt32 `json:"entity_id"`
+	TagID    sql.NullInt32 `json:"tag_id"`
+}
+
+func (q *Queries) DeleteEntityTag(ctx context.Context, arg DeleteEntityTagParams) error {
+	_, err := q.db.ExecContext(ctx, deleteEntityTag, arg.EntityID, arg.TagID)
+	return err
+}
+
+const deleteModuleEntityTagAvailable = `-- name: DeleteModuleEntityTagAvailable :exec
+DELETE FROM module_entity_tags_available WHERE id = $1
+`
+
+func (q *Queries) DeleteModuleEntityTagAvailable(ctx context.Context, id int32) error {
+	_, err := q.db.ExecContext(ctx, deleteModuleEntityTagAvailable, id)
+	return err
+}
+
 const deleteModuleTag = `-- name: DeleteModuleTag :exec
 DELETE FROM module_tags
 WHERE
@@ -71,6 +134,34 @@ DELETE FROM module_type_tags_available WHERE id = $1
 func (q *Queries) DeleteModuleTypeTagAvailable(ctx context.Context, id int32) error {
 	_, err := q.db.ExecContext(ctx, deleteModuleTypeTagAvailable, id)
 	return err
+}
+
+const getModuleEntityTagsAvailable = `-- name: GetModuleEntityTagsAvailable :many
+SELECT id, module_id, tag FROM module_entity_tags_available
+WHERE module_id = $1
+`
+
+func (q *Queries) GetModuleEntityTagsAvailable(ctx context.Context, moduleID int32) ([]ModuleEntityTagsAvailable, error) {
+	rows, err := q.db.QueryContext(ctx, getModuleEntityTagsAvailable, moduleID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ModuleEntityTagsAvailable{}
+	for rows.Next() {
+		var i ModuleEntityTagsAvailable
+		if err := rows.Scan(&i.ID, &i.ModuleID, &i.Tag); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const getModuleTypeTagAvailable = `-- name: GetModuleTypeTagAvailable :one
@@ -120,6 +211,25 @@ func (q *Queries) GetModuleTypeTagsAvailable(ctx context.Context, moduleType Mod
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateModuleEntityTagAvailable = `-- name: UpdateModuleEntityTagAvailable :one
+UPDATE module_entity_tags_available
+SET tag = $1
+WHERE id = $2
+RETURNING id, module_id, tag
+`
+
+type UpdateModuleEntityTagAvailableParams struct {
+	Tag string `json:"tag"`
+	ID  int32  `json:"id"`
+}
+
+func (q *Queries) UpdateModuleEntityTagAvailable(ctx context.Context, arg UpdateModuleEntityTagAvailableParams) (ModuleEntityTagsAvailable, error) {
+	row := q.db.QueryRowContext(ctx, updateModuleEntityTagAvailable, arg.Tag, arg.ID)
+	var i ModuleEntityTagsAvailable
+	err := row.Scan(&i.ID, &i.ModuleID, &i.Tag)
+	return i, err
 }
 
 const updateModuleTypeTagAvailable = `-- name: UpdateModuleTypeTagAvailable :one

@@ -19,6 +19,7 @@ type Querier interface {
 	CreateEntity(ctx context.Context, arg CreateEntityParams) (Entity, error)
 	CreateEntityGroup(ctx context.Context, arg CreateEntityGroupParams) (EntityGroup, error)
 	CreateEntityGroupContent(ctx context.Context, arg CreateEntityGroupContentParams) (EntityGroupContent, error)
+	CreateEntityTag(ctx context.Context, arg CreateEntityTagParams) (EntityTag, error)
 	CreateEvaluationVote(ctx context.Context, arg CreateEvaluationVoteParams) (EvaluationVote, error)
 	CreateImage(ctx context.Context, arg CreateImageParams) (Image, error)
 	CreateLocation(ctx context.Context, arg CreateLocationParams) (Location, error)
@@ -31,6 +32,7 @@ type Querier interface {
 	CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, error)
 	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)
 	CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error)
+	CreateModuleEntityTagAvailable(ctx context.Context, arg CreateModuleEntityTagAvailableParams) (ModuleEntityTagsAvailable, error)
 	CreateModuleTag(ctx context.Context, arg CreateModuleTagParams) (ModuleTag, error)
 	CreateModuleTypeTagAvailable(ctx context.Context, arg CreateModuleTypeTagAvailableParams) (ModuleTypeTagsAvailable, error)
 	CreatePost(ctx context.Context, arg CreatePostParams) (Post, error)
@@ -50,6 +52,7 @@ type Querier interface {
 	DeleteEntity(ctx context.Context, id int32) error
 	DeleteEntityGroup(ctx context.Context, id int32) error
 	DeleteEntityGroupContent(ctx context.Context, id int32) error
+	DeleteEntityTag(ctx context.Context, arg DeleteEntityTagParams) error
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
 	DeleteImage(ctx context.Context, id int32) error
 	DeleteLocation(ctx context.Context, id int32) error
@@ -64,6 +67,7 @@ type Querier interface {
 	DeleteMenu(ctx context.Context, id int32) error
 	DeleteMenuItem(ctx context.Context, menuItemID int32) error
 	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
+	DeleteModuleEntityTagAvailable(ctx context.Context, id int32) error
 	DeleteModuleTag(ctx context.Context, arg DeleteModuleTagParams) error
 	DeleteModuleTypeTagAvailable(ctx context.Context, id int32) error
 	DeletePost(ctx context.Context, postID int32) error
@@ -120,6 +124,7 @@ type Querier interface {
 	GetMenuItemPosts(ctx context.Context, menuItemID sql.NullInt32) ([]ViewMenuItemPost, error)
 	GetMenuItemPostsByMenuId(ctx context.Context, menuID int32) ([]ViewMenuItemPost, error)
 	GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, error)
+	GetModuleEntityTagsAvailable(ctx context.Context, moduleID int32) ([]ModuleEntityTagsAvailable, error)
 	GetModuleId(ctx context.Context, arg GetModuleIdParams) (GetModuleIdRow, error)
 	GetModuleTypeTagAvailable(ctx context.Context, tagID int32) (ViewModuleTypeTagsAvailable, error)
 	GetModuleTypeTagsAvailable(ctx context.Context, moduleType ModuleType) ([]ViewModuleTypeTagsAvailable, error)
@@ -174,6 +179,7 @@ type Querier interface {
 	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)
 	UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) (MenuItem, error)
 	UpdateMenuItemPost(ctx context.Context, arg UpdateMenuItemPostParams) (MenuItemPost, error)
+	UpdateModuleEntityTagAvailable(ctx context.Context, arg UpdateModuleEntityTagAvailableParams) (ModuleEntityTagsAvailable, error)
 	UpdateModuleTypeTagAvailable(ctx context.Context, arg UpdateModuleTypeTagAvailableParams) (ModuleTypeTagsAvailable, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)

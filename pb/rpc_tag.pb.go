@@ -436,6 +436,422 @@ func (x *DeleteModuleTagRequest) GetTagId() int32 {
 	return 0
 }
 
+type GetModuleEntityAvailableTagsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ModuleId int32 `protobuf:"varint,1,opt,name=moduleId,proto3" json:"moduleId,omitempty"`
+}
+
+func (x *GetModuleEntityAvailableTagsRequest) Reset() {
+	*x = GetModuleEntityAvailableTagsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_services_tags_rpc_tag_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetModuleEntityAvailableTagsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetModuleEntityAvailableTagsRequest) ProtoMessage() {}
+
+func (x *GetModuleEntityAvailableTagsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_services_tags_rpc_tag_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetModuleEntityAvailableTagsRequest.ProtoReflect.Descriptor instead.
+func (*GetModuleEntityAvailableTagsRequest) Descriptor() ([]byte, []int) {
+	return file_services_tags_rpc_tag_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetModuleEntityAvailableTagsRequest) GetModuleId() int32 {
+	if x != nil {
+		return x.ModuleId
+	}
+	return 0
+}
+
+type GetModuleEntityAvailableTagsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Tags []*Tag `protobuf:"bytes,1,rep,name=tags,proto3" json:"tags,omitempty"`
+}
+
+func (x *GetModuleEntityAvailableTagsResponse) Reset() {
+	*x = GetModuleEntityAvailableTagsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_services_tags_rpc_tag_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetModuleEntityAvailableTagsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetModuleEntityAvailableTagsResponse) ProtoMessage() {}
+
+func (x *GetModuleEntityAvailableTagsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_services_tags_rpc_tag_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetModuleEntityAvailableTagsResponse.ProtoReflect.Descriptor instead.
+func (*GetModuleEntityAvailableTagsResponse) Descriptor() ([]byte, []int) {
+	return file_services_tags_rpc_tag_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetModuleEntityAvailableTagsResponse) GetTags() []*Tag {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
+type CreateModuleEntityAvailableTagRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ModuleId int32  `protobuf:"varint,1,opt,name=moduleId,proto3" json:"moduleId,omitempty"`
+	Tag      string `protobuf:"bytes,2,opt,name=tag,proto3" json:"tag,omitempty"`
+}
+
+func (x *CreateModuleEntityAvailableTagRequest) Reset() {
+	*x = CreateModuleEntityAvailableTagRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_services_tags_rpc_tag_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateModuleEntityAvailableTagRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateModuleEntityAvailableTagRequest) ProtoMessage() {}
+
+func (x *CreateModuleEntityAvailableTagRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_services_tags_rpc_tag_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateModuleEntityAvailableTagRequest.ProtoReflect.Descriptor instead.
+func (*CreateModuleEntityAvailableTagRequest) Descriptor() ([]byte, []int) {
+	return file_services_tags_rpc_tag_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *CreateModuleEntityAvailableTagRequest) GetModuleId() int32 {
+	if x != nil {
+		return x.ModuleId
+	}
+	return 0
+}
+
+func (x *CreateModuleEntityAvailableTagRequest) GetTag() string {
+	if x != nil {
+		return x.Tag
+	}
+	return ""
+}
+
+type UpdateModuleEntityAvailableTagRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	TagId  int32  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"`
+	NewTag string `protobuf:"bytes,2,opt,name=newTag,proto3" json:"newTag,omitempty"`
+}
+
+func (x *UpdateModuleEntityAvailableTagRequest) Reset() {
+	*x = UpdateModuleEntityAvailableTagRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_services_tags_rpc_tag_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateModuleEntityAvailableTagRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateModuleEntityAvailableTagRequest) ProtoMessage() {}
+
+func (x *UpdateModuleEntityAvailableTagRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_services_tags_rpc_tag_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateModuleEntityAvailableTagRequest.ProtoReflect.Descriptor instead.
+func (*UpdateModuleEntityAvailableTagRequest) Descriptor() ([]byte, []int) {
+	return file_services_tags_rpc_tag_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *UpdateModuleEntityAvailableTagRequest) GetTagId() int32 {
+	if x != nil {
+		return x.TagId
+	}
+	return 0
+}
+
+func (x *UpdateModuleEntityAvailableTagRequest) GetNewTag() string {
+	if x != nil {
+		return x.NewTag
+	}
+	return ""
+}
+
+type DeleteModuleEntityAvailableTagRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	TagId int32 `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"`
+}
+
+func (x *DeleteModuleEntityAvailableTagRequest) Reset() {
+	*x = DeleteModuleEntityAvailableTagRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_services_tags_rpc_tag_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteModuleEntityAvailableTagRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteModuleEntityAvailableTagRequest) ProtoMessage() {}
+
+func (x *DeleteModuleEntityAvailableTagRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_services_tags_rpc_tag_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteModuleEntityAvailableTagRequest.ProtoReflect.Descriptor instead.
+func (*DeleteModuleEntityAvailableTagRequest) Descriptor() ([]byte, []int) {
+	return file_services_tags_rpc_tag_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *DeleteModuleEntityAvailableTagRequest) GetTagId() int32 {
+	if x != nil {
+		return x.TagId
+	}
+	return 0
+}
+
+type CreateEntityTagRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	EntityId int32 `protobuf:"varint,1,opt,name=entityId,proto3" json:"entityId,omitempty"`
+	TagId    int32 `protobuf:"varint,2,opt,name=tagId,proto3" json:"tagId,omitempty"`
+}
+
+func (x *CreateEntityTagRequest) Reset() {
+	*x = CreateEntityTagRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_services_tags_rpc_tag_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateEntityTagRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateEntityTagRequest) ProtoMessage() {}
+
+func (x *CreateEntityTagRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_services_tags_rpc_tag_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateEntityTagRequest.ProtoReflect.Descriptor instead.
+func (*CreateEntityTagRequest) Descriptor() ([]byte, []int) {
+	return file_services_tags_rpc_tag_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *CreateEntityTagRequest) GetEntityId() int32 {
+	if x != nil {
+		return x.EntityId
+	}
+	return 0
+}
+
+func (x *CreateEntityTagRequest) GetTagId() int32 {
+	if x != nil {
+		return x.TagId
+	}
+	return 0
+}
+
+type CreateEntityTagResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	EntityId int32 `protobuf:"varint,1,opt,name=entityId,proto3" json:"entityId,omitempty"`
+	TagId    int32 `protobuf:"varint,2,opt,name=tagId,proto3" json:"tagId,omitempty"`
+}
+
+func (x *CreateEntityTagResponse) Reset() {
+	*x = CreateEntityTagResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_services_tags_rpc_tag_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateEntityTagResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateEntityTagResponse) ProtoMessage() {}
+
+func (x *CreateEntityTagResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_services_tags_rpc_tag_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateEntityTagResponse.ProtoReflect.Descriptor instead.
+func (*CreateEntityTagResponse) Descriptor() ([]byte, []int) {
+	return file_services_tags_rpc_tag_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *CreateEntityTagResponse) GetEntityId() int32 {
+	if x != nil {
+		return x.EntityId
+	}
+	return 0
+}
+
+func (x *CreateEntityTagResponse) GetTagId() int32 {
+	if x != nil {
+		return x.TagId
+	}
+	return 0
+}
+
+type DeleteEntityTagRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	EntityId int32 `protobuf:"varint,1,opt,name=entityId,proto3" json:"entityId,omitempty"`
+	TagId    int32 `protobuf:"varint,2,opt,name=tagId,proto3" json:"tagId,omitempty"`
+}
+
+func (x *DeleteEntityTagRequest) Reset() {
+	*x = DeleteEntityTagRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_services_tags_rpc_tag_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteEntityTagRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteEntityTagRequest) ProtoMessage() {}
+
+func (x *DeleteEntityTagRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_services_tags_rpc_tag_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteEntityTagRequest.ProtoReflect.Descriptor instead.
+func (*DeleteEntityTagRequest) Descriptor() ([]byte, []int) {
+	return file_services_tags_rpc_tag_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *DeleteEntityTagRequest) GetEntityId() int32 {
+	if x != nil {
+		return x.EntityId
+	}
+	return 0
+}
+
+func (x *DeleteEntityTagRequest) GetTagId() int32 {
+	if x != nil {
+		return x.TagId
+	}
+	return 0
+}
+
 var File_services_tags_rpc_tag_proto protoreflect.FileDescriptor
 
 var file_services_tags_rpc_tag_proto_rawDesc = []byte{
@@ -484,10 +900,48 @@ var file_services_tags_rpc_tag_proto_rawDesc = []byte{
 	0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x6d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x6d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12,
 	0x14, 0x0a, 0x05, 0x74, 0x61, 0x67, 0x49, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05,
-	0x74, 0x61, 0x67, 0x49, 0x64, 0x42, 0x2a, 0x5a, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
-	0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68, 0x65, 0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c,
-	0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x2d, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70,
-	0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x61, 0x67, 0x49, 0x64, 0x22, 0x41, 0x0a, 0x23, 0x47, 0x65, 0x74, 0x4d, 0x6f, 0x64, 0x75,
+	0x6c, 0x65, 0x45, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x41, 0x76, 0x61, 0x69, 0x6c, 0x61, 0x62, 0x6c,
+	0x65, 0x54, 0x61, 0x67, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08,
+	0x6d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08,
+	0x6d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x22, 0x43, 0x0a, 0x24, 0x47, 0x65, 0x74, 0x4d,
+	0x6f, 0x64, 0x75, 0x6c, 0x65, 0x45, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x41, 0x76, 0x61, 0x69, 0x6c,
+	0x61, 0x62, 0x6c, 0x65, 0x54, 0x61, 0x67, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x1b, 0x0a, 0x04, 0x74, 0x61, 0x67, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x07,
+	0x2e, 0x70, 0x62, 0x2e, 0x54, 0x61, 0x67, 0x52, 0x04, 0x74, 0x61, 0x67, 0x73, 0x22, 0x55, 0x0a,
+	0x25, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x45, 0x6e, 0x74,
+	0x69, 0x74, 0x79, 0x41, 0x76, 0x61, 0x69, 0x6c, 0x61, 0x62, 0x6c, 0x65, 0x54, 0x61, 0x67, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x6d, 0x6f, 0x64, 0x75, 0x6c, 0x65,
+	0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x6d, 0x6f, 0x64, 0x75, 0x6c, 0x65,
+	0x49, 0x64, 0x12, 0x10, 0x0a, 0x03, 0x74, 0x61, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x03, 0x74, 0x61, 0x67, 0x22, 0x55, 0x0a, 0x25, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x6f,
+	0x64, 0x75, 0x6c, 0x65, 0x45, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x41, 0x76, 0x61, 0x69, 0x6c, 0x61,
+	0x62, 0x6c, 0x65, 0x54, 0x61, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x14, 0x0a,
+	0x05, 0x74, 0x61, 0x67, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x74, 0x61,
+	0x67, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x6e, 0x65, 0x77, 0x54, 0x61, 0x67, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x06, 0x6e, 0x65, 0x77, 0x54, 0x61, 0x67, 0x22, 0x3d, 0x0a, 0x25, 0x44,
+	0x65, 0x6c, 0x65, 0x74, 0x65, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x45, 0x6e, 0x74, 0x69, 0x74,
+	0x79, 0x41, 0x76, 0x61, 0x69, 0x6c, 0x61, 0x62, 0x6c, 0x65, 0x54, 0x61, 0x67, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x61, 0x67, 0x49, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x05, 0x52, 0x05, 0x74, 0x61, 0x67, 0x49, 0x64, 0x22, 0x4a, 0x0a, 0x16, 0x43, 0x72,
+	0x65, 0x61, 0x74, 0x65, 0x45, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x54, 0x61, 0x67, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x49, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x49, 0x64,
+	0x12, 0x14, 0x0a, 0x05, 0x74, 0x61, 0x67, 0x49, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52,
+	0x05, 0x74, 0x61, 0x67, 0x49, 0x64, 0x22, 0x4b, 0x0a, 0x17, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x45, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x54, 0x61, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x1a, 0x0a, 0x08, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x49, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x05, 0x52, 0x08, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x49, 0x64, 0x12, 0x14, 0x0a,
+	0x05, 0x74, 0x61, 0x67, 0x49, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x74, 0x61,
+	0x67, 0x49, 0x64, 0x22, 0x4a, 0x0a, 0x16, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x45, 0x6e, 0x74,
+	0x69, 0x74, 0x79, 0x54, 0x61, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a,
+	0x08, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52,
+	0x08, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x49, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x61, 0x67,
+	0x49, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x74, 0x61, 0x67, 0x49, 0x64, 0x42,
+	0x2a, 0x5a, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68,
+	0x65, 0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64,
+	0x2d, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -502,28 +956,38 @@ func file_services_tags_rpc_tag_proto_rawDescGZIP() []byte {
 	return file_services_tags_rpc_tag_proto_rawDescData
 }
 
-var file_services_tags_rpc_tag_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_services_tags_rpc_tag_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_services_tags_rpc_tag_proto_goTypes = []interface{}{
-	(*GetModuleTypeAvailableTagsRequest)(nil),   // 0: pb.GetModuleTypeAvailableTagsRequest
-	(*GetModuleTypeAvailableTagsResponse)(nil),  // 1: pb.GetModuleTypeAvailableTagsResponse
-	(*CreateModuleTypeAvailableTagRequest)(nil), // 2: pb.CreateModuleTypeAvailableTagRequest
-	(*UpdateModuleTypeAvailableTagRequest)(nil), // 3: pb.UpdateModuleTypeAvailableTagRequest
-	(*DeleteModuleTypeAvailableTagRequest)(nil), // 4: pb.DeleteModuleTypeAvailableTagRequest
-	(*CreateModuleTagRequest)(nil),              // 5: pb.CreateModuleTagRequest
-	(*CreateModuleTagResponse)(nil),             // 6: pb.CreateModuleTagResponse
-	(*DeleteModuleTagRequest)(nil),              // 7: pb.DeleteModuleTagRequest
-	(ModuleType)(0),                             // 8: pb.ModuleType
-	(*ViewTag)(nil),                             // 9: pb.ViewTag
+	(*GetModuleTypeAvailableTagsRequest)(nil),     // 0: pb.GetModuleTypeAvailableTagsRequest
+	(*GetModuleTypeAvailableTagsResponse)(nil),    // 1: pb.GetModuleTypeAvailableTagsResponse
+	(*CreateModuleTypeAvailableTagRequest)(nil),   // 2: pb.CreateModuleTypeAvailableTagRequest
+	(*UpdateModuleTypeAvailableTagRequest)(nil),   // 3: pb.UpdateModuleTypeAvailableTagRequest
+	(*DeleteModuleTypeAvailableTagRequest)(nil),   // 4: pb.DeleteModuleTypeAvailableTagRequest
+	(*CreateModuleTagRequest)(nil),                // 5: pb.CreateModuleTagRequest
+	(*CreateModuleTagResponse)(nil),               // 6: pb.CreateModuleTagResponse
+	(*DeleteModuleTagRequest)(nil),                // 7: pb.DeleteModuleTagRequest
+	(*GetModuleEntityAvailableTagsRequest)(nil),   // 8: pb.GetModuleEntityAvailableTagsRequest
+	(*GetModuleEntityAvailableTagsResponse)(nil),  // 9: pb.GetModuleEntityAvailableTagsResponse
+	(*CreateModuleEntityAvailableTagRequest)(nil), // 10: pb.CreateModuleEntityAvailableTagRequest
+	(*UpdateModuleEntityAvailableTagRequest)(nil), // 11: pb.UpdateModuleEntityAvailableTagRequest
+	(*DeleteModuleEntityAvailableTagRequest)(nil), // 12: pb.DeleteModuleEntityAvailableTagRequest
+	(*CreateEntityTagRequest)(nil),                // 13: pb.CreateEntityTagRequest
+	(*CreateEntityTagResponse)(nil),               // 14: pb.CreateEntityTagResponse
+	(*DeleteEntityTagRequest)(nil),                // 15: pb.DeleteEntityTagRequest
+	(ModuleType)(0),                               // 16: pb.ModuleType
+	(*ViewTag)(nil),                               // 17: pb.ViewTag
+	(*Tag)(nil),                                   // 18: pb.Tag
 }
 var file_services_tags_rpc_tag_proto_depIdxs = []int32{
-	8, // 0: pb.GetModuleTypeAvailableTagsRequest.moduleType:type_name -> pb.ModuleType
-	9, // 1: pb.GetModuleTypeAvailableTagsResponse.tags:type_name -> pb.ViewTag
-	8, // 2: pb.CreateModuleTypeAvailableTagRequest.moduleType:type_name -> pb.ModuleType
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	16, // 0: pb.GetModuleTypeAvailableTagsRequest.moduleType:type_name -> pb.ModuleType
+	17, // 1: pb.GetModuleTypeAvailableTagsResponse.tags:type_name -> pb.ViewTag
+	16, // 2: pb.CreateModuleTypeAvailableTagRequest.moduleType:type_name -> pb.ModuleType
+	18, // 3: pb.GetModuleEntityAvailableTagsResponse.tags:type_name -> pb.Tag
+	4,  // [4:4] is the sub-list for method output_type
+	4,  // [4:4] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_services_tags_rpc_tag_proto_init() }
@@ -630,6 +1094,102 @@ func file_services_tags_rpc_tag_proto_init() {
 				return nil
 			}
 		}
+		file_services_tags_rpc_tag_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetModuleEntityAvailableTagsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_services_tags_rpc_tag_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetModuleEntityAvailableTagsResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_services_tags_rpc_tag_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateModuleEntityAvailableTagRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_services_tags_rpc_tag_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateModuleEntityAvailableTagRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_services_tags_rpc_tag_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteModuleEntityAvailableTagRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_services_tags_rpc_tag_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateEntityTagRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_services_tags_rpc_tag_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateEntityTagResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_services_tags_rpc_tag_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteEntityTagRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -637,7 +1197,7 @@ func file_services_tags_rpc_tag_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_services_tags_rpc_tag_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

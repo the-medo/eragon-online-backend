@@ -2672,7 +2672,150 @@
         ]
       }
     },
-    "/tags/available": {
+    "/tags/available/entity": {
+      "get": {
+        "summary": "Get available tags for entities",
+        "description": "gets list of tags, that are usable for entities inside of module",
+        "operationId": "Tags_GetModuleEntityAvailableTags",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetModuleEntityAvailableTagsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      },
+      "post": {
+        "summary": "Create entity-available tag",
+        "description": "creates new tag, that can be assigned to entities inside of given module",
+        "operationId": "Tags_CreateModuleEntityAvailableTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTag"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateModuleEntityAvailableTagRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/tags/available/entity/{tagId}": {
+      "delete": {
+        "summary": "Delete entity-available tag",
+        "description": "deletes available tag and removes all its assignments",
+        "operationId": "Tags_DeleteModuleEntityAvailableTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tagId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      },
+      "patch": {
+        "summary": "Update entity-available tag",
+        "description": "updates entity-assignable tag",
+        "operationId": "Tags_UpdateModuleEntityAvailableTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTag"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tagId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "newTag": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/tags/available/module_type": {
       "get": {
         "summary": "Get available tags for module type",
         "description": "gets list of tags, that are usable for module type",
@@ -2744,7 +2887,7 @@
         ]
       }
     },
-    "/tags/available/{tagId}": {
+    "/tags/available/module_type/{tagId}": {
       "delete": {
         "summary": "Delete available world tag",
         "description": "deletes available world tag and removes all its assignments",
@@ -2822,10 +2965,98 @@
         ]
       }
     },
+    "/tags/entity/{entityId}": {
+      "post": {
+        "summary": "Create entity tag",
+        "description": "assigns one tag to the entity",
+        "operationId": "Tags_CreateEntityTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateEntityTagResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tagId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/tags/entity/{entityId}/tag/{tagId}": {
+      "delete": {
+        "summary": "Delete entity tag",
+        "description": "removes tag from the entity",
+        "operationId": "Tags_DeleteEntityTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "tagId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
     "/tags/module/{moduleId}": {
       "post": {
-        "summary": "Add tag world",
-        "description": "assigns one tag to the world",
+        "summary": "Create module tag",
+        "description": "assigns one tag to the module",
         "operationId": "Tags_CreateModuleTag",
         "responses": {
           "200": {
@@ -2871,8 +3102,8 @@
     },
     "/tags/module/{moduleId}/tag/{tagId}": {
       "delete": {
-        "summary": "Remove world tag",
-        "description": "removes tag from the world",
+        "summary": "Delete module tag",
+        "description": "removes tag from the module",
         "operationId": "Tags_DeleteModuleTag",
         "responses": {
           "200": {
@@ -4463,6 +4694,19 @@
         }
       }
     },
+    "pbCreateEntityTagResponse": {
+      "type": "object",
+      "properties": {
+        "entityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tagId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "pbCreateLocationRequest": {
       "type": "object",
       "properties": {
@@ -4514,6 +4758,18 @@
         },
         "layer": {
           "$ref": "#/definitions/pbViewMapLayer"
+        }
+      }
+    },
+    "pbCreateModuleEntityAvailableTagRequest": {
+      "type": "object",
+      "properties": {
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tag": {
+          "type": "string"
         }
       }
     },
@@ -5154,6 +5410,18 @@
         }
       }
     },
+    "pbGetModuleEntityAvailableTagsResponse": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbTag"
+          }
+        }
+      }
+    },
     "pbGetModuleIdResponse": {
       "type": "object",
       "properties": {
@@ -5627,6 +5895,18 @@
           "type": "string"
         },
         "description": {
+          "type": "string"
+        }
+      }
+    },
+    "pbTag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tag": {
           "type": "string"
         }
       }

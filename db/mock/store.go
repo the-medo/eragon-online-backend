@@ -141,6 +141,21 @@ func (mr *MockStoreMockRecorder) CreateEntityGroupContent(arg0, arg1 interface{}
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateEntityGroupContent", reflect.TypeOf((*MockStore)(nil).CreateEntityGroupContent), arg0, arg1)
 }
 
+// CreateEntityTag mocks base method.
+func (m *MockStore) CreateEntityTag(arg0 context.Context, arg1 db.CreateEntityTagParams) (db.EntityTag, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateEntityTag", arg0, arg1)
+	ret0, _ := ret[0].(db.EntityTag)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateEntityTag indicates an expected call of CreateEntityTag.
+func (mr *MockStoreMockRecorder) CreateEntityTag(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateEntityTag", reflect.TypeOf((*MockStore)(nil).CreateEntityTag), arg0, arg1)
+}
+
 // CreateEvaluationVote mocks base method.
 func (m *MockStore) CreateEvaluationVote(arg0 context.Context, arg1 db.CreateEvaluationVoteParams) (db.EvaluationVote, error) {
 	m.ctrl.T.Helper()
@@ -304,6 +319,21 @@ func (m *MockStore) CreateMenuItemPost(arg0 context.Context, arg1 db.CreateMenuI
 func (mr *MockStoreMockRecorder) CreateMenuItemPost(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMenuItemPost", reflect.TypeOf((*MockStore)(nil).CreateMenuItemPost), arg0, arg1)
+}
+
+// CreateModuleEntityTagAvailable mocks base method.
+func (m *MockStore) CreateModuleEntityTagAvailable(arg0 context.Context, arg1 db.CreateModuleEntityTagAvailableParams) (db.ModuleEntityTagsAvailable, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateModuleEntityTagAvailable", arg0, arg1)
+	ret0, _ := ret[0].(db.ModuleEntityTagsAvailable)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateModuleEntityTagAvailable indicates an expected call of CreateModuleEntityTagAvailable.
+func (mr *MockStoreMockRecorder) CreateModuleEntityTagAvailable(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateModuleEntityTagAvailable", reflect.TypeOf((*MockStore)(nil).CreateModuleEntityTagAvailable), arg0, arg1)
 }
 
 // CreateModuleTag mocks base method.
@@ -614,6 +644,20 @@ func (mr *MockStoreMockRecorder) DeleteEntityGroupContent(arg0, arg1 interface{}
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteEntityGroupContent", reflect.TypeOf((*MockStore)(nil).DeleteEntityGroupContent), arg0, arg1)
 }
 
+// DeleteEntityTag mocks base method.
+func (m *MockStore) DeleteEntityTag(arg0 context.Context, arg1 db.DeleteEntityTagParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteEntityTag", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteEntityTag indicates an expected call of DeleteEntityTag.
+func (mr *MockStoreMockRecorder) DeleteEntityTag(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteEntityTag", reflect.TypeOf((*MockStore)(nil).DeleteEntityTag), arg0, arg1)
+}
+
 // DeleteEvaluationVote mocks base method.
 func (m *MockStore) DeleteEvaluationVote(arg0 context.Context, arg1 db.DeleteEvaluationVoteParams) error {
 	m.ctrl.T.Helper()
@@ -808,6 +852,20 @@ func (m *MockStore) DeleteMenuItemPost(arg0 context.Context, arg1 db.DeleteMenuI
 func (mr *MockStoreMockRecorder) DeleteMenuItemPost(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMenuItemPost", reflect.TypeOf((*MockStore)(nil).DeleteMenuItemPost), arg0, arg1)
+}
+
+// DeleteModuleEntityTagAvailable mocks base method.
+func (m *MockStore) DeleteModuleEntityTagAvailable(arg0 context.Context, arg1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteModuleEntityTagAvailable", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteModuleEntityTagAvailable indicates an expected call of DeleteModuleEntityTagAvailable.
+func (mr *MockStoreMockRecorder) DeleteModuleEntityTagAvailable(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteModuleEntityTagAvailable", reflect.TypeOf((*MockStore)(nil).DeleteModuleEntityTagAvailable), arg0, arg1)
 }
 
 // DeleteModuleTag mocks base method.
@@ -1634,6 +1692,21 @@ func (m *MockStore) GetMenuItems(arg0 context.Context, arg1 int32) ([]db.MenuIte
 func (mr *MockStoreMockRecorder) GetMenuItems(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenuItems", reflect.TypeOf((*MockStore)(nil).GetMenuItems), arg0, arg1)
+}
+
+// GetModuleEntityTagsAvailable mocks base method.
+func (m *MockStore) GetModuleEntityTagsAvailable(arg0 context.Context, arg1 int32) ([]db.ModuleEntityTagsAvailable, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetModuleEntityTagsAvailable", arg0, arg1)
+	ret0, _ := ret[0].([]db.ModuleEntityTagsAvailable)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetModuleEntityTagsAvailable indicates an expected call of GetModuleEntityTagsAvailable.
+func (mr *MockStoreMockRecorder) GetModuleEntityTagsAvailable(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetModuleEntityTagsAvailable", reflect.TypeOf((*MockStore)(nil).GetModuleEntityTagsAvailable), arg0, arg1)
 }
 
 // GetModuleId mocks base method.
@@ -2469,6 +2542,21 @@ func (m *MockStore) UpdateMenuItemPost(arg0 context.Context, arg1 db.UpdateMenuI
 func (mr *MockStoreMockRecorder) UpdateMenuItemPost(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMenuItemPost", reflect.TypeOf((*MockStore)(nil).UpdateMenuItemPost), arg0, arg1)
+}
+
+// UpdateModuleEntityTagAvailable mocks base method.
+func (m *MockStore) UpdateModuleEntityTagAvailable(arg0 context.Context, arg1 db.UpdateModuleEntityTagAvailableParams) (db.ModuleEntityTagsAvailable, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateModuleEntityTagAvailable", arg0, arg1)
+	ret0, _ := ret[0].(db.ModuleEntityTagsAvailable)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateModuleEntityTagAvailable indicates an expected call of UpdateModuleEntityTagAvailable.
+func (mr *MockStoreMockRecorder) UpdateModuleEntityTagAvailable(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateModuleEntityTagAvailable", reflect.TypeOf((*MockStore)(nil).UpdateModuleEntityTagAvailable), arg0, arg1)
 }
 
 // UpdateModuleTypeTagAvailable mocks base method.
