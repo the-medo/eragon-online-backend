@@ -38,7 +38,7 @@ func (server *ServiceModules) GetModuleId(ctx context.Context, req *pb.GetModule
 		},
 	})
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get post: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get module: %v", err)
 	}
 
 	rsp := &pb.GetModuleIdResponse{

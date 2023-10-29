@@ -26,25 +26,12 @@ DELETE FROM worlds WHERE id = @world_id;
 SELECT * FROM view_worlds WHERE id = @world_id LIMIT 1;
 
 -- name: GetWorlds :many
-SELECT * FROM view_worlds
-WHERE
-    (@is_public::boolean IS NULL OR public = @is_public) AND
-    (array_length(@tags::varchar[], 1) IS NULL OR tags @> @tags::varchar[])
-ORDER BY
-    CASE
-     WHEN @order_result::bool
-         THEN @order_by::VARCHAR
-     ELSE 'created_at'
-     END
-DESC
-LIMIT @page_limit
-OFFSET @page_offset;
-
+SELECT * FROM get_worlds(@is_public::boolean, @tags::integer[], @order_by::VARCHAR, 'DESC', @page_limit, @page_offset);
 
 -- name: GetWorldsCount :one
 SELECT COUNT(*) FROM view_worlds
 WHERE (@is_public::boolean IS NULL OR public = @is_public) AND
-    (array_length(@tags::varchar[], 1) IS NULL OR tags @> @tags::varchar[]);
+    (array_length(@tags::integer[], 1) IS NULL OR tags @> @tags::integer[]);
 
 -- name: InsertWorldAdmin :one
 INSERT INTO world_admins (

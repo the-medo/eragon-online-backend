@@ -27,12 +27,14 @@ FROM
     ) activity ON activity.world_id = w.id
         LEFT JOIN (
         SELECT
-            wt.world_id,
-            cast(array_agg(t.tag) as varchar[]) AS tags
+            m.world_id,
+            cast(array_agg(t.id) as integer[]) AS tags
         FROM
-            world_tags wt
-                LEFT JOIN world_tags_available t ON t.id = wt.tag_id
-        GROUP BY wt.world_id
+            modules m
+            JOIN module_tags mt ON m.id = mt.module_id
+            LEFT JOIN module_type_tags_available t ON t.id = mt.tag_id
+        WHERE world_id IS NOT NULL
+        GROUP BY m.world_id
     ) tags ON tags.world_id = w.id
         LEFT JOIN images i_header on wi.header_img_id = i_header.id
         LEFT JOIN images i_thumbnail on wi.thumbnail_img_id = i_thumbnail.id

@@ -15,9 +15,9 @@ SELECT
     id as module_id, module_type
 FROM modules
 WHERE
-    world_id = COALESCE($1, world_id) AND
-    quest_id = COALESCE($2, quest_id) AND
-    character_id = COALESCE($3, character_id) AND
+    world_id = COALESCE($1, world_id) OR
+    quest_id = COALESCE($2, quest_id) OR
+    character_id = COALESCE($3, character_id) OR
     system_id = COALESCE($4, system_id)
 `
 

@@ -759,7 +759,7 @@ type ViewWorld struct {
 	ImageHeader           sql.NullString `json:"image_header"`
 	ImageThumbnail        sql.NullString `json:"image_thumbnail"`
 	ImageAvatar           sql.NullString `json:"image_avatar"`
-	Tags                  []string       `json:"tags"`
+	Tags                  []int32        `json:"tags"`
 	ActivityPostCount     int32          `json:"activity_post_count"`
 	ActivityQuestCount    int32          `json:"activity_quest_count"`
 	ActivityResourceCount int32          `json:"activity_resource_count"`

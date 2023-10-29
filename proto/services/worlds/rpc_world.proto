@@ -96,7 +96,7 @@ message GetWorldMonthlyActivityResponse {
 
 message GetWorldsRequest {
   optional bool public = 1;
-  repeated string tags = 2;
+  repeated int32 tags = 2;
   optional string orderBy = 3;
   optional int32 limit = 4;
   optional int32 offset = 5;

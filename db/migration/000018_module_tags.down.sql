@@ -1,3 +1,4 @@
+DROP FUNCTION get_worlds(_is_public boolean, _tags integer[], _order_by varchar, _order_direction varchar, _limit integer, _offset integer);
 
 -- Return table `world_tags_available`
 CREATE TABLE world_tags_available (

@@ -6,7 +6,6 @@ import (
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
-	"github.com/the-medo/talebound-backend/util"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
@@ -24,6 +23,7 @@ func (server *Server) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (
 		PageLimit:  limit,
 		PageOffset: offset,
 		Tags:       req.GetTags(),
+		OrderBy:    "created_at",
 	}
 
 	if req.Public != nil {
@@ -33,7 +33,6 @@ func (server *Server) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (
 	}
 
 	if req.OrderBy != nil {
-		arg.OrderResult = true
 		arg.OrderBy = req.GetOrderBy()
 	}
 
@@ -65,7 +64,7 @@ func (server *Server) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (
 }
 
 func validateGetWorlds(req *pb.GetWorldsRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	util.CleanEmptyStrings(&req.Tags)
+	//util.CleanEmptyStrings(&req.Tags)
 
 	fields := []string{"name", "created_at", "short_description", "activity_post_count", "activity_quest_count", "activity_resource_count"}
 
