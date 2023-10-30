@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServiceTags) UpdateModuleEntityAvailableTag(ctx context.Context, req *pb.UpdateModuleEntityAvailableTagRequest) (*pb.Tag, error) {
+func (server *ServiceTags) UpdateModuleEntityAvailableTag(ctx context.Context, req *pb.UpdateModuleEntityAvailableTagRequest) (*pb.EntityTagAvailable, error) {
 
 	violations := validateUpdateModuleEntityAvailableTagRequest(req)
 	if violations != nil {
@@ -31,9 +31,10 @@ func (server *ServiceTags) UpdateModuleEntityAvailableTag(ctx context.Context, r
 		return nil, err
 	}
 
-	rsp := &pb.Tag{
-		Id:  tag.ID,
-		Tag: tag.Tag,
+	rsp := &pb.EntityTagAvailable{
+		Id:       tag.ID,
+		Tag:      tag.Tag,
+		ModuleId: tag.ModuleID,
 	}
 
 	return rsp, nil

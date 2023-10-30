@@ -45,8 +45,8 @@ type TagsClient interface {
 	CreateModuleTag(ctx context.Context, in *CreateModuleTagRequest, opts ...grpc.CallOption) (*CreateModuleTagResponse, error)
 	DeleteModuleTag(ctx context.Context, in *DeleteModuleTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetModuleEntityAvailableTags(ctx context.Context, in *GetModuleEntityAvailableTagsRequest, opts ...grpc.CallOption) (*GetModuleEntityAvailableTagsResponse, error)
-	CreateModuleEntityAvailableTag(ctx context.Context, in *CreateModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*Tag, error)
-	UpdateModuleEntityAvailableTag(ctx context.Context, in *UpdateModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*Tag, error)
+	CreateModuleEntityAvailableTag(ctx context.Context, in *CreateModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*EntityTagAvailable, error)
+	UpdateModuleEntityAvailableTag(ctx context.Context, in *UpdateModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*EntityTagAvailable, error)
 	DeleteModuleEntityAvailableTag(ctx context.Context, in *DeleteModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CreateEntityTag(ctx context.Context, in *CreateEntityTagRequest, opts ...grpc.CallOption) (*CreateEntityTagResponse, error)
 	DeleteEntityTag(ctx context.Context, in *DeleteEntityTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -123,8 +123,8 @@ func (c *tagsClient) GetModuleEntityAvailableTags(ctx context.Context, in *GetMo
 	return out, nil
 }
 
-func (c *tagsClient) CreateModuleEntityAvailableTag(ctx context.Context, in *CreateModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*Tag, error) {
-	out := new(Tag)
+func (c *tagsClient) CreateModuleEntityAvailableTag(ctx context.Context, in *CreateModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*EntityTagAvailable, error) {
+	out := new(EntityTagAvailable)
 	err := c.cc.Invoke(ctx, Tags_CreateModuleEntityAvailableTag_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -132,8 +132,8 @@ func (c *tagsClient) CreateModuleEntityAvailableTag(ctx context.Context, in *Cre
 	return out, nil
 }
 
-func (c *tagsClient) UpdateModuleEntityAvailableTag(ctx context.Context, in *UpdateModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*Tag, error) {
-	out := new(Tag)
+func (c *tagsClient) UpdateModuleEntityAvailableTag(ctx context.Context, in *UpdateModuleEntityAvailableTagRequest, opts ...grpc.CallOption) (*EntityTagAvailable, error) {
+	out := new(EntityTagAvailable)
 	err := c.cc.Invoke(ctx, Tags_UpdateModuleEntityAvailableTag_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -179,8 +179,8 @@ type TagsServer interface {
 	CreateModuleTag(context.Context, *CreateModuleTagRequest) (*CreateModuleTagResponse, error)
 	DeleteModuleTag(context.Context, *DeleteModuleTagRequest) (*emptypb.Empty, error)
 	GetModuleEntityAvailableTags(context.Context, *GetModuleEntityAvailableTagsRequest) (*GetModuleEntityAvailableTagsResponse, error)
-	CreateModuleEntityAvailableTag(context.Context, *CreateModuleEntityAvailableTagRequest) (*Tag, error)
-	UpdateModuleEntityAvailableTag(context.Context, *UpdateModuleEntityAvailableTagRequest) (*Tag, error)
+	CreateModuleEntityAvailableTag(context.Context, *CreateModuleEntityAvailableTagRequest) (*EntityTagAvailable, error)
+	UpdateModuleEntityAvailableTag(context.Context, *UpdateModuleEntityAvailableTagRequest) (*EntityTagAvailable, error)
 	DeleteModuleEntityAvailableTag(context.Context, *DeleteModuleEntityAvailableTagRequest) (*emptypb.Empty, error)
 	CreateEntityTag(context.Context, *CreateEntityTagRequest) (*CreateEntityTagResponse, error)
 	DeleteEntityTag(context.Context, *DeleteEntityTagRequest) (*emptypb.Empty, error)
@@ -212,10 +212,10 @@ func (UnimplementedTagsServer) DeleteModuleTag(context.Context, *DeleteModuleTag
 func (UnimplementedTagsServer) GetModuleEntityAvailableTags(context.Context, *GetModuleEntityAvailableTagsRequest) (*GetModuleEntityAvailableTagsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetModuleEntityAvailableTags not implemented")
 }
-func (UnimplementedTagsServer) CreateModuleEntityAvailableTag(context.Context, *CreateModuleEntityAvailableTagRequest) (*Tag, error) {
+func (UnimplementedTagsServer) CreateModuleEntityAvailableTag(context.Context, *CreateModuleEntityAvailableTagRequest) (*EntityTagAvailable, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateModuleEntityAvailableTag not implemented")
 }
-func (UnimplementedTagsServer) UpdateModuleEntityAvailableTag(context.Context, *UpdateModuleEntityAvailableTagRequest) (*Tag, error) {
+func (UnimplementedTagsServer) UpdateModuleEntityAvailableTag(context.Context, *UpdateModuleEntityAvailableTagRequest) (*EntityTagAvailable, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateModuleEntityAvailableTag not implemented")
 }
 func (UnimplementedTagsServer) DeleteModuleEntityAvailableTag(context.Context, *DeleteModuleEntityAvailableTagRequest) (*emptypb.Empty, error) {

@@ -87,7 +87,7 @@ service Tags {
     };
   };
 
-  rpc CreateModuleEntityAvailableTag(CreateModuleEntityAvailableTagRequest) returns (Tag) {
+  rpc CreateModuleEntityAvailableTag(CreateModuleEntityAvailableTagRequest) returns (EntityTagAvailable) {
     option (google.api.http) = {
       post: "/tags/available/entity"
       body: "*"
@@ -98,7 +98,7 @@ service Tags {
     };
   };
 
-  rpc UpdateModuleEntityAvailableTag(UpdateModuleEntityAvailableTagRequest) returns (Tag) {
+  rpc UpdateModuleEntityAvailableTag(UpdateModuleEntityAvailableTagRequest) returns (EntityTagAvailable) {
     option (google.api.http) = {
       patch: "/tags/available/entity/{tagId}"
       body: "*"

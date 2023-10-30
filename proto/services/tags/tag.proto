@@ -17,3 +17,9 @@ message ViewTag {
   ModuleType moduleType = 3;
   int32 count = 4;
 }
+
+message EntityTagAvailable {
+  int32 id = 1;
+  string tag = 2;
+  int32 moduleId = 3;
+}
