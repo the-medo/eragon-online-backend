@@ -54,28 +54,24 @@ FROM
     LEFT JOIN posts p ON u.introduction_post_id = p.id
 ;
 
+
 CREATE VIEW view_posts AS
 SELECT
     p.*,
     pt.name as post_type_name,
     pt.draftable as post_type_draftable,
     pt.privatable as post_type_privatable,
-    i.url as thumbnail_image_url
+    i.url as thumbnail_img_url,
+    e.id as entity_id,
+    e.module_id as module_id,
+    e.module_type as module_type,
+    e.module_type_id as module_type_id,
+    e.tags as tags
 FROM
     posts p
     JOIN post_types pt ON p.post_type_id = pt.id
     LEFT JOIN images i ON p.thumbnail_img_id = i.id
-;
-
-CREATE VIEW view_world_tags_available AS
-SELECT
-    wta.*,
-    COUNT(wt.world_id) as usageCount
-FROM
-    world_tags_available wta
-    LEFT JOIN world_tags wt ON wt.tag_id = wta.id
-GROUP BY
-    wta.id;
+    LEFT JOIN view_entities e ON e.post_id = p.id
 ;
 
 
@@ -87,11 +83,17 @@ CREATE VIEW view_locations AS
 SELECT
     l.*,
     i.url as thumbnail_image_url,
-    p.title as post_title
+    p.title as post_title,
+    e.id as entity_id,
+    e.module_id as module_id,
+    e.module_type as module_type,
+    e.module_type_id as module_type_id,
+    e.tags as tags
 FROM
     locations l
-        LEFT JOIN images i ON l.thumbnail_image_id = i.id
-        LEFT JOIN posts p ON l.post_id = p.id
+    JOIN view_entities e ON e.location_id = l.id
+    LEFT JOIN images i ON l.thumbnail_image_id = i.id
+    LEFT JOIN posts p ON l.post_id = p.id
 ;
 
 CREATE VIEW view_maps AS

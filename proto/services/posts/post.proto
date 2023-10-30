@@ -3,6 +3,7 @@ syntax = "proto3";
 package pb;
 
 import "google/protobuf/timestamp.proto";
+import "services/modules/module.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -21,6 +22,11 @@ message DataPost {
   bool isPrivate = 12;
   int32 imageThumbnailId = 13;
   string imageThumbnailUrl = 14;
+  optional int32 entityId = 15;
+  optional int32 moduleId = 16;
+  optional ModuleType moduleType = 17;
+  optional int32 moduleTypeId = 18;
+  repeated int32 tags = 19;
 }
 
 message DataPostType {

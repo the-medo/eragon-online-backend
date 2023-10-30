@@ -4979,6 +4979,28 @@
         },
         "imageThumbnailUrl": {
           "type": "string"
+        },
+        "entityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "moduleTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
         }
       }
     },
@@ -6100,6 +6122,28 @@
         },
         "thumbnailImageUrl": {
           "type": "string"
+        },
+        "entityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "moduleTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
         }
       }
     },
@@ -6133,6 +6177,28 @@
         },
         "thumbnailImageUrl": {
           "type": "string"
+        },
+        "entityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "moduleTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
         }
       }
     },

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/google/uuid"
+	"github.com/the-medo/talebound-backend/api/converters"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/grpc/codes"
@@ -266,16 +267,7 @@ func convertPostType(postType db.PostType) *pb.DataPostType {
 
 func convertPostAndPostType(post db.ViewPost, postType db.PostType) *pb.Post {
 	pbPost := &pb.Post{
-		Post: &pb.DataPost{
-			Id:         post.ID,
-			PostTypeId: post.PostTypeID,
-			UserId:     post.UserID,
-			Title:      post.Title,
-			Content:    post.Content,
-			CreatedAt:  timestamppb.New(post.CreatedAt),
-			IsDraft:    post.IsDraft,
-			IsPrivate:  post.IsPrivate,
-		},
+		Post: converters.ConvertViewPostToDataPost(post),
 		PostType: &pb.DataPostType{
 			Id:         postType.ID,
 			Name:       postType.Name,
@@ -284,75 +276,18 @@ func convertPostAndPostType(post db.ViewPost, postType db.PostType) *pb.Post {
 		},
 	}
 
-	if post.DeletedAt.Valid == true {
-		pbPost.Post.DeletedAt = timestamppb.New(post.DeletedAt.Time)
-	}
-
-	if post.LastUpdatedAt.Valid == true {
-		pbPost.Post.LastUpdatedAt = timestamppb.New(post.LastUpdatedAt.Time)
-	}
-
-	if post.LastUpdatedUserID.Valid == true {
-		pbPost.Post.LastUpdatedUserId = post.LastUpdatedUserID.Int32
-	}
-
-	if post.Description.Valid == true {
-		pbPost.Post.Description = post.Description.String
-	}
-
-	if post.ThumbnailImgID.Valid == true {
-		pbPost.Post.ImageThumbnailId = post.ThumbnailImgID.Int32
-	}
-
-	if post.ThumbnailImgUrl.Valid == true {
-		pbPost.Post.ImageThumbnailUrl = post.ThumbnailImgUrl.String
-	}
-
 	return pbPost
 }
 
 func convertViewPost(viewPost db.ViewPost) *pb.Post {
 	pbPost := &pb.Post{
-		Post: &pb.DataPost{
-			Id:         viewPost.ID,
-			PostTypeId: viewPost.PostTypeID,
-			UserId:     viewPost.UserID,
-			Title:      viewPost.Title,
-			Content:    viewPost.Content,
-			CreatedAt:  timestamppb.New(viewPost.CreatedAt),
-			IsDraft:    viewPost.IsDraft,
-			IsPrivate:  viewPost.IsPrivate,
-		},
+		Post: converters.ConvertViewPostToDataPost(viewPost),
 		PostType: &pb.DataPostType{
 			Id:         viewPost.PostTypeID,
 			Name:       viewPost.PostTypeName,
 			Draftable:  viewPost.PostTypeDraftable,
 			Privatable: viewPost.PostTypePrivatable,
 		},
-	}
-
-	if viewPost.DeletedAt.Valid == true {
-		pbPost.Post.DeletedAt = timestamppb.New(viewPost.DeletedAt.Time)
-	}
-
-	if viewPost.LastUpdatedAt.Valid == true {
-		pbPost.Post.LastUpdatedAt = timestamppb.New(viewPost.LastUpdatedAt.Time)
-	}
-
-	if viewPost.LastUpdatedUserID.Valid == true {
-		pbPost.Post.LastUpdatedUserId = viewPost.LastUpdatedUserID.Int32
-	}
-
-	if viewPost.Description.Valid == true {
-		pbPost.Post.Description = viewPost.Description.String
-	}
-
-	if viewPost.ThumbnailImgID.Valid == true {
-		pbPost.Post.ImageThumbnailId = viewPost.ThumbnailImgID.Int32
-	}
-
-	if viewPost.ThumbnailImgUrl.Valid == true {
-		pbPost.Post.ImageThumbnailUrl = viewPost.ThumbnailImgUrl.String
 	}
 
 	return pbPost

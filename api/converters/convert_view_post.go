@@ -18,6 +18,7 @@ func ConvertViewPostToDataPost(viewPost db.ViewPost) *pb.DataPost {
 		CreatedAt:  timestamppb.New(viewPost.CreatedAt),
 		IsDraft:    viewPost.IsDraft,
 		IsPrivate:  viewPost.IsPrivate,
+		Tags:       viewPost.Tags,
 	}
 
 	if viewPost.DeletedAt.Valid == true {
@@ -44,6 +45,23 @@ func ConvertViewPostToDataPost(viewPost db.ViewPost) *pb.DataPost {
 		pbPost.ImageThumbnailUrl = viewPost.ThumbnailImgUrl.String
 	}
 
+	if viewPost.EntityID.Valid == true {
+		pbPost.EntityId = &viewPost.EntityID.Int32
+	}
+
+	if viewPost.ModuleID.Valid == true {
+		pbPost.ModuleId = &viewPost.ModuleID.Int32
+	}
+
+	if viewPost.ModuleTypeID.Valid == true {
+		pbPost.ModuleId = &viewPost.ModuleTypeID.Int32
+	}
+
+	if viewPost.ModuleType.Valid == true {
+		convertedModuleType := ConvertModuleTypeToPB(viewPost.ModuleType.ModuleType)
+		pbPost.ModuleType = &convertedModuleType
+	}
+
 	return pbPost
 }
 
@@ -58,6 +76,7 @@ func ConvertViewPostByModuleToPost(viewPost db.GetPostsByModuleRow) *pb.Post {
 			CreatedAt:  timestamppb.New(viewPost.CreatedAt),
 			IsDraft:    viewPost.IsDraft,
 			IsPrivate:  viewPost.IsPrivate,
+			Tags:       viewPost.Tags,
 		},
 		PostType: &pb.DataPostType{
 			Id:         viewPost.PostTypeID,
@@ -89,6 +108,23 @@ func ConvertViewPostByModuleToPost(viewPost db.GetPostsByModuleRow) *pb.Post {
 
 	if viewPost.ThumbnailImgUrl.Valid == true {
 		pbPost.Post.ImageThumbnailUrl = viewPost.ThumbnailImgUrl.String
+	}
+
+	if viewPost.EntityID.Valid == true {
+		pbPost.Post.EntityId = &viewPost.EntityID.Int32
+	}
+
+	if viewPost.ModuleID.Valid == true {
+		pbPost.Post.ModuleId = &viewPost.ModuleID.Int32
+	}
+
+	if viewPost.ModuleTypeID.Valid == true {
+		pbPost.Post.ModuleId = &viewPost.ModuleTypeID.Int32
+	}
+
+	if viewPost.ModuleType.Valid == true {
+		convertedModuleType := ConvertModuleTypeToPB(viewPost.ModuleType.ModuleType)
+		pbPost.Post.ModuleType = &convertedModuleType
 	}
 
 	return pbPost

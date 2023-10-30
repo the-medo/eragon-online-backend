@@ -626,6 +626,37 @@ type ViewConnectionsWorldPost struct {
 	HelperID   int32         `json:"helper_id"`
 }
 
+type ViewEntity struct {
+	ID           int32          `json:"id"`
+	Type         EntityType     `json:"type"`
+	PostID       sql.NullInt32  `json:"post_id"`
+	MapID        sql.NullInt32  `json:"map_id"`
+	LocationID   sql.NullInt32  `json:"location_id"`
+	ImageID      sql.NullInt32  `json:"image_id"`
+	ModuleID     int32          `json:"module_id"`
+	ModuleType   NullModuleType `json:"module_type"`
+	ModuleTypeID int32          `json:"module_type_id"`
+	Tags         []int32        `json:"tags"`
+}
+
+type ViewImage struct {
+	ID           int32          `json:"id"`
+	ImageTypeID  sql.NullInt32  `json:"image_type_id"`
+	Name         sql.NullString `json:"name"`
+	Url          string         `json:"url"`
+	CreatedAt    time.Time      `json:"created_at"`
+	BaseUrl      string         `json:"base_url"`
+	ImgGuid      uuid.NullUUID  `json:"img_guid"`
+	UserID       int32          `json:"user_id"`
+	Width        int32          `json:"width"`
+	Height       int32          `json:"height"`
+	EntityID     sql.NullInt32  `json:"entity_id"`
+	ModuleID     sql.NullInt32  `json:"module_id"`
+	ModuleType   NullModuleType `json:"module_type"`
+	ModuleTypeID sql.NullInt32  `json:"module_type_id"`
+	Tags         []int32        `json:"tags"`
+}
+
 type ViewLocation struct {
 	ID                int32          `json:"id"`
 	Name              string         `json:"name"`
@@ -634,6 +665,11 @@ type ViewLocation struct {
 	ThumbnailImageID  sql.NullInt32  `json:"thumbnail_image_id"`
 	ThumbnailImageUrl sql.NullString `json:"thumbnail_image_url"`
 	PostTitle         sql.NullString `json:"post_title"`
+	EntityID          int32          `json:"entity_id"`
+	ModuleID          int32          `json:"module_id"`
+	ModuleType        NullModuleType `json:"module_type"`
+	ModuleTypeID      int32          `json:"module_type_id"`
+	Tags              []int32        `json:"tags"`
 }
 
 type ViewMap struct {
@@ -645,6 +681,11 @@ type ViewMap struct {
 	Height            int32          `json:"height"`
 	ThumbnailImageID  sql.NullInt32  `json:"thumbnail_image_id"`
 	ThumbnailImageUrl sql.NullString `json:"thumbnail_image_url"`
+	EntityID          sql.NullInt32  `json:"entity_id"`
+	ModuleID          sql.NullInt32  `json:"module_id"`
+	ModuleType        NullModuleType `json:"module_type"`
+	ModuleTypeID      sql.NullInt32  `json:"module_type_id"`
+	Tags              []int32        `json:"tags"`
 }
 
 type ViewMapLayer struct {
@@ -703,6 +744,11 @@ type ViewMenuItemPost struct {
 	PostTypeDraftable  bool           `json:"post_type_draftable"`
 	PostTypePrivatable bool           `json:"post_type_privatable"`
 	ThumbnailImgUrl    sql.NullString `json:"thumbnail_img_url"`
+	EntityID           sql.NullInt32  `json:"entity_id"`
+	ModuleID           sql.NullInt32  `json:"module_id"`
+	ModuleType         NullModuleType `json:"module_type"`
+	ModuleTypeID       sql.NullInt32  `json:"module_type_id"`
+	Tags               []int32        `json:"tags"`
 }
 
 type ViewModuleTypeTagsAvailable struct {
@@ -730,6 +776,11 @@ type ViewPost struct {
 	PostTypeDraftable  bool           `json:"post_type_draftable"`
 	PostTypePrivatable bool           `json:"post_type_privatable"`
 	ThumbnailImgUrl    sql.NullString `json:"thumbnail_img_url"`
+	EntityID           sql.NullInt32  `json:"entity_id"`
+	ModuleID           sql.NullInt32  `json:"module_id"`
+	ModuleType         NullModuleType `json:"module_type"`
+	ModuleTypeID       sql.NullInt32  `json:"module_type_id"`
+	Tags               []int32        `json:"tags"`
 }
 
 type ViewUser struct {

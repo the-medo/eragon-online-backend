@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package pb;
 
+import "services/modules/module.proto";
+
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 enum PinShape {
@@ -37,6 +39,11 @@ message ViewMap {
   int32 height = 6;
   optional int32 thumbnailImageId = 7;
   optional string thumbnailImageUrl = 8;
+  int32 entityId = 9;
+  int32 moduleId = 10;
+  ModuleType moduleType = 11;
+  int32 moduleTypeId = 12;
+  repeated int32 tags = 13;
 }
 
 message MapLayer {

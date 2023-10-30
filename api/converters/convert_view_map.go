@@ -12,6 +12,7 @@ func ConvertViewMap(viewMap db.ViewMap) *pb.ViewMap {
 		Name:   viewMap.Name,
 		Width:  viewMap.Width,
 		Height: viewMap.Height,
+		Tags:   viewMap.Tags,
 	}
 
 	if viewMap.Type.Valid {
@@ -28,6 +29,23 @@ func ConvertViewMap(viewMap db.ViewMap) *pb.ViewMap {
 
 	if viewMap.ThumbnailImageUrl.Valid {
 		pbMap.ThumbnailImageUrl = &viewMap.ThumbnailImageUrl.String
+	}
+
+	if viewMap.EntityID.Valid == true {
+		pbMap.EntityId = viewMap.EntityID.Int32
+	}
+
+	if viewMap.ModuleID.Valid == true {
+		pbMap.ModuleId = viewMap.ModuleID.Int32
+	}
+
+	if viewMap.ModuleTypeID.Valid == true {
+		pbMap.ModuleId = viewMap.ModuleTypeID.Int32
+	}
+
+	if viewMap.ModuleType.Valid == true {
+		convertedModuleType := ConvertModuleTypeToPB(viewMap.ModuleType.ModuleType)
+		pbMap.ModuleType = convertedModuleType
 	}
 
 	return pbMap

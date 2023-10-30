@@ -8,6 +8,8 @@ package db
 import (
 	"context"
 	"database/sql"
+
+	"github.com/lib/pq"
 )
 
 const createMap = `-- name: CreateMap :one
@@ -313,7 +315,7 @@ func (q *Queries) GetMapAssignments(ctx context.Context, mapID int32) (GetMapAss
 }
 
 const getMapByID = `-- name: GetMapByID :one
-SELECT id, name, type, description, width, height, thumbnail_image_id, thumbnail_image_url FROM view_maps WHERE id = $1
+SELECT id, name, type, description, width, height, thumbnail_image_id, thumbnail_image_url, entity_id, module_id, module_type, module_type_id, tags FROM view_maps WHERE id = $1
 `
 
 func (q *Queries) GetMapByID(ctx context.Context, id int32) (ViewMap, error) {
@@ -328,6 +330,11 @@ func (q *Queries) GetMapByID(ctx context.Context, id int32) (ViewMap, error) {
 		&i.Height,
 		&i.ThumbnailImageID,
 		&i.ThumbnailImageUrl,
+		&i.EntityID,
+		&i.ModuleID,
+		&i.ModuleType,
+		&i.ModuleTypeID,
+		pq.Array(&i.Tags),
 	)
 	return i, err
 }
@@ -560,7 +567,7 @@ func (q *Queries) GetMapPins(ctx context.Context, mapID int32) ([]ViewMapPin, er
 
 const getMaps = `-- name: GetMaps :many
 SELECT
-    vm.id, vm.name, vm.type, vm.description, vm.width, vm.height, vm.thumbnail_image_id, vm.thumbnail_image_url
+    vm.id, vm.name, vm.type, vm.description, vm.width, vm.height, vm.thumbnail_image_id, vm.thumbnail_image_url, vm.entity_id, vm.module_id, vm.module_type, vm.module_type_id, vm.tags
 FROM
     view_maps vm
     LEFT JOIN world_maps wm ON wm.map_id = vm.id
@@ -586,6 +593,11 @@ func (q *Queries) GetMaps(ctx context.Context, worldID sql.NullInt32) ([]ViewMap
 			&i.Height,
 			&i.ThumbnailImageID,
 			&i.ThumbnailImageUrl,
+			&i.EntityID,
+			&i.ModuleID,
+			&i.ModuleType,
+			&i.ModuleTypeID,
+			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
 		}
@@ -602,7 +614,7 @@ func (q *Queries) GetMaps(ctx context.Context, worldID sql.NullInt32) ([]ViewMap
 
 const getWorldMaps = `-- name: GetWorldMaps :many
 SELECT
-    vm.id, vm.name, vm.type, vm.description, vm.width, vm.height, vm.thumbnail_image_id, vm.thumbnail_image_url
+    vm.id, vm.name, vm.type, vm.description, vm.width, vm.height, vm.thumbnail_image_id, vm.thumbnail_image_url, vm.entity_id, vm.module_id, vm.module_type, vm.module_type_id, vm.tags
 FROM
     view_maps vm
     JOIN world_maps wm ON wm.map_id = vm.id
@@ -628,6 +640,11 @@ func (q *Queries) GetWorldMaps(ctx context.Context, worldID int32) ([]ViewMap, e
 			&i.Height,
 			&i.ThumbnailImageID,
 			&i.ThumbnailImageUrl,
+			&i.EntityID,
+			&i.ModuleID,
+			&i.ModuleType,
+			&i.ModuleTypeID,
+			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
 		}

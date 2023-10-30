@@ -8,6 +8,8 @@ package db
 import (
 	"context"
 	"database/sql"
+
+	"github.com/lib/pq"
 )
 
 const assignPostByMenuId = `-- name: AssignPostByMenuId :exec
@@ -198,7 +200,7 @@ func (q *Queries) GetMenuItemById(ctx context.Context, id int32) (MenuItem, erro
 }
 
 const getMenuItemPost = `-- name: GetMenuItemPost :one
-SELECT menu_id, menu_item_id, post_id, position, id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url FROM view_menu_item_posts WHERE menu_item_id = $1 AND post_id = $2
+SELECT menu_id, menu_item_id, post_id, position, id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url, entity_id, module_id, module_type, module_type_id, tags FROM view_menu_item_posts WHERE menu_item_id = $1 AND post_id = $2
 `
 
 type GetMenuItemPostParams struct {
@@ -231,12 +233,17 @@ func (q *Queries) GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams
 		&i.PostTypeDraftable,
 		&i.PostTypePrivatable,
 		&i.ThumbnailImgUrl,
+		&i.EntityID,
+		&i.ModuleID,
+		&i.ModuleType,
+		&i.ModuleTypeID,
+		pq.Array(&i.Tags),
 	)
 	return i, err
 }
 
 const getMenuItemPosts = `-- name: GetMenuItemPosts :many
-SELECT menu_id, menu_item_id, post_id, position, id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url FROM view_menu_item_posts WHERE menu_item_id = $1
+SELECT menu_id, menu_item_id, post_id, position, id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url, entity_id, module_id, module_type, module_type_id, tags FROM view_menu_item_posts WHERE menu_item_id = $1
 `
 
 func (q *Queries) GetMenuItemPosts(ctx context.Context, menuItemID sql.NullInt32) ([]ViewMenuItemPost, error) {
@@ -270,6 +277,11 @@ func (q *Queries) GetMenuItemPosts(ctx context.Context, menuItemID sql.NullInt32
 			&i.PostTypeDraftable,
 			&i.PostTypePrivatable,
 			&i.ThumbnailImgUrl,
+			&i.EntityID,
+			&i.ModuleID,
+			&i.ModuleType,
+			&i.ModuleTypeID,
+			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
 		}
@@ -285,7 +297,7 @@ func (q *Queries) GetMenuItemPosts(ctx context.Context, menuItemID sql.NullInt32
 }
 
 const getMenuItemPostsByMenuId = `-- name: GetMenuItemPostsByMenuId :many
-SELECT menu_id, menu_item_id, post_id, position, id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url FROM view_menu_item_posts WHERE menu_id = $1
+SELECT menu_id, menu_item_id, post_id, position, id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url, entity_id, module_id, module_type, module_type_id, tags FROM view_menu_item_posts WHERE menu_id = $1
 `
 
 func (q *Queries) GetMenuItemPostsByMenuId(ctx context.Context, menuID int32) ([]ViewMenuItemPost, error) {
@@ -319,6 +331,11 @@ func (q *Queries) GetMenuItemPostsByMenuId(ctx context.Context, menuID int32) ([
 			&i.PostTypeDraftable,
 			&i.PostTypePrivatable,
 			&i.ThumbnailImgUrl,
+			&i.EntityID,
+			&i.ModuleID,
+			&i.ModuleType,
+			&i.ModuleTypeID,
+			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
 		}

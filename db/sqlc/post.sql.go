@@ -9,6 +9,8 @@ import (
 	"context"
 	"database/sql"
 	"time"
+
+	"github.com/lib/pq"
 )
 
 const createPost = `-- name: CreatePost :one
@@ -118,7 +120,7 @@ func (q *Queries) DeleteWorldPost(ctx context.Context, arg DeleteWorldPostParams
 
 const getPostById = `-- name: GetPostById :one
 SELECT
-    id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url
+    id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url, entity_id, module_id, module_type, module_type_id, tags
 FROM
     view_posts
 WHERE
@@ -146,6 +148,11 @@ func (q *Queries) GetPostById(ctx context.Context, postID int32) (ViewPost, erro
 		&i.PostTypeDraftable,
 		&i.PostTypePrivatable,
 		&i.ThumbnailImgUrl,
+		&i.EntityID,
+		&i.ModuleID,
+		&i.ModuleType,
+		&i.ModuleTypeID,
+		pq.Array(&i.Tags),
 	)
 	return i, err
 }
@@ -330,7 +337,7 @@ func (q *Queries) GetPostTypes(ctx context.Context) ([]PostType, error) {
 const getPostsByModule = `-- name: GetPostsByModule :many
 WITH cte AS (
     SELECT
-        vp.id, vp.post_type_id, vp.user_id, vp.title, vp.content, vp.created_at, vp.deleted_at, vp.last_updated_at, vp.last_updated_user_id, vp.is_draft, vp.is_private, vp.description, vp.thumbnail_img_id, vp.post_type_name, vp.post_type_draftable, vp.post_type_privatable, vp.thumbnail_img_url
+        vp.id, vp.post_type_id, vp.user_id, vp.title, vp.content, vp.created_at, vp.deleted_at, vp.last_updated_at, vp.last_updated_user_id, vp.is_draft, vp.is_private, vp.description, vp.thumbnail_img_id, vp.post_type_name, vp.post_type_draftable, vp.post_type_privatable, vp.thumbnail_img_url, vp.entity_id, vp.module_id, vp.module_type, vp.module_type_id, vp.tags
     FROM
         view_posts vp
         LEFT JOIN world_posts wp ON vp.id = wp.post_id
@@ -340,7 +347,7 @@ WITH cte AS (
 )
 SELECT
     CAST((SELECT count(*) FROM cte) as integer) as total_count,
-    cte.id, cte.post_type_id, cte.user_id, cte.title, cte.content, cte.created_at, cte.deleted_at, cte.last_updated_at, cte.last_updated_user_id, cte.is_draft, cte.is_private, cte.description, cte.thumbnail_img_id, cte.post_type_name, cte.post_type_draftable, cte.post_type_privatable, cte.thumbnail_img_url
+    cte.id, cte.post_type_id, cte.user_id, cte.title, cte.content, cte.created_at, cte.deleted_at, cte.last_updated_at, cte.last_updated_user_id, cte.is_draft, cte.is_private, cte.description, cte.thumbnail_img_id, cte.post_type_name, cte.post_type_draftable, cte.post_type_privatable, cte.thumbnail_img_url, cte.entity_id, cte.module_id, cte.module_type, cte.module_type_id, cte.tags
 FROM cte
 ORDER BY created_at DESC
 LIMIT $2
@@ -372,6 +379,11 @@ type GetPostsByModuleRow struct {
 	PostTypeDraftable  bool           `json:"post_type_draftable"`
 	PostTypePrivatable bool           `json:"post_type_privatable"`
 	ThumbnailImgUrl    sql.NullString `json:"thumbnail_img_url"`
+	EntityID           sql.NullInt32  `json:"entity_id"`
+	ModuleID           sql.NullInt32  `json:"module_id"`
+	ModuleType         NullModuleType `json:"module_type"`
+	ModuleTypeID       sql.NullInt32  `json:"module_type_id"`
+	Tags               []int32        `json:"tags"`
 }
 
 func (q *Queries) GetPostsByModule(ctx context.Context, arg GetPostsByModuleParams) ([]GetPostsByModuleRow, error) {
@@ -402,6 +414,11 @@ func (q *Queries) GetPostsByModule(ctx context.Context, arg GetPostsByModulePara
 			&i.PostTypeDraftable,
 			&i.PostTypePrivatable,
 			&i.ThumbnailImgUrl,
+			&i.EntityID,
+			&i.ModuleID,
+			&i.ModuleType,
+			&i.ModuleTypeID,
+			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
 		}
@@ -418,7 +435,7 @@ func (q *Queries) GetPostsByModule(ctx context.Context, arg GetPostsByModulePara
 
 const getPostsByUserId = `-- name: GetPostsByUserId :many
 SELECT
-    id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url
+    id, post_type_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, post_type_name, post_type_draftable, post_type_privatable, thumbnail_img_url, entity_id, module_id, module_type, module_type_id, tags
 FROM
     view_posts
 WHERE
@@ -469,6 +486,11 @@ func (q *Queries) GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdPara
 			&i.PostTypeDraftable,
 			&i.PostTypePrivatable,
 			&i.ThumbnailImgUrl,
+			&i.EntityID,
+			&i.ModuleID,
+			&i.ModuleType,
+			&i.ModuleTypeID,
+			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
 		}

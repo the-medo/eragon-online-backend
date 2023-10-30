@@ -13,13 +13,14 @@ import (
 )
 
 const createEntity = `-- name: CreateEntity :one
-INSERT INTO entities (type, post_id, map_id, location_id, image_id)
-VALUES ($1, $2, $3, $4, $5)
+INSERT INTO entities (type, module_id, post_id, map_id, location_id, image_id)
+VALUES ($1, $2, $3, $4, $5, $6)
 RETURNING id, type, post_id, map_id, location_id, image_id, module_id
 `
 
 type CreateEntityParams struct {
 	Type       EntityType    `json:"type"`
+	ModuleID   int32         `json:"module_id"`
 	PostID     sql.NullInt32 `json:"post_id"`
 	MapID      sql.NullInt32 `json:"map_id"`
 	LocationID sql.NullInt32 `json:"location_id"`
@@ -29,6 +30,7 @@ type CreateEntityParams struct {
 func (q *Queries) CreateEntity(ctx context.Context, arg CreateEntityParams) (Entity, error) {
 	row := q.db.QueryRowContext(ctx, createEntity,
 		arg.Type,
+		arg.ModuleID,
 		arg.PostID,
 		arg.MapID,
 		arg.LocationID,
@@ -146,6 +148,39 @@ type EntityGroupContentChangePositionsParams struct {
 func (q *Queries) EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error {
 	_, err := q.db.ExecContext(ctx, entityGroupContentChangePositions, arg.ID, arg.TargetPosition)
 	return err
+}
+
+const getEntities = `-- name: GetEntities :one
+SELECT
+    id, type, post_id, map_id, location_id, image_id, module_id, module_type, module_type_id, tags
+FROM
+    view_entities
+WHERE
+    type = COALESCE($1, type)
+    AND module_id = $2
+`
+
+type GetEntitiesParams struct {
+	Type     NullEntityType `json:"type"`
+	ModuleID int32          `json:"module_id"`
+}
+
+func (q *Queries) GetEntities(ctx context.Context, arg GetEntitiesParams) (ViewEntity, error) {
+	row := q.db.QueryRowContext(ctx, getEntities, arg.Type, arg.ModuleID)
+	var i ViewEntity
+	err := row.Scan(
+		&i.ID,
+		&i.Type,
+		&i.PostID,
+		&i.MapID,
+		&i.LocationID,
+		&i.ImageID,
+		&i.ModuleID,
+		&i.ModuleType,
+		&i.ModuleTypeID,
+		pq.Array(&i.Tags),
+	)
+	return i, err
 }
 
 const getEntityByID = `-- name: GetEntityByID :one

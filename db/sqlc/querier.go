@@ -85,6 +85,7 @@ type Querier interface {
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
 	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
+	GetEntities(ctx context.Context, arg GetEntitiesParams) (ViewEntity, error)
 	GetEntityByID(ctx context.Context, id int32) (Entity, error)
 	GetEntityGroupByID(ctx context.Context, id int32) (EntityGroup, error)
 	GetEntityGroupContentByID(ctx context.Context, id int32) (EntityGroupContent, error)

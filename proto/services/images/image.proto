@@ -3,6 +3,7 @@ syntax = "proto3";
 package pb;
 
 import "google/protobuf/timestamp.proto";
+import "services/modules/module.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -42,4 +43,22 @@ message Image {
   int32 userId = 8;
   int32 width = 9;
   int32 height = 10;
+}
+
+message ViewImage {
+  int32 id = 1;
+  string imgGuid = 2;
+  int32 imageTypeId = 3;
+  string name = 4;
+  string url = 5;
+  string baseUrl = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  int32 userId = 8;
+  int32 width = 9;
+  int32 height = 10;
+  optional int32 entityId = 11;
+  optional int32 moduleId = 12;
+  optional ModuleType moduleType = 13;
+  optional int32 moduleTypeId = 14;
+  repeated int32 tags = 15;
 }

@@ -46,8 +46,8 @@ GROUP BY
     entity_group_id;
 
 -- name: CreateEntity :one
-INSERT INTO entities (type, post_id, map_id, location_id, image_id)
-VALUES (sqlc.arg(type), sqlc.narg(post_id), sqlc.narg(map_id), sqlc.narg(location_id), sqlc.narg(image_id))
+INSERT INTO entities (type, module_id, post_id, map_id, location_id, image_id)
+VALUES (sqlc.arg(type), sqlc.arg(module_id), sqlc.narg(post_id), sqlc.narg(map_id), sqlc.narg(location_id), sqlc.narg(image_id))
 RETURNING *;
 
 -- name: GetEntityByID :one
@@ -127,4 +127,14 @@ WITH entity_data AS ( --functions dont work well with sqlc, this is a workaround
         get_menu_id_of_entity_group(sqlc.arg(entity_group_id)) meg
         JOIN menus m ON meg.menu_id = m.id
 ) SELECT * FROM entity_data
+;
+
+-- name: GetEntities :one
+SELECT
+    *
+FROM
+    view_entities
+WHERE
+    type = COALESCE(sqlc.narg(type), type)
+    AND module_id = sqlc.arg(module_id)
 ;

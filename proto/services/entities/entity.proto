@@ -5,6 +5,7 @@ import "services/posts/post.proto";
 import "services/maps/map.proto";
 import "services/locations/location.proto";
 import "services/images/image.proto";
+import "services/modules/module.proto";
 
 package pb;
 
@@ -49,4 +50,17 @@ message EntityGroupContent {
   int32 position = 3;
   optional int32 contentEntityId = 4;
   optional int32 contentEntityGroupId = 5;
+}
+
+message ViewEntity {
+  int32 id = 1;
+  EntityType type = 2;
+  optional int32 postId = 3;
+  optional int32 mapId = 4;
+  optional int32 locationId = 5;
+  optional int32 imageId = 6;
+  int32 moduleId = 7;
+  ModuleType moduleType = 8;
+  int32 moduleTypeId = 9;
+  repeated int32 tags = 10;
 }

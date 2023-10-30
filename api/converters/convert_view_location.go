@@ -7,8 +7,13 @@ import (
 
 func ConvertViewLocation(viewLocation db.ViewLocation) *pb.ViewLocation {
 	pbLocation := &pb.ViewLocation{
-		Id:   viewLocation.ID,
-		Name: viewLocation.Name,
+		Id:           viewLocation.ID,
+		Name:         viewLocation.Name,
+		EntityId:     viewLocation.EntityID,
+		ModuleId:     viewLocation.ModuleID,
+		ModuleTypeId: viewLocation.ModuleTypeID,
+		ModuleType:   ConvertModuleTypeToPB(viewLocation.ModuleType.ModuleType),
+		Tags:         viewLocation.Tags,
 	}
 
 	if viewLocation.Description.Valid == true {

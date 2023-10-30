@@ -1109,6 +1109,21 @@ func (mr *MockStoreMockRecorder) GetChatMessages(arg0, arg1 interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetChatMessages", reflect.TypeOf((*MockStore)(nil).GetChatMessages), arg0, arg1)
 }
 
+// GetEntities mocks base method.
+func (m *MockStore) GetEntities(arg0 context.Context, arg1 db.GetEntitiesParams) (db.ViewEntity, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEntities", arg0, arg1)
+	ret0, _ := ret[0].(db.ViewEntity)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEntities indicates an expected call of GetEntities.
+func (mr *MockStoreMockRecorder) GetEntities(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntities", reflect.TypeOf((*MockStore)(nil).GetEntities), arg0, arg1)
+}
+
 // GetEntityByID mocks base method.
 func (m *MockStore) GetEntityByID(arg0 context.Context, arg1 int32) (db.Entity, error) {
 	m.ctrl.T.Helper()
