@@ -179,50 +179,6 @@ Table world_admins {
   }
 }
 
-Table world_menu {
-  world_id int [not null, ref: > worlds.id]
-  menu_id int [not null, ref: > menus.id]
-
-  indexes {
-    (world_id, menu_id) [unique]
-  }
-}
-
-Table world_tags_available {
-  id int [pk, increment]
-  tag varchar [not null, unique]
-}
-
-Table world_tags {
-  world_id int [not null, ref: > worlds.id]
-  tag_id int [not null]
-
-  indexes {
-    (world_id, tag_id) [unique]
-  }
-}
-
-Ref: world_tags.tag_id > world_tags_available.id [delete: cascade]
-
-Table world_images {
-  world_id int [pk, ref: > worlds.id]
-  header_img_id int [ref: > images.id]
-  thumbnail_img_id int [ref: > images.id]
-  avatar_img_id int [ref: > images.id]
-}
-
-Table world_activity {
-  world_id int [not null, ref: > worlds.id]
-  date date [not null]
-  post_count int [not null]
-  quest_count int [not null]
-  resource_count int [not null]
-
-  indexes {
-    (world_id, date) [unique]
-  }
-}
-
 Table races {
   id int [pk, increment]
   world_id int [not null, ref: > worlds.id]
@@ -430,12 +386,12 @@ Table map_pin_type_group {
   name varchar [not null]
 }
 
-Table world_map_pin_type_groups {
-  world_id int [not null, ref: > worlds.id]
+Table module_map_pin_type_groups {
+  module_id int [not null, ref: > modules.id]
   map_pin_type_group_id int [not null, ref: > map_pin_type_group.id]
 
   indexes {
-    (world_id, map_pin_type_group_id) [unique]
+    (module_id, map_pin_type_group_id) [unique]
   }
 }
 
@@ -452,33 +408,6 @@ Table map_pin_types {
   section varchar [not null, default: "base"]
 }
 
-Table world_maps {
-  world_id int [not null, ref: > worlds.id]
-  map_id int [not null, ref: > maps.id]
-
-  indexes {
-    (world_id, map_id) [unique]
-  }
-}
-
-Table world_locations {
-  world_id int [not null, ref: > worlds.id]
-  location_id int [not null, ref: > locations.id]
-
-  indexes {
-    (world_id, location_id) [unique]
-  }
-}
-
-Table world_posts {
-  world_id int [not null, ref: > worlds.id]
-  post_id int [not null, ref: > posts.id]
-
-  indexes {
-    (world_id, post_id) [unique]
-  }
-}
-
 Table quests {
   id int [pk, increment]
 }
@@ -490,6 +419,12 @@ Table systems {
 Table modules {
   id int [pk, increment]
   module_type module_type [not null]
+  menu_id int [not null, ref: > menus.id]
+
+  header_img_id int [ref: > images.id]
+  thumbnail_img_id int [ref: > images.id]
+  avatar_img_id int [ref: > images.id]
+
   world_id int [ref: > worlds.id]
   system_id int [ref: > systems.id]
   character_id int [ref: > characters.id]
@@ -598,12 +533,7 @@ TableGroup UserStuff {
 
 TableGroup Worlds {
   worlds
-  world_images
-  world_activity
   world_admins
-  world_tags_available
-  world_tags
-  world_menu
 }
 
 TableGroup Posts {
