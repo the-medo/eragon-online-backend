@@ -47,9 +47,9 @@ WITH cte AS (
         vp.*
     FROM
         view_posts vp
-        LEFT JOIN world_posts wp ON vp.id = wp.post_id
+        LEFT JOIN modules m ON m.id = vp.module_id
     WHERE
-        wp.world_id = sqlc.narg(world_id) AND
+        m.world_id = sqlc.arg(world_id) AND
         vp.deleted_at IS NULL
 )
 SELECT
@@ -153,14 +153,3 @@ SELECT
     description,
     thumbnail_img_id
 FROM post_history WHERE id = sqlc.arg(post_history_id);
-
-
--- name: CreateWorldPost :one
-INSERT INTO world_posts (world_id, post_id)
-VALUES (sqlc.arg(world_id), sqlc.arg(post_id))
-ON CONFLICT (world_id, post_id) DO NOTHING
-RETURNING *;
-
--- name: DeleteWorldPost :exec
-DELETE FROM world_posts
-WHERE world_id = sqlc.arg(world_id) AND post_id = sqlc.arg(post_id);

@@ -185,25 +185,6 @@ func (q *Queries) CreateMapPinTypeGroup(ctx context.Context, name string) (MapPi
 	return i, err
 }
 
-const createWorldMap = `-- name: CreateWorldMap :one
-INSERT INTO world_maps (world_id, map_id)
-VALUES ($1, $2)
-ON CONFLICT (world_id, map_id) DO NOTHING
-RETURNING world_id, map_id
-`
-
-type CreateWorldMapParams struct {
-	WorldID int32 `json:"world_id"`
-	MapID   int32 `json:"map_id"`
-}
-
-func (q *Queries) CreateWorldMap(ctx context.Context, arg CreateWorldMapParams) (WorldMap, error) {
-	row := q.db.QueryRowContext(ctx, createWorldMap, arg.WorldID, arg.MapID)
-	var i WorldMap
-	err := row.Scan(&i.WorldID, &i.MapID)
-	return i, err
-}
-
 const deleteMap = `-- name: DeleteMap :exec
 CALL delete_map($1)
 `
@@ -276,41 +257,43 @@ func (q *Queries) DeleteMapPinsForMapLayer(ctx context.Context, mapLayerID sql.N
 	return err
 }
 
-const deleteWorldMap = `-- name: DeleteWorldMap :exec
-DELETE FROM world_maps
-WHERE world_id = $1 AND map_id = $2
-`
-
-type DeleteWorldMapParams struct {
-	WorldID int32 `json:"world_id"`
-	MapID   int32 `json:"map_id"`
-}
-
-func (q *Queries) DeleteWorldMap(ctx context.Context, arg DeleteWorldMapParams) error {
-	_, err := q.db.ExecContext(ctx, deleteWorldMap, arg.WorldID, arg.MapID)
-	return err
-}
-
 const getMapAssignments = `-- name: GetMapAssignments :one
 SELECT
-    CAST(MAX(COALESCE(wl.world_id, 0)) as integer) AS world_id,
-    0 AS quest_id
+    m.id, m.world_id, m.system_id, m.character_id, m.quest_id, m.module_type, m.menu_id, m.header_img_id, m.thumbnail_img_id, m.avatar_img_id
 FROM
-    maps m
-    LEFT JOIN world_maps wm ON m.id = wm.location_id
-WHERE m.id = $1
-GROUP BY m.id
+    entities e
+    LEFT JOIN modules m ON e.module_id = m.id
+WHERE e.map_id = $1
 `
 
 type GetMapAssignmentsRow struct {
-	WorldID int32       `json:"world_id"`
-	QuestID interface{} `json:"quest_id"`
+	ID             sql.NullInt32  `json:"id"`
+	WorldID        sql.NullInt32  `json:"world_id"`
+	SystemID       sql.NullInt32  `json:"system_id"`
+	CharacterID    sql.NullInt32  `json:"character_id"`
+	QuestID        sql.NullInt32  `json:"quest_id"`
+	ModuleType     NullModuleType `json:"module_type"`
+	MenuID         sql.NullInt32  `json:"menu_id"`
+	HeaderImgID    sql.NullInt32  `json:"header_img_id"`
+	ThumbnailImgID sql.NullInt32  `json:"thumbnail_img_id"`
+	AvatarImgID    sql.NullInt32  `json:"avatar_img_id"`
 }
 
-func (q *Queries) GetMapAssignments(ctx context.Context, mapID int32) (GetMapAssignmentsRow, error) {
+func (q *Queries) GetMapAssignments(ctx context.Context, mapID sql.NullInt32) (GetMapAssignmentsRow, error) {
 	row := q.db.QueryRowContext(ctx, getMapAssignments, mapID)
 	var i GetMapAssignmentsRow
-	err := row.Scan(&i.WorldID, &i.QuestID)
+	err := row.Scan(
+		&i.ID,
+		&i.WorldID,
+		&i.SystemID,
+		&i.CharacterID,
+		&i.QuestID,
+		&i.ModuleType,
+		&i.MenuID,
+		&i.HeaderImgID,
+		&i.ThumbnailImgID,
+		&i.AvatarImgID,
+	)
 	return i, err
 }
 
@@ -422,15 +405,15 @@ func (q *Queries) GetMapPinByID(ctx context.Context, id int32) (ViewMapPin, erro
 
 const getMapPinTypeGroupIdForMap = `-- name: GetMapPinTypeGroupIdForMap :one
 SELECT
-    CAST(MAX(wmptg.map_pin_type_group_id) as integer) AS map_pin_type_group_id
+    CAST(MAX(mmptg.map_pin_type_group_id) as integer) AS map_pin_type_group_id
 FROM
-    world_maps wm
-    JOIN world_map_pin_type_groups wmptg ON wm.world_id = wmptg.world_id
+    entities e
+    JOIN module_map_pin_type_groups mmptg ON e.module_id = mmptg.module_id
 WHERE
-    wm.map_id = $1
+    e.map_id = $1
 `
 
-func (q *Queries) GetMapPinTypeGroupIdForMap(ctx context.Context, mapID int32) (int32, error) {
+func (q *Queries) GetMapPinTypeGroupIdForMap(ctx context.Context, mapID sql.NullInt32) (int32, error) {
 	row := q.db.QueryRowContext(ctx, getMapPinTypeGroupIdForMap, mapID)
 	var map_pin_type_group_id int32
 	err := row.Scan(&map_pin_type_group_id)
@@ -442,12 +425,12 @@ SELECT
     mpt.id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.section, mpt.map_pin_type_group_id
 FROM
     map_pin_types mpt
-    JOIN world_map_pin_type_groups wmptg ON mpt.map_pin_type_group_id = wmptg.map_pin_type_group_id
-    JOIN world_maps wm ON wmptg.world_id = wm.world_id
-WHERE wm.map_id = $1
+    JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
+    JOIN entities e ON e.module_id = mmptg.module_id
+WHERE e.map_id = $1
 `
 
-func (q *Queries) GetMapPinTypesForMap(ctx context.Context, mapID int32) ([]MapPinType, error) {
+func (q *Queries) GetMapPinTypesForMap(ctx context.Context, mapID sql.NullInt32) ([]MapPinType, error) {
 	rows, err := q.db.QueryContext(ctx, getMapPinTypesForMap, mapID)
 	if err != nil {
 		return nil, err
@@ -486,11 +469,12 @@ SELECT
     mpt.id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.section, mpt.map_pin_type_group_id
 FROM
     map_pin_types mpt
-    JOIN world_map_pin_type_groups wmptg ON mpt.map_pin_type_group_id = wmptg.map_pin_type_group_id
-WHERE wmptg.world_id = $1
+    JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
+    JOIN modules m ON m.id = mmptg.module_id
+WHERE m.world_id = $1
 `
 
-func (q *Queries) GetMapPinTypesForWorld(ctx context.Context, worldID int32) ([]MapPinType, error) {
+func (q *Queries) GetMapPinTypesForWorld(ctx context.Context, worldID sql.NullInt32) ([]MapPinType, error) {
 	rows, err := q.db.QueryContext(ctx, getMapPinTypesForWorld, worldID)
 	if err != nil {
 		return nil, err
@@ -570,60 +554,12 @@ SELECT
     vm.id, vm.name, vm.type, vm.description, vm.width, vm.height, vm.thumbnail_image_id, vm.thumbnail_image_url, vm.entity_id, vm.module_id, vm.module_type, vm.module_type_id, vm.tags
 FROM
     view_maps vm
-    LEFT JOIN world_maps wm ON wm.map_id = vm.id
 WHERE
-    wm.world_id = $1
+    vm.module_id = $1
 `
 
-func (q *Queries) GetMaps(ctx context.Context, worldID sql.NullInt32) ([]ViewMap, error) {
-	rows, err := q.db.QueryContext(ctx, getMaps, worldID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []ViewMap{}
-	for rows.Next() {
-		var i ViewMap
-		if err := rows.Scan(
-			&i.ID,
-			&i.Name,
-			&i.Type,
-			&i.Description,
-			&i.Width,
-			&i.Height,
-			&i.ThumbnailImageID,
-			&i.ThumbnailImageUrl,
-			&i.EntityID,
-			&i.ModuleID,
-			&i.ModuleType,
-			&i.ModuleTypeID,
-			pq.Array(&i.Tags),
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const getWorldMaps = `-- name: GetWorldMaps :many
-SELECT
-    vm.id, vm.name, vm.type, vm.description, vm.width, vm.height, vm.thumbnail_image_id, vm.thumbnail_image_url, vm.entity_id, vm.module_id, vm.module_type, vm.module_type_id, vm.tags
-FROM
-    view_maps vm
-    JOIN world_maps wm ON wm.map_id = vm.id
-WHERE
-    wm.world_id = $1
-`
-
-func (q *Queries) GetWorldMaps(ctx context.Context, worldID int32) ([]ViewMap, error) {
-	rows, err := q.db.QueryContext(ctx, getWorldMaps, worldID)
+func (q *Queries) GetMaps(ctx context.Context, moduleID sql.NullInt32) ([]ViewMap, error) {
+	rows, err := q.db.QueryContext(ctx, getMaps, moduleID)
 	if err != nil {
 		return nil, err
 	}

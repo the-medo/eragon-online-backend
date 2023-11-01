@@ -8,20 +8,10 @@ SELECT
     vm.*
 FROM
     view_maps vm
-    LEFT JOIN world_maps wm ON wm.map_id = vm.id
 WHERE
-    wm.world_id = sqlc.narg(world_id);
+    vm.module_id = sqlc.arg(module_id);
 ;
 
--- name: GetWorldMaps :many
-SELECT
-    vm.*
-FROM
-    view_maps vm
-    JOIN world_maps wm ON wm.map_id = vm.id
-WHERE
-    wm.world_id = sqlc.arg(world_id);
-;
 
 -- name: GetMapByID :one
 SELECT * FROM view_maps WHERE id = sqlc.arg(id);
@@ -71,17 +61,6 @@ DELETE FROM map_layers WHERE id = sqlc.arg(id);
 -- name: DeleteMapLayersForMap :exec
 DELETE FROM map_layers WHERE map_id = sqlc.arg(map_id);
 
--- name: CreateWorldMap :one
-INSERT INTO world_maps (world_id, map_id)
-VALUES (sqlc.arg(world_id), sqlc.arg(map_id))
-ON CONFLICT (world_id, map_id) DO NOTHING
-RETURNING *;
-
--- name: DeleteWorldMap :exec
-DELETE FROM world_maps
-WHERE world_id = sqlc.arg(world_id) AND map_id = sqlc.arg(map_id);
-
-
 
 --------------------------------------
 
@@ -95,17 +74,18 @@ SELECT
     mpt.*
 FROM
     map_pin_types mpt
-    JOIN world_map_pin_type_groups wmptg ON mpt.map_pin_type_group_id = wmptg.map_pin_type_group_id
-    JOIN world_maps wm ON wmptg.world_id = wm.world_id
-WHERE wm.map_id = sqlc.arg(map_id);
+    JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
+    JOIN entities e ON e.module_id = mmptg.module_id
+WHERE e.map_id = sqlc.arg(map_id);
 
 -- name: GetMapPinTypesForWorld :many
 SELECT
     mpt.*
 FROM
     map_pin_types mpt
-    JOIN world_map_pin_type_groups wmptg ON mpt.map_pin_type_group_id = wmptg.map_pin_type_group_id
-WHERE wmptg.world_id = sqlc.arg(world_id);
+    JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
+    JOIN modules m ON m.id = mmptg.module_id
+WHERE m.world_id = sqlc.arg(world_id);
 
 -- name: UpdateMapPinType :one
 UPDATE map_pin_types
@@ -158,13 +138,12 @@ DELETE FROM map_pins WHERE map_id = sqlc.arg(map_id);
 
 -- name: GetMapAssignments :one
 SELECT
-    CAST(MAX(COALESCE(wl.world_id, 0)) as integer) AS world_id,
-    0 AS quest_id
+    m.*
 FROM
-    maps m
-    LEFT JOIN world_maps wm ON m.id = wm.location_id
-WHERE m.id = sqlc.arg(map_id)
-GROUP BY m.id;
+    entities e
+    LEFT JOIN modules m ON e.module_id = m.id
+WHERE e.map_id = sqlc.arg(map_id)
+;
 
 -- name: CreateMapPinTypeGroup :one
 INSERT INTO map_pin_type_group (name) VALUES (sqlc.arg(name)) RETURNING *;
@@ -177,10 +156,10 @@ DELETE FROM map_pin_type_group WHERE id = sqlc.arg(id);
 
 -- name: GetMapPinTypeGroupIdForMap :one
 SELECT
-    CAST(MAX(wmptg.map_pin_type_group_id) as integer) AS map_pin_type_group_id
+    CAST(MAX(mmptg.map_pin_type_group_id) as integer) AS map_pin_type_group_id
 FROM
-    world_maps wm
-    JOIN world_map_pin_type_groups wmptg ON wm.world_id = wmptg.world_id
+    entities e
+    JOIN module_map_pin_type_groups mmptg ON e.module_id = mmptg.module_id
 WHERE
-    wm.map_id = sqlc.arg(map_id)
+    e.map_id = sqlc.arg(map_id)
 ;

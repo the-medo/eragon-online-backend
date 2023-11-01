@@ -43,25 +43,6 @@ func (q *Queries) CreateLocation(ctx context.Context, arg CreateLocationParams) 
 	return i, err
 }
 
-const createWorldLocation = `-- name: CreateWorldLocation :one
-INSERT INTO world_locations (world_id, location_id)
-VALUES ($1, $2)
-ON CONFLICT (world_id, location_id) DO NOTHING
-RETURNING world_id, location_id
-`
-
-type CreateWorldLocationParams struct {
-	WorldID    int32 `json:"world_id"`
-	LocationID int32 `json:"location_id"`
-}
-
-func (q *Queries) CreateWorldLocation(ctx context.Context, arg CreateWorldLocationParams) (WorldLocation, error) {
-	row := q.db.QueryRowContext(ctx, createWorldLocation, arg.WorldID, arg.LocationID)
-	var i WorldLocation
-	err := row.Scan(&i.WorldID, &i.LocationID)
-	return i, err
-}
-
 const deleteLocation = `-- name: DeleteLocation :exec
 CALL delete_location($1)
 `
@@ -69,44 +50,6 @@ CALL delete_location($1)
 func (q *Queries) DeleteLocation(ctx context.Context, id int32) error {
 	_, err := q.db.ExecContext(ctx, deleteLocation, id)
 	return err
-}
-
-const deleteWorldLocation = `-- name: DeleteWorldLocation :exec
-DELETE FROM world_locations
-WHERE world_id = $1 AND location_id = $2
-`
-
-type DeleteWorldLocationParams struct {
-	WorldID    int32 `json:"world_id"`
-	LocationID int32 `json:"location_id"`
-}
-
-func (q *Queries) DeleteWorldLocation(ctx context.Context, arg DeleteWorldLocationParams) error {
-	_, err := q.db.ExecContext(ctx, deleteWorldLocation, arg.WorldID, arg.LocationID)
-	return err
-}
-
-const getLocationAssignments = `-- name: GetLocationAssignments :one
-SELECT
-    CAST(MAX(COALESCE(wl.world_id, 0)) as integer) AS world_id,
-    0 AS quest_id
-FROM
-    locations l
-    LEFT JOIN world_locations wl ON l.id = wl.location_id
-WHERE l.id = $1
-GROUP BY l.id
-`
-
-type GetLocationAssignmentsRow struct {
-	WorldID int32       `json:"world_id"`
-	QuestID interface{} `json:"quest_id"`
-}
-
-func (q *Queries) GetLocationAssignments(ctx context.Context, locationID int32) (GetLocationAssignmentsRow, error) {
-	row := q.db.QueryRowContext(ctx, getLocationAssignments, locationID)
-	var i GetLocationAssignmentsRow
-	err := row.Scan(&i.WorldID, &i.QuestID)
-	return i, err
 }
 
 const getLocationByID = `-- name: GetLocationByID :one
@@ -174,60 +117,12 @@ func (q *Queries) GetLocations(ctx context.Context) ([]ViewLocation, error) {
 }
 
 const getLocationsByModule = `-- name: GetLocationsByModule :many
-SELECT
-    vl.id, vl.name, vl.description, vl.post_id, vl.thumbnail_image_id, vl.thumbnail_image_url, vl.post_title, vl.entity_id, vl.module_id, vl.module_type, vl.module_type_id, vl.tags
-FROM
-    view_locations vl
-    LEFT JOIN world_locations wl ON vl.id = wl.location_id
-    --LEFT JOIN quest_locations ql ON vl.id = ql.location_id
-WHERE wl.world_id = $1 --OR ql.quest_id = sqlc.arg(quest_id);
+SELECT id, name, description, post_id, thumbnail_image_id, thumbnail_image_url, post_title, entity_id, module_id, module_type, module_type_id, tags FROM view_locations
+WHERE module_id = $1
 `
 
-func (q *Queries) GetLocationsByModule(ctx context.Context, worldID int32) ([]ViewLocation, error) {
-	rows, err := q.db.QueryContext(ctx, getLocationsByModule, worldID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []ViewLocation{}
-	for rows.Next() {
-		var i ViewLocation
-		if err := rows.Scan(
-			&i.ID,
-			&i.Name,
-			&i.Description,
-			&i.PostID,
-			&i.ThumbnailImageID,
-			&i.ThumbnailImageUrl,
-			&i.PostTitle,
-			&i.EntityID,
-			&i.ModuleID,
-			&i.ModuleType,
-			&i.ModuleTypeID,
-			pq.Array(&i.Tags),
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const getWorldLocations = `-- name: GetWorldLocations :many
-SELECT l.id, l.name, l.description, l.post_id, l.thumbnail_image_id, l.thumbnail_image_url, l.post_title, l.entity_id, l.module_id, l.module_type, l.module_type_id, l.tags
-FROM view_locations l
-    JOIN world_locations wl ON l.id = wl.location_id
-WHERE wl.world_id = $1
-`
-
-func (q *Queries) GetWorldLocations(ctx context.Context, worldID int32) ([]ViewLocation, error) {
-	rows, err := q.db.QueryContext(ctx, getWorldLocations, worldID)
+func (q *Queries) GetLocationsByModule(ctx context.Context, moduleID int32) ([]ViewLocation, error) {
+	rows, err := q.db.QueryContext(ctx, getLocationsByModule, moduleID)
 	if err != nil {
 		return nil, err
 	}

@@ -33,6 +33,7 @@ type Querier interface {
 	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)
 	CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error)
 	CreateModuleEntityTagAvailable(ctx context.Context, arg CreateModuleEntityTagAvailableParams) (ModuleEntityTagsAvailable, error)
+	CreateModuleMapPinTypeGroup(ctx context.Context, arg CreateModuleMapPinTypeGroupParams) (ModuleMapPinTypeGroup, error)
 	CreateModuleTag(ctx context.Context, arg CreateModuleTagParams) (ModuleTag, error)
 	CreateModuleTypeTagAvailable(ctx context.Context, arg CreateModuleTypeTagAvailableParams) (ModuleTypeTagsAvailable, error)
 	CreatePost(ctx context.Context, arg CreatePostParams) (Post, error)
@@ -40,14 +41,6 @@ type Querier interface {
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
 	CreateWorld(ctx context.Context, arg CreateWorldParams) (World, error)
-	CreateWorldActivity(ctx context.Context, arg CreateWorldActivityParams) error
-	CreateWorldImages(ctx context.Context, worldID int32) error
-	CreateWorldLocation(ctx context.Context, arg CreateWorldLocationParams) (WorldLocation, error)
-	CreateWorldMap(ctx context.Context, arg CreateWorldMapParams) (WorldMap, error)
-	CreateWorldMapPinTypeGroup(ctx context.Context, arg CreateWorldMapPinTypeGroupParams) (WorldMapPinTypeGroup, error)
-	CreateWorldMenu(ctx context.Context, arg CreateWorldMenuParams) (WorldMenu, error)
-	CreateWorldPost(ctx context.Context, arg CreateWorldPostParams) (WorldPost, error)
-	DeleteAllWorldActivity(ctx context.Context, worldID int32) error
 	DeleteChatMessage(ctx context.Context, id int64) error
 	DeleteEntity(ctx context.Context, id int32) error
 	DeleteEntityGroup(ctx context.Context, id int32) error
@@ -68,19 +61,13 @@ type Querier interface {
 	DeleteMenuItem(ctx context.Context, menuItemID int32) error
 	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
 	DeleteModuleEntityTagAvailable(ctx context.Context, id int32) error
+	DeleteModuleMapPinTypeGroup(ctx context.Context, arg DeleteModuleMapPinTypeGroupParams) error
 	DeleteModuleTag(ctx context.Context, arg DeleteModuleTagParams) error
 	DeleteModuleTypeTagAvailable(ctx context.Context, id int32) error
 	DeletePost(ctx context.Context, postID int32) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
 	DeleteWorld(ctx context.Context, worldID int32) error
-	DeleteWorldActivityForDate(ctx context.Context, arg DeleteWorldActivityForDateParams) error
 	DeleteWorldAdmin(ctx context.Context, arg DeleteWorldAdminParams) error
-	DeleteWorldImages(ctx context.Context, worldID int32) error
-	DeleteWorldLocation(ctx context.Context, arg DeleteWorldLocationParams) error
-	DeleteWorldMap(ctx context.Context, arg DeleteWorldMapParams) error
-	DeleteWorldMapPinTypeGroup(ctx context.Context, arg DeleteWorldMapPinTypeGroupParams) error
-	DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error
-	DeleteWorldPost(ctx context.Context, arg DeleteWorldPostParams) error
 	EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
@@ -104,20 +91,19 @@ type Querier interface {
 	GetImages(ctx context.Context, arg GetImagesParams) ([]Image, error)
 	GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.NullInt32) ([]Image, error)
 	GetImagesCount(ctx context.Context, arg GetImagesCountParams) (int64, error)
-	GetLocationAssignments(ctx context.Context, locationID int32) (GetLocationAssignmentsRow, error)
 	GetLocationByID(ctx context.Context, id int32) (ViewLocation, error)
 	GetLocations(ctx context.Context) ([]ViewLocation, error)
-	GetLocationsByModule(ctx context.Context, worldID int32) ([]ViewLocation, error)
-	GetMapAssignments(ctx context.Context, mapID int32) (GetMapAssignmentsRow, error)
+	GetLocationsByModule(ctx context.Context, moduleID int32) ([]ViewLocation, error)
+	GetMapAssignments(ctx context.Context, mapID sql.NullInt32) (GetMapAssignmentsRow, error)
 	GetMapByID(ctx context.Context, id int32) (ViewMap, error)
 	GetMapLayerByID(ctx context.Context, mapLayerID int32) (ViewMapLayer, error)
 	GetMapLayers(ctx context.Context, mapID int32) ([]ViewMapLayer, error)
 	GetMapPinByID(ctx context.Context, id int32) (ViewMapPin, error)
-	GetMapPinTypeGroupIdForMap(ctx context.Context, mapID int32) (int32, error)
-	GetMapPinTypesForMap(ctx context.Context, mapID int32) ([]MapPinType, error)
-	GetMapPinTypesForWorld(ctx context.Context, worldID int32) ([]MapPinType, error)
+	GetMapPinTypeGroupIdForMap(ctx context.Context, mapID sql.NullInt32) (int32, error)
+	GetMapPinTypesForMap(ctx context.Context, mapID sql.NullInt32) ([]MapPinType, error)
+	GetMapPinTypesForWorld(ctx context.Context, worldID sql.NullInt32) ([]MapPinType, error)
 	GetMapPins(ctx context.Context, mapID int32) ([]ViewMapPin, error)
-	GetMaps(ctx context.Context, worldID sql.NullInt32) ([]ViewMap, error)
+	GetMaps(ctx context.Context, moduleID sql.NullInt32) ([]ViewMap, error)
 	GetMenu(ctx context.Context, id int32) (ViewMenu, error)
 	GetMenuIdOfEntityGroup(ctx context.Context, entityGroupID int32) (int32, error)
 	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)
@@ -145,13 +131,6 @@ type Querier interface {
 	GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error)
 	GetWorldAdmins(ctx context.Context, worldID int32) ([]GetWorldAdminsRow, error)
 	GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error)
-	GetWorldDailyActivity(ctx context.Context, arg GetWorldDailyActivityParams) ([]WorldActivity, error)
-	GetWorldImages(ctx context.Context, worldID int32) (WorldImage, error)
-	GetWorldLocations(ctx context.Context, worldID int32) ([]ViewLocation, error)
-	GetWorldMaps(ctx context.Context, worldID int32) ([]ViewMap, error)
-	GetWorldMenu(ctx context.Context, arg GetWorldMenuParams) (WorldMenu, error)
-	GetWorldMenuByMenuId(ctx context.Context, menuID int32) (WorldMenu, error)
-	GetWorldMonthlyActivity(ctx context.Context, arg GetWorldMonthlyActivityParams) ([]GetWorldMonthlyActivityRow, error)
 	GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWorld, error)
 	GetWorldsCount(ctx context.Context, arg GetWorldsCountParams) (int64, error)
 	GetWorldsOfUser(ctx context.Context, userID int32) ([]GetWorldsOfUserRow, error)
@@ -186,9 +165,7 @@ type Querier interface {
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)
 	UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World, error)
-	UpdateWorldActivity(ctx context.Context, arg UpdateWorldActivityParams) (WorldActivity, error)
 	UpdateWorldAdmin(ctx context.Context, arg UpdateWorldAdminParams) (WorldAdmin, error)
-	UpdateWorldImages(ctx context.Context, arg UpdateWorldImagesParams) (WorldImage, error)
 }
 
 var _ Querier = (*Queries)(nil)

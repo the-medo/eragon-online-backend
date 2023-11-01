@@ -14,6 +14,25 @@ import (
 	"github.com/lib/pq"
 )
 
+const createModuleMapPinTypeGroup = `-- name: CreateModuleMapPinTypeGroup :one
+INSERT INTO module_map_pin_type_groups (module_id, map_pin_type_group_id)
+VALUES ($1, $2)
+ON CONFLICT (module_id, map_pin_type_group_id) DO NOTHING
+RETURNING module_id, map_pin_type_group_id
+`
+
+type CreateModuleMapPinTypeGroupParams struct {
+	ModuleID          int32 `json:"module_id"`
+	MapPinTypeGroupID int32 `json:"map_pin_type_group_id"`
+}
+
+func (q *Queries) CreateModuleMapPinTypeGroup(ctx context.Context, arg CreateModuleMapPinTypeGroupParams) (ModuleMapPinTypeGroup, error) {
+	row := q.db.QueryRowContext(ctx, createModuleMapPinTypeGroup, arg.ModuleID, arg.MapPinTypeGroupID)
+	var i ModuleMapPinTypeGroup
+	err := row.Scan(&i.ModuleID, &i.MapPinTypeGroupID)
+	return i, err
+}
+
 const createWorld = `-- name: CreateWorld :one
 INSERT INTO worlds (
     name,
@@ -45,23 +64,18 @@ func (q *Queries) CreateWorld(ctx context.Context, arg CreateWorldParams) (World
 	return i, err
 }
 
-const createWorldMapPinTypeGroup = `-- name: CreateWorldMapPinTypeGroup :one
-INSERT INTO world_map_pin_type_groups (world_id, map_pin_type_group_id)
-VALUES ($1, $2)
-ON CONFLICT (world_id, map_pin_type_group_id) DO NOTHING
-RETURNING world_id, map_pin_type_group_id
+const deleteModuleMapPinTypeGroup = `-- name: DeleteModuleMapPinTypeGroup :exec
+DELETE FROM module_map_pin_type_groups WHERE module_id = $1 AND map_pin_type_group_id = $2
 `
 
-type CreateWorldMapPinTypeGroupParams struct {
-	WorldID           int32 `json:"world_id"`
+type DeleteModuleMapPinTypeGroupParams struct {
+	ModuleID          int32 `json:"module_id"`
 	MapPinTypeGroupID int32 `json:"map_pin_type_group_id"`
 }
 
-func (q *Queries) CreateWorldMapPinTypeGroup(ctx context.Context, arg CreateWorldMapPinTypeGroupParams) (WorldMapPinTypeGroup, error) {
-	row := q.db.QueryRowContext(ctx, createWorldMapPinTypeGroup, arg.WorldID, arg.MapPinTypeGroupID)
-	var i WorldMapPinTypeGroup
-	err := row.Scan(&i.WorldID, &i.MapPinTypeGroupID)
-	return i, err
+func (q *Queries) DeleteModuleMapPinTypeGroup(ctx context.Context, arg DeleteModuleMapPinTypeGroupParams) error {
+	_, err := q.db.ExecContext(ctx, deleteModuleMapPinTypeGroup, arg.ModuleID, arg.MapPinTypeGroupID)
+	return err
 }
 
 const deleteWorld = `-- name: DeleteWorld :exec
@@ -84,20 +98,6 @@ type DeleteWorldAdminParams struct {
 
 func (q *Queries) DeleteWorldAdmin(ctx context.Context, arg DeleteWorldAdminParams) error {
 	_, err := q.db.ExecContext(ctx, deleteWorldAdmin, arg.WorldID, arg.UserID)
-	return err
-}
-
-const deleteWorldMapPinTypeGroup = `-- name: DeleteWorldMapPinTypeGroup :exec
-DELETE FROM world_map_pin_type_groups WHERE world_id = $1 AND map_pin_type_group_id = $2
-`
-
-type DeleteWorldMapPinTypeGroupParams struct {
-	WorldID           int32 `json:"world_id"`
-	MapPinTypeGroupID int32 `json:"map_pin_type_group_id"`
-}
-
-func (q *Queries) DeleteWorldMapPinTypeGroup(ctx context.Context, arg DeleteWorldMapPinTypeGroupParams) error {
-	_, err := q.db.ExecContext(ctx, deleteWorldMapPinTypeGroup, arg.WorldID, arg.MapPinTypeGroupID)
 	return err
 }
 
@@ -180,7 +180,7 @@ func (q *Queries) GetWorldAdmins(ctx context.Context, worldID int32) ([]GetWorld
 }
 
 const getWorldByID = `-- name: GetWorldByID :one
-SELECT id, name, public, created_at, short_description, based_on, description_post_id, image_header, image_thumbnail, image_avatar, tags, activity_post_count, activity_quest_count, activity_resource_count, world_menu_id FROM view_worlds WHERE id = $1 LIMIT 1
+SELECT id, name, public, created_at, short_description, based_on, description_post_id, module_id, module_world_id, module_system_id, module_character_id, module_quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM view_worlds WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error) {
@@ -194,20 +194,26 @@ func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, e
 		&i.ShortDescription,
 		&i.BasedOn,
 		&i.DescriptionPostID,
+		&i.ModuleID,
+		&i.ModuleWorldID,
+		&i.ModuleSystemID,
+		&i.ModuleCharacterID,
+		&i.ModuleQuestID,
+		&i.ModuleType,
+		&i.MenuID,
+		&i.HeaderImgID,
+		&i.ThumbnailImgID,
+		&i.AvatarImgID,
 		&i.ImageHeader,
 		&i.ImageThumbnail,
 		&i.ImageAvatar,
 		pq.Array(&i.Tags),
-		&i.ActivityPostCount,
-		&i.ActivityQuestCount,
-		&i.ActivityResourceCount,
-		&i.WorldMenuID,
 	)
 	return i, err
 }
 
 const getWorlds = `-- name: GetWorlds :many
-SELECT id, name, public, created_at, short_description, based_on, description_post_id, image_header, image_thumbnail, image_avatar, tags, activity_post_count, activity_quest_count, activity_resource_count, world_menu_id FROM get_worlds($1::boolean, $2::integer[], $3::VARCHAR, 'DESC', $4, $5)
+SELECT id, name, public, created_at, short_description, based_on, description_post_id, module_id, module_world_id, module_system_id, module_character_id, module_quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM get_worlds($1::boolean, $2::integer[], $3::VARCHAR, 'DESC', $4, $5)
 `
 
 type GetWorldsParams struct {
@@ -241,14 +247,20 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 			&i.ShortDescription,
 			&i.BasedOn,
 			&i.DescriptionPostID,
+			&i.ModuleID,
+			&i.ModuleWorldID,
+			&i.ModuleSystemID,
+			&i.ModuleCharacterID,
+			&i.ModuleQuestID,
+			&i.ModuleType,
+			&i.MenuID,
+			&i.HeaderImgID,
+			&i.ThumbnailImgID,
+			&i.AvatarImgID,
 			&i.ImageHeader,
 			&i.ImageThumbnail,
 			&i.ImageAvatar,
 			pq.Array(&i.Tags),
-			&i.ActivityPostCount,
-			&i.ActivityQuestCount,
-			&i.ActivityResourceCount,
-			&i.WorldMenuID,
 		); err != nil {
 			return nil, err
 		}
@@ -283,7 +295,7 @@ func (q *Queries) GetWorldsCount(ctx context.Context, arg GetWorldsCountParams) 
 
 const getWorldsOfUser = `-- name: GetWorldsOfUser :many
 SELECT
-    vw.id, vw.name, vw.public, vw.created_at, vw.short_description, vw.based_on, vw.description_post_id, vw.image_header, vw.image_thumbnail, vw.image_avatar, vw.tags, vw.activity_post_count, vw.activity_quest_count, vw.activity_resource_count, vw.world_menu_id,
+    vw.id, vw.name, vw.public, vw.created_at, vw.short_description, vw.based_on, vw.description_post_id, vw.module_id, vw.module_world_id, vw.module_system_id, vw.module_character_id, vw.module_quest_id, vw.module_type, vw.menu_id, vw.header_img_id, vw.thumbnail_img_id, vw.avatar_img_id, vw.image_header, vw.image_thumbnail, vw.image_avatar, vw.tags,
     1 as world_admin,
     wa.super_admin as world_super_admin
 FROM
@@ -294,23 +306,29 @@ WHERE
 `
 
 type GetWorldsOfUserRow struct {
-	ID                    int32          `json:"id"`
-	Name                  string         `json:"name"`
-	Public                bool           `json:"public"`
-	CreatedAt             time.Time      `json:"created_at"`
-	ShortDescription      string         `json:"short_description"`
-	BasedOn               string         `json:"based_on"`
-	DescriptionPostID     sql.NullInt32  `json:"description_post_id"`
-	ImageHeader           sql.NullString `json:"image_header"`
-	ImageThumbnail        sql.NullString `json:"image_thumbnail"`
-	ImageAvatar           sql.NullString `json:"image_avatar"`
-	Tags                  []int32        `json:"tags"`
-	ActivityPostCount     int32          `json:"activity_post_count"`
-	ActivityQuestCount    int32          `json:"activity_quest_count"`
-	ActivityResourceCount int32          `json:"activity_resource_count"`
-	WorldMenuID           int32          `json:"world_menu_id"`
-	WorldAdmin            interface{}    `json:"world_admin"`
-	WorldSuperAdmin       bool           `json:"world_super_admin"`
+	ID                int32          `json:"id"`
+	Name              string         `json:"name"`
+	Public            bool           `json:"public"`
+	CreatedAt         time.Time      `json:"created_at"`
+	ShortDescription  string         `json:"short_description"`
+	BasedOn           string         `json:"based_on"`
+	DescriptionPostID sql.NullInt32  `json:"description_post_id"`
+	ModuleID          int32          `json:"module_id"`
+	ModuleWorldID     sql.NullInt32  `json:"module_world_id"`
+	ModuleSystemID    sql.NullInt32  `json:"module_system_id"`
+	ModuleCharacterID sql.NullInt32  `json:"module_character_id"`
+	ModuleQuestID     sql.NullInt32  `json:"module_quest_id"`
+	ModuleType        ModuleType     `json:"module_type"`
+	MenuID            sql.NullInt32  `json:"menu_id"`
+	HeaderImgID       sql.NullInt32  `json:"header_img_id"`
+	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
+	AvatarImgID       sql.NullInt32  `json:"avatar_img_id"`
+	ImageHeader       sql.NullString `json:"image_header"`
+	ImageThumbnail    sql.NullString `json:"image_thumbnail"`
+	ImageAvatar       sql.NullString `json:"image_avatar"`
+	Tags              []int32        `json:"tags"`
+	WorldAdmin        interface{}    `json:"world_admin"`
+	WorldSuperAdmin   bool           `json:"world_super_admin"`
 }
 
 func (q *Queries) GetWorldsOfUser(ctx context.Context, userID int32) ([]GetWorldsOfUserRow, error) {
@@ -330,14 +348,20 @@ func (q *Queries) GetWorldsOfUser(ctx context.Context, userID int32) ([]GetWorld
 			&i.ShortDescription,
 			&i.BasedOn,
 			&i.DescriptionPostID,
+			&i.ModuleID,
+			&i.ModuleWorldID,
+			&i.ModuleSystemID,
+			&i.ModuleCharacterID,
+			&i.ModuleQuestID,
+			&i.ModuleType,
+			&i.MenuID,
+			&i.HeaderImgID,
+			&i.ThumbnailImgID,
+			&i.AvatarImgID,
 			&i.ImageHeader,
 			&i.ImageThumbnail,
 			&i.ImageAvatar,
 			pq.Array(&i.Tags),
-			&i.ActivityPostCount,
-			&i.ActivityQuestCount,
-			&i.ActivityResourceCount,
-			&i.WorldMenuID,
 			&i.WorldAdmin,
 			&i.WorldSuperAdmin,
 		); err != nil {
