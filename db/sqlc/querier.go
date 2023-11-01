@@ -32,6 +32,8 @@ type Querier interface {
 	CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, error)
 	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)
 	CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error)
+	CreateModule(ctx context.Context, arg CreateModuleParams) (Module, error)
+	CreateModuleAdmin(ctx context.Context, arg CreateModuleAdminParams) (ModuleAdmin, error)
 	CreateModuleEntityTagAvailable(ctx context.Context, arg CreateModuleEntityTagAvailableParams) (ModuleEntityTagsAvailable, error)
 	CreateModuleMapPinTypeGroup(ctx context.Context, arg CreateModuleMapPinTypeGroupParams) (ModuleMapPinTypeGroup, error)
 	CreateModuleTag(ctx context.Context, arg CreateModuleTagParams) (ModuleTag, error)
@@ -60,6 +62,8 @@ type Querier interface {
 	DeleteMenu(ctx context.Context, id int32) error
 	DeleteMenuItem(ctx context.Context, menuItemID int32) error
 	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
+	DeleteModule(ctx context.Context, id int32) error
+	DeleteModuleAdmin(ctx context.Context, arg DeleteModuleAdminParams) error
 	DeleteModuleEntityTagAvailable(ctx context.Context, id int32) error
 	DeleteModuleMapPinTypeGroup(ctx context.Context, arg DeleteModuleMapPinTypeGroupParams) error
 	DeleteModuleTag(ctx context.Context, arg DeleteModuleTagParams) error
@@ -67,7 +71,6 @@ type Querier interface {
 	DeletePost(ctx context.Context, postID int32) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
 	DeleteWorld(ctx context.Context, worldID int32) error
-	DeleteWorldAdmin(ctx context.Context, arg DeleteWorldAdminParams) error
 	EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
@@ -111,10 +114,13 @@ type Querier interface {
 	GetMenuItemPosts(ctx context.Context, menuItemID sql.NullInt32) ([]ViewMenuItemPost, error)
 	GetMenuItemPostsByMenuId(ctx context.Context, menuID int32) ([]ViewMenuItemPost, error)
 	GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, error)
+	GetModuleAdmin(ctx context.Context, arg GetModuleAdminParams) (ViewModuleAdmin, error)
+	GetModuleAdmins(ctx context.Context, moduleID int32) ([]GetModuleAdminsRow, error)
 	GetModuleEntityTagsAvailable(ctx context.Context, moduleID int32) ([]ModuleEntityTagsAvailable, error)
 	GetModuleId(ctx context.Context, arg GetModuleIdParams) (GetModuleIdRow, error)
 	GetModuleTypeTagAvailable(ctx context.Context, tagID int32) (ViewModuleTypeTagsAvailable, error)
 	GetModuleTypeTagsAvailable(ctx context.Context, moduleType ModuleType) ([]ViewModuleTypeTagsAvailable, error)
+	GetModulesOfUser(ctx context.Context, userID int32) ([]ViewModuleAdmin, error)
 	GetPostById(ctx context.Context, postID int32) (ViewPost, error)
 	GetPostHistoryById(ctx context.Context, postHistoryID int32) (GetPostHistoryByIdRow, error)
 	GetPostHistoryByPostId(ctx context.Context, postID int32) ([]GetPostHistoryByPostIdRow, error)
@@ -129,16 +135,11 @@ type Querier interface {
 	GetUserPasswordReset(ctx context.Context, code string) (UserPasswordReset, error)
 	GetUserRoles(ctx context.Context, userID int32) ([]GetUserRolesRow, error)
 	GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error)
-	GetWorldAdmins(ctx context.Context, worldID int32) ([]GetWorldAdminsRow, error)
 	GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error)
 	GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWorld, error)
 	GetWorldsCount(ctx context.Context, arg GetWorldsCountParams) (int64, error)
-	GetWorldsOfUser(ctx context.Context, userID int32) ([]GetWorldsOfUserRow, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
 	InsertPostHistory(ctx context.Context, postID int32) (PostHistory, error)
-	InsertWorldAdmin(ctx context.Context, arg InsertWorldAdminParams) (WorldAdmin, error)
-	IsWorldAdmin(ctx context.Context, arg IsWorldAdminParams) (WorldAdmin, error)
-	IsWorldSuperAdmin(ctx context.Context, arg IsWorldSuperAdminParams) (WorldAdmin, error)
 	MenuItemChangePositions(ctx context.Context, arg MenuItemChangePositionsParams) error
 	MenuItemMoveGroupUp(ctx context.Context, menuItemID int32) error
 	MenuItemPostChangePositions(ctx context.Context, arg MenuItemPostChangePositionsParams) error
@@ -159,13 +160,14 @@ type Querier interface {
 	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)
 	UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) (MenuItem, error)
 	UpdateMenuItemPost(ctx context.Context, arg UpdateMenuItemPostParams) (MenuItemPost, error)
+	UpdateModule(ctx context.Context, arg UpdateModuleParams) (Module, error)
+	UpdateModuleAdmin(ctx context.Context, arg UpdateModuleAdminParams) (ModuleAdmin, error)
 	UpdateModuleEntityTagAvailable(ctx context.Context, arg UpdateModuleEntityTagAvailableParams) (ModuleEntityTagsAvailable, error)
 	UpdateModuleTypeTagAvailable(ctx context.Context, arg UpdateModuleTypeTagAvailableParams) (ModuleTypeTagsAvailable, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)
 	UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World, error)
-	UpdateWorldAdmin(ctx context.Context, arg UpdateWorldAdminParams) (WorldAdmin, error)
 }
 
 var _ Querier = (*Queries)(nil)

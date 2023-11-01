@@ -10,6 +10,55 @@ import (
 	"database/sql"
 )
 
+const createModule = `-- name: CreateModule :one
+INSERT INTO modules (module_type, menu_id, world_id, quest_id, character_id, system_id)
+VALUES ($1, $2, $3, $4, $5, $6)
+RETURNING id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id
+`
+
+type CreateModuleParams struct {
+	ModuleType  ModuleType    `json:"module_type"`
+	MenuID      sql.NullInt32 `json:"menu_id"`
+	WorldID     sql.NullInt32 `json:"world_id"`
+	QuestID     sql.NullInt32 `json:"quest_id"`
+	CharacterID sql.NullInt32 `json:"character_id"`
+	SystemID    sql.NullInt32 `json:"system_id"`
+}
+
+func (q *Queries) CreateModule(ctx context.Context, arg CreateModuleParams) (Module, error) {
+	row := q.db.QueryRowContext(ctx, createModule,
+		arg.ModuleType,
+		arg.MenuID,
+		arg.WorldID,
+		arg.QuestID,
+		arg.CharacterID,
+		arg.SystemID,
+	)
+	var i Module
+	err := row.Scan(
+		&i.ID,
+		&i.WorldID,
+		&i.SystemID,
+		&i.CharacterID,
+		&i.QuestID,
+		&i.ModuleType,
+		&i.MenuID,
+		&i.HeaderImgID,
+		&i.ThumbnailImgID,
+		&i.AvatarImgID,
+	)
+	return i, err
+}
+
+const deleteModule = `-- name: DeleteModule :exec
+DELETE FROM modules WHERE id = $1
+`
+
+func (q *Queries) DeleteModule(ctx context.Context, id int32) error {
+	_, err := q.db.ExecContext(ctx, deleteModule, id)
+	return err
+}
+
 const getModuleId = `-- name: GetModuleId :one
 SELECT
     id as module_id, module_type
@@ -42,5 +91,44 @@ func (q *Queries) GetModuleId(ctx context.Context, arg GetModuleIdParams) (GetMo
 	)
 	var i GetModuleIdRow
 	err := row.Scan(&i.ModuleID, &i.ModuleType)
+	return i, err
+}
+
+const updateModule = `-- name: UpdateModule :one
+UPDATE modules SET
+    header_img_id = COALESCE($1, header_img_id),
+    thumbnail_img_id = COALESCE($2, thumbnail_img_id),
+    avatar_img_id = COALESCE($3, avatar_img_id)
+WHERE id = $4
+RETURNING id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id
+`
+
+type UpdateModuleParams struct {
+	HeaderImgID    sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID    sql.NullInt32 `json:"avatar_img_id"`
+	ID             int32         `json:"id"`
+}
+
+func (q *Queries) UpdateModule(ctx context.Context, arg UpdateModuleParams) (Module, error) {
+	row := q.db.QueryRowContext(ctx, updateModule,
+		arg.HeaderImgID,
+		arg.ThumbnailImgID,
+		arg.AvatarImgID,
+		arg.ID,
+	)
+	var i Module
+	err := row.Scan(
+		&i.ID,
+		&i.WorldID,
+		&i.SystemID,
+		&i.CharacterID,
+		&i.QuestID,
+		&i.ModuleType,
+		&i.MenuID,
+		&i.HeaderImgID,
+		&i.ThumbnailImgID,
+		&i.AvatarImgID,
+	)
 	return i, err
 }

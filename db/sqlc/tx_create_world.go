@@ -52,6 +52,21 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
+		module, err := q.CreateModule(ctx, CreateModuleParams{
+			ModuleType: ModuleTypeWorld,
+			MenuID: sql.NullInt32{
+				Int32: menu.ID,
+				Valid: true,
+			},
+			WorldID: sql.NullInt32{
+				Int32: world.ID,
+				Valid: true,
+			},
+		})
+		if err != nil {
+			return err
+		}
+
 		_, err = q.CreateMenuItem(ctx, CreateMenuItemParams{
 			MenuID:       menu.ID,
 			MenuItemCode: "overview",
@@ -92,29 +107,8 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
-		_, err = q.CreateWorldMenu(ctx, CreateWorldMenuParams{
-			WorldID: world.ID,
-			MenuID:  menu.ID,
-		})
-		if err != nil {
-			return err
-		}
-
-		err = q.CreateWorldActivity(ctx, CreateWorldActivityParams{
-			WorldID: world.ID,
-			Date:    world.CreatedAt,
-		})
-		if err != nil {
-			return err
-		}
-
-		err = q.CreateWorldImages(ctx, world.ID)
-		if err != nil {
-			return err
-		}
-
-		_, err = q.InsertWorldAdmin(ctx, InsertWorldAdminParams{
-			WorldID:            world.ID,
+		_, err = q.CreateModuleAdmin(ctx, CreateModuleAdminParams{
+			ModuleID:           module.ID,
 			UserID:             arg.UserId,
 			SuperAdmin:         true,
 			Approved:           1,
@@ -130,8 +124,8 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
-		_, err = q.CreateWorldMapPinTypeGroup(ctx, CreateWorldMapPinTypeGroupParams{
-			WorldID:           world.ID,
+		_, err = q.CreateModuleMapPinTypeGroup(ctx, CreateModuleMapPinTypeGroupParams{
+			ModuleID:          module.ID,
 			MapPinTypeGroupID: mapPinTypeGroup.ID,
 		})
 		if err != nil {
@@ -158,6 +152,10 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			Public:           world.Public,
 			BasedOn:          world.BasedOn,
 			ShortDescription: world.ShortDescription,
+			ModuleID:         module.ID,
+			ModuleType:       ModuleTypeWorld,
+			ModuleWorldID:    sql.NullInt32{Int32: world.ID, Valid: true},
+			MenuID:           sql.NullInt32{Int32: menu.ID, Valid: true},
 		}
 		return nil
 	})

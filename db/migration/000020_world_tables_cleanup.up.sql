@@ -179,3 +179,51 @@ BEGIN
         USING _is_public, _tags, _limit, _offset;
 END
 $func$  LANGUAGE plpgsql;
+
+
+CREATE TABLE "module_admins" (
+    "module_id" int NOT NULL,
+    "user_id" int NOT NULL,
+    "created_at" timestamptz NOT NULL DEFAULT (now()),
+    "super_admin" boolean NOT NULL DEFAULT false,
+    "approved" int NOT NULL,
+    "motivational_letter" varchar NOT NULL,
+    "allowed_entity_types" entity_type[],
+    "allowed_menu" boolean NOT NULL DEFAULT false
+);
+
+CREATE UNIQUE INDEX ON "module_admins" ("module_id", "user_id");
+COMMENT ON COLUMN "module_admins"."approved" IS '0 = NO, 1 = YES, 2 = PENDING';
+ALTER TABLE "module_admins" ADD FOREIGN KEY ("module_id") REFERENCES "modules" ("id");
+ALTER TABLE "module_admins" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+INSERT INTO module_admins (module_id, user_id, super_admin, approved, motivational_letter, allowed_entity_types, allowed_menu)
+SELECT
+    m.id as module_id,
+    wa.user_id as user_id,
+    wa.super_admin as super_admin,
+    wa.approved as approved,
+    wa.motivational_letter as motivational_letter,
+    ARRAY[]::entity_type[] as allowed_entity_types,
+    wa.super_admin as allowed_menu
+FROM
+    modules m
+    JOIN world_admins wa ON wa.world_id = m.world_id
+WHERE
+    m.module_type = 'world'
+;
+
+DROP TABLE world_admins;
+
+CREATE VIEW view_module_admins AS
+SELECT
+    m.*,
+    ma.user_id,
+    ma.approved,
+    ma.super_admin,
+    ma.allowed_entity_types,
+    ma.allowed_menu
+FROM
+    modules m
+    JOIN module_admins ma ON ma.module_id = m.id
+;

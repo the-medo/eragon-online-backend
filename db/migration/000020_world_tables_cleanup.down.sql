@@ -1,3 +1,35 @@
+DROP VIEW view_module_admins;
+
+CREATE TABLE "world_admins" (
+    "world_id" int NOT NULL,
+    "user_id" int NOT NULL,
+    "created_at" timestamptz NOT NULL DEFAULT (now()),
+    "super_admin" boolean NOT NULL DEFAULT false,
+    "approved" int NOT NULL,
+    "motivational_letter" varchar NOT NULL
+);
+
+CREATE UNIQUE INDEX ON "world_admins" ("world_id", "user_id");
+COMMENT ON COLUMN "world_admins"."approved" IS '0 = NO, 1 = YES, 2 = PENDING';
+ALTER TABLE "world_admins" ADD FOREIGN KEY ("world_id") REFERENCES "worlds" ("id");
+ALTER TABLE "world_admins" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+INSERT INTO world_admins (world_id, user_id, super_admin, approved, motivational_letter)
+SELECT
+    m.id as module_id,
+    ma.user_id as user_id,
+    ma.super_admin as super_admin,
+    ma.approved as approved,
+    ma.motivational_letter as motivational_letter
+FROM
+    modules m
+    JOIN module_admins ma ON ma.module_id = m.world_id
+WHERE
+    m.module_type = 'world';
+
+DROP TABLE module_admins;
+
+
 CREATE TABLE "world_map_pin_type_groups" (
     "world_id" int NOT NULL,
     "map_pin_type_group_id" int NOT NULL

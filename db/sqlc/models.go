@@ -447,6 +447,18 @@ type Module struct {
 	AvatarImgID    sql.NullInt32 `json:"avatar_img_id"`
 }
 
+type ModuleAdmin struct {
+	ModuleID   int32     `json:"module_id"`
+	UserID     int32     `json:"user_id"`
+	CreatedAt  time.Time `json:"created_at"`
+	SuperAdmin bool      `json:"super_admin"`
+	// 0 = NO, 1 = YES, 2 = PENDING
+	Approved           int32        `json:"approved"`
+	MotivationalLetter string       `json:"motivational_letter"`
+	AllowedEntityTypes []EntityType `json:"allowed_entity_types"`
+	AllowedMenu        bool         `json:"allowed_menu"`
+}
+
 // Contains tags, that are possible to assign to ANY entity inside of a module. One module can only have one set of tags, that are usable for any entity type inside of that module.
 type ModuleEntityTagsAvailable struct {
 	ID       int32  `json:"id"`
@@ -769,6 +781,24 @@ type ViewModule struct {
 	Tags              []int32        `json:"tags"`
 }
 
+type ViewModuleAdmin struct {
+	ID                 int32         `json:"id"`
+	WorldID            sql.NullInt32 `json:"world_id"`
+	SystemID           sql.NullInt32 `json:"system_id"`
+	CharacterID        sql.NullInt32 `json:"character_id"`
+	QuestID            sql.NullInt32 `json:"quest_id"`
+	ModuleType         ModuleType    `json:"module_type"`
+	MenuID             sql.NullInt32 `json:"menu_id"`
+	HeaderImgID        sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID     sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID        sql.NullInt32 `json:"avatar_img_id"`
+	UserID             int32         `json:"user_id"`
+	Approved           int32         `json:"approved"`
+	SuperAdmin         bool          `json:"super_admin"`
+	AllowedEntityTypes []EntityType  `json:"allowed_entity_types"`
+	AllowedMenu        bool          `json:"allowed_menu"`
+}
+
 type ViewModuleTypeTagsAvailable struct {
 	ID         int32      `json:"id"`
 	ModuleType ModuleType `json:"module_type"`
@@ -849,14 +879,4 @@ type World struct {
 	ShortDescription  string        `json:"short_description"`
 	BasedOn           string        `json:"based_on"`
 	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
-}
-
-type WorldAdmin struct {
-	WorldID    int32     `json:"world_id"`
-	UserID     int32     `json:"user_id"`
-	CreatedAt  time.Time `json:"created_at"`
-	SuperAdmin bool      `json:"super_admin"`
-	// 0 = NO, 1 = YES, 2 = PENDING
-	Approved           int32  `json:"approved"`
-	MotivationalLetter string `json:"motivational_letter"`
 }

@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-10-31T21:43:46.857Z
+-- Generated at: 2023-11-01T18:23:27.722Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -159,13 +159,15 @@ CREATE TABLE "worlds" (
   "description_post_id" int
 );
 
-CREATE TABLE "world_admins" (
-  "world_id" int NOT NULL,
+CREATE TABLE "module_admins" (
+  "module_id" int NOT NULL,
   "user_id" int NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "super_admin" boolean NOT NULL DEFAULT false,
   "approved" int NOT NULL,
-  "motivational_letter" varchar NOT NULL
+  "motivational_letter" varchar NOT NULL,
+  "allowed_entity_types" entity_type[],
+  "allowed_menu" boolean NOT NULL DEFAULT false
 );
 
 CREATE TABLE "races" (
@@ -441,7 +443,7 @@ CREATE UNIQUE INDEX ON "evaluation_votes" ("evaluation_id", "user_id", "user_id_
 
 CREATE UNIQUE INDEX ON "user_roles" ("role_id", "user_id");
 
-CREATE UNIQUE INDEX ON "world_admins" ("world_id", "user_id");
+CREATE UNIQUE INDEX ON "module_admins" ("module_id", "user_id");
 
 CREATE UNIQUE INDEX ON "races" ("world_id", "name");
 
@@ -475,7 +477,7 @@ CREATE UNIQUE INDEX ON "entities" ("image_id", "module_id");
 
 COMMENT ON COLUMN "image_types"."variant" IS 'Variant name from cloudflare. ';
 
-COMMENT ON COLUMN "world_admins"."approved" IS '0 = NO, 1 = YES, 2 = PENDING';
+COMMENT ON COLUMN "module_admins"."approved" IS '0 = NO, 1 = YES, 2 = PENDING';
 
 COMMENT ON TABLE "modules" IS 'Groups higher-level sections into one table. Contains worlds, quests, characters and play systems.';
 
@@ -515,9 +517,9 @@ ALTER TABLE "chat" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "worlds" ADD FOREIGN KEY ("description_post_id") REFERENCES "posts" ("id");
 
-ALTER TABLE "world_admins" ADD FOREIGN KEY ("world_id") REFERENCES "worlds" ("id");
+ALTER TABLE "module_admins" ADD FOREIGN KEY ("module_id") REFERENCES "modules" ("id");
 
-ALTER TABLE "world_admins" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+ALTER TABLE "module_admins" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "races" ADD FOREIGN KEY ("world_id") REFERENCES "worlds" ("id");
 
