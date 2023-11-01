@@ -19,7 +19,7 @@ func (server *ServiceModules) GetModuleId(ctx context.Context, req *pb.GetModule
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	module, err := server.Store.GetModuleId(ctx, db.GetModuleIdParams{
+	module, err := server.Store.GetModule(ctx, db.GetModuleParams{
 		WorldID: sql.NullInt32{
 			Int32: req.GetWorldId(),
 			Valid: req.WorldId != nil,
@@ -42,7 +42,7 @@ func (server *ServiceModules) GetModuleId(ctx context.Context, req *pb.GetModule
 	}
 
 	rsp := &pb.GetModuleIdResponse{
-		ModuleId:   module.ModuleID,
+		ModuleId:   module.ID,
 		ModuleType: converters.ConvertModuleTypeToPB(module.ModuleType),
 	}
 

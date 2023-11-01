@@ -17,6 +17,12 @@ type ServiceCore struct {
 	TokenMaker      token.Maker
 }
 
+type ModulePermission struct {
+	needsSuperAdmin       bool
+	needsMenuPermission   bool
+	needsEntityPermission *db.EntityType
+}
+
 func NewServiceCore(config util.Config, store db.Store, taskDistributor worker.TaskDistributor, tokenMaker token.Maker) *ServiceCore {
 	return &ServiceCore{
 		Config:          config,

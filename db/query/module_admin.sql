@@ -54,3 +54,18 @@ WHERE
 
 -- name: GetModuleAdmin :one
 SELECT * FROM view_module_admins WHERE user_id = @user_id AND id = @module_id;
+
+-- name: GetModuleAdminByMenuId :one
+SELECT * FROM view_module_admins WHERE user_id = sqlc.arg(user_id) AND menu_id = sqlc.arg(menu_id);
+
+-- name: GetEntityModuleAdmin :one
+SELECT
+    vma.*
+FROM
+    entities e
+    JOIN view_module_admins vma ON e.module_id = vma.id
+WHERE
+    e.id = sqlc.arg(entity_id) AND
+    vma.user_id = sqlc.arg(user_id) AND
+    (e.type = ANY(vma.allowed_entity_types) OR vma.super_admin = true)
+;

@@ -59,10 +59,8 @@ func (q *Queries) DeleteModule(ctx context.Context, id int32) error {
 	return err
 }
 
-const getModuleId = `-- name: GetModuleId :one
-SELECT
-    id as module_id, module_type
-FROM modules
+const getModule = `-- name: GetModule :one
+SELECT id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id FROM modules
 WHERE
     world_id = COALESCE($1, world_id) OR
     quest_id = COALESCE($2, quest_id) OR
@@ -70,27 +68,55 @@ WHERE
     system_id = COALESCE($4, system_id)
 `
 
-type GetModuleIdParams struct {
+type GetModuleParams struct {
 	WorldID     sql.NullInt32 `json:"world_id"`
 	QuestID     sql.NullInt32 `json:"quest_id"`
 	CharacterID sql.NullInt32 `json:"character_id"`
 	SystemID    sql.NullInt32 `json:"system_id"`
 }
 
-type GetModuleIdRow struct {
-	ModuleID   int32      `json:"module_id"`
-	ModuleType ModuleType `json:"module_type"`
-}
-
-func (q *Queries) GetModuleId(ctx context.Context, arg GetModuleIdParams) (GetModuleIdRow, error) {
-	row := q.db.QueryRowContext(ctx, getModuleId,
+func (q *Queries) GetModule(ctx context.Context, arg GetModuleParams) (Module, error) {
+	row := q.db.QueryRowContext(ctx, getModule,
 		arg.WorldID,
 		arg.QuestID,
 		arg.CharacterID,
 		arg.SystemID,
 	)
-	var i GetModuleIdRow
-	err := row.Scan(&i.ModuleID, &i.ModuleType)
+	var i Module
+	err := row.Scan(
+		&i.ID,
+		&i.WorldID,
+		&i.SystemID,
+		&i.CharacterID,
+		&i.QuestID,
+		&i.ModuleType,
+		&i.MenuID,
+		&i.HeaderImgID,
+		&i.ThumbnailImgID,
+		&i.AvatarImgID,
+	)
+	return i, err
+}
+
+const getModuleById = `-- name: GetModuleById :one
+SELECT id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id FROM modules WHERE id = $1
+`
+
+func (q *Queries) GetModuleById(ctx context.Context, moduleID int32) (Module, error) {
+	row := q.db.QueryRowContext(ctx, getModuleById, moduleID)
+	var i Module
+	err := row.Scan(
+		&i.ID,
+		&i.WorldID,
+		&i.SystemID,
+		&i.CharacterID,
+		&i.QuestID,
+		&i.ModuleType,
+		&i.MenuID,
+		&i.HeaderImgID,
+		&i.ThumbnailImgID,
+		&i.AvatarImgID,
+	)
 	return i, err
 }
 

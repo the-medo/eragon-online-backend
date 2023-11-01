@@ -17,7 +17,7 @@ type ServiceMaps struct {
 func (server *ServiceMaps) CheckMapAccess(ctx context.Context, mapId int32, needsSuperAdmin bool) error {
 	assignments, err := server.Store.GetMapAssignments(ctx, mapId)
 	if assignments.WorldID > 0 {
-		_, err = server.CheckWorldAdmin(ctx, assignments.WorldID, needsSuperAdmin)
+		_, err = server.CheckWorldPermissions(ctx, assignments.WorldID, needsSuperAdmin)
 		if err != nil {
 			return status.Errorf(codes.PermissionDenied, "failed to get map access - not world admin: %v", err)
 		}

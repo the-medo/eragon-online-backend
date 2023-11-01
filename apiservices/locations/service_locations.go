@@ -22,7 +22,7 @@ func (server *ServiceLocations) CheckLocationAccess(ctx context.Context, locatio
 	assignments, err := server.Store.GetLocationAssignments(ctx, locationId)
 	if assignments.WorldID > 0 {
 		locationModule.WorldId = &assignments.WorldID
-		authPayload, err = server.CheckWorldAdmin(ctx, assignments.WorldID, needsSuperAdmin)
+		authPayload, err = server.CheckWorldPermissions(ctx, assignments.WorldID, needsSuperAdmin)
 		if err != nil {
 			return nil, nil, status.Errorf(codes.PermissionDenied, "failed to get location access - not world admin: %v", err)
 		}

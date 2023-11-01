@@ -20,7 +20,7 @@ func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.
 	}
 
 	if request.GetModule().WorldId != nil {
-		_, err := server.CheckWorldAdmin(ctx, request.GetModule().GetWorldId(), false)
+		_, err := server.CheckWorldPermissions(ctx, request.GetModule().GetWorldId(), false)
 		if err != nil {
 			return nil, status.Errorf(codes.PermissionDenied, "failed to create location: %v", err)
 		}
