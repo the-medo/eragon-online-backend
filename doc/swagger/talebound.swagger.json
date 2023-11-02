@@ -4710,8 +4710,9 @@
     "pbCreateLocationRequest": {
       "type": "object",
       "properties": {
-        "module": {
-          "$ref": "#/definitions/pbModule"
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
         },
         "name": {
           "type": "string"

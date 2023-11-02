@@ -138,3 +138,15 @@ WHERE
     type = COALESCE(sqlc.narg(type), type)
     AND module_id = sqlc.arg(module_id)
 ;
+
+-- name: GetEntityByPostId :one
+SELECT * FROM entities WHERE post_id = sqlc.arg(post_id);
+
+-- name: GetEntityByImageId :one
+SELECT * FROM entities WHERE image_id = sqlc.arg(image_id);
+
+-- name: GetEntityByLocationId :one
+SELECT * FROM entities WHERE location_id = sqlc.arg(location_id);
+
+-- name: GetEntityByMapId :one
+SELECT * FROM entities WHERE map_id = sqlc.arg(map_id);

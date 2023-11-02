@@ -202,6 +202,82 @@ func (q *Queries) GetEntityByID(ctx context.Context, id int32) (Entity, error) {
 	return i, err
 }
 
+const getEntityByImageId = `-- name: GetEntityByImageId :one
+SELECT id, type, post_id, map_id, location_id, image_id, module_id FROM entities WHERE image_id = $1
+`
+
+func (q *Queries) GetEntityByImageId(ctx context.Context, imageID sql.NullInt32) (Entity, error) {
+	row := q.db.QueryRowContext(ctx, getEntityByImageId, imageID)
+	var i Entity
+	err := row.Scan(
+		&i.ID,
+		&i.Type,
+		&i.PostID,
+		&i.MapID,
+		&i.LocationID,
+		&i.ImageID,
+		&i.ModuleID,
+	)
+	return i, err
+}
+
+const getEntityByLocationId = `-- name: GetEntityByLocationId :one
+SELECT id, type, post_id, map_id, location_id, image_id, module_id FROM entities WHERE location_id = $1
+`
+
+func (q *Queries) GetEntityByLocationId(ctx context.Context, locationID sql.NullInt32) (Entity, error) {
+	row := q.db.QueryRowContext(ctx, getEntityByLocationId, locationID)
+	var i Entity
+	err := row.Scan(
+		&i.ID,
+		&i.Type,
+		&i.PostID,
+		&i.MapID,
+		&i.LocationID,
+		&i.ImageID,
+		&i.ModuleID,
+	)
+	return i, err
+}
+
+const getEntityByMapId = `-- name: GetEntityByMapId :one
+SELECT id, type, post_id, map_id, location_id, image_id, module_id FROM entities WHERE map_id = $1
+`
+
+func (q *Queries) GetEntityByMapId(ctx context.Context, mapID sql.NullInt32) (Entity, error) {
+	row := q.db.QueryRowContext(ctx, getEntityByMapId, mapID)
+	var i Entity
+	err := row.Scan(
+		&i.ID,
+		&i.Type,
+		&i.PostID,
+		&i.MapID,
+		&i.LocationID,
+		&i.ImageID,
+		&i.ModuleID,
+	)
+	return i, err
+}
+
+const getEntityByPostId = `-- name: GetEntityByPostId :one
+SELECT id, type, post_id, map_id, location_id, image_id, module_id FROM entities WHERE post_id = $1
+`
+
+func (q *Queries) GetEntityByPostId(ctx context.Context, postID sql.NullInt32) (Entity, error) {
+	row := q.db.QueryRowContext(ctx, getEntityByPostId, postID)
+	var i Entity
+	err := row.Scan(
+		&i.ID,
+		&i.Type,
+		&i.PostID,
+		&i.MapID,
+		&i.LocationID,
+		&i.ImageID,
+		&i.ModuleID,
+	)
+	return i, err
+}
+
 const getEntityGroupByID = `-- name: GetEntityGroupByID :one
 SELECT id, name, description, style, direction FROM entity_groups WHERE id = $1
 `

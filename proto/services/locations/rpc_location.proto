@@ -24,7 +24,7 @@ message UpdateLocationRequest {
 }
 
 message CreateLocationRequest {
-  Module module = 1;
+  int32 moduleId = 1;
   string name = 2;
   optional string description = 3;
   optional int32 thumbnailImageId = 4;

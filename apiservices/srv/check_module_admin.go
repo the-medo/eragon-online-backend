@@ -22,7 +22,7 @@ func (core *ServiceCore) CheckModuleAdmin(ctx context.Context, moduleAdmin *db.V
 	}
 
 	if modulePermissions != nil {
-		if modulePermissions.needsMenuPermission {
+		if modulePermissions.NeedsMenuPermission {
 			if moduleAdmin.AllowedMenu {
 				return nil
 			} else {
@@ -30,16 +30,22 @@ func (core *ServiceCore) CheckModuleAdmin(ctx context.Context, moduleAdmin *db.V
 			}
 		}
 
-		if modulePermissions.needsEntityPermission != nil && *modulePermissions.needsEntityPermission != db.EntityTypeUnknown {
-			for _, entityType := range moduleAdmin.AllowedEntityTypes {
-				if entityType == *modulePermissions.needsEntityPermission {
-					return nil
+		if modulePermissions.NeedsEntityPermission != nil {
+			for _, need := range *modulePermissions.NeedsEntityPermission {
+				permissionFound := false
+				for _, entityType := range moduleAdmin.AllowedEntityTypes {
+					if entityType == need {
+						permissionFound = true
+						break
+					}
+				}
+				if !permissionFound {
+					return fmt.Errorf("%s permission required for this action", need)
 				}
 			}
-			return fmt.Errorf("%s permission required for this action", *modulePermissions.needsEntityPermission)
 		}
 
-		if modulePermissions.needsSuperAdmin {
+		if modulePermissions.NeedsSuperAdmin {
 			if moduleAdmin.SuperAdmin {
 				return nil
 			} else {

@@ -35,5 +35,5 @@ func (core *ServiceCore) CheckModuleTypePermissions(ctx context.Context, moduleT
 		return nil, fmt.Errorf("failed to get world : %w", err)
 	}
 
-	return core.CheckModulePermissions(ctx, module.ID, modulePermissions)
+	return core.CheckModuleIdPermissions(ctx, module.ID, modulePermissions)
 }
