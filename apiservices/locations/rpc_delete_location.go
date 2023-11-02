@@ -3,6 +3,8 @@ package locations
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/e"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
+	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -15,10 +17,9 @@ func (server *ServiceLocations) DeleteLocation(ctx context.Context, request *pb.
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, _, err := server.CheckLocationAccess(ctx, request.GetLocationId(), false)
-	if err != nil {
-		return nil, err
-	}
+	_, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeLocation, request.GetLocationId(), &srv.ModulePermission{
+		NeedsEntityPermission: &[]db.EntityType{db.EntityTypeLocation},
+	})
 
 	err = server.Store.DeleteLocation(ctx, request.GetLocationId())
 	if err != nil {

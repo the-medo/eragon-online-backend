@@ -5,12 +5,11 @@ import (
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.CreateLocationRequest) (*pb.ViewLocation, error) {
@@ -19,18 +18,11 @@ func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	if request.GetModule().WorldId != nil {
-		_, err := server.CheckWorldPermissions(ctx, request.GetModule().GetWorldId(), false)
-		if err != nil {
-			return nil, status.Errorf(codes.PermissionDenied, "failed to create location: %v", err)
-		}
-	}
+	_, err := server.CheckModuleIdPermissions(ctx, request.GetModuleId(), &srv.ModulePermission{
+		NeedsEntityPermission: &[]db.EntityType{db.EntityTypeLocation},
+	})
 
-	if request.GetModule().QuestId != nil {
-		return nil, status.Error(codes.Internal, "creating locations for quests is not implemented yet")
-	}
-
-	argLocation := db.CreateLocationParams{
+	location, err := server.Store.CreateLocation(ctx, db.CreateLocationParams{
 		Name: request.GetName(),
 		Description: sql.NullString{
 			String: request.GetDescription(),
@@ -40,28 +32,25 @@ func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.
 			Int32: request.GetThumbnailImageId(),
 			Valid: request.ThumbnailImageId != nil,
 		},
+	})
+
+	if err != nil {
+		return nil, err
 	}
 
-	location, err := server.Store.CreateLocation(ctx, argLocation)
-
-	createdLocationId := int32(0)
-
-	if request.GetModule().WorldId != nil {
-
-		arg := db.CreateWorldLocationParams{
-			WorldID:    request.GetModule().GetWorldId(),
-			LocationID: location.ID,
-		}
-
-		worldLocation, err := server.Store.CreateWorldLocation(ctx, arg)
-		if err != nil {
-			return nil, err
-		}
-
-		createdLocationId = worldLocation.LocationID
+	entity, err := server.Store.CreateEntity(ctx, db.CreateEntityParams{
+		Type:     db.EntityTypeLocation,
+		ModuleID: request.GetModuleId(),
+		LocationID: sql.NullInt32{
+			Int32: location.ID,
+			Valid: true,
+		},
+	})
+	if err != nil {
+		return nil, err
 	}
 
-	viewLocation, err := server.Store.GetLocationByID(ctx, createdLocationId)
+	viewLocation, err := server.Store.GetLocationByID(ctx, entity.LocationID.Int32)
 	if err != nil {
 		return nil, err
 	}
@@ -72,8 +61,8 @@ func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.
 }
 
 func validateCreateLocation(req *pb.CreateLocationRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateLocationModule(req.GetModule()); err != nil {
-		violations = append(violations, e.FieldViolation("modules", err))
+	if err := validator.ValidateUniversalId(req.GetModuleId()); err != nil {
+		violations = append(violations, e.FieldViolation("module_id", err))
 	}
 
 	if err := validator.ValidateLocationName(req.GetName()); err != nil {

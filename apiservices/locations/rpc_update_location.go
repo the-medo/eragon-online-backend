@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	converters "github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -17,7 +18,9 @@ func (server *ServiceLocations) UpdateLocation(ctx context.Context, request *pb.
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, _, err := server.CheckLocationAccess(ctx, request.GetLocationId(), false)
+	_, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeLocation, request.GetLocationId(), &srv.ModulePermission{
+		NeedsEntityPermission: &[]db.EntityType{db.EntityTypeLocation},
+	})
 	if err != nil {
 		return nil, err
 	}

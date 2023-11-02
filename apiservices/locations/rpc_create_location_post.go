@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	"github.com/the-medo/talebound-backend/consts"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -13,15 +14,15 @@ import (
 )
 
 func (server *ServiceLocations) CreateLocationPost(ctx context.Context, request *pb.CreateLocationPostRequest) (*pb.ViewLocation, error) {
+
 	violations := validateCreateLocationPost(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	authPayload, locationModule, err := server.CheckLocationAccess(ctx, request.GetLocationId(), false)
-	if err != nil {
-		return nil, err
-	}
+	authPayload, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeLocation, request.GetLocationId(), &srv.ModulePermission{
+		NeedsEntityPermission: &[]db.EntityType{db.EntityTypeLocation, db.EntityTypePost},
+	})
 
 	location, err := server.Store.GetLocationByID(ctx, request.GetLocationId())
 	if err != nil {
@@ -51,22 +52,21 @@ func (server *ServiceLocations) CreateLocationPost(ctx context.Context, request 
 		return nil, err
 	}
 
-	if locationModule.WorldId != nil && locationModule.GetWorldId() > 0 {
-		_, err := server.Store.CreateWorldPost(ctx, db.CreateWorldPostParams{
-			WorldID: locationModule.GetWorldId(),
-			PostID:  newPost.ID,
-		})
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	viewLocation, err := server.Store.GetLocationByID(ctx, request.GetLocationId())
+	_, err = server.Store.CreateEntity(ctx, db.CreateEntityParams{
+		Type:     db.EntityTypePost,
+		ModuleID: location.ModuleID,
+		PostID: sql.NullInt32{
+			Int32: newPost.ID,
+			Valid: true,
+		},
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	rsp := converters.ConvertViewLocation(viewLocation)
+	rsp := converters.ConvertViewLocation(location)
+	rsp.PostId = &newPost.ID
+	rsp.PostTitle = &newPost.Title
 
 	return rsp, nil
 }
