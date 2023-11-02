@@ -2,6 +2,7 @@ package entities
 
 import (
 	"context"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -9,7 +10,9 @@ import (
 )
 
 func (server *ServiceEntities) DeleteEntityGroup(ctx context.Context, request *pb.DeleteEntityGroupRequest) (*emptypb.Empty, error) {
-	err := server.CheckEntityGroupAccess(ctx, request.GetEntityGroupId(), false)
+	err := server.CheckEntityGroupAccess(ctx, request.GetEntityGroupId(), &srv.ModulePermission{
+		NeedsMenuPermission: true,
+	})
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed to delete entity group: %v", err)
 	}

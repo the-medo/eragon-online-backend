@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -19,7 +20,9 @@ func (server *ServiceEntities) CreateEntityGroupContent(ctx context.Context, req
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	err := server.CheckEntityGroupAccess(ctx, request.GetEntityGroupId(), false)
+	err := server.CheckEntityGroupAccess(ctx, request.GetEntityGroupId(), &srv.ModulePermission{
+		NeedsMenuPermission: true,
+	})
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed to create entity group content: %v", err)
 	}
