@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,7 +20,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Modules_GetModuleId_FullMethodName = "/pb.Modules/GetModuleId"
+	Modules_GetModuleId_FullMethodName       = "/pb.Modules/GetModuleId"
+	Modules_GetModuleAdmins_FullMethodName   = "/pb.Modules/GetModuleAdmins"
+	Modules_CreateModuleAdmin_FullMethodName = "/pb.Modules/CreateModuleAdmin"
+	Modules_UpdateModuleAdmin_FullMethodName = "/pb.Modules/UpdateModuleAdmin"
+	Modules_DeleteModuleAdmin_FullMethodName = "/pb.Modules/DeleteModuleAdmin"
 )
 
 // ModulesClient is the client API for Modules service.
@@ -27,6 +32,10 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ModulesClient interface {
 	GetModuleId(ctx context.Context, in *GetModuleIdRequest, opts ...grpc.CallOption) (*GetModuleIdResponse, error)
+	GetModuleAdmins(ctx context.Context, in *GetModuleAdminsRequest, opts ...grpc.CallOption) (*GetModuleAdminsResponse, error)
+	CreateModuleAdmin(ctx context.Context, in *CreateModuleAdminRequest, opts ...grpc.CallOption) (*ModuleAdmin, error)
+	UpdateModuleAdmin(ctx context.Context, in *UpdateModuleAdminRequest, opts ...grpc.CallOption) (*ModuleAdmin, error)
+	DeleteModuleAdmin(ctx context.Context, in *DeleteModuleAdminRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type modulesClient struct {
@@ -46,11 +55,51 @@ func (c *modulesClient) GetModuleId(ctx context.Context, in *GetModuleIdRequest,
 	return out, nil
 }
 
+func (c *modulesClient) GetModuleAdmins(ctx context.Context, in *GetModuleAdminsRequest, opts ...grpc.CallOption) (*GetModuleAdminsResponse, error) {
+	out := new(GetModuleAdminsResponse)
+	err := c.cc.Invoke(ctx, Modules_GetModuleAdmins_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modulesClient) CreateModuleAdmin(ctx context.Context, in *CreateModuleAdminRequest, opts ...grpc.CallOption) (*ModuleAdmin, error) {
+	out := new(ModuleAdmin)
+	err := c.cc.Invoke(ctx, Modules_CreateModuleAdmin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modulesClient) UpdateModuleAdmin(ctx context.Context, in *UpdateModuleAdminRequest, opts ...grpc.CallOption) (*ModuleAdmin, error) {
+	out := new(ModuleAdmin)
+	err := c.cc.Invoke(ctx, Modules_UpdateModuleAdmin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modulesClient) DeleteModuleAdmin(ctx context.Context, in *DeleteModuleAdminRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Modules_DeleteModuleAdmin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ModulesServer is the server API for Modules service.
 // All implementations must embed UnimplementedModulesServer
 // for forward compatibility
 type ModulesServer interface {
 	GetModuleId(context.Context, *GetModuleIdRequest) (*GetModuleIdResponse, error)
+	GetModuleAdmins(context.Context, *GetModuleAdminsRequest) (*GetModuleAdminsResponse, error)
+	CreateModuleAdmin(context.Context, *CreateModuleAdminRequest) (*ModuleAdmin, error)
+	UpdateModuleAdmin(context.Context, *UpdateModuleAdminRequest) (*ModuleAdmin, error)
+	DeleteModuleAdmin(context.Context, *DeleteModuleAdminRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedModulesServer()
 }
 
@@ -60,6 +109,18 @@ type UnimplementedModulesServer struct {
 
 func (UnimplementedModulesServer) GetModuleId(context.Context, *GetModuleIdRequest) (*GetModuleIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetModuleId not implemented")
+}
+func (UnimplementedModulesServer) GetModuleAdmins(context.Context, *GetModuleAdminsRequest) (*GetModuleAdminsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetModuleAdmins not implemented")
+}
+func (UnimplementedModulesServer) CreateModuleAdmin(context.Context, *CreateModuleAdminRequest) (*ModuleAdmin, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateModuleAdmin not implemented")
+}
+func (UnimplementedModulesServer) UpdateModuleAdmin(context.Context, *UpdateModuleAdminRequest) (*ModuleAdmin, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateModuleAdmin not implemented")
+}
+func (UnimplementedModulesServer) DeleteModuleAdmin(context.Context, *DeleteModuleAdminRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteModuleAdmin not implemented")
 }
 func (UnimplementedModulesServer) mustEmbedUnimplementedModulesServer() {}
 
@@ -92,6 +153,78 @@ func _Modules_GetModuleId_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Modules_GetModuleAdmins_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetModuleAdminsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModulesServer).GetModuleAdmins(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Modules_GetModuleAdmins_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModulesServer).GetModuleAdmins(ctx, req.(*GetModuleAdminsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Modules_CreateModuleAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateModuleAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModulesServer).CreateModuleAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Modules_CreateModuleAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModulesServer).CreateModuleAdmin(ctx, req.(*CreateModuleAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Modules_UpdateModuleAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateModuleAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModulesServer).UpdateModuleAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Modules_UpdateModuleAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModulesServer).UpdateModuleAdmin(ctx, req.(*UpdateModuleAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Modules_DeleteModuleAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteModuleAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModulesServer).DeleteModuleAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Modules_DeleteModuleAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModulesServer).DeleteModuleAdmin(ctx, req.(*DeleteModuleAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Modules_ServiceDesc is the grpc.ServiceDesc for Modules service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +235,22 @@ var Modules_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetModuleId",
 			Handler:    _Modules_GetModuleId_Handler,
+		},
+		{
+			MethodName: "GetModuleAdmins",
+			Handler:    _Modules_GetModuleAdmins_Handler,
+		},
+		{
+			MethodName: "CreateModuleAdmin",
+			Handler:    _Modules_CreateModuleAdmin_Handler,
+		},
+		{
+			MethodName: "UpdateModuleAdmin",
+			Handler:    _Modules_UpdateModuleAdmin_Handler,
+		},
+		{
+			MethodName: "DeleteModuleAdmin",
+			Handler:    _Modules_DeleteModuleAdmin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

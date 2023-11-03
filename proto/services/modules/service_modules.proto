@@ -3,7 +3,9 @@ syntax = "proto3";
 package pb;
 
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "services/modules/module.proto";
 import "services/modules/rpc_module.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
@@ -18,4 +20,47 @@ service Modules {
       summary: "Get id of the module";
     };
   };
+
+  rpc GetModuleAdmins(GetModuleAdminsRequest) returns (GetModuleAdminsResponse) {
+    option (google.api.http) = {
+      get: "/modules/{moduleId}/admin"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns admins and admin requests for module";
+      summary: "Get module admins";
+    };
+  };
+
+  rpc CreateModuleAdmin(CreateModuleAdminRequest) returns (ModuleAdmin) {
+    option (google.api.http) = {
+      post: "/modules/{moduleId}/admin"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "adds request to become admin of the module";
+      summary: "Create module admin";
+    };
+  };
+
+  rpc UpdateModuleAdmin(UpdateModuleAdminRequest) returns (ModuleAdmin) {
+    option (google.api.http) = {
+      patch: "/modules/{moduleId}/admin"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates module admin request (approve / decline)";
+      summary: "Update module admin";
+    };
+  };
+
+  rpc DeleteModuleAdmin(DeleteModuleAdminRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/modules/{moduleId}/admin"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes module admin";
+      summary: "Delete module admin";
+    };
+  };
+
 }

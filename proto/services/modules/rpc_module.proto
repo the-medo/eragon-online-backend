@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "services/modules/module.proto";
+import "services/modules/module_type.proto";
 
 package pb;
 
@@ -16,4 +17,30 @@ message GetModuleIdRequest {
 message GetModuleIdResponse {
   int32 moduleId = 1;
   ModuleType moduleType = 2;
+}
+
+message GetModuleAdminsRequest {
+  int32 moduleId = 1;
+}
+
+message GetModuleAdminsResponse {
+  repeated ModuleAdmin moduleAdmins = 1;
+}
+
+message CreateModuleAdminRequest {
+  int32 moduleId = 1;
+  string motivationalLetter = 2;
+}
+
+message UpdateModuleAdminRequest {
+  int32 moduleId = 1;
+  int32 userId = 2;
+  optional bool superAdmin = 3;
+  optional int32 approved = 4;
+  optional string motivationalLetter = 5;
+}
+
+message DeleteModuleAdminRequest {
+  int32 moduleId = 1;
+  int32 userId = 2;
 }

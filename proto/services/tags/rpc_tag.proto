@@ -3,7 +3,7 @@ syntax = "proto3";
 package pb;
 
 import "services/tags/tag.proto";
-import "services/modules/module.proto";
+import "services/modules/module_type.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 

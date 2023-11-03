@@ -5,7 +5,7 @@ import "services/posts/post.proto";
 import "services/maps/map.proto";
 import "services/locations/location.proto";
 import "services/images/image.proto";
-import "services/modules/module.proto";
+import "services/modules/module_type.proto";
 
 package pb;
 

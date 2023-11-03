@@ -2,19 +2,24 @@ syntax = "proto3";
 
 package pb;
 
-option go_package = "github.com/the-medo/talebound-backend/pb";
+import "google/protobuf/timestamp.proto";
+import "services/users/user.proto";
 
-enum ModuleType {
-  MODULE_TYPE_UNKNOWN = 0;
-  MODULE_TYPE_WORLD = 1;
-  MODULE_TYPE_QUEST = 2;
-  MODULE_TYPE_SYSTEM = 3;
-  MODULE_TYPE_CHARACTER = 4;
-}
+option go_package = "github.com/the-medo/talebound-backend/pb";
 
 message Module {
   optional int32 worldId = 1;
   optional int32 questId = 2;
   optional int32 characterId = 3;
   optional int32 systemId = 4;
+}
+
+message ModuleAdmin {
+  int32 worldId = 1;
+  int32 userId = 2;
+  ViewUser user = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  bool superAdmin = 5;
+  int32 approved = 6;
+  string motivationalLetter = 7;
 }

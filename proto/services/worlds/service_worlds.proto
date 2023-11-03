@@ -5,7 +5,6 @@ package pb;
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-import "google/protobuf/empty.proto";
 import "services/worlds/rpc_world.proto";
 import "services/worlds/world.proto";
 import "services/images/image.proto";
@@ -46,48 +45,6 @@ service Worlds {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "uploads and sets new image for given world";
       summary: "Upload image for world";
-    };
-  };
-
-  rpc GetWorldAdmins(GetWorldAdminsRequest) returns (GetWorldAdminsResponse) {
-    option (google.api.http) = {
-      get: "/worlds/{worldId}/admin"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "returns admins and admin requests for world";
-      summary: "Get world admins";
-    };
-  };
-
-  rpc CreateWorldAdmin(CreateWorldAdminRequest) returns (WorldAdmin) {
-    option (google.api.http) = {
-      post: "/worlds/{worldId}/admin"
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "adds request to become admin of the world";
-      summary: "Create world admin";
-    };
-  };
-
-  rpc UpdateWorldAdmin(UpdateWorldAdminRequest) returns (WorldAdmin) {
-    option (google.api.http) = {
-      patch: "/worlds/{worldId}/admin"
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "updates world admin request (approve / decline)";
-      summary: "Update world admin";
-    };
-  };
-
-  rpc DeleteWorldAdmin(DeleteWorldAdminRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/worlds/{worldId}/admin"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "deletes world admin";
-      summary: "Delete world admin";
     };
   };
 

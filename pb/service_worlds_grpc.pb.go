@@ -11,7 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -23,10 +22,6 @@ const (
 	Worlds_CreateWorld_FullMethodName             = "/pb.Worlds/CreateWorld"
 	Worlds_UpdateWorld_FullMethodName             = "/pb.Worlds/UpdateWorld"
 	Worlds_UploadWorldImage_FullMethodName        = "/pb.Worlds/UploadWorldImage"
-	Worlds_GetWorldAdmins_FullMethodName          = "/pb.Worlds/GetWorldAdmins"
-	Worlds_CreateWorldAdmin_FullMethodName        = "/pb.Worlds/CreateWorldAdmin"
-	Worlds_UpdateWorldAdmin_FullMethodName        = "/pb.Worlds/UpdateWorldAdmin"
-	Worlds_DeleteWorldAdmin_FullMethodName        = "/pb.Worlds/DeleteWorldAdmin"
 	Worlds_GetWorldDailyActivity_FullMethodName   = "/pb.Worlds/GetWorldDailyActivity"
 	Worlds_GetWorldMonthlyActivity_FullMethodName = "/pb.Worlds/GetWorldMonthlyActivity"
 	Worlds_GetWorlds_FullMethodName               = "/pb.Worlds/GetWorlds"
@@ -41,10 +36,6 @@ type WorldsClient interface {
 	CreateWorld(ctx context.Context, in *CreateWorldRequest, opts ...grpc.CallOption) (*World, error)
 	UpdateWorld(ctx context.Context, in *UpdateWorldRequest, opts ...grpc.CallOption) (*World, error)
 	UploadWorldImage(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error)
-	GetWorldAdmins(ctx context.Context, in *GetWorldAdminsRequest, opts ...grpc.CallOption) (*GetWorldAdminsResponse, error)
-	CreateWorldAdmin(ctx context.Context, in *CreateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error)
-	UpdateWorldAdmin(ctx context.Context, in *UpdateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error)
-	DeleteWorldAdmin(ctx context.Context, in *DeleteWorldAdminRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetWorldDailyActivity(ctx context.Context, in *GetWorldDailyActivityRequest, opts ...grpc.CallOption) (*GetWorldDailyActivityResponse, error)
 	GetWorldMonthlyActivity(ctx context.Context, in *GetWorldMonthlyActivityRequest, opts ...grpc.CallOption) (*GetWorldMonthlyActivityResponse, error)
 	GetWorlds(ctx context.Context, in *GetWorldsRequest, opts ...grpc.CallOption) (*GetWorldsResponse, error)
@@ -81,42 +72,6 @@ func (c *worldsClient) UpdateWorld(ctx context.Context, in *UpdateWorldRequest, 
 func (c *worldsClient) UploadWorldImage(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error) {
 	out := new(Image)
 	err := c.cc.Invoke(ctx, Worlds_UploadWorldImage_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *worldsClient) GetWorldAdmins(ctx context.Context, in *GetWorldAdminsRequest, opts ...grpc.CallOption) (*GetWorldAdminsResponse, error) {
-	out := new(GetWorldAdminsResponse)
-	err := c.cc.Invoke(ctx, Worlds_GetWorldAdmins_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *worldsClient) CreateWorldAdmin(ctx context.Context, in *CreateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error) {
-	out := new(WorldAdmin)
-	err := c.cc.Invoke(ctx, Worlds_CreateWorldAdmin_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *worldsClient) UpdateWorldAdmin(ctx context.Context, in *UpdateWorldAdminRequest, opts ...grpc.CallOption) (*WorldAdmin, error) {
-	out := new(WorldAdmin)
-	err := c.cc.Invoke(ctx, Worlds_UpdateWorldAdmin_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *worldsClient) DeleteWorldAdmin(ctx context.Context, in *DeleteWorldAdminRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Worlds_DeleteWorldAdmin_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -175,10 +130,6 @@ type WorldsServer interface {
 	CreateWorld(context.Context, *CreateWorldRequest) (*World, error)
 	UpdateWorld(context.Context, *UpdateWorldRequest) (*World, error)
 	UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error)
-	GetWorldAdmins(context.Context, *GetWorldAdminsRequest) (*GetWorldAdminsResponse, error)
-	CreateWorldAdmin(context.Context, *CreateWorldAdminRequest) (*WorldAdmin, error)
-	UpdateWorldAdmin(context.Context, *UpdateWorldAdminRequest) (*WorldAdmin, error)
-	DeleteWorldAdmin(context.Context, *DeleteWorldAdminRequest) (*emptypb.Empty, error)
 	GetWorldDailyActivity(context.Context, *GetWorldDailyActivityRequest) (*GetWorldDailyActivityResponse, error)
 	GetWorldMonthlyActivity(context.Context, *GetWorldMonthlyActivityRequest) (*GetWorldMonthlyActivityResponse, error)
 	GetWorlds(context.Context, *GetWorldsRequest) (*GetWorldsResponse, error)
@@ -199,18 +150,6 @@ func (UnimplementedWorldsServer) UpdateWorld(context.Context, *UpdateWorldReques
 }
 func (UnimplementedWorldsServer) UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadWorldImage not implemented")
-}
-func (UnimplementedWorldsServer) GetWorldAdmins(context.Context, *GetWorldAdminsRequest) (*GetWorldAdminsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWorldAdmins not implemented")
-}
-func (UnimplementedWorldsServer) CreateWorldAdmin(context.Context, *CreateWorldAdminRequest) (*WorldAdmin, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateWorldAdmin not implemented")
-}
-func (UnimplementedWorldsServer) UpdateWorldAdmin(context.Context, *UpdateWorldAdminRequest) (*WorldAdmin, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateWorldAdmin not implemented")
-}
-func (UnimplementedWorldsServer) DeleteWorldAdmin(context.Context, *DeleteWorldAdminRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteWorldAdmin not implemented")
 }
 func (UnimplementedWorldsServer) GetWorldDailyActivity(context.Context, *GetWorldDailyActivityRequest) (*GetWorldDailyActivityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWorldDailyActivity not implemented")
@@ -290,78 +229,6 @@ func _Worlds_UploadWorldImage_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(WorldsServer).UploadWorldImage(ctx, req.(*UploadWorldImageRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Worlds_GetWorldAdmins_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetWorldAdminsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WorldsServer).GetWorldAdmins(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Worlds_GetWorldAdmins_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorldsServer).GetWorldAdmins(ctx, req.(*GetWorldAdminsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Worlds_CreateWorldAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateWorldAdminRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WorldsServer).CreateWorldAdmin(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Worlds_CreateWorldAdmin_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorldsServer).CreateWorldAdmin(ctx, req.(*CreateWorldAdminRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Worlds_UpdateWorldAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateWorldAdminRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WorldsServer).UpdateWorldAdmin(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Worlds_UpdateWorldAdmin_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorldsServer).UpdateWorldAdmin(ctx, req.(*UpdateWorldAdminRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Worlds_DeleteWorldAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteWorldAdminRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WorldsServer).DeleteWorldAdmin(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Worlds_DeleteWorldAdmin_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorldsServer).DeleteWorldAdmin(ctx, req.(*DeleteWorldAdminRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -474,22 +341,6 @@ var Worlds_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UploadWorldImage",
 			Handler:    _Worlds_UploadWorldImage_Handler,
-		},
-		{
-			MethodName: "GetWorldAdmins",
-			Handler:    _Worlds_GetWorldAdmins_Handler,
-		},
-		{
-			MethodName: "CreateWorldAdmin",
-			Handler:    _Worlds_CreateWorldAdmin_Handler,
-		},
-		{
-			MethodName: "UpdateWorldAdmin",
-			Handler:    _Worlds_UpdateWorldAdmin_Handler,
-		},
-		{
-			MethodName: "DeleteWorldAdmin",
-			Handler:    _Worlds_DeleteWorldAdmin_Handler,
 		},
 		{
 			MethodName: "GetWorldDailyActivity",

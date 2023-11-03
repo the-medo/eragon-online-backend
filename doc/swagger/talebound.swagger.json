@@ -2347,6 +2347,177 @@
         ]
       }
     },
+    "/modules/{moduleId}/admin": {
+      "get": {
+        "summary": "Get module admins",
+        "description": "returns admins and admin requests for module",
+        "operationId": "Modules_GetModuleAdmins",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetModuleAdminsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Modules"
+        ]
+      },
+      "delete": {
+        "summary": "Delete module admin",
+        "description": "deletes module admin",
+        "operationId": "Modules_DeleteModuleAdmin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Modules"
+        ]
+      },
+      "post": {
+        "summary": "Create module admin",
+        "description": "adds request to become admin of the module",
+        "operationId": "Modules_CreateModuleAdmin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbModuleAdmin"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "motivationalLetter": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Modules"
+        ]
+      },
+      "patch": {
+        "summary": "Update module admin",
+        "description": "updates module admin request (approve / decline)",
+        "operationId": "Modules_UpdateModuleAdmin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbModuleAdmin"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "superAdmin": {
+                  "type": "boolean"
+                },
+                "approved": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "motivationalLetter": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Modules"
+        ]
+      }
+    },
     "/post_types": {
       "get": {
         "summary": "Get post types",
@@ -4314,177 +4485,6 @@
         ]
       }
     },
-    "/worlds/{worldId}/admin": {
-      "get": {
-        "summary": "Get world admins",
-        "description": "returns admins and admin requests for world",
-        "operationId": "Worlds_GetWorldAdmins",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetWorldAdminsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Worlds"
-        ]
-      },
-      "delete": {
-        "summary": "Delete world admin",
-        "description": "deletes world admin",
-        "operationId": "Worlds_DeleteWorldAdmin",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Worlds"
-        ]
-      },
-      "post": {
-        "summary": "Create world admin",
-        "description": "adds request to become admin of the world",
-        "operationId": "Worlds_CreateWorldAdmin",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbWorldAdmin"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "motivationalLetter": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Worlds"
-        ]
-      },
-      "patch": {
-        "summary": "Update world admin",
-        "description": "updates world admin request (approve / decline)",
-        "operationId": "Worlds_UpdateWorldAdmin",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbWorldAdmin"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userId": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "superAdmin": {
-                  "type": "boolean"
-                },
-                "approved": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "motivationalLetter": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Worlds"
-        ]
-      }
-    },
     "/worlds/{worldId}/images": {
       "post": {
         "summary": "Upload image for world",
@@ -5450,6 +5450,18 @@
         }
       }
     },
+    "pbGetModuleAdminsResponse": {
+      "type": "object",
+      "properties": {
+        "moduleAdmins": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbModuleAdmin"
+          }
+        }
+      }
+    },
     "pbGetModuleEntityAvailableTagsResponse": {
       "type": "object",
       "properties": {
@@ -5558,18 +5570,6 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbUser"
-          }
-        }
-      }
-    },
-    "pbGetWorldAdminsResponse": {
-      "type": "object",
-      "properties": {
-        "worldAdmins": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbWorldAdmin"
           }
         }
       }
@@ -5819,6 +5819,36 @@
         "systemId": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "pbModuleAdmin": {
+      "type": "object",
+      "properties": {
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user": {
+          "$ref": "#/definitions/pbViewUser"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "superAdmin": {
+          "type": "boolean"
+        },
+        "approved": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "motivationalLetter": {
+          "type": "string"
         }
       }
     },
@@ -6454,36 +6484,6 @@
         "activityResourceCount": {
           "type": "integer",
           "format": "int32"
-        }
-      }
-    },
-    "pbWorldAdmin": {
-      "type": "object",
-      "properties": {
-        "worldId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "userId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "user": {
-          "$ref": "#/definitions/pbViewUser"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "superAdmin": {
-          "type": "boolean"
-        },
-        "approved": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "motivationalLetter": {
-          "type": "string"
         }
       }
     },

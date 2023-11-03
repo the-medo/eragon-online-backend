@@ -50,32 +50,6 @@ message TagUsage {
   int32 count = 2;
 }
 
-message GetWorldAdminsRequest {
-  int32 worldId = 1;
-}
-
-message GetWorldAdminsResponse {
-  repeated WorldAdmin worldAdmins = 1;
-}
-
-message CreateWorldAdminRequest {
-  int32 worldId = 1;
-  string motivationalLetter = 2;
-}
-
-message UpdateWorldAdminRequest {
-  int32 worldId = 1;
-  int32 userId = 2;
-  optional bool superAdmin = 3;
-  optional int32 approved = 4;
-  optional string motivationalLetter = 5;
-}
-
-message DeleteWorldAdminRequest {
-  int32 worldId = 1;
-  int32 userId = 2;
-}
-
 message GetWorldDailyActivityRequest {
   optional int32 worldId = 1;
   optional google.protobuf.Timestamp dateFrom = 2;
