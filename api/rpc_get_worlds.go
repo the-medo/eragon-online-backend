@@ -57,7 +57,7 @@ func (server *Server) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (
 	}
 
 	for i, world := range worlds {
-		rsp.Worlds[i] = convertWorld(world)
+		rsp.Worlds[i] = ConvertWorld(world)
 	}
 
 	return rsp, nil

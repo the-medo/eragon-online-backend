@@ -22,7 +22,7 @@ func (server *Server) UploadAndInsertToDb(ctx context.Context, data []byte, imgT
 		return nil, status.Errorf(codes.Internal, "failed to upload image: %v", err)
 	}
 
-	createImageParams, err := convertCloudflareImgToDb(server, ctx, uploadImg, imgTypeId, filename, userId)
+	createImageParams, err := ConvertCloudflareImgToDb(server, ctx, uploadImg, imgTypeId, filename, userId)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to convert Cloudflare image to DB: %v", err)
 	}

@@ -48,26 +48,6 @@ service Worlds {
     };
   };
 
-  rpc GetWorldDailyActivity(GetWorldDailyActivityRequest) returns (GetWorldDailyActivityResponse) {
-    option (google.api.http) = {
-      get: "/worlds/activity/daily"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "gets activity by day";
-      summary: "Get world(s) daily activity";
-    };
-  };
-
-  rpc GetWorldMonthlyActivity(GetWorldMonthlyActivityRequest) returns (GetWorldMonthlyActivityResponse) {
-    option (google.api.http) = {
-      get: "/worlds/activity/monthly"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "gets world activity grouped by month";
-      summary: "Get world(s) monthly activity";
-    };
-  };
-
   rpc GetWorlds(GetWorldsRequest) returns (GetWorldsResponse) {
     option (google.api.http) = {
       get: "/worlds"

@@ -3,7 +3,6 @@ syntax = "proto3";
 package pb;
 
 import "services/worlds/world.proto";
-import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -48,24 +47,6 @@ message UploadWorldImageRequest {
 message TagUsage {
   int32 tagId = 1;
   int32 count = 2;
-}
-
-message GetWorldDailyActivityRequest {
-  optional int32 worldId = 1;
-  optional google.protobuf.Timestamp dateFrom = 2;
-}
-
-message GetWorldDailyActivityResponse {
-  repeated WorldActivity activity = 1;
-}
-
-message GetWorldMonthlyActivityRequest {
-  optional int32 worldId = 1;
-  optional google.protobuf.Timestamp dateFrom = 2;
-}
-
-message GetWorldMonthlyActivityResponse {
-  repeated WorldActivity activity = 1;
 }
 
 message GetWorldsRequest {

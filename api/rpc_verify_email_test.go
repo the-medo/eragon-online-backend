@@ -16,7 +16,7 @@ import (
 )
 
 func TestVerifyEmailAPI(t *testing.T) {
-	user, _ := randomUser(t)
+	user, _ := RandomUser(t)
 	verifyEmail := randomVerifyEmail(t, user)
 
 	testCases := []struct {
@@ -182,7 +182,7 @@ func TestVerifyEmailAPI(t *testing.T) {
 			store := mockdb.NewMockStore(storeCtrl)
 
 			tc.buildStubs(store)
-			server := newTestServer(t, store, nil)
+			server := NewTestServer(t, store, nil)
 
 			res, err := server.VerifyEmail(context.Background(), tc.req)
 			tc.checkResponse(t, res, err)

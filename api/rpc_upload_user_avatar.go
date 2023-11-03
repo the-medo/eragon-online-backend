@@ -58,7 +58,7 @@ func (server *Server) UploadUserAvatar(ctx context.Context, request *pb.UploadUs
 
 	return &pb.UploadUserAvatarResponse{
 		UserId: request.GetUserId(),
-		Image:  convertImage(dbImg),
+		Image:  ConvertImage(dbImg),
 	}, nil
 }
 

@@ -11,9 +11,6 @@
   },
   "tags": [
     {
-      "name": "Chat"
-    },
-    {
       "name": "Entities"
     },
     {
@@ -60,111 +57,6 @@
     "application/json"
   ],
   "paths": {
-    "/chat": {
-      "get": {
-        "summary": "Get list of chat messages",
-        "description": "returns list of chat messages",
-        "operationId": "Chat_GetChatMessages",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetChatMessagesResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Chat"
-        ]
-      },
-      "post": {
-        "summary": "Add new chat message",
-        "description": "adds new chat message",
-        "operationId": "Chat_AddChatMessage",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbAddChatMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbAddChatMessageRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Chat"
-        ]
-      }
-    },
-    "/chat/{id}": {
-      "delete": {
-        "summary": "Delete chat message",
-        "description": "removes role from user",
-        "operationId": "Chat_DeleteChatMessage",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbDeleteChatMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          }
-        ],
-        "tags": [
-          "Chat"
-        ]
-      }
-    },
     "/entities/groups": {
       "post": {
         "summary": "Create entity group",
@@ -4303,86 +4195,6 @@
         ]
       }
     },
-    "/worlds/activity/daily": {
-      "get": {
-        "summary": "Get world(s) daily activity",
-        "description": "gets activity by day",
-        "operationId": "Worlds_GetWorldDailyActivity",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetWorldDailyActivityResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "dateFrom",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          }
-        ],
-        "tags": [
-          "Worlds"
-        ]
-      }
-    },
-    "/worlds/activity/monthly": {
-      "get": {
-        "summary": "Get world(s) monthly activity",
-        "description": "gets world activity grouped by month",
-        "operationId": "Worlds_GetWorldMonthlyActivity",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetWorldMonthlyActivityResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "dateFrom",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          }
-        ],
-        "tags": [
-          "Worlds"
-        ]
-      }
-    },
     "/worlds/{worldId}": {
       "get": {
         "summary": "Get world by ID ",
@@ -4584,22 +4396,6 @@
     }
   },
   "definitions": {
-    "pbAddChatMessageRequest": {
-      "type": "object",
-      "properties": {
-        "text": {
-          "type": "string"
-        }
-      }
-    },
-    "pbAddChatMessageResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "$ref": "#/definitions/pbChatMessage"
-        }
-      }
-    },
     "pbAddRoleToUserRequest": {
       "type": "object",
       "properties": {
@@ -4647,29 +4443,6 @@
         "average": {
           "type": "number",
           "format": "double"
-        }
-      }
-    },
-    "pbChatMessage": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
-        },
-        "userId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "username": {
-          "type": "string"
-        },
-        "text": {
-          "type": "string"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
         }
       }
     },
@@ -5024,17 +4797,6 @@
         }
       }
     },
-    "pbDeleteChatMessageResponse": {
-      "type": "object",
-      "properties": {
-        "success": {
-          "type": "boolean"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
-    },
     "pbDeleteEvaluationVoteResponse": {
       "type": "object",
       "properties": {
@@ -5256,18 +5018,6 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbAverageEvaluationVote"
-          }
-        }
-      }
-    },
-    "pbGetChatMessagesResponse": {
-      "type": "object",
-      "properties": {
-        "messages": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbChatMessage"
           }
         }
       }
@@ -5570,30 +5320,6 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbUser"
-          }
-        }
-      }
-    },
-    "pbGetWorldDailyActivityResponse": {
-      "type": "object",
-      "properties": {
-        "activity": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbWorldActivity"
-          }
-        }
-      }
-    },
-    "pbGetWorldMonthlyActivityResponse": {
-      "type": "object",
-      "properties": {
-        "activity": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbWorldActivity"
           }
         }
       }
@@ -6444,44 +6170,7 @@
             "format": "int32"
           }
         },
-        "activityPostCount": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "activityQuestCount": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "activityResourceCount": {
-          "type": "integer",
-          "format": "int32"
-        },
         "worldMenuId": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
-    "pbWorldActivity": {
-      "type": "object",
-      "properties": {
-        "worldId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "date": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "activityPostCount": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "activityQuestCount": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "activityResourceCount": {
           "type": "integer",
           "format": "int32"
         }

@@ -32,7 +32,7 @@ func (server *Server) GetChatMessages(ctx context.Context, req *pb.GetChatMessag
 	}
 
 	for i, message := range messages {
-		rsp.Messages[i] = convertChatMessage(message)
+		rsp.Messages[i] = ConvertChatMessage(message)
 	}
 
 	return rsp, nil

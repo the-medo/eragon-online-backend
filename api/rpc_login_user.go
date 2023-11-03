@@ -51,7 +51,7 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 		return nil, status.Errorf(codes.Internal, "failed to create refresh token: %v", err)
 	}
 
-	mtdt := server.extractMetadata(ctx)
+	mtdt := server.ExtractMetadata(ctx)
 	session, err := server.Store.CreateSession(ctx, db.CreateSessionParams{
 		ID:           refreshPayload.ID,
 		UserID:       viewUser.ID,
@@ -66,9 +66,9 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 		return nil, status.Errorf(codes.Internal, "failed to create session: %v", err)
 	}
 
-	user := convertViewUserToUser(viewUser)
+	user := ConvertViewUserToUser(viewUser)
 	rsp := &pb.LoginUserResponse{
-		User:                  convertUserGetImage(server, ctx, user),
+		User:                  ConvertUserGetImage(server, ctx, user),
 		SessionId:             session.ID.String(),
 		AccessTokenExpiresAt:  timestamppb.New(accessPayload.ExpiredAt),
 		RefreshTokenExpiresAt: timestamppb.New(refreshPayload.ExpiredAt),

@@ -85,7 +85,7 @@ func (server *Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldReques
 		return nil, status.Errorf(codes.Internal, "failed to retrieve updated world: %v", err)
 	}
 
-	rsp := convertWorld(world)
+	rsp := ConvertWorld(world)
 
 	return rsp, nil
 }

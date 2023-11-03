@@ -33,7 +33,7 @@ func (m *mockServerTransportStream) SetTrailer(md metadata.MD) error {
 	return nil
 }
 
-func newTestServer(t *testing.T, store db.Store, taskDistributor worker.TaskDistributor) *Server {
+func NewTestServer(t *testing.T, store db.Store, taskDistributor worker.TaskDistributor) *Server {
 	config := util.Config{
 		TokenSymmetricKey:   util.RandomString(32),
 		AccessTokenDuration: time.Minute,
@@ -45,7 +45,7 @@ func newTestServer(t *testing.T, store db.Store, taskDistributor worker.TaskDist
 	return server
 }
 
-func newContextWithBearerToken(t *testing.T, tokenMaker token.Maker, userId int32, duration time.Duration) context.Context {
+func NewContextWithBearerToken(t *testing.T, tokenMaker token.Maker, userId int32, duration time.Duration) context.Context {
 	accessToken, _, err := tokenMaker.CreateToken(userId, duration)
 	require.NoError(t, err)
 
@@ -59,7 +59,7 @@ func newContextWithBearerToken(t *testing.T, tokenMaker token.Maker, userId int3
 	return metadata.NewIncomingContext(context.Background(), md)
 }
 
-func newContextWithCookie(t *testing.T, tokenMaker token.Maker, userId int32, duration time.Duration) context.Context {
+func NewContextWithCookie(t *testing.T, tokenMaker token.Maker, userId int32, duration time.Duration) context.Context {
 	accessToken, _, err := tokenMaker.CreateToken(userId, duration)
 	require.NoError(t, err)
 

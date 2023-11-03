@@ -26,7 +26,7 @@ func (server *Server) GetEvaluationVotesByUserId(ctx context.Context, req *pb.Ge
 	}
 
 	for i, evaluationVote := range evaluationVotes {
-		rsp.EvaluationVote[i] = convertEvaluationVote(evaluationVote)
+		rsp.EvaluationVote[i] = ConvertEvaluationVote(evaluationVote)
 	}
 	return rsp, nil
 }

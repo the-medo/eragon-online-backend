@@ -25,7 +25,7 @@ func (server *Server) GetWorldsOfCreator(ctx context.Context, req *pb.GetWorldsO
 
 	for i, world := range worldsWithAdminInfo {
 		rsp.Worlds[i] = &pb.WorldOfCreatorResponse{
-			World:      convertWorldOfUser(world),
+			World:      ConvertWorldOfUser(world),
 			SuperAdmin: world.WorldSuperAdmin,
 		}
 	}

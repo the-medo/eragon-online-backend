@@ -22,8 +22,6 @@ const (
 	Worlds_CreateWorld_FullMethodName             = "/pb.Worlds/CreateWorld"
 	Worlds_UpdateWorld_FullMethodName             = "/pb.Worlds/UpdateWorld"
 	Worlds_UploadWorldImage_FullMethodName        = "/pb.Worlds/UploadWorldImage"
-	Worlds_GetWorldDailyActivity_FullMethodName   = "/pb.Worlds/GetWorldDailyActivity"
-	Worlds_GetWorldMonthlyActivity_FullMethodName = "/pb.Worlds/GetWorldMonthlyActivity"
 	Worlds_GetWorlds_FullMethodName               = "/pb.Worlds/GetWorlds"
 	Worlds_GetWorldById_FullMethodName            = "/pb.Worlds/GetWorldById"
 	Worlds_UpdateWorldIntroduction_FullMethodName = "/pb.Worlds/UpdateWorldIntroduction"
@@ -36,8 +34,6 @@ type WorldsClient interface {
 	CreateWorld(ctx context.Context, in *CreateWorldRequest, opts ...grpc.CallOption) (*World, error)
 	UpdateWorld(ctx context.Context, in *UpdateWorldRequest, opts ...grpc.CallOption) (*World, error)
 	UploadWorldImage(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error)
-	GetWorldDailyActivity(ctx context.Context, in *GetWorldDailyActivityRequest, opts ...grpc.CallOption) (*GetWorldDailyActivityResponse, error)
-	GetWorldMonthlyActivity(ctx context.Context, in *GetWorldMonthlyActivityRequest, opts ...grpc.CallOption) (*GetWorldMonthlyActivityResponse, error)
 	GetWorlds(ctx context.Context, in *GetWorldsRequest, opts ...grpc.CallOption) (*GetWorldsResponse, error)
 	GetWorldById(ctx context.Context, in *GetWorldByIdRequest, opts ...grpc.CallOption) (*World, error)
 	UpdateWorldIntroduction(ctx context.Context, in *UpdateWorldIntroductionRequest, opts ...grpc.CallOption) (*Post, error)
@@ -78,24 +74,6 @@ func (c *worldsClient) UploadWorldImage(ctx context.Context, in *UploadWorldImag
 	return out, nil
 }
 
-func (c *worldsClient) GetWorldDailyActivity(ctx context.Context, in *GetWorldDailyActivityRequest, opts ...grpc.CallOption) (*GetWorldDailyActivityResponse, error) {
-	out := new(GetWorldDailyActivityResponse)
-	err := c.cc.Invoke(ctx, Worlds_GetWorldDailyActivity_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *worldsClient) GetWorldMonthlyActivity(ctx context.Context, in *GetWorldMonthlyActivityRequest, opts ...grpc.CallOption) (*GetWorldMonthlyActivityResponse, error) {
-	out := new(GetWorldMonthlyActivityResponse)
-	err := c.cc.Invoke(ctx, Worlds_GetWorldMonthlyActivity_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *worldsClient) GetWorlds(ctx context.Context, in *GetWorldsRequest, opts ...grpc.CallOption) (*GetWorldsResponse, error) {
 	out := new(GetWorldsResponse)
 	err := c.cc.Invoke(ctx, Worlds_GetWorlds_FullMethodName, in, out, opts...)
@@ -130,8 +108,6 @@ type WorldsServer interface {
 	CreateWorld(context.Context, *CreateWorldRequest) (*World, error)
 	UpdateWorld(context.Context, *UpdateWorldRequest) (*World, error)
 	UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error)
-	GetWorldDailyActivity(context.Context, *GetWorldDailyActivityRequest) (*GetWorldDailyActivityResponse, error)
-	GetWorldMonthlyActivity(context.Context, *GetWorldMonthlyActivityRequest) (*GetWorldMonthlyActivityResponse, error)
 	GetWorlds(context.Context, *GetWorldsRequest) (*GetWorldsResponse, error)
 	GetWorldById(context.Context, *GetWorldByIdRequest) (*World, error)
 	UpdateWorldIntroduction(context.Context, *UpdateWorldIntroductionRequest) (*Post, error)
@@ -150,12 +126,6 @@ func (UnimplementedWorldsServer) UpdateWorld(context.Context, *UpdateWorldReques
 }
 func (UnimplementedWorldsServer) UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadWorldImage not implemented")
-}
-func (UnimplementedWorldsServer) GetWorldDailyActivity(context.Context, *GetWorldDailyActivityRequest) (*GetWorldDailyActivityResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWorldDailyActivity not implemented")
-}
-func (UnimplementedWorldsServer) GetWorldMonthlyActivity(context.Context, *GetWorldMonthlyActivityRequest) (*GetWorldMonthlyActivityResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWorldMonthlyActivity not implemented")
 }
 func (UnimplementedWorldsServer) GetWorlds(context.Context, *GetWorldsRequest) (*GetWorldsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWorlds not implemented")
@@ -233,42 +203,6 @@ func _Worlds_UploadWorldImage_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Worlds_GetWorldDailyActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetWorldDailyActivityRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WorldsServer).GetWorldDailyActivity(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Worlds_GetWorldDailyActivity_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorldsServer).GetWorldDailyActivity(ctx, req.(*GetWorldDailyActivityRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Worlds_GetWorldMonthlyActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetWorldMonthlyActivityRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WorldsServer).GetWorldMonthlyActivity(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Worlds_GetWorldMonthlyActivity_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorldsServer).GetWorldMonthlyActivity(ctx, req.(*GetWorldMonthlyActivityRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Worlds_GetWorlds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetWorldsRequest)
 	if err := dec(in); err != nil {
@@ -341,14 +275,6 @@ var Worlds_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UploadWorldImage",
 			Handler:    _Worlds_UploadWorldImage_Handler,
-		},
-		{
-			MethodName: "GetWorldDailyActivity",
-			Handler:    _Worlds_GetWorldDailyActivity_Handler,
-		},
-		{
-			MethodName: "GetWorldMonthlyActivity",
-			Handler:    _Worlds_GetWorldMonthlyActivity_Handler,
 		},
 		{
 			MethodName: "GetWorlds",

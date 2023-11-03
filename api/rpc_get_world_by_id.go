@@ -19,7 +19,7 @@ func (server *Server) GetWorldById(ctx context.Context, req *pb.GetWorldByIdRequ
 		return nil, err
 	}
 
-	rsp := convertWorld(world)
+	rsp := ConvertWorld(world)
 
 	return rsp, nil
 }

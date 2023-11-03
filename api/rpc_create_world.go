@@ -43,7 +43,7 @@ func (server *Server) CreateWorld(ctx context.Context, req *pb.CreateWorldReques
 		return nil, status.Errorf(codes.Internal, "failed to create world: %s", err)
 	}
 
-	rsp := convertWorld(txResult)
+	rsp := ConvertWorld(txResult)
 
 	return rsp, nil
 }

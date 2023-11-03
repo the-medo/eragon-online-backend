@@ -5,9 +5,11 @@ import (
 	"github.com/the-medo/talebound-backend/apiservices/entities"
 	"github.com/the-medo/talebound-backend/apiservices/locations"
 	"github.com/the-medo/talebound-backend/apiservices/maps"
+	"github.com/the-medo/talebound-backend/apiservices/menus"
 	"github.com/the-medo/talebound-backend/apiservices/modules"
 	"github.com/the-medo/talebound-backend/apiservices/srv"
 	"github.com/the-medo/talebound-backend/apiservices/tags"
+	"github.com/the-medo/talebound-backend/apiservices/users"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/token"
@@ -22,13 +24,12 @@ type Server struct {
 	*modules.ServiceModules
 	*entities.ServiceEntities
 	*tags.ServiceTags
-	pb.UnimplementedChatServer
+	*users.ServiceUsers
+	*menus.ServiceMenus
 	pb.UnimplementedEvaluationsServer
 	pb.UnimplementedImagesServer
-	pb.UnimplementedMenusServer
 	pb.UnimplementedPostTypesServer
 	pb.UnimplementedPostsServer
-	pb.UnimplementedUsersServer
 	pb.UnimplementedVerifyServer
 	pb.UnimplementedWorldsServer
 	Config          util.Config
@@ -51,6 +52,8 @@ func NewServer(config util.Config, store db.Store, taskDistributor worker.TaskDi
 		ServiceModules:   modules.NewModulesService(serverCore),
 		ServiceEntities:  entities.NewEntitiesService(serverCore),
 		ServiceTags:      tags.NewTagsService(serverCore),
+		ServiceUsers:     users.NewUsersService(serverCore),
+		ServiceMenus:     menus.NewMenusService(serverCore),
 		Config:           serverCore.Config,
 		Store:            serverCore.Store,
 		TaskDistributor:  serverCore.TaskDistributor,

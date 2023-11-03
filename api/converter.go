@@ -15,7 +15,7 @@ import (
 	"path"
 )
 
-func convertImage(dbImage *db.Image) *pb.Image {
+func ConvertImage(dbImage *db.Image) *pb.Image {
 	pbImage := &pb.Image{
 		Id:          dbImage.ID,
 		ImgGuid:     dbImage.ImgGuid.UUID.String(),
@@ -31,7 +31,7 @@ func convertImage(dbImage *db.Image) *pb.Image {
 	return pbImage
 }
 
-func convertUser(user db.User, img *pb.Image) *pb.User {
+func ConvertUser(user db.User, img *pb.Image) *pb.User {
 	pbUser := &pb.User{
 		Id:                user.ID,
 		Username:          user.Username,
@@ -49,21 +49,21 @@ func convertUser(user db.User, img *pb.Image) *pb.User {
 	return pbUser
 }
 
-func convertUserGetImage(server *Server, ctx context.Context, user db.User) *pb.User {
-	pbUser := convertUser(user, nil)
+func ConvertUserGetImage(server *Server, ctx context.Context, user db.User) *pb.User {
+	pbUser := ConvertUser(user, nil)
 
 	if user.ImgID.Valid == true {
 		img, err := server.Store.GetImageById(ctx, *pbUser.ImgId)
 		if err != nil {
 			return nil
 		}
-		pbUser.Img = convertImage(&img)
+		pbUser.Img = ConvertImage(&img)
 	}
 
 	return pbUser
 }
 
-func convertViewUser(user db.ViewUser) *pb.ViewUser {
+func ConvertViewUser(user db.ViewUser) *pb.ViewUser {
 	pbUser := &pb.ViewUser{
 		Id:                user.ID,
 		Username:          user.Username,
@@ -97,7 +97,7 @@ func convertViewUser(user db.ViewUser) *pb.ViewUser {
 	return pbUser
 }
 
-func convertViewUserToUser(user db.ViewUser) db.User {
+func ConvertViewUserToUser(user db.ViewUser) db.User {
 	dbUser := db.User{
 		ID:                 user.ID,
 		Username:           user.Username,
@@ -112,7 +112,7 @@ func convertViewUserToUser(user db.ViewUser) db.User {
 	return dbUser
 }
 
-func convertUserRowWithImage(user db.GetUsersRow) *pb.User {
+func ConvertUserRowWithImage(user db.GetUsersRow) *pb.User {
 	pbUser := &pb.User{
 		Id:                user.ID,
 		Username:          user.Username,
@@ -138,7 +138,7 @@ func convertUserRowWithImage(user db.GetUsersRow) *pb.User {
 	return pbUser
 }
 
-func convertChatMessage(msg db.GetChatMessagesRow) *pb.ChatMessage {
+func ConvertChatMessage(msg db.GetChatMessagesRow) *pb.ChatMessage {
 	pbMessage := &pb.ChatMessage{
 		Id:        msg.ChatID,
 		UserId:    msg.UserID,
@@ -150,7 +150,7 @@ func convertChatMessage(msg db.GetChatMessagesRow) *pb.ChatMessage {
 	return pbMessage
 }
 
-func convertEvaluationVote(evaluationVote db.EvaluationVote) *pb.EvaluationVote {
+func ConvertEvaluationVote(evaluationVote db.EvaluationVote) *pb.EvaluationVote {
 	pbEvaluationVote := &pb.EvaluationVote{
 		EvaluationId: evaluationVote.EvaluationID,
 		UserId:       evaluationVote.UserID,
@@ -162,7 +162,7 @@ func convertEvaluationVote(evaluationVote db.EvaluationVote) *pb.EvaluationVote 
 	return pbEvaluationVote
 }
 
-func convertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb.UploadImageResponse, imgTypeId ImageTypeIds, filename string, userId int32) (db.CreateImageParams, error) {
+func ConvertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb.UploadImageResponse, imgTypeId ImageTypeIds, filename string, userId int32) (db.CreateImageParams, error) {
 	nullImgTypeId := sql.NullInt32{
 		Int32: int32(imgTypeId),
 		Valid: true,
@@ -205,7 +205,7 @@ func convertCloudflareImgToDb(server *Server, ctx context.Context, uploadImg *pb
 	return rsp, nil
 }
 
-func convertWorld(world db.ViewWorld) *pb.World {
+func ConvertWorld(world db.ViewWorld) *pb.World {
 	pbWorld := &pb.World{
 		Id:               world.ID,
 		Name:             world.Name,
@@ -226,21 +226,18 @@ func convertWorld(world db.ViewWorld) *pb.World {
 	return pbWorld
 }
 
-func convertWorldOfUser(world db.GetWorldsOfUserRow) *pb.World {
+func ConvertWorldOfUser(world db.ViewWorld) *pb.World {
 	pbWorld := &pb.World{
-		Id:                    world.ID,
-		Name:                  world.Name,
-		Public:                world.Public,
-		CreatedAt:             timestamppb.New(world.CreatedAt),
-		ShortDescription:      world.ShortDescription,
-		BasedOn:               world.BasedOn,
-		ImageAvatar:           world.ImageAvatar.String,
-		ImageThumbnail:        world.ImageThumbnail.String,
-		ImageHeader:           world.ImageHeader.String,
-		Tags:                  world.Tags,
-		ActivityPostCount:     world.ActivityPostCount,
-		ActivityQuestCount:    world.ActivityQuestCount,
-		ActivityResourceCount: world.ActivityResourceCount,
+		Id:               world.ID,
+		Name:             world.Name,
+		Public:           world.Public,
+		CreatedAt:        timestamppb.New(world.CreatedAt),
+		ShortDescription: world.ShortDescription,
+		BasedOn:          world.BasedOn,
+		ImageAvatar:      world.ImageAvatar.String,
+		ImageThumbnail:   world.ImageThumbnail.String,
+		ImageHeader:      world.ImageHeader.String,
+		Tags:             world.Tags,
 	}
 
 	if world.DescriptionPostID.Valid == true {

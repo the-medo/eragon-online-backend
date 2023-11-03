@@ -55,7 +55,7 @@ func (server *Server) GetImages(ctx context.Context, req *pb.GetImagesRequest) (
 	}
 
 	for i, image := range images {
-		rsp.Images[i] = convertImage(&image)
+		rsp.Images[i] = ConvertImage(&image)
 	}
 
 	return rsp, nil

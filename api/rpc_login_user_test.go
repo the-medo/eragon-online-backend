@@ -17,8 +17,8 @@ import (
 
 func TestLoginUserAPI(t *testing.T) {
 	ctx := grpc.NewContextWithServerTransportStream(context.Background(), &mockServerTransportStream{})
-	user, password := randomUser(t)
-	viewUser := randomViewUser(t, user)
+	user, password := RandomUser(t)
+	viewUser := RandomViewUser(t, user)
 
 	testCases := []struct {
 		name          string
@@ -47,7 +47,7 @@ func TestLoginUserAPI(t *testing.T) {
 					Return(db.Session{}, nil)
 			},
 			checkResponse: func(t *testing.T, res *pb.LoginUserResponse, err error) {
-				requireMatchUser(t, *res.GetUser(), user)
+				RequireMatchUser(t, *res.GetUser(), user)
 			},
 		},
 		{
@@ -173,7 +173,7 @@ func TestLoginUserAPI(t *testing.T) {
 			store := mockdb.NewMockStore(storeCtrl)
 
 			tc.buildStubs(store)
-			server := newTestServer(t, store, nil)
+			server := NewTestServer(t, store, nil)
 
 			res, err := server.LoginUser(ctx, tc.req)
 			tc.checkResponse(t, res, err)
