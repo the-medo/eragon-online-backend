@@ -17,7 +17,7 @@ func (server *ServiceMaps) UpdateMap(ctx context.Context, request *pb.UpdateMapR
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	err := server.CheckMapAccess(ctx, request.GetMapId(), false)
+	_, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeMap, request.GetMapId(), nil)
 	if err != nil {
 		return nil, err
 	}

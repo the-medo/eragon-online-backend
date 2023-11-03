@@ -17,7 +17,7 @@ message GetMapsResponse {
 }
 
 message CreateMapRequest {
-  Module module = 1;
+  int32 moduleId = 1;
   string name = 2;
   optional string type = 3;
   optional string description = 4;

@@ -2,6 +2,7 @@ package maps
 
 import (
 	"context"
+	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
@@ -15,13 +16,8 @@ func (server *ServiceMaps) GetMapPinTypes(ctx context.Context, request *pb.GetMa
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	err := server.CheckMapAccess(ctx, request.GetMapId(), false)
-	if err != nil {
-		return nil, err
-	}
-
 	// currently works only for world map, not quest maps
-	pinTypeRows, err := server.Store.GetMapPinTypesForMap(ctx, request.GetMapId())
+	pinTypeRows, err := server.Store.GetMapPinTypesForMap(ctx, sql.NullInt32{Int32: request.GetMapId(), Valid: true})
 	if err != nil {
 		return nil, err
 	}

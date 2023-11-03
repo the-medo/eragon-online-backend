@@ -9,8 +9,6 @@ import (
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapRequest) (*pb.CreateMapResponse, error) {
@@ -19,18 +17,15 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	if request.GetModule().WorldId != nil {
-		_, err := server.CheckWorldPermissions(ctx, request.GetModule().GetWorldId(), false)
-		if err != nil {
-			return nil, status.Errorf(codes.PermissionDenied, "failed to create map: %v", err)
-		}
-	}
-
-	if request.GetModule().QuestId != nil {
-		return nil, status.Error(codes.Internal, "creating maps for quests is not implemented yet")
+	_, err := server.CheckModuleIdPermissions(ctx, request.GetModuleId(), nil)
+	if err != nil {
+		return nil, err
 	}
 
 	img, err := server.Store.GetImageById(ctx, request.GetLayerImageId())
+	if err != nil {
+		return nil, err
+	}
 
 	argMap := db.CreateMapParams{
 		Name: request.GetName(),
@@ -55,16 +50,16 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 		return nil, err
 	}
 
-	if request.GetModule().WorldId != nil {
-		arg := db.CreateWorldMapParams{
-			WorldID: request.GetModule().GetWorldId(),
-			MapID:   newMap.ID,
-		}
-
-		_, err = server.Store.CreateWorldMap(ctx, arg)
-		if err != nil {
-			return nil, err
-		}
+	_, err = server.Store.CreateEntity(ctx, db.CreateEntityParams{
+		Type:     db.EntityTypeMap,
+		ModuleID: request.GetModuleId(),
+		MapID: sql.NullInt32{
+			Int32: newMap.ID,
+			Valid: true,
+		},
+	})
+	if err != nil {
+		return nil, err
 	}
 
 	argMapLayer := db.CreateMapLayerParams{
@@ -102,8 +97,8 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 
 func validateCreateMap(req *pb.CreateMapRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
-	if err := validator.ValidateMapModule(req.Module); err != nil {
-		violations = append(violations, e.FieldViolation("modules", err))
+	if err := validator.ValidateUniversalId(req.GetModuleId()); err != nil {
+		violations = append(violations, e.FieldViolation("module_id", err))
 	}
 
 	if err := validator.ValidateUniversalName(req.GetName()); err != nil {

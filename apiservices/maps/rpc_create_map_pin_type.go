@@ -17,12 +17,12 @@ func (server *ServiceMaps) CreateMapPinType(ctx context.Context, request *pb.Cre
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	err := server.CheckMapAccess(ctx, request.GetMapId(), false)
+	_, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeMap, request.GetMapId(), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	mapPinTypeGroupId, err := server.Store.GetMapPinTypeGroupIdForMap(ctx, request.GetMapId())
+	mapPinTypeGroupId, err := server.Store.GetMapPinTypeGroupIdForMap(ctx, sql.NullInt32{Int32: request.GetMapId(), Valid: true})
 	if err != nil {
 		return nil, err
 	}

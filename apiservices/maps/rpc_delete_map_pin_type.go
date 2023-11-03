@@ -3,6 +3,7 @@ package maps
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/e"
+	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -15,7 +16,7 @@ func (server *ServiceMaps) DeleteMapPinType(ctx context.Context, request *pb.Del
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	err := server.CheckMapAccess(ctx, request.GetMapId(), false)
+	_, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeMap, request.GetMapId(), nil)
 	if err != nil {
 		return nil, err
 	}
