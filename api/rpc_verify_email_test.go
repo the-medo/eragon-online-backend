@@ -140,7 +140,7 @@ func TestVerifyEmailAPI(t *testing.T) {
 				store.EXPECT().
 					VerifyEmailTx(gomock.Any(), gomock.Any()).
 					Times(1).
-					Return(db.VerifyEmailTxResult{}, status.Error(codes.Internal, "failed to verify email"))
+					Return(db.VerifyEmailTxResult{}, status.Error(codes.Internal, "failed to auth email"))
 			},
 			checkResponse: func(t *testing.T, res *pb.VerifyEmailResponse, err error) {
 				println(res, err)
@@ -160,7 +160,7 @@ func TestVerifyEmailAPI(t *testing.T) {
 				store.EXPECT().
 					VerifyEmailTx(gomock.Any(), gomock.Any()).
 					Times(1).
-					Return(db.VerifyEmailTxResult{}, status.Error(codes.Internal, "failed to verify email"))
+					Return(db.VerifyEmailTxResult{}, status.Error(codes.Internal, "failed to auth email"))
 			},
 			checkResponse: func(t *testing.T, res *pb.VerifyEmailResponse, err error) {
 				println(res, err)

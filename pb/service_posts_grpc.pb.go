@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,6 +20,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Posts_GetPostTypes_FullMethodName       = "/pb.Posts/GetPostTypes"
 	Posts_GetPostsByModule_FullMethodName   = "/pb.Posts/GetPostsByModule"
 	Posts_GetPostById_FullMethodName        = "/pb.Posts/GetPostById"
 	Posts_GetPostHistory_FullMethodName     = "/pb.Posts/GetPostHistory"
@@ -32,6 +34,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostsClient interface {
+	GetPostTypes(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetPostTypesResponse, error)
 	GetPostsByModule(ctx context.Context, in *GetPostsByModuleRequest, opts ...grpc.CallOption) (*GetPostsByModuleResponse, error)
 	GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*Post, error)
 	GetPostHistory(ctx context.Context, in *GetPostHistoryRequest, opts ...grpc.CallOption) (*GetPostHistoryResponse, error)
@@ -47,6 +50,15 @@ type postsClient struct {
 
 func NewPostsClient(cc grpc.ClientConnInterface) PostsClient {
 	return &postsClient{cc}
+}
+
+func (c *postsClient) GetPostTypes(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetPostTypesResponse, error) {
+	out := new(GetPostTypesResponse)
+	err := c.cc.Invoke(ctx, Posts_GetPostTypes_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *postsClient) GetPostsByModule(ctx context.Context, in *GetPostsByModuleRequest, opts ...grpc.CallOption) (*GetPostsByModuleResponse, error) {
@@ -116,6 +128,7 @@ func (c *postsClient) DeletePost(ctx context.Context, in *DeletePostRequest, opt
 // All implementations must embed UnimplementedPostsServer
 // for forward compatibility
 type PostsServer interface {
+	GetPostTypes(context.Context, *emptypb.Empty) (*GetPostTypesResponse, error)
 	GetPostsByModule(context.Context, *GetPostsByModuleRequest) (*GetPostsByModuleResponse, error)
 	GetPostById(context.Context, *GetPostByIdRequest) (*Post, error)
 	GetPostHistory(context.Context, *GetPostHistoryRequest) (*GetPostHistoryResponse, error)
@@ -130,6 +143,9 @@ type PostsServer interface {
 type UnimplementedPostsServer struct {
 }
 
+func (UnimplementedPostsServer) GetPostTypes(context.Context, *emptypb.Empty) (*GetPostTypesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPostTypes not implemented")
+}
 func (UnimplementedPostsServer) GetPostsByModule(context.Context, *GetPostsByModuleRequest) (*GetPostsByModuleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostsByModule not implemented")
 }
@@ -162,6 +178,24 @@ type UnsafePostsServer interface {
 
 func RegisterPostsServer(s grpc.ServiceRegistrar, srv PostsServer) {
 	s.RegisterService(&Posts_ServiceDesc, srv)
+}
+
+func _Posts_GetPostTypes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostsServer).GetPostTypes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Posts_GetPostTypes_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostsServer).GetPostTypes(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Posts_GetPostsByModule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -297,6 +331,10 @@ var Posts_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.Posts",
 	HandlerType: (*PostsServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetPostTypes",
+			Handler:    _Posts_GetPostTypes_Handler,
+		},
 		{
 			MethodName: "GetPostsByModule",
 			Handler:    _Posts_GetPostsByModule_Handler,

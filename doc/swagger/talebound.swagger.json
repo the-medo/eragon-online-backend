@@ -11,6 +11,9 @@
   },
   "tags": [
     {
+      "name": "Auth"
+    },
+    {
       "name": "Entities"
     },
     {
@@ -32,9 +35,6 @@
       "name": "Modules"
     },
     {
-      "name": "PostTypes"
-    },
-    {
       "name": "Posts"
     },
     {
@@ -42,9 +42,6 @@
     },
     {
       "name": "Users"
-    },
-    {
-      "name": "Verify"
     },
     {
       "name": "Worlds"
@@ -57,6 +54,40 @@
     "application/json"
   ],
   "paths": {
+    "/auth": {
+      "post": {
+        "summary": "Verify email",
+        "description": "auth user email",
+        "operationId": "Auth_VerifyEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbVerifyEmailResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbVerifyEmailRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
     "/entities/groups": {
       "post": {
         "summary": "Create entity group",
@@ -2414,7 +2445,7 @@
       "get": {
         "summary": "Get post types",
         "description": "get post types with info (draftable, privatable)",
-        "operationId": "PostTypes_GetPostTypes",
+        "operationId": "Posts_GetPostTypes",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2430,7 +2461,7 @@
           }
         },
         "tags": [
-          "PostTypes"
+          "Posts"
         ]
       }
     },
@@ -3411,41 +3442,7 @@
         ]
       }
     },
-    "/users/reset/send-code": {
-      "post": {
-        "summary": "Request password reset",
-        "description": "in case a user forgot their password, they can request a password reset using this endpoint",
-        "operationId": "Users_ResetPasswordSendCode",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbResetPasswordSendCodeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbResetPasswordSendCodeRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Users"
-        ]
-      }
-    },
-    "/users/reset/verify-code": {
+    "/users/reset/auth-code": {
       "post": {
         "summary": "Confirm password reset",
         "description": "in case a user forgot their password, they can confirm the password reset using this endpoint",
@@ -3479,7 +3476,7 @@
         ]
       }
     },
-    "/users/reset/verify-code-validity": {
+    "/users/reset/auth-code-validity": {
       "get": {
         "summary": "Validate reset password secret code",
         "description": "validate reset password secret code",
@@ -3504,6 +3501,40 @@
             "in": "query",
             "required": false,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/reset/send-code": {
+      "post": {
+        "summary": "Request password reset",
+        "description": "in case a user forgot their password, they can request a password reset using this endpoint",
+        "operationId": "Users_ResetPasswordSendCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordSendCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordSendCodeRequest"
+            }
           }
         ],
         "tags": [
@@ -4063,40 +4094,6 @@
         ],
         "tags": [
           "Users"
-        ]
-      }
-    },
-    "/verify": {
-      "post": {
-        "summary": "Verify email",
-        "description": "verify user email",
-        "operationId": "Verify_VerifyEmail",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbVerifyEmailResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbVerifyEmailRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Verify"
         ]
       }
     },

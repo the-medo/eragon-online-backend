@@ -2,16 +2,20 @@ package api
 
 import (
 	"fmt"
+	"github.com/the-medo/talebound-backend/apiservices/auth"
 	"github.com/the-medo/talebound-backend/apiservices/entities"
+	"github.com/the-medo/talebound-backend/apiservices/evaluations"
+	"github.com/the-medo/talebound-backend/apiservices/images"
 	"github.com/the-medo/talebound-backend/apiservices/locations"
 	"github.com/the-medo/talebound-backend/apiservices/maps"
 	"github.com/the-medo/talebound-backend/apiservices/menus"
 	"github.com/the-medo/talebound-backend/apiservices/modules"
+	"github.com/the-medo/talebound-backend/apiservices/posts"
 	"github.com/the-medo/talebound-backend/apiservices/srv"
 	"github.com/the-medo/talebound-backend/apiservices/tags"
 	"github.com/the-medo/talebound-backend/apiservices/users"
+	"github.com/the-medo/talebound-backend/apiservices/worlds"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
-	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/token"
 	"github.com/the-medo/talebound-backend/util"
 	"github.com/the-medo/talebound-backend/worker"
@@ -26,12 +30,11 @@ type Server struct {
 	*tags.ServiceTags
 	*users.ServiceUsers
 	*menus.ServiceMenus
-	pb.UnimplementedEvaluationsServer
-	pb.UnimplementedImagesServer
-	pb.UnimplementedPostTypesServer
-	pb.UnimplementedPostsServer
-	pb.UnimplementedVerifyServer
-	pb.UnimplementedWorldsServer
+	*posts.ServicePosts
+	*evaluations.ServiceEvaluations
+	*images.ServiceImages
+	*auth.ServiceAuth
+	*worlds.ServiceWorlds
 	Config          util.Config
 	Store           db.Store
 	TaskDistributor worker.TaskDistributor
@@ -47,17 +50,22 @@ func NewServer(config util.Config, store db.Store, taskDistributor worker.TaskDi
 	serverCore := srv.NewServiceCore(config, store, taskDistributor, tokenMaker)
 
 	server := &Server{
-		ServiceLocations: locations.NewLocationsService(serverCore),
-		ServiceMaps:      maps.NewMapsService(serverCore),
-		ServiceModules:   modules.NewModulesService(serverCore),
-		ServiceEntities:  entities.NewEntitiesService(serverCore),
-		ServiceTags:      tags.NewTagsService(serverCore),
-		ServiceUsers:     users.NewUsersService(serverCore),
-		ServiceMenus:     menus.NewMenusService(serverCore),
-		Config:           serverCore.Config,
-		Store:            serverCore.Store,
-		TaskDistributor:  serverCore.TaskDistributor,
-		TokenMaker:       serverCore.TokenMaker,
+		ServiceLocations:   locations.NewLocationsService(serverCore),
+		ServiceMaps:        maps.NewMapsService(serverCore),
+		ServiceModules:     modules.NewModulesService(serverCore),
+		ServiceEntities:    entities.NewEntitiesService(serverCore),
+		ServiceTags:        tags.NewTagsService(serverCore),
+		ServiceUsers:       users.NewUsersService(serverCore),
+		ServiceMenus:       menus.NewMenusService(serverCore),
+		ServicePosts:       posts.NewPostsService(serverCore),
+		ServiceEvaluations: evaluations.NewEvaluationsService(serverCore),
+		ServiceImages:      images.NewImagesService(serverCore),
+		ServiceAuth:        auth.NewAuthService(serverCore),
+		ServiceWorlds:      worlds.NewWorldsService(serverCore),
+		Config:             serverCore.Config,
+		Store:              serverCore.Store,
+		TaskDistributor:    serverCore.TaskDistributor,
+		TokenMaker:         serverCore.TokenMaker,
 	}
 
 	return server, nil

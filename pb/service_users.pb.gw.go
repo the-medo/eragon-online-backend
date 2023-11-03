@@ -1475,7 +1475,7 @@ func RegisterUsersHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Users/ResetPasswordVerifyCode", runtime.WithHTTPPathPattern("/users/reset/verify-code"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Users/ResetPasswordVerifyCode", runtime.WithHTTPPathPattern("/users/reset/auth-code"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1500,7 +1500,7 @@ func RegisterUsersHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Users/ResetPasswordVerifyCodeValidity", runtime.WithHTTPPathPattern("/users/reset/verify-code-validity"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Users/ResetPasswordVerifyCodeValidity", runtime.WithHTTPPathPattern("/users/reset/auth-code-validity"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2031,7 +2031,7 @@ func RegisterUsersHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Users/ResetPasswordVerifyCode", runtime.WithHTTPPathPattern("/users/reset/verify-code"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Users/ResetPasswordVerifyCode", runtime.WithHTTPPathPattern("/users/reset/auth-code"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2053,7 +2053,7 @@ func RegisterUsersHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Users/ResetPasswordVerifyCodeValidity", runtime.WithHTTPPathPattern("/users/reset/verify-code-validity"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Users/ResetPasswordVerifyCodeValidity", runtime.WithHTTPPathPattern("/users/reset/auth-code-validity"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2293,9 +2293,9 @@ var (
 
 	pattern_Users_ResetPasswordSendCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"users", "reset", "send-code"}, ""))
 
-	pattern_Users_ResetPasswordVerifyCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"users", "reset", "verify-code"}, ""))
+	pattern_Users_ResetPasswordVerifyCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"users", "reset", "auth-code"}, ""))
 
-	pattern_Users_ResetPasswordVerifyCodeValidity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"users", "reset", "verify-code-validity"}, ""))
+	pattern_Users_ResetPasswordVerifyCodeValidity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"users", "reset", "auth-code-validity"}, ""))
 
 	pattern_Users_CreateOrUpdateEvaluationVote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"users", "userId", "evaluation-vote"}, ""))
 

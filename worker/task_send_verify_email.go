@@ -64,21 +64,21 @@ func (processor *RedisTaskProcessor) ProcessTaskSendVerifyEmail(ctx context.Cont
 		SecretCode: util.RandomString(32),
 	})
 	if err != nil {
-		return fmt.Errorf("failed to create verify email: %w", err)
+		return fmt.Errorf("failed to create auth email: %w", err)
 	}
 
 	subject := "Welcome to Talebound!"
 
-	verifyUrl := fmt.Sprintf("%s/verify?id=%d&secret_code=%s", processor.config.FullDomain, verifyEmail.ID, verifyEmail.SecretCode)
+	verifyUrl := fmt.Sprintf("%s/auth?id=%d&secret_code=%s", processor.config.FullDomain, verifyEmail.ID, verifyEmail.SecretCode)
 
 	emailContent := fmt.Sprintf(EmailTemplate, fmt.Sprintf(`
 		Hello <b>%s</b>,<br/><br/>
 
                 Welcome to <b>Talebound</b>, the ultimate platform for text-based role-playing games and immersive storytelling experiences! We're thrilled to have you join our community of dreamers, creators, and adventurers.<br/><br/>
 
-                Before you can fully enjoy all the features that Talebound has to offer, we need you to verify your email address. By doing so, you help us ensure the security and authenticity of our community.<br/><br/>
+                Before you can fully enjoy all the features that Talebound has to offer, we need you to auth your email address. By doing so, you help us ensure the security and authenticity of our community.<br/><br/>
 
-                Please click the button below to verify your email address:<br/><br/>
+                Please click the button below to auth your email address:<br/><br/>
 
                 <div class="button-wrapper">
                     <a href="%s" target="_blank" class="button">Verify email</a>

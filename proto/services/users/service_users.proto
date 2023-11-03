@@ -150,7 +150,7 @@ service Users {
 
   rpc ResetPasswordVerifyCode(ResetPasswordVerifyCodeRequest) returns (ResetPasswordVerifyCodeResponse) {
     option (google.api.http) = {
-      post: "/users/reset/verify-code"
+      post: "/users/reset/auth-code"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -161,7 +161,7 @@ service Users {
 
   rpc ResetPasswordVerifyCodeValidity(ResetPasswordVerifyCodeValidityRequest) returns (ResetPasswordVerifyCodeValidityResponse) {
     option (google.api.http) = {
-      get: "/users/reset/verify-code-validity"
+      get: "/users/reset/auth-code-validity"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "validate reset password secret code";

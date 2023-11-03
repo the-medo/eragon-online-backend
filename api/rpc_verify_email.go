@@ -22,7 +22,7 @@ func (server *Server) VerifyEmail(ctx context.Context, req *pb.VerifyEmailReques
 		SecretCode: req.GetSecretCode(),
 	})
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to verify email: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to auth email: %v", err)
 	}
 
 	rsp := &pb.VerifyEmailResponse{
