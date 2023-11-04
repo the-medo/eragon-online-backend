@@ -3,7 +3,7 @@ package worlds
 import (
 	"context"
 	"github.com/lib/pq"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -13,13 +13,13 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) CreateWorld(ctx context.Context, req *pb.CreateWorldRequest) (*pb.World, error) {
+func (server *ServiceWorlds) CreateWorld(ctx context.Context, req *pb.CreateWorldRequest) (*pb.World, error) {
 	violations := validateCreateWorldRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	authPayload, err := server.authorizeUserCookie(ctx)
+	authPayload, err := server.AuthorizeUserCookie(ctx)
 	if err != nil {
 		return nil, e.UnauthenticatedError(err)
 	}
@@ -44,7 +44,7 @@ func (server *api.Server) CreateWorld(ctx context.Context, req *pb.CreateWorldRe
 		return nil, status.Errorf(codes.Internal, "failed to create world: %s", err)
 	}
 
-	rsp := api.ConvertWorld(txResult)
+	rsp := converters.ConvertViewWorld(txResult)
 
 	return rsp, nil
 }

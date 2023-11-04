@@ -3,7 +3,7 @@ package worlds
 import (
 	"context"
 	"database/sql"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/consts"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) UpdateWorldIntroduction(ctx context.Context, req *pb.UpdateWorldIntroductionRequest) (*pb.Post, error) {
+func (server *ServiceWorlds) UpdateWorldIntroduction(ctx context.Context, req *pb.UpdateWorldIntroductionRequest) (*pb.Post, error) {
 	violations := validateUpdateWorldIntroductionRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -77,7 +77,7 @@ func (server *api.Server) UpdateWorldIntroduction(ctx context.Context, req *pb.U
 			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 		}
 
-		return api.convertPostAndPostType(viewPost, postType), nil
+		return converters.ConvertPostAndPostType(viewPost, postType), nil
 	} else {
 		//update existing post
 		arg := db.UpdatePostParams{
@@ -101,7 +101,7 @@ func (server *api.Server) UpdateWorldIntroduction(ctx context.Context, req *pb.U
 			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 		}
 
-		return api.convertPostAndPostType(viewPost, postType), nil
+		return converters.ConvertPostAndPostType(viewPost, postType), nil
 	}
 }
 

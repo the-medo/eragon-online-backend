@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 	"database/sql"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -67,9 +67,9 @@ func (server *ServiceAuth) LoginUser(ctx context.Context, req *pb.LoginUserReque
 		return nil, status.Errorf(codes.Internal, "failed to create session: %v", err)
 	}
 
-	user := api.ConvertViewUserToUser(viewUser)
+	user := converters.ConvertViewUserToUser(viewUser)
 	rsp := &pb.LoginUserResponse{
-		User:                  api.ConvertUserGetImage(server, ctx, user),
+		User:                  converters.ConvertUserGetImage(server.ServiceCore, ctx, user),
 		SessionId:             session.ID.String(),
 		AccessTokenExpiresAt:  timestamppb.New(accessPayload.ExpiredAt),
 		RefreshTokenExpiresAt: timestamppb.New(refreshPayload.ExpiredAt),

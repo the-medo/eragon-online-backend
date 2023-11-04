@@ -3,7 +3,7 @@ package users
 import (
 	"context"
 	"database/sql"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/consts"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
@@ -14,13 +14,13 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) UpdateUserIntroduction(ctx context.Context, req *pb.UpdateUserIntroductionRequest) (*pb.Post, error) {
+func (server *ServiceUsers) UpdateUserIntroduction(ctx context.Context, req *pb.UpdateUserIntroductionRequest) (*pb.Post, error) {
 	violations := validateUpdateUserIntroductionRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	authPayload, err := server.authorizeUserCookie(ctx)
+	authPayload, err := server.AuthorizeUserCookie(ctx)
 	if err != nil {
 		return nil, e.UnauthenticatedError(err)
 	}
@@ -77,7 +77,7 @@ func (server *api.Server) UpdateUserIntroduction(ctx context.Context, req *pb.Up
 			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 		}
 
-		return api.convertPostAndPostType(viewPost, postType), nil
+		return converters.ConvertPostAndPostType(viewPost, postType), nil
 	} else {
 		//update existing post
 		arg := db.UpdatePostParams{
@@ -105,7 +105,7 @@ func (server *api.Server) UpdateUserIntroduction(ctx context.Context, req *pb.Up
 			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 		}
 
-		return api.convertPostAndPostType(viewPost, postType), nil
+		return converters.ConvertPostAndPostType(viewPost, postType), nil
 	}
 }
 

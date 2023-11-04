@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/rs/zerolog/log"
 	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -18,13 +19,13 @@ Uploads an image to Cloudflare and inserts it into the DB with image type Defaul
   - 2. upload to cloudflare => get cloudflareId
   - 3. insert into DB `{request.filename}-{userId}_{cloudflareId}`
 */
-func (server *api.Server) UploadDefaultImage(ctx context.Context, request *pb.UploadImageRequest) (*pb.Image, error) {
+func (server *ServiceImages) UploadDefaultImage(ctx context.Context, request *pb.UploadImageRequest) (*pb.Image, error) {
 	violations := validateUploadDefaultImage(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	authPayload, err := server.authorizeUserCookie(ctx)
+	authPayload, err := server.AuthorizeUserCookie(ctx)
 	if err != nil {
 		return nil, e.UnauthenticatedError(err)
 	}
@@ -38,7 +39,7 @@ func (server *api.Server) UploadDefaultImage(ctx context.Context, request *pb.Up
 		return nil, err
 	}
 
-	return api.ConvertImage(dbImg), nil
+	return converters.ConvertImage(dbImg), nil
 }
 
 func validateUploadDefaultImage(req *pb.UploadImageRequest) (violations []*errdetails.BadRequest_FieldViolation) {

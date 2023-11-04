@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/hibiken/asynq"
 	"github.com/lib/pq"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -61,7 +61,7 @@ func (server *ServiceUsers) CreateUser(ctx context.Context, req *pb.CreateUserRe
 	}
 
 	rsp := &pb.CreateUserResponse{
-		User: api.ConvertUser(txResult.User, &pb.Image{}),
+		User: converters.ConvertUser(txResult.User, &pb.Image{}),
 	}
 
 	return rsp, nil

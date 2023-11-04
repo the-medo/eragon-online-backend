@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"context"
 	cloudflareGo "github.com/cloudflare/cloudflare-go"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/e"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -19,13 +19,13 @@ import (
 	"io"
 )
 
-func (server *api.Server) UploadImage(ctx context.Context, request *pb.UploadImageRequest) (*pb.UploadImageResponse, error) {
+func UploadImage(ctx context.Context, request *pb.UploadImageRequest, service *srv.ServiceCore) (*pb.UploadImageResponse, error) {
 	violations := validateUploadImageRequest(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	cloudflare, err := cloudflareGo.NewWithAPIToken(server.Config.CloudflareApiToken)
+	cloudflare, err := cloudflareGo.NewWithAPIToken(service.Config.CloudflareApiToken)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create cloudflare client: %v", err)
 	}
@@ -61,7 +61,7 @@ func (server *api.Server) UploadImage(ctx context.Context, request *pb.UploadIma
 
 	resourceContainer := cloudflareGo.ResourceContainer{
 		Level:      cloudflareGo.AccountRouteLevel,
-		Identifier: server.Config.CloudflareAccountId,
+		Identifier: service.Config.CloudflareAccountId,
 		Type:       cloudflareGo.AccountType,
 	}
 

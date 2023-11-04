@@ -3,6 +3,7 @@ package worlds
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -26,7 +27,7 @@ func (server *api.Server) GetWorldsOfCreator(ctx context.Context, req *pb.GetWor
 
 	for i, world := range worldsWithAdminInfo {
 		rsp.Worlds[i] = &pb.WorldOfCreatorResponse{
-			World:      api.ConvertWorldOfUser(world),
+			World:      converters.ConvertViewWorld(world),
 			SuperAdmin: world.WorldSuperAdmin,
 		}
 	}

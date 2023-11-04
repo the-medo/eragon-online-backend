@@ -17,7 +17,8 @@ import (
 )
 
 func TestLoginUserAPI(t *testing.T) {
-	ctx := grpc.NewContextWithServerTransportStream(context.Background(), &api.mockServerTransportStream{})
+	test := api.MockServerTransportStream{}
+	ctx := grpc.NewContextWithServerTransportStream(context.Background(), &test)
 	user, password := api.RandomUser(t)
 	viewUser := api.RandomViewUser(t, user)
 

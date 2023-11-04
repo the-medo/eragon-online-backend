@@ -2,7 +2,7 @@ package posts
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -12,13 +12,13 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.Post, error) {
+func (server *ServicePosts) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.Post, error) {
 	violations := validateCreatePostRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	authPayload, err := server.authorizeUserCookie(ctx)
+	authPayload, err := server.AuthorizeUserCookie(ctx)
 	if err != nil {
 		return nil, e.UnauthenticatedError(err)
 	}
@@ -67,7 +67,7 @@ func (server *api.Server) CreatePost(ctx context.Context, req *pb.CreatePostRequ
 		return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 	}
 
-	rsp := api.convertPostAndPostType(viewPost, postType)
+	rsp := converters.ConvertPostAndPostType(viewPost, postType)
 
 	return rsp, nil
 }

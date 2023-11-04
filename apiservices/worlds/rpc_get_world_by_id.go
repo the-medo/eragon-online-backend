@@ -2,14 +2,14 @@ package worlds
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *api.Server) GetWorldById(ctx context.Context, req *pb.GetWorldByIdRequest) (*pb.World, error) {
+func (server *ServiceWorlds) GetWorldById(ctx context.Context, req *pb.GetWorldByIdRequest) (*pb.World, error) {
 	violations := validateGetWorldById(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -20,7 +20,7 @@ func (server *api.Server) GetWorldById(ctx context.Context, req *pb.GetWorldById
 		return nil, err
 	}
 
-	rsp := api.ConvertWorld(world)
+	rsp := converters.ConvertViewWorld(world)
 
 	return rsp, nil
 }

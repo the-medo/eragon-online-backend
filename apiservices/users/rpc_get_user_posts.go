@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -13,7 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) GetUserPosts(ctx context.Context, req *pb.GetUserPostsRequest) (*pb.GetUserPostsResponse, error) {
+func (server *ServiceUsers) GetUserPosts(ctx context.Context, req *pb.GetUserPostsRequest) (*pb.GetUserPostsResponse, error) {
 	violations := validateGetUserPostsRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -21,7 +22,7 @@ func (server *api.Server) GetUserPosts(ctx context.Context, req *pb.GetUserPosts
 
 	limit, offset := api.GetDefaultQueryBoundaries(req.GetLimit(), req.GetOffset())
 
-	authPayload, err := server.authorizeUserCookie(ctx)
+	authPayload, err := server.AuthorizeUserCookie(ctx)
 	if err != nil {
 		return nil, e.UnauthenticatedError(err)
 	}
@@ -53,7 +54,7 @@ func (server *api.Server) GetUserPosts(ctx context.Context, req *pb.GetUserPosts
 	}
 
 	for i, post := range posts {
-		rsp.Posts[i] = api.convertViewPost(post)
+		rsp.Posts[i] = converters.ConvertViewPost(post)
 	}
 
 	return rsp, nil

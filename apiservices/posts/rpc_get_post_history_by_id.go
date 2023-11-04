@@ -2,7 +2,7 @@ package posts
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -11,13 +11,13 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) GetPostHistoryById(ctx context.Context, req *pb.GetPostHistoryByIdRequest) (*pb.HistoryPost, error) {
+func (server *ServicePosts) GetPostHistoryById(ctx context.Context, req *pb.GetPostHistoryByIdRequest) (*pb.HistoryPost, error) {
 	violations := validateGetPostHistoryById(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	authPayload, err := server.authorizeUserCookie(ctx)
+	authPayload, err := server.AuthorizeUserCookie(ctx)
 	if err != nil {
 		return nil, e.UnauthenticatedError(err)
 	}
@@ -39,7 +39,7 @@ func (server *api.Server) GetPostHistoryById(ctx context.Context, req *pb.GetPos
 		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
 	}
 
-	rsp := api.convertHistoryPost(post, postType)
+	rsp := converters.ConvertHistoryPost(post, postType)
 
 	return rsp, nil
 }

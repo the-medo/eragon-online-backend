@@ -2,7 +2,7 @@ package evaluations
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) GetEvaluationVotesByUserId(ctx context.Context, req *pb.GetEvaluationVotesByUserIdRequest) (*pb.GetEvaluationVotesByUserIdResponse, error) {
+func (server *ServiceEvaluations) GetEvaluationVotesByUserId(ctx context.Context, req *pb.GetEvaluationVotesByUserIdRequest) (*pb.GetEvaluationVotesByUserIdResponse, error) {
 	violations := validateGetEvaluationVotesByUserId(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -27,7 +27,7 @@ func (server *api.Server) GetEvaluationVotesByUserId(ctx context.Context, req *p
 	}
 
 	for i, evaluationVote := range evaluationVotes {
-		rsp.EvaluationVote[i] = api.ConvertEvaluationVote(evaluationVote)
+		rsp.EvaluationVote[i] = converters.ConvertEvaluationVote(evaluationVote)
 	}
 	return rsp, nil
 }

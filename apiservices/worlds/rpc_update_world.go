@@ -3,7 +3,7 @@ package worlds
 import (
 	"context"
 	"database/sql"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldRequest) (*pb.World, error) {
+func (server *ServiceWorlds) UpdateWorld(ctx context.Context, req *pb.UpdateWorldRequest) (*pb.World, error) {
 	violations := validateUpdateWorldRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -86,7 +86,7 @@ func (server *api.Server) UpdateWorld(ctx context.Context, req *pb.UpdateWorldRe
 		return nil, status.Errorf(codes.Internal, "failed to retrieve updated world: %v", err)
 	}
 
-	rsp := api.ConvertWorld(world)
+	rsp := converters.ConvertViewWorld(world)
 
 	return rsp, nil
 }

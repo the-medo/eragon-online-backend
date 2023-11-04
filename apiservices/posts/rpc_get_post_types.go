@@ -2,14 +2,14 @@ package posts
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (server *api.Server) GetPostTypes(ctx context.Context, req *emptypb.Empty) (*pb.GetPostTypesResponse, error) {
+func (server *ServicePosts) GetPostTypes(ctx context.Context, req *emptypb.Empty) (*pb.GetPostTypesResponse, error) {
 
 	postTypes, err := server.Store.GetPostTypes(ctx)
 	if err != nil {
@@ -21,7 +21,7 @@ func (server *api.Server) GetPostTypes(ctx context.Context, req *emptypb.Empty) 
 	}
 
 	for i, postType := range postTypes {
-		rsp.PostTypes[i] = api.convertPostType(postType)
+		rsp.PostTypes[i] = converters.ConvertPostType(postType)
 	}
 
 	return rsp, nil

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -13,7 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) GetImages(ctx context.Context, req *pb.GetImagesRequest) (*pb.GetImagesResponse, error) {
+func (server *ServiceImages) GetImages(ctx context.Context, req *pb.GetImagesRequest) (*pb.GetImagesResponse, error) {
 	violations := validateGetImagesRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -21,7 +22,7 @@ func (server *api.Server) GetImages(ctx context.Context, req *pb.GetImagesReques
 
 	limit, offset := api.GetDefaultQueryBoundaries(req.GetLimit(), req.GetOffset())
 
-	_, err := server.authorizeUserCookie(ctx)
+	_, err := server.AuthorizeUserCookie(ctx)
 	if err != nil {
 		return nil, e.UnauthenticatedError(err)
 	}
@@ -56,7 +57,7 @@ func (server *api.Server) GetImages(ctx context.Context, req *pb.GetImagesReques
 	}
 
 	for i, image := range images {
-		rsp.Images[i] = api.ConvertImage(&image)
+		rsp.Images[i] = converters.ConvertImage(&image)
 	}
 
 	return rsp, nil

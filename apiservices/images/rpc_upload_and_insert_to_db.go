@@ -3,13 +3,14 @@ package images
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) UploadAndInsertToDb(ctx context.Context, data []byte, imgTypeId api.ImageTypeIds, filename string, userId int32) (*db.Image, error) {
+func (server *ServiceImages) UploadAndInsertToDb(ctx context.Context, data []byte, imgTypeId api.ImageTypeIds, filename string, userId int32) (*db.Image, error) {
 
 	//upload image to cloudflare
 	uploadRequest := &pb.UploadImageRequest{
@@ -18,12 +19,12 @@ func (server *api.Server) UploadAndInsertToDb(ctx context.Context, data []byte, 
 		ImageTypeId: int32(imgTypeId),
 	}
 
-	uploadImg, err := server.UploadImage(ctx, uploadRequest)
+	uploadImg, err := UploadImage(ctx, uploadRequest, server.ServiceCore)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to upload image: %v", err)
 	}
 
-	createImageParams, err := api.ConvertCloudflareImgToDb(server, ctx, uploadImg, imgTypeId, filename, userId)
+	createImageParams, err := converters.ConvertCloudflareImgToDb(server, ctx, uploadImg, imgTypeId, filename, userId)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to convert Cloudflare image to DB: %v", err)
 	}

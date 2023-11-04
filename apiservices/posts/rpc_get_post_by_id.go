@@ -2,7 +2,7 @@ package posts
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) GetPostById(ctx context.Context, req *pb.GetPostByIdRequest) (*pb.Post, error) {
+func (server *ServicePosts) GetPostById(ctx context.Context, req *pb.GetPostByIdRequest) (*pb.Post, error) {
 	violations := validateGetPostByIdRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -22,7 +22,7 @@ func (server *api.Server) GetPostById(ctx context.Context, req *pb.GetPostByIdRe
 		return nil, status.Errorf(codes.Internal, "failed to get post: %v", err)
 	}
 
-	rsp := api.convertViewPost(post)
+	rsp := converters.ConvertViewPost(post)
 
 	return rsp, nil
 }

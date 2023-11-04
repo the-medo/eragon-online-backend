@@ -65,6 +65,20 @@ func ConvertViewPostToDataPost(viewPost db.ViewPost) *pb.DataPost {
 	return pbPost
 }
 
+func ConvertViewPost(viewPost db.ViewPost) *pb.Post {
+	pbPost := &pb.Post{
+		Post: ConvertViewPostToDataPost(viewPost),
+		PostType: &pb.DataPostType{
+			Id:         viewPost.PostTypeID,
+			Name:       viewPost.PostTypeName,
+			Draftable:  viewPost.PostTypeDraftable,
+			Privatable: viewPost.PostTypePrivatable,
+		},
+	}
+
+	return pbPost
+}
+
 func ConvertViewPostByModuleToPost(viewPost db.GetPostsByModuleRow) *pb.Post {
 	pbPost := &pb.Post{
 		Post: &pb.DataPost{

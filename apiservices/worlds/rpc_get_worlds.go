@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -11,7 +12,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *api.Server) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (*pb.GetWorldsResponse, error) {
+func (server *ServiceWorlds) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (*pb.GetWorldsResponse, error) {
 	violations := validateGetWorlds(req)
 
 	if violations != nil {
@@ -58,7 +59,7 @@ func (server *api.Server) GetWorlds(ctx context.Context, req *pb.GetWorldsReques
 	}
 
 	for i, world := range worlds {
-		rsp.Worlds[i] = api.ConvertWorld(world)
+		rsp.Worlds[i] = converters.ConvertViewWorld(world)
 	}
 
 	return rsp, nil

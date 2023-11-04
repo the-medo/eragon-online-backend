@@ -3,7 +3,7 @@ package users
 import (
 	"context"
 	"database/sql"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -15,13 +15,13 @@ import (
 	"time"
 )
 
-func (server *api.Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
+func (server *ServiceUsers) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
 	violations := validateUpdateUser(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	authPayload, err := server.authorizeUserCookie(ctx)
+	authPayload, err := server.AuthorizeUserCookie(ctx)
 	if err != nil {
 		return nil, e.UnauthenticatedError(err)
 	}
@@ -84,7 +84,7 @@ func (server *api.Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequ
 	}
 
 	rsp := &pb.UpdateUserResponse{
-		User: api.ConvertUserGetImage(server, ctx, user),
+		User: converters.ConvertUserGetImage(server.ServiceCore, ctx, user),
 	}
 
 	return rsp, nil

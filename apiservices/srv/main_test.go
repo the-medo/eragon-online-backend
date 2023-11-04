@@ -15,21 +15,21 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-type mockServerTransportStream struct{}
+type MockServerTransportStream struct{}
 
-func (m *mockServerTransportStream) Method() string {
+func (m *MockServerTransportStream) Method() string {
 	return "foo"
 }
 
-func (m *mockServerTransportStream) SetHeader(md metadata.MD) error {
+func (m *MockServerTransportStream) SetHeader(md metadata.MD) error {
 	return nil
 }
 
-func (m *mockServerTransportStream) SendHeader(md metadata.MD) error {
+func (m *MockServerTransportStream) SendHeader(md metadata.MD) error {
 	return nil
 }
 
-func (m *mockServerTransportStream) SetTrailer(md metadata.MD) error {
+func (m *MockServerTransportStream) SetTrailer(md metadata.MD) error {
 	return nil
 }
 

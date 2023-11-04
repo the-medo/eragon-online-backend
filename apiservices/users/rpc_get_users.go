@@ -3,6 +3,7 @@ package users
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -34,7 +35,7 @@ func (server *ServiceUsers) GetUsers(ctx context.Context, req *pb.GetUsersReques
 	}
 
 	for i, user := range users {
-		rsp.Users[i] = api.ConvertUserRowWithImage(user)
+		rsp.Users[i] = converters.ConvertGetUserRow(user)
 	}
 
 	return rsp, nil
