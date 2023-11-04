@@ -32,7 +32,7 @@ message Entity {
 
 message EntityList {
   repeated Entity entities = 1;
-  repeated DataPost posts = 2;
+  repeated ViewPost posts = 2;
   repeated ViewMap maps = 3;
   repeated ViewLocation locations = 4;
   repeated Image images = 5;

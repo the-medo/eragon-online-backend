@@ -25,7 +25,7 @@ func (server *ServiceModules) GetModuleAdmins(ctx context.Context, req *pb.GetMo
 	}
 
 	for i, moduleAdminRow := range moduleAdminRows {
-		rsp.ModuleAdmins[i] = converters.ConvertWorldAdminRow(moduleAdminRow)
+		rsp.ModuleAdmins[i] = converters.ConvertModuleAdminRow(moduleAdminRow)
 	}
 
 	return rsp, nil

@@ -2,7 +2,7 @@ package users
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -23,7 +23,7 @@ func (server *ServiceUsers) GetUserById(ctx context.Context, req *pb.GetUserById
 		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
 	}
 
-	return api.ConvertViewUser(user), nil
+	return converters.ConvertViewUser(user), nil
 }
 
 func validateGetUserById(req *pb.GetUserByIdRequest) (violations []*errdetails.BadRequest_FieldViolation) {

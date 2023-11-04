@@ -4,6 +4,7 @@ package pb;
 
 import "google/protobuf/timestamp.proto";
 import "services/users/user.proto";
+import "services/entities/entity.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -22,4 +23,6 @@ message ModuleAdmin {
   bool superAdmin = 5;
   int32 approved = 6;
   string motivationalLetter = 7;
+  repeated EntityType allowedEntityTypes = 8;
+  bool allowedMenu = 9;
 }

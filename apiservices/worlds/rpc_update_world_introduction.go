@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
-	"github.com/the-medo/talebound-backend/consts"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,7 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServiceWorlds) UpdateWorldIntroduction(ctx context.Context, req *pb.UpdateWorldIntroductionRequest) (*pb.Post, error) {
+func (server *ServiceWorlds) UpdateWorldIntroduction(ctx context.Context, req *pb.UpdateWorldIntroductionRequest) (*pb.ViewPost, error) {
 	violations := validateUpdateWorldIntroductionRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -30,20 +29,14 @@ func (server *ServiceWorlds) UpdateWorldIntroduction(ctx context.Context, req *p
 		return nil, status.Errorf(codes.NotFound, "unable to save changes - world not found: %s", err)
 	}
 
-	postType, err := server.Store.GetPostTypeById(ctx, consts.PostTypeWorldDescription)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
-	}
-
 	if !world.DescriptionPostID.Valid {
 		//create new post
 		createPostArg := db.CreatePostParams{
-			UserID:     authPayload.UserId,
-			Title:      "World introduction",
-			PostTypeID: consts.PostTypeWorldDescription,
-			Content:    req.GetContent(),
-			IsDraft:    false,
-			IsPrivate:  false,
+			UserID:    authPayload.UserId,
+			Title:     "World introduction",
+			Content:   req.GetContent(),
+			IsDraft:   false,
+			IsPrivate: false,
 		}
 
 		post, err := server.Store.CreatePost(ctx, createPostArg)
@@ -77,7 +70,7 @@ func (server *ServiceWorlds) UpdateWorldIntroduction(ctx context.Context, req *p
 			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 		}
 
-		return converters.ConvertPostAndPostType(viewPost, postType), nil
+		return converters.ConvertViewPost(viewPost), nil
 	} else {
 		//update existing post
 		arg := db.UpdatePostParams{
@@ -101,7 +94,7 @@ func (server *ServiceWorlds) UpdateWorldIntroduction(ctx context.Context, req *p
 			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 		}
 
-		return converters.ConvertPostAndPostType(viewPost, postType), nil
+		return converters.ConvertViewPost(viewPost), nil
 	}
 }
 

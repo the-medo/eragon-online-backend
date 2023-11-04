@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServicePosts) GetPostById(ctx context.Context, req *pb.GetPostByIdRequest) (*pb.Post, error) {
+func (server *ServicePosts) GetPostById(ctx context.Context, req *pb.GetPostByIdRequest) (*pb.ViewPost, error) {
 	violations := validateGetPostByIdRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

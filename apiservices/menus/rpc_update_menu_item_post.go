@@ -3,7 +3,6 @@ package menus
 import (
 	"context"
 	"database/sql"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -14,7 +13,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (server *api.Server) UpdateMenuItemPost(ctx context.Context, req *pb.UpdateMenuItemPostRequest) (*emptypb.Empty, error) {
+func (server *ServiceMenus) UpdateMenuItemPost(ctx context.Context, req *pb.UpdateMenuItemPostRequest) (*emptypb.Empty, error) {
 	violations := validateUpdateMenuItemPostRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

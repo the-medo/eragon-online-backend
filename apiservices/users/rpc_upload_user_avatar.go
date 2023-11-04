@@ -5,7 +5,9 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
+	"github.com/the-medo/talebound-backend/apiservices/images"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -22,13 +24,13 @@ Uploads a user avatar image to Cloudflare and inserts it into the DB
   - 3. insert into DB `avatar-{userId}_{cloudflareId}`
   - 4. update user imgId in DB
 */
-func (server *api.Server) UploadUserAvatar(ctx context.Context, request *pb.UploadUserAvatarRequest) (*pb.UploadUserAvatarResponse, error) {
+func (server *ServiceUsers) UploadUserAvatar(ctx context.Context, request *pb.UploadUserAvatarRequest) (*pb.UploadUserAvatarResponse, error) {
 	violations := validateUploadUserAvatarRequest(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	authPayload, err := server.authorizeUserCookie(ctx)
+	authPayload, err := server.AuthorizeUserCookie(ctx)
 	if err != nil {
 		return nil, e.UnauthenticatedError(err)
 	}
@@ -39,7 +41,7 @@ func (server *api.Server) UploadUserAvatar(ctx context.Context, request *pb.Uplo
 
 	filename := fmt.Sprintf("avatar-%d", request.GetUserId())
 
-	dbImg, err := server.UploadAndInsertToDb(ctx, request.GetData(), api.ImageTypeIdUserAvatar, filename, request.GetUserId())
+	dbImg, err := images.UploadAndInsertToDb(server.ServiceCore, ctx, request.GetData(), api.ImageTypeIdUserAvatar, filename, request.GetUserId())
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +61,7 @@ func (server *api.Server) UploadUserAvatar(ctx context.Context, request *pb.Uplo
 
 	return &pb.UploadUserAvatarResponse{
 		UserId: request.GetUserId(),
-		Image:  api.ConvertImage(dbImg),
+		Image:  converters.ConvertImage(dbImg),
 	}, nil
 }
 

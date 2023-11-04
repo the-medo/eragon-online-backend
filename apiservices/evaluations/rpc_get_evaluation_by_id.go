@@ -2,7 +2,6 @@ package evaluations
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/util"
@@ -12,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) GetEvaluationById(ctx context.Context, req *pb.GetEvaluationByIdRequest) (*pb.GetEvaluationByIdResponse, error) {
+func (server *ServiceEvaluations) GetEvaluationById(ctx context.Context, req *pb.GetEvaluationByIdRequest) (*pb.GetEvaluationByIdResponse, error) {
 
 	violations := validateGetEvaluationById(req)
 	if violations != nil {

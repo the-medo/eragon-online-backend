@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServicePosts) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest) (*pb.Post, error) {
+func (server *ServicePosts) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest) (*pb.ViewPost, error) {
 	violations := validateUpdatePostRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -42,10 +42,6 @@ func (server *ServicePosts) UpdatePost(ctx context.Context, req *pb.UpdatePostRe
 			String: req.GetDescription(),
 			Valid:  req.Description != nil,
 		},
-		PostTypeID: sql.NullInt32{
-			Int32: req.GetPostTypeId(),
-			Valid: req.PostTypeId != nil,
-		},
 		LastUpdatedUserID: sql.NullInt32{
 			Int32: authPayload.UserId,
 			Valid: true,
@@ -69,17 +65,12 @@ func (server *ServicePosts) UpdatePost(ctx context.Context, req *pb.UpdatePostRe
 		return nil, status.Errorf(codes.Internal, "failed to update post: %v", err)
 	}
 
-	postType, err := server.Store.GetPostTypeById(ctx, post.PostTypeID)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
-	}
-
 	viewPost, err := server.Store.GetPostById(ctx, post.ID)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 	}
 
-	rsp := converters.ConvertPostAndPostType(viewPost, postType)
+	rsp := converters.ConvertViewPost(viewPost)
 
 	return rsp, nil
 }
@@ -104,12 +95,6 @@ func validateUpdatePostRequest(req *pb.UpdatePostRequest) (violations []*errdeta
 	if req.Content != nil {
 		if err := validator.ValidatePostContent(req.GetContent()); err != nil {
 			violations = append(violations, e.FieldViolation("content", err))
-		}
-	}
-
-	if req.PostTypeId != nil {
-		if err := validator.ValidatePostTypeId(req.GetPostTypeId()); err != nil {
-			violations = append(violations, e.FieldViolation("post_type_id", err))
 		}
 	}
 

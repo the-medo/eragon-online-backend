@@ -2,7 +2,6 @@ package evaluations
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -12,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) DeleteEvaluationVote(ctx context.Context, req *pb.DeleteEvaluationVoteRequest) (*pb.DeleteEvaluationVoteResponse, error) {
+func (server *ServiceEvaluations) DeleteEvaluationVote(ctx context.Context, req *pb.DeleteEvaluationVoteRequest) (*pb.DeleteEvaluationVoteResponse, error) {
 
 	violations := validateDeleteEvaluationVote(req)
 	if violations != nil {

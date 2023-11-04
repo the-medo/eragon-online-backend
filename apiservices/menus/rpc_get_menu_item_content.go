@@ -2,14 +2,13 @@ package menus
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *api.Server) GetMenuItemContent(ctx context.Context, req *pb.GetMenuItemContentRequest) (*pb.GetMenuItemContentResponse, error) {
+func (server *ServiceMenus) GetMenuItemContent(ctx context.Context, req *pb.GetMenuItemContentRequest) (*pb.GetMenuItemContentResponse, error) {
 	violations := validateGetMenuItemContentRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

@@ -3,7 +3,6 @@ package posts
 import (
 	"context"
 	"database/sql"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
@@ -12,7 +11,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *api.Server) GetPostsByModule(ctx context.Context, req *pb.GetPostsByModuleRequest) (*pb.GetPostsByModuleResponse, error) {
+func (server *ServicePosts) GetPostsByModule(ctx context.Context, req *pb.GetPostsByModuleRequest) (*pb.GetPostsByModuleResponse, error) {
 	violations := validateGetPostsByModule(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -31,7 +30,7 @@ func (server *api.Server) GetPostsByModule(ctx context.Context, req *pb.GetPosts
 	}
 
 	rsp := &pb.GetPostsByModuleResponse{
-		Posts:      make([]*pb.Post, len(postRows)),
+		Posts:      make([]*pb.ViewPost, len(postRows)),
 		TotalCount: 0,
 	}
 
@@ -40,7 +39,7 @@ func (server *api.Server) GetPostsByModule(ctx context.Context, req *pb.GetPosts
 	}
 
 	for i, postRow := range postRows {
-		rsp.Posts[i] = converters.ConvertViewPostByModuleToPost(postRow)
+		rsp.Posts[i] = converters.ConvertGetPostsByModuleRow(postRow)
 	}
 
 	return rsp, nil

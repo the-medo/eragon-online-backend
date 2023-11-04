@@ -79,7 +79,7 @@ func validateGetImagesRequest(req *pb.GetImagesRequest) (violations []*errdetail
 
 	if req.ImageTypeId != nil {
 		if err := validator.ValidateImageTypeId(req.GetImageTypeId()); err != nil {
-			violations = append(violations, e.FieldViolation("post_type_id", err))
+			violations = append(violations, e.FieldViolation("image_type_id", err))
 		}
 	}
 

@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -15,7 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) UpdateMenuPosts(ctx context.Context, req *pb.UpdateMenuPostsRequest) (*pb.UpdateMenuPostsResponse, error) {
+func (server *ServiceMenus) UpdateMenuPosts(ctx context.Context, req *pb.UpdateMenuPostsRequest) (*pb.UpdateMenuPostsResponse, error) {
 	violations := validateUpdateMenuPostsRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServicePosts) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.Post, error) {
+func (server *ServicePosts) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.ViewPost, error) {
 	violations := validateCreatePostRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -24,32 +24,11 @@ func (server *ServicePosts) CreatePost(ctx context.Context, req *pb.CreatePostRe
 	}
 
 	arg := db.CreatePostParams{
-		UserID:     authPayload.UserId,
-		PostTypeID: req.GetPostTypeId(),
-		Title:      req.GetTitle(),
-		Content:    req.GetContent(),
-	}
-
-	//in case we got a nil value for IsDraft or IsPrivate, we need to get the default value from the post type
-	postTypeNeeded := false
-	if req.IsDraft == nil || req.IsPrivate == nil {
-		postTypeNeeded = true
-	}
-
-	if postTypeNeeded {
-		postType, err := server.Store.GetPostTypeById(ctx, req.GetPostTypeId())
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
-		}
-		if req.IsDraft == nil {
-			arg.IsDraft = postType.Draftable
-		}
-		if req.IsPrivate == nil {
-			arg.IsPrivate = postType.Privatable
-		}
-	} else {
-		arg.IsDraft = req.GetIsDraft()
-		arg.IsPrivate = req.GetIsPrivate()
+		UserID:    authPayload.UserId,
+		Title:     req.GetTitle(),
+		Content:   req.GetContent(),
+		IsDraft:   req.GetIsDraft(),
+		IsPrivate: req.GetIsPrivate(),
 	}
 
 	postResult, err := server.Store.CreatePost(ctx, arg)
@@ -57,17 +36,12 @@ func (server *ServicePosts) CreatePost(ctx context.Context, req *pb.CreatePostRe
 		return nil, status.Errorf(codes.Internal, "failed to create post: %s", err)
 	}
 
-	postType, err := server.Store.GetPostTypeById(ctx, postResult.PostTypeID)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
-	}
-
 	viewPost, err := server.Store.GetPostById(ctx, postResult.ID)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 	}
 
-	rsp := converters.ConvertPostAndPostType(viewPost, postType)
+	rsp := converters.ConvertViewPost(viewPost)
 
 	return rsp, nil
 }
@@ -80,10 +54,6 @@ func validateCreatePostRequest(req *pb.CreatePostRequest) (violations []*errdeta
 
 	if err := validator.ValidatePostContent(req.GetContent()); err != nil {
 		violations = append(violations, e.FieldViolation("content", err))
-	}
-
-	if err := validator.ValidatePostTypeId(req.GetPostTypeId()); err != nil {
-		violations = append(violations, e.FieldViolation("post_type_id", err))
 	}
 
 	return violations

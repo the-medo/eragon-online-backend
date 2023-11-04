@@ -2,7 +2,6 @@ package menus
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
@@ -10,7 +9,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *api.Server) GetMenuItems(ctx context.Context, req *pb.GetMenuItemsRequest) (*pb.GetMenuItemsResponse, error) {
+func (server *ServiceMenus) GetMenuItems(ctx context.Context, req *pb.GetMenuItemsRequest) (*pb.GetMenuItemsResponse, error) {
 	violations := validateGetMenuItemsRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

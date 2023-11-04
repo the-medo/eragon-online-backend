@@ -11,7 +11,7 @@ message GetPostHistoryRequest {
 }
 
 message GetPostHistoryResponse {
-  repeated HistoryPost historyPosts = 1;
+  repeated PostHistory historyPosts = 1;
 }
 
 message GetPostHistoryByIdRequest {

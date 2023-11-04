@@ -3,7 +3,6 @@ package auth
 import (
 	"context"
 	"database/sql"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -12,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) ResetPasswordVerifyCodeValidity(ctx context.Context, req *pb.ResetPasswordVerifyCodeValidityRequest) (*pb.ResetPasswordVerifyCodeValidityResponse, error) {
+func (server *ServiceAuth) ResetPasswordVerifyCodeValidity(ctx context.Context, req *pb.ResetPasswordVerifyCodeValidityRequest) (*pb.ResetPasswordVerifyCodeValidityResponse, error) {
 
 	var rsp *pb.ResetPasswordVerifyCodeValidityResponse
 

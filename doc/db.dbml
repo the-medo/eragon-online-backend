@@ -278,7 +278,6 @@ Table character_skills {
 
 Table posts {
   id int [pk, increment]
-  post_type_id int [not null, ref: > post_types.id]
   user_id int [not null, ref: > users.id]
   title varchar [not null]
   description varchar
@@ -292,17 +291,9 @@ Table posts {
   thumbnail_img_id int [ref: > images.id]
 }
 
-Table post_types {
-  id int [pk]
-  name varchar [not null]
-  draftable bool [not null, default: true]
-  privatable bool [not null, default: false]
-}
-
 Table post_history {
   id int [pk, increment]
   post_id int [not null, ref: > posts.id]
-  post_type_id int [not null, ref: > post_types.id]
   user_id int [not null, ref: > users.id]
   title varchar [not null]
   description varchar
@@ -491,6 +482,7 @@ Table entities {
   image_id int [ref: > images.id]
 
   indexes {
+    (type)
     (post_id, module_id) [unique]
     (map_id, module_id) [unique]
     (location_id, module_id) [unique]
@@ -539,7 +531,6 @@ TableGroup Worlds {
 
 TableGroup Posts {
   posts
-  post_types
   post_history
 }
 

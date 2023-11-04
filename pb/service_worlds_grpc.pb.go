@@ -36,7 +36,7 @@ type WorldsClient interface {
 	UploadWorldImage(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error)
 	GetWorlds(ctx context.Context, in *GetWorldsRequest, opts ...grpc.CallOption) (*GetWorldsResponse, error)
 	GetWorldById(ctx context.Context, in *GetWorldByIdRequest, opts ...grpc.CallOption) (*World, error)
-	UpdateWorldIntroduction(ctx context.Context, in *UpdateWorldIntroductionRequest, opts ...grpc.CallOption) (*Post, error)
+	UpdateWorldIntroduction(ctx context.Context, in *UpdateWorldIntroductionRequest, opts ...grpc.CallOption) (*ViewPost, error)
 }
 
 type worldsClient struct {
@@ -92,8 +92,8 @@ func (c *worldsClient) GetWorldById(ctx context.Context, in *GetWorldByIdRequest
 	return out, nil
 }
 
-func (c *worldsClient) UpdateWorldIntroduction(ctx context.Context, in *UpdateWorldIntroductionRequest, opts ...grpc.CallOption) (*Post, error) {
-	out := new(Post)
+func (c *worldsClient) UpdateWorldIntroduction(ctx context.Context, in *UpdateWorldIntroductionRequest, opts ...grpc.CallOption) (*ViewPost, error) {
+	out := new(ViewPost)
 	err := c.cc.Invoke(ctx, Worlds_UpdateWorldIntroduction_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -110,7 +110,7 @@ type WorldsServer interface {
 	UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error)
 	GetWorlds(context.Context, *GetWorldsRequest) (*GetWorldsResponse, error)
 	GetWorldById(context.Context, *GetWorldByIdRequest) (*World, error)
-	UpdateWorldIntroduction(context.Context, *UpdateWorldIntroductionRequest) (*Post, error)
+	UpdateWorldIntroduction(context.Context, *UpdateWorldIntroductionRequest) (*ViewPost, error)
 	mustEmbedUnimplementedWorldsServer()
 }
 
@@ -133,7 +133,7 @@ func (UnimplementedWorldsServer) GetWorlds(context.Context, *GetWorldsRequest) (
 func (UnimplementedWorldsServer) GetWorldById(context.Context, *GetWorldByIdRequest) (*World, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWorldById not implemented")
 }
-func (UnimplementedWorldsServer) UpdateWorldIntroduction(context.Context, *UpdateWorldIntroductionRequest) (*Post, error) {
+func (UnimplementedWorldsServer) UpdateWorldIntroduction(context.Context, *UpdateWorldIntroductionRequest) (*ViewPost, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateWorldIntroduction not implemented")
 }
 func (UnimplementedWorldsServer) mustEmbedUnimplementedWorldsServer() {}

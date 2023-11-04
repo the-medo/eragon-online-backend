@@ -3,7 +3,6 @@ package evaluations
 import (
 	"context"
 	"database/sql"
-	"github.com/the-medo/talebound-backend/api"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/grpc/codes"
@@ -11,7 +10,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (server *api.Server) CreateOrUpdateEvaluationVote(ctx context.Context, req *pb.CreateOrUpdateEvaluationVoteRequest) (*pb.CreateOrUpdateEvaluationVoteResponse, error) {
+func (server *ServiceEvaluations) CreateOrUpdateEvaluationVote(ctx context.Context, req *pb.CreateOrUpdateEvaluationVoteRequest) (*pb.CreateOrUpdateEvaluationVoteResponse, error) {
 	arg := db.GetEvaluationVoteByEvaluationIdUserIdAndVoterParams{
 		EvaluationID: req.GetEvaluationId(),
 		UserID:       req.GetUserId(),

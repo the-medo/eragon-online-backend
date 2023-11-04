@@ -19,7 +19,7 @@ import (
 	"io"
 )
 
-func UploadImage(ctx context.Context, request *pb.UploadImageRequest, service *srv.ServiceCore) (*pb.UploadImageResponse, error) {
+func UploadImage(service *srv.ServiceCore, ctx context.Context, request *pb.UploadImageRequest) (*pb.UploadImageResponse, error) {
 	violations := validateUploadImageRequest(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

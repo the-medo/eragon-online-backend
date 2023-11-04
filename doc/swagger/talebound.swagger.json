@@ -2441,30 +2441,6 @@
         ]
       }
     },
-    "/post_types": {
-      "get": {
-        "summary": "Get post types",
-        "description": "get post types with info (draftable, privatable)",
-        "operationId": "Posts_GetPostTypes",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetPostTypesResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "tags": [
-          "Posts"
-        ]
-      }
-    },
     "/posts": {
       "get": {
         "summary": "Get posts",
@@ -2540,7 +2516,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbPost"
+              "$ref": "#/definitions/pbViewPost"
             }
           },
           "default": {
@@ -2574,7 +2550,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbPost"
+              "$ref": "#/definitions/pbViewPost"
             }
           },
           "default": {
@@ -2636,7 +2612,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbPost"
+              "$ref": "#/definitions/pbViewPost"
             }
           },
           "default": {
@@ -2669,10 +2645,6 @@
                 },
                 "description": {
                   "type": "string"
-                },
-                "postTypeId": {
-                  "type": "integer",
-                  "format": "int32"
                 },
                 "isDraft": {
                   "type": "boolean"
@@ -2735,7 +2707,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbHistoryPost"
+              "$ref": "#/definitions/pbPostHistory"
             }
           },
           "default": {
@@ -3867,60 +3839,6 @@
         ]
       }
     },
-    "/users/{userId}/images": {
-      "get": {
-        "summary": "Get user images",
-        "description": "get images of user by userID - filterable by image type",
-        "operationId": "Users_GetUserImages",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetImagesResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "imageTypeId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Users"
-        ]
-      }
-    },
     "/users/{userId}/introduction": {
       "patch": {
         "summary": "Update user introduction",
@@ -3930,7 +3848,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbPost"
+              "$ref": "#/definitions/pbViewPost"
             }
           },
           "default": {
@@ -3994,13 +3912,6 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "postTypeId",
-            "in": "query",
-            "required": false,
             "type": "integer",
             "format": "int32"
           },
@@ -4354,7 +4265,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbPost"
+              "$ref": "#/definitions/pbViewPost"
             }
           },
           "default": {
@@ -4586,10 +4497,6 @@
         "content": {
           "type": "string"
         },
-        "postTypeId": {
-          "type": "integer",
-          "format": "int32"
-        },
         "isDraft": {
           "type": "boolean"
         },
@@ -4631,166 +4538,6 @@
         },
         "basedOn": {
           "type": "string"
-        }
-      }
-    },
-    "pbDataHistoryPost": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "postId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "postTypeId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "userId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "title": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "deletedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedUserId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "isDraft": {
-          "type": "boolean"
-        },
-        "isPrivate": {
-          "type": "boolean"
-        },
-        "postTypeName": {
-          "type": "string"
-        },
-        "postTypeDraftable": {
-          "type": "boolean"
-        },
-        "postTypePrivatable": {
-          "type": "boolean"
-        },
-        "imageThumbnailId": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
-    "pbDataPost": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "postTypeId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "userId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "title": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "deletedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedUserId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "isDraft": {
-          "type": "boolean"
-        },
-        "isPrivate": {
-          "type": "boolean"
-        },
-        "imageThumbnailId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "imageThumbnailUrl": {
-          "type": "string"
-        },
-        "entityId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "moduleId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "moduleType": {
-          "$ref": "#/definitions/pbModuleType"
-        },
-        "moduleTypeId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      }
-    },
-    "pbDataPostType": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "name": {
-          "type": "string"
-        },
-        "draftable": {
-          "type": "boolean"
-        },
-        "privatable": {
-          "type": "boolean"
         }
       }
     },
@@ -4902,7 +4649,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbDataPost"
+            "$ref": "#/definitions/pbViewPost"
           }
         },
         "maps": {
@@ -5252,19 +4999,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbHistoryPost"
-          }
-        }
-      }
-    },
-    "pbGetPostTypesResponse": {
-      "type": "object",
-      "properties": {
-        "postTypes": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbDataPostType"
+            "$ref": "#/definitions/pbPostHistory"
           }
         }
       }
@@ -5276,7 +5011,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbPost"
+            "$ref": "#/definitions/pbViewPost"
           }
         },
         "totalCount": {
@@ -5292,7 +5027,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbPost"
+            "$ref": "#/definitions/pbViewPost"
           }
         }
       }
@@ -5346,17 +5081,6 @@
         "totalCount": {
           "type": "integer",
           "format": "int32"
-        }
-      }
-    },
-    "pbHistoryPost": {
-      "type": "object",
-      "properties": {
-        "post": {
-          "$ref": "#/definitions/pbDataHistoryPost"
-        },
-        "postType": {
-          "$ref": "#/definitions/pbDataPostType"
         }
       }
     },
@@ -5520,7 +5244,7 @@
           "format": "int32"
         },
         "post": {
-          "$ref": "#/definitions/pbDataPost"
+          "$ref": "#/definitions/pbViewPost"
         }
       }
     },
@@ -5572,6 +5296,15 @@
         },
         "motivationalLetter": {
           "type": "string"
+        },
+        "allowedEntityTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbEntityType"
+          }
+        },
+        "allowedMenu": {
+          "type": "boolean"
         }
       }
     },
@@ -5603,14 +5336,55 @@
       ],
       "default": "SQUARE"
     },
-    "pbPost": {
+    "pbPostHistory": {
       "type": "object",
       "properties": {
-        "post": {
-          "$ref": "#/definitions/pbDataPost"
+        "id": {
+          "type": "integer",
+          "format": "int32"
         },
-        "postType": {
-          "$ref": "#/definitions/pbDataPostType"
+        "postId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deletedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isDraft": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "imageThumbnailId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -6058,6 +5832,79 @@
         },
         "headerImageUrl": {
           "type": "string"
+        }
+      }
+    },
+    "pbViewPost": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deletedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isDraft": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "imageThumbnailId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "imageThumbnailUrl": {
+          "type": "string"
+        },
+        "entityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "moduleTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
         }
       }
     },

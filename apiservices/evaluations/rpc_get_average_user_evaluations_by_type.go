@@ -2,7 +2,6 @@ package evaluations
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -13,7 +12,7 @@ import (
 	"math"
 )
 
-func (server *api.Server) GetAverageUserEvaluationsByType(ctx context.Context, req *pb.GetAverageUserEvaluationsByTypeRequest) (*pb.GetAverageUserEvaluationsByTypeResponse, error) {
+func (server *ServiceEvaluations) GetAverageUserEvaluationsByType(ctx context.Context, req *pb.GetAverageUserEvaluationsByTypeRequest) (*pb.GetAverageUserEvaluationsByTypeResponse, error) {
 	violations := validateGetAverageUserEvaluationsByType(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

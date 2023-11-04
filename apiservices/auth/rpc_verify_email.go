@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -12,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) VerifyEmail(ctx context.Context, req *pb.VerifyEmailRequest) (*pb.VerifyEmailResponse, error) {
+func (server *ServiceAuth) VerifyEmail(ctx context.Context, req *pb.VerifyEmailRequest) (*pb.VerifyEmailResponse, error) {
 	violations := validateVerifyEmailRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

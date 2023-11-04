@@ -14,7 +14,6 @@ import "services/users/rpc_login_user.proto";
 import "services/users/rpc_create_user.proto";
 import "services/users/user.proto";
 import "services/evaluations/rpc_user_evaluations.proto";
-import "services/images/rpc_image.proto";
 import "services/images/rpc_upload_image.proto";
 import "services/posts/post.proto";
 import "services/posts/rpc_post.proto";
@@ -103,7 +102,7 @@ service Users {
     };
   };
 
-  rpc UpdateUserIntroduction(UpdateUserIntroductionRequest) returns (Post) {
+  rpc UpdateUserIntroduction(UpdateUserIntroductionRequest) returns (ViewPost) {
     option (google.api.http) = {
       patch: "/users/{userId}/introduction"
       body: "*"
@@ -218,16 +217,6 @@ service Users {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "get average user evaluation by type";
       summary: "Get average user evaluation";
-    };
-  };
-
-  rpc GetUserImages(GetUserImagesRequest) returns (GetImagesResponse) {
-    option (google.api.http) = {
-      get: "/users/{userId}/images"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "get images of user by userID - filterable by image type";
-      summary: "Get user images";
     };
   };
 

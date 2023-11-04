@@ -6,7 +6,6 @@ import (
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/apiservices/srv"
-	"github.com/the-medo/talebound-backend/consts"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -31,11 +30,10 @@ func (server *ServiceMenus) CreateMenuItemPost(ctx context.Context, req *pb.Crea
 	isDescriptionPost := req.GetIsMenuItemDescriptionPost()
 
 	argPost := db.CreatePostParams{
-		UserID:     authPayload.UserId,
-		Title:      "Title",
-		PostTypeID: consts.PostTypeWorldDescription,
-		IsDraft:    true,
-		IsPrivate:  false,
+		UserID:    authPayload.UserId,
+		Title:     "Title",
+		IsDraft:   true,
+		IsPrivate: false,
 	}
 
 	if req.Title != nil && req.GetTitle() != "" {
@@ -75,7 +73,7 @@ func (server *ServiceMenus) CreateMenuItemPost(ctx context.Context, req *pb.Crea
 		MenuItemId: req.GetMenuItemId(),
 		PostId:     post.ID,
 		Position:   req.GetPosition(),
-		Post:       converters.ConvertViewPostToDataPost(post),
+		Post:       converters.ConvertViewPost(post),
 	}
 
 	if isDescriptionPost {

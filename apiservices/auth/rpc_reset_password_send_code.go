@@ -3,7 +3,6 @@ package auth
 import (
 	"context"
 	"github.com/hibiken/asynq"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -15,7 +14,7 @@ import (
 	"time"
 )
 
-func (server *api.Server) ResetPasswordSendCode(ctx context.Context, req *pb.ResetPasswordSendCodeRequest) (*pb.ResetPasswordSendCodeResponse, error) {
+func (server *ServiceAuth) ResetPasswordSendCode(ctx context.Context, req *pb.ResetPasswordSendCodeRequest) (*pb.ResetPasswordSendCodeResponse, error) {
 	violations := validateResetPasswordSendCode(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

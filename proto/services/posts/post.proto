@@ -7,9 +7,30 @@ import "services/modules/module_type.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
-message DataPost {
+message ViewPost {
   int32 id = 1;
-  int32 postTypeId = 2;
+  int32 userId = 2;
+  string title = 3;
+  string content = 4;
+  string description = 5;
+  google.protobuf.Timestamp createdAt = 6;
+  google.protobuf.Timestamp deletedAt = 7;
+  google.protobuf.Timestamp lastUpdatedAt = 8;
+  int32 lastUpdatedUserId = 9;
+  bool isDraft = 10;
+  bool isPrivate = 11;
+  int32 imageThumbnailId = 12;
+  string imageThumbnailUrl = 13;
+  optional int32 entityId = 14;
+  optional int32 moduleId = 15;
+  optional ModuleType moduleType = 16;
+  optional int32 moduleTypeId = 17;
+  repeated int32 tags = 18;
+}
+
+message PostHistory {
+  int32 id = 1;
+  int32 postId = 2;
   int32 userId = 3;
   string title = 4;
   string content = 5;
@@ -21,48 +42,4 @@ message DataPost {
   bool isDraft = 11;
   bool isPrivate = 12;
   int32 imageThumbnailId = 13;
-  string imageThumbnailUrl = 14;
-  optional int32 entityId = 15;
-  optional int32 moduleId = 16;
-  optional ModuleType moduleType = 17;
-  optional int32 moduleTypeId = 18;
-  repeated int32 tags = 19;
 }
-
-message DataPostType {
-  int32 id = 1;
-  string name = 2;
-  bool draftable = 3;
-  bool privatable = 4;
-}
-
-message DataHistoryPost {
-  int32 id = 1;
-  int32 postId = 2;
-  int32 postTypeId = 3;
-  int32 userId = 4;
-  string title = 5;
-  string content = 6;
-  string description = 7;
-  google.protobuf.Timestamp createdAt = 8;
-  google.protobuf.Timestamp deletedAt = 9;
-  google.protobuf.Timestamp lastUpdatedAt = 10;
-  int32 lastUpdatedUserId = 11;
-  bool isDraft = 12;
-  bool isPrivate = 13;
-  string postTypeName = 14;
-  bool postTypeDraftable = 15;
-  bool postTypePrivatable = 16;
-  int32 imageThumbnailId = 17;
-}
-
-message Post {
-  DataPost post = 1;
-  DataPostType postType = 2;
-}
-
-message HistoryPost {
-  DataHistoryPost post = 1;
-  DataPostType postType = 2;
-}
-

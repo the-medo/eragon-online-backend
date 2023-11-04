@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
-	"github.com/the-medo/talebound-backend/consts"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -14,7 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServiceUsers) UpdateUserIntroduction(ctx context.Context, req *pb.UpdateUserIntroductionRequest) (*pb.Post, error) {
+func (server *ServiceUsers) UpdateUserIntroduction(ctx context.Context, req *pb.UpdateUserIntroductionRequest) (*pb.ViewPost, error) {
 	violations := validateUpdateUserIntroductionRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -37,24 +36,14 @@ func (server *ServiceUsers) UpdateUserIntroduction(ctx context.Context, req *pb.
 		return nil, status.Errorf(codes.NotFound, "unable to save changes - user not found: %s", err)
 	}
 
-	postType, err := server.Store.GetPostTypeById(ctx, consts.PostTypeUserIntroduction)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
-	}
-
-	if !postType.Draftable && req.GetSaveAsDraft() {
-		return nil, status.Errorf(codes.InvalidArgument, "cannot save this post as draft")
-	}
-
 	if !user.IntroductionPostID.Valid {
 		//create new post
 		createPostArg := db.CreatePostParams{
-			UserID:     req.GetUserId(),
-			Title:      "User introduction",
-			PostTypeID: consts.PostTypeUserIntroduction,
-			Content:    req.GetContent(),
-			IsDraft:    req.GetSaveAsDraft(),
-			IsPrivate:  false,
+			UserID:    req.GetUserId(),
+			Title:     "User introduction",
+			Content:   req.GetContent(),
+			IsDraft:   req.GetSaveAsDraft(),
+			IsPrivate: false,
 		}
 
 		post, err := server.Store.CreatePost(ctx, createPostArg)
@@ -77,7 +66,7 @@ func (server *ServiceUsers) UpdateUserIntroduction(ctx context.Context, req *pb.
 			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 		}
 
-		return converters.ConvertPostAndPostType(viewPost, postType), nil
+		return converters.ConvertViewPost(viewPost), nil
 	} else {
 		//update existing post
 		arg := db.UpdatePostParams{
@@ -105,7 +94,7 @@ func (server *ServiceUsers) UpdateUserIntroduction(ctx context.Context, req *pb.
 			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
 		}
 
-		return converters.ConvertPostAndPostType(viewPost, postType), nil
+		return converters.ConvertViewPost(viewPost), nil
 	}
 }
 

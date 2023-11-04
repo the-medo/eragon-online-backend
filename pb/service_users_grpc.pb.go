@@ -38,7 +38,6 @@ const (
 	Users_GetEvaluationVotesByUserIdAndVoter_FullMethodName = "/pb.Users/GetEvaluationVotesByUserIdAndVoter"
 	Users_DeleteEvaluationVote_FullMethodName               = "/pb.Users/DeleteEvaluationVote"
 	Users_GetAverageUserEvaluationsByType_FullMethodName    = "/pb.Users/GetAverageUserEvaluationsByType"
-	Users_GetUserImages_FullMethodName                      = "/pb.Users/GetUserImages"
 	Users_UploadUserAvatar_FullMethodName                   = "/pb.Users/UploadUserAvatar"
 	Users_GetUserPosts_FullMethodName                       = "/pb.Users/GetUserPosts"
 	Users_GetWorldsOfCreator_FullMethodName                 = "/pb.Users/GetWorldsOfCreator"
@@ -56,7 +55,7 @@ type UsersClient interface {
 	GetUserById(ctx context.Context, in *GetUserByIdRequest, opts ...grpc.CallOption) (*ViewUser, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
-	UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*Post, error)
+	UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*ViewPost, error)
 	// ============= LOGIN & LOGOUT =================
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	LogoutUser(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -68,7 +67,6 @@ type UsersClient interface {
 	GetEvaluationVotesByUserIdAndVoter(ctx context.Context, in *GetEvaluationVotesByUserIdAndVoterRequest, opts ...grpc.CallOption) (*GetEvaluationVotesByUserIdAndVoterResponse, error)
 	DeleteEvaluationVote(ctx context.Context, in *DeleteEvaluationVoteRequest, opts ...grpc.CallOption) (*DeleteEvaluationVoteResponse, error)
 	GetAverageUserEvaluationsByType(ctx context.Context, in *GetAverageUserEvaluationsByTypeRequest, opts ...grpc.CallOption) (*GetAverageUserEvaluationsByTypeResponse, error)
-	GetUserImages(ctx context.Context, in *GetUserImagesRequest, opts ...grpc.CallOption) (*GetImagesResponse, error)
 	UploadUserAvatar(ctx context.Context, in *UploadUserAvatarRequest, opts ...grpc.CallOption) (*UploadUserAvatarResponse, error)
 	GetUserPosts(ctx context.Context, in *GetUserPostsRequest, opts ...grpc.CallOption) (*GetUserPostsResponse, error)
 	GetWorldsOfCreator(ctx context.Context, in *GetWorldsOfCreatorRequest, opts ...grpc.CallOption) (*GetWorldsOfCreatorResponse, error)
@@ -145,8 +143,8 @@ func (c *usersClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opt
 	return out, nil
 }
 
-func (c *usersClient) UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*Post, error) {
-	out := new(Post)
+func (c *usersClient) UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*ViewPost, error) {
+	out := new(ViewPost)
 	err := c.cc.Invoke(ctx, Users_UpdateUserIntroduction_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -244,15 +242,6 @@ func (c *usersClient) GetAverageUserEvaluationsByType(ctx context.Context, in *G
 	return out, nil
 }
 
-func (c *usersClient) GetUserImages(ctx context.Context, in *GetUserImagesRequest, opts ...grpc.CallOption) (*GetImagesResponse, error) {
-	out := new(GetImagesResponse)
-	err := c.cc.Invoke(ctx, Users_GetUserImages_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *usersClient) UploadUserAvatar(ctx context.Context, in *UploadUserAvatarRequest, opts ...grpc.CallOption) (*UploadUserAvatarResponse, error) {
 	out := new(UploadUserAvatarResponse)
 	err := c.cc.Invoke(ctx, Users_UploadUserAvatar_FullMethodName, in, out, opts...)
@@ -292,7 +281,7 @@ type UsersServer interface {
 	GetUserById(context.Context, *GetUserByIdRequest) (*ViewUser, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
-	UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*Post, error)
+	UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*ViewPost, error)
 	// ============= LOGIN & LOGOUT =================
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
 	LogoutUser(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
@@ -304,7 +293,6 @@ type UsersServer interface {
 	GetEvaluationVotesByUserIdAndVoter(context.Context, *GetEvaluationVotesByUserIdAndVoterRequest) (*GetEvaluationVotesByUserIdAndVoterResponse, error)
 	DeleteEvaluationVote(context.Context, *DeleteEvaluationVoteRequest) (*DeleteEvaluationVoteResponse, error)
 	GetAverageUserEvaluationsByType(context.Context, *GetAverageUserEvaluationsByTypeRequest) (*GetAverageUserEvaluationsByTypeResponse, error)
-	GetUserImages(context.Context, *GetUserImagesRequest) (*GetImagesResponse, error)
 	UploadUserAvatar(context.Context, *UploadUserAvatarRequest) (*UploadUserAvatarResponse, error)
 	GetUserPosts(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error)
 	GetWorldsOfCreator(context.Context, *GetWorldsOfCreatorRequest) (*GetWorldsOfCreatorResponse, error)
@@ -336,7 +324,7 @@ func (UnimplementedUsersServer) CreateUser(context.Context, *CreateUserRequest) 
 func (UnimplementedUsersServer) UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedUsersServer) UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*Post, error) {
+func (UnimplementedUsersServer) UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*ViewPost, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserIntroduction not implemented")
 }
 func (UnimplementedUsersServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
@@ -368,9 +356,6 @@ func (UnimplementedUsersServer) DeleteEvaluationVote(context.Context, *DeleteEva
 }
 func (UnimplementedUsersServer) GetAverageUserEvaluationsByType(context.Context, *GetAverageUserEvaluationsByTypeRequest) (*GetAverageUserEvaluationsByTypeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAverageUserEvaluationsByType not implemented")
-}
-func (UnimplementedUsersServer) GetUserImages(context.Context, *GetUserImagesRequest) (*GetImagesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserImages not implemented")
 }
 func (UnimplementedUsersServer) UploadUserAvatar(context.Context, *UploadUserAvatarRequest) (*UploadUserAvatarResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadUserAvatar not implemented")
@@ -718,24 +703,6 @@ func _Users_GetAverageUserEvaluationsByType_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Users_GetUserImages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUserImagesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UsersServer).GetUserImages(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Users_GetUserImages_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).GetUserImages(ctx, req.(*GetUserImagesRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Users_UploadUserAvatar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UploadUserAvatarRequest)
 	if err := dec(in); err != nil {
@@ -868,10 +835,6 @@ var Users_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAverageUserEvaluationsByType",
 			Handler:    _Users_GetAverageUserEvaluationsByType_Handler,
-		},
-		{
-			MethodName: "GetUserImages",
-			Handler:    _Users_GetUserImages_Handler,
 		},
 		{
 			MethodName: "UploadUserAvatar",

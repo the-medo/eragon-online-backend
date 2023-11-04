@@ -3,7 +3,6 @@ package posts
 import (
 	"context"
 	"fmt"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -12,13 +11,13 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) DeletePost(ctx context.Context, req *pb.DeletePostRequest) (*pb.DeletePostResponse, error) {
+func (server *ServicePosts) DeletePost(ctx context.Context, req *pb.DeletePostRequest) (*pb.DeletePostResponse, error) {
 	violations := validateDeletePostRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	authPayload, err := server.authorizeUserCookie(ctx)
+	authPayload, err := server.AuthorizeUserCookie(ctx)
 	if err != nil {
 		return nil, e.UnauthenticatedError(err)
 	}

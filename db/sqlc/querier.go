@@ -131,8 +131,6 @@ type Querier interface {
 	GetPostById(ctx context.Context, postID int32) (ViewPost, error)
 	GetPostHistoryById(ctx context.Context, postHistoryID int32) (GetPostHistoryByIdRow, error)
 	GetPostHistoryByPostId(ctx context.Context, postID int32) ([]GetPostHistoryByPostIdRow, error)
-	GetPostTypeById(ctx context.Context, postTypeID int32) (PostType, error)
-	GetPostTypes(ctx context.Context) ([]PostType, error)
 	GetPostsByModule(ctx context.Context, arg GetPostsByModuleParams) ([]GetPostsByModuleRow, error)
 	GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdParams) ([]ViewPost, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)

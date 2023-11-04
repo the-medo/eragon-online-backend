@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/the-medo/talebound-backend/api"
-	"github.com/the-medo/talebound-backend/apiservices/images"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/grpc/codes"
@@ -15,7 +15,7 @@ import (
 	"path"
 )
 
-func ConvertCloudflareImgToDb(server *images.ServiceImages, ctx context.Context, uploadImg *pb.UploadImageResponse, imgTypeId api.ImageTypeIds, filename string, userId int32) (db.CreateImageParams, error) {
+func ConvertCloudflareImgToDb(server *srv.ServiceCore, ctx context.Context, uploadImg *pb.UploadImageResponse, imgTypeId api.ImageTypeIds, filename string, userId int32) (db.CreateImageParams, error) {
 	nullImgTypeId := sql.NullInt32{
 		Int32: int32(imgTypeId),
 		Valid: true,

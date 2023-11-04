@@ -3,7 +3,6 @@ package menus
 import (
 	"context"
 	"database/sql"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
@@ -14,7 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *api.Server) UpdateMenuItem(ctx context.Context, req *pb.UpdateMenuItemRequest) (*pb.MenuItem, error) {
+func (server *ServiceMenus) UpdateMenuItem(ctx context.Context, req *pb.UpdateMenuItemRequest) (*pb.MenuItem, error) {
 	violations := validateUpdateMenuItemRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

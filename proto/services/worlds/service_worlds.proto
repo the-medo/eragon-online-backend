@@ -68,7 +68,7 @@ service Worlds {
     };
   };
 
-  rpc UpdateWorldIntroduction(UpdateWorldIntroductionRequest) returns (Post) {
+  rpc UpdateWorldIntroduction(UpdateWorldIntroductionRequest) returns (ViewPost) {
     option (google.api.http) = {
       patch: "/worlds/{worldId}/introduction"
       body: "*"

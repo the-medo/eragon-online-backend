@@ -2,7 +2,6 @@ package users
 
 import (
 	"context"
-	"database/sql"
 	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
@@ -35,11 +34,7 @@ func (server *ServiceUsers) GetUserPosts(ctx context.Context, req *pb.GetUserPos
 	}
 
 	arg := db.GetPostsByUserIdParams{
-		UserID: req.GetUserId(),
-		PostTypeID: sql.NullInt32{
-			Int32: req.GetPostTypeId(),
-			Valid: req.PostTypeId != nil,
-		},
+		UserID:     req.GetUserId(),
 		PageLimit:  limit,
 		PageOffset: offset,
 	}
@@ -50,7 +45,7 @@ func (server *ServiceUsers) GetUserPosts(ctx context.Context, req *pb.GetUserPos
 	}
 
 	rsp := &pb.GetUserPostsResponse{
-		Posts: make([]*pb.Post, len(posts)),
+		Posts: make([]*pb.ViewPost, len(posts)),
 	}
 
 	for i, post := range posts {
@@ -65,12 +60,6 @@ func (server *ServiceUsers) GetUserPosts(ctx context.Context, req *pb.GetUserPos
 func validateGetUserPostsRequest(req *pb.GetUserPostsRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 	if err := validator.ValidateUserId(req.GetUserId()); err != nil {
 		violations = append(violations, e.FieldViolation("user_id", err))
-	}
-
-	if req.PostTypeId != nil {
-		if err := validator.ValidatePostTypeId(req.GetPostTypeId()); err != nil {
-			violations = append(violations, e.FieldViolation("post_type_id", err))
-		}
 	}
 
 	if req.Limit != nil {

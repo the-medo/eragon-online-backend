@@ -6,44 +6,35 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func ConvertHistoryPostWithoutContent(postHistory db.GetPostHistoryByPostIdRow, postType db.PostType) *pb.HistoryPost {
-	pbHistoryPost := &pb.HistoryPost{
-		Post: &pb.DataHistoryPost{
-			Id:         postHistory.PostHistoryID,
-			PostId:     postHistory.PostID,
-			PostTypeId: postHistory.PostTypeID,
-			UserId:     postHistory.UserID,
-			Title:      postHistory.Title,
-			CreatedAt:  timestamppb.New(postHistory.CreatedAt),
-			IsDraft:    postHistory.IsDraft,
-			IsPrivate:  postHistory.IsPrivate,
-		},
-		PostType: &pb.DataPostType{
-			Id:         postType.ID,
-			Name:       postType.Name,
-			Draftable:  postType.Draftable,
-			Privatable: postType.Privatable,
-		},
+func ConvertPostHistoryWithoutContent(postHistory db.GetPostHistoryByPostIdRow) *pb.PostHistory {
+	pbHistoryPost := &pb.PostHistory{
+		Id:        postHistory.PostHistoryID,
+		PostId:    postHistory.PostID,
+		UserId:    postHistory.UserID,
+		Title:     postHistory.Title,
+		CreatedAt: timestamppb.New(postHistory.CreatedAt),
+		IsDraft:   postHistory.IsDraft,
+		IsPrivate: postHistory.IsPrivate,
 	}
 
 	if postHistory.DeletedAt.Valid == true {
-		pbHistoryPost.Post.DeletedAt = timestamppb.New(postHistory.DeletedAt.Time)
+		pbHistoryPost.DeletedAt = timestamppb.New(postHistory.DeletedAt.Time)
 	}
 
 	if postHistory.LastUpdatedAt.Valid == true {
-		pbHistoryPost.Post.LastUpdatedAt = timestamppb.New(postHistory.LastUpdatedAt.Time)
+		pbHistoryPost.LastUpdatedAt = timestamppb.New(postHistory.LastUpdatedAt.Time)
 	}
 
 	if postHistory.LastUpdatedUserID.Valid == true {
-		pbHistoryPost.Post.LastUpdatedUserId = postHistory.LastUpdatedUserID.Int32
+		pbHistoryPost.LastUpdatedUserId = postHistory.LastUpdatedUserID.Int32
 	}
 
 	if postHistory.Description.Valid == true {
-		pbHistoryPost.Post.Description = postHistory.Description.String
+		pbHistoryPost.Description = postHistory.Description.String
 	}
 
 	if postHistory.ThumbnailImgID.Valid == true {
-		pbHistoryPost.Post.ImageThumbnailId = postHistory.ThumbnailImgID.Int32
+		pbHistoryPost.ImageThumbnailId = postHistory.ThumbnailImgID.Int32
 	}
 
 	return pbHistoryPost

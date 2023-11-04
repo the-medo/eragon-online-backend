@@ -2,7 +2,6 @@ package worlds
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
@@ -10,7 +9,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *api.Server) GetWorldsOfCreator(ctx context.Context, req *pb.GetWorldsOfCreatorRequest) (*pb.GetWorldsOfCreatorResponse, error) {
+func (server *ServiceWorlds) GetWorldsOfCreator(ctx context.Context, req *pb.GetWorldsOfCreatorRequest) (*pb.GetWorldsOfCreatorResponse, error) {
 	violations := validateGetWorldsOfCreator(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

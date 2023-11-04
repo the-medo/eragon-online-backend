@@ -11,7 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -20,7 +19,6 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Posts_GetPostTypes_FullMethodName       = "/pb.Posts/GetPostTypes"
 	Posts_GetPostsByModule_FullMethodName   = "/pb.Posts/GetPostsByModule"
 	Posts_GetPostById_FullMethodName        = "/pb.Posts/GetPostById"
 	Posts_GetPostHistory_FullMethodName     = "/pb.Posts/GetPostHistory"
@@ -34,13 +32,12 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostsClient interface {
-	GetPostTypes(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetPostTypesResponse, error)
 	GetPostsByModule(ctx context.Context, in *GetPostsByModuleRequest, opts ...grpc.CallOption) (*GetPostsByModuleResponse, error)
-	GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*Post, error)
+	GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*ViewPost, error)
 	GetPostHistory(ctx context.Context, in *GetPostHistoryRequest, opts ...grpc.CallOption) (*GetPostHistoryResponse, error)
-	GetPostHistoryById(ctx context.Context, in *GetPostHistoryByIdRequest, opts ...grpc.CallOption) (*HistoryPost, error)
-	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*Post, error)
-	UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*Post, error)
+	GetPostHistoryById(ctx context.Context, in *GetPostHistoryByIdRequest, opts ...grpc.CallOption) (*PostHistory, error)
+	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*ViewPost, error)
+	UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*ViewPost, error)
 	DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*DeletePostResponse, error)
 }
 
@@ -52,15 +49,6 @@ func NewPostsClient(cc grpc.ClientConnInterface) PostsClient {
 	return &postsClient{cc}
 }
 
-func (c *postsClient) GetPostTypes(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetPostTypesResponse, error) {
-	out := new(GetPostTypesResponse)
-	err := c.cc.Invoke(ctx, Posts_GetPostTypes_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *postsClient) GetPostsByModule(ctx context.Context, in *GetPostsByModuleRequest, opts ...grpc.CallOption) (*GetPostsByModuleResponse, error) {
 	out := new(GetPostsByModuleResponse)
 	err := c.cc.Invoke(ctx, Posts_GetPostsByModule_FullMethodName, in, out, opts...)
@@ -70,8 +58,8 @@ func (c *postsClient) GetPostsByModule(ctx context.Context, in *GetPostsByModule
 	return out, nil
 }
 
-func (c *postsClient) GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*Post, error) {
-	out := new(Post)
+func (c *postsClient) GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*ViewPost, error) {
+	out := new(ViewPost)
 	err := c.cc.Invoke(ctx, Posts_GetPostById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -88,8 +76,8 @@ func (c *postsClient) GetPostHistory(ctx context.Context, in *GetPostHistoryRequ
 	return out, nil
 }
 
-func (c *postsClient) GetPostHistoryById(ctx context.Context, in *GetPostHistoryByIdRequest, opts ...grpc.CallOption) (*HistoryPost, error) {
-	out := new(HistoryPost)
+func (c *postsClient) GetPostHistoryById(ctx context.Context, in *GetPostHistoryByIdRequest, opts ...grpc.CallOption) (*PostHistory, error) {
+	out := new(PostHistory)
 	err := c.cc.Invoke(ctx, Posts_GetPostHistoryById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -97,8 +85,8 @@ func (c *postsClient) GetPostHistoryById(ctx context.Context, in *GetPostHistory
 	return out, nil
 }
 
-func (c *postsClient) CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*Post, error) {
-	out := new(Post)
+func (c *postsClient) CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*ViewPost, error) {
+	out := new(ViewPost)
 	err := c.cc.Invoke(ctx, Posts_CreatePost_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -106,8 +94,8 @@ func (c *postsClient) CreatePost(ctx context.Context, in *CreatePostRequest, opt
 	return out, nil
 }
 
-func (c *postsClient) UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*Post, error) {
-	out := new(Post)
+func (c *postsClient) UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*ViewPost, error) {
+	out := new(ViewPost)
 	err := c.cc.Invoke(ctx, Posts_UpdatePost_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -128,13 +116,12 @@ func (c *postsClient) DeletePost(ctx context.Context, in *DeletePostRequest, opt
 // All implementations must embed UnimplementedPostsServer
 // for forward compatibility
 type PostsServer interface {
-	GetPostTypes(context.Context, *emptypb.Empty) (*GetPostTypesResponse, error)
 	GetPostsByModule(context.Context, *GetPostsByModuleRequest) (*GetPostsByModuleResponse, error)
-	GetPostById(context.Context, *GetPostByIdRequest) (*Post, error)
+	GetPostById(context.Context, *GetPostByIdRequest) (*ViewPost, error)
 	GetPostHistory(context.Context, *GetPostHistoryRequest) (*GetPostHistoryResponse, error)
-	GetPostHistoryById(context.Context, *GetPostHistoryByIdRequest) (*HistoryPost, error)
-	CreatePost(context.Context, *CreatePostRequest) (*Post, error)
-	UpdatePost(context.Context, *UpdatePostRequest) (*Post, error)
+	GetPostHistoryById(context.Context, *GetPostHistoryByIdRequest) (*PostHistory, error)
+	CreatePost(context.Context, *CreatePostRequest) (*ViewPost, error)
+	UpdatePost(context.Context, *UpdatePostRequest) (*ViewPost, error)
 	DeletePost(context.Context, *DeletePostRequest) (*DeletePostResponse, error)
 	mustEmbedUnimplementedPostsServer()
 }
@@ -143,25 +130,22 @@ type PostsServer interface {
 type UnimplementedPostsServer struct {
 }
 
-func (UnimplementedPostsServer) GetPostTypes(context.Context, *emptypb.Empty) (*GetPostTypesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetPostTypes not implemented")
-}
 func (UnimplementedPostsServer) GetPostsByModule(context.Context, *GetPostsByModuleRequest) (*GetPostsByModuleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostsByModule not implemented")
 }
-func (UnimplementedPostsServer) GetPostById(context.Context, *GetPostByIdRequest) (*Post, error) {
+func (UnimplementedPostsServer) GetPostById(context.Context, *GetPostByIdRequest) (*ViewPost, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostById not implemented")
 }
 func (UnimplementedPostsServer) GetPostHistory(context.Context, *GetPostHistoryRequest) (*GetPostHistoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostHistory not implemented")
 }
-func (UnimplementedPostsServer) GetPostHistoryById(context.Context, *GetPostHistoryByIdRequest) (*HistoryPost, error) {
+func (UnimplementedPostsServer) GetPostHistoryById(context.Context, *GetPostHistoryByIdRequest) (*PostHistory, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostHistoryById not implemented")
 }
-func (UnimplementedPostsServer) CreatePost(context.Context, *CreatePostRequest) (*Post, error) {
+func (UnimplementedPostsServer) CreatePost(context.Context, *CreatePostRequest) (*ViewPost, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePost not implemented")
 }
-func (UnimplementedPostsServer) UpdatePost(context.Context, *UpdatePostRequest) (*Post, error) {
+func (UnimplementedPostsServer) UpdatePost(context.Context, *UpdatePostRequest) (*ViewPost, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePost not implemented")
 }
 func (UnimplementedPostsServer) DeletePost(context.Context, *DeletePostRequest) (*DeletePostResponse, error) {
@@ -178,24 +162,6 @@ type UnsafePostsServer interface {
 
 func RegisterPostsServer(s grpc.ServiceRegistrar, srv PostsServer) {
 	s.RegisterService(&Posts_ServiceDesc, srv)
-}
-
-func _Posts_GetPostTypes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(PostsServer).GetPostTypes(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Posts_GetPostTypes_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PostsServer).GetPostTypes(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _Posts_GetPostsByModule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -331,10 +297,6 @@ var Posts_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.Posts",
 	HandlerType: (*PostsServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "GetPostTypes",
-			Handler:    _Posts_GetPostTypes_Handler,
-		},
 		{
 			MethodName: "GetPostsByModule",
 			Handler:    _Posts_GetPostsByModule_Handler,

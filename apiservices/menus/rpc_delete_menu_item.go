@@ -2,7 +2,6 @@ package menus
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -12,7 +11,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (server *api.Server) DeleteMenuItem(ctx context.Context, req *pb.DeleteMenuItemRequest) (*emptypb.Empty, error) {
+func (server *ServiceMenus) DeleteMenuItem(ctx context.Context, req *pb.DeleteMenuItemRequest) (*emptypb.Empty, error) {
 	violations := validateDeleteMenuItemRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

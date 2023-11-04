@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServicePosts) GetPostHistoryById(ctx context.Context, req *pb.GetPostHistoryByIdRequest) (*pb.HistoryPost, error) {
+func (server *ServicePosts) GetPostHistoryById(ctx context.Context, req *pb.GetPostHistoryByIdRequest) (*pb.PostHistory, error) {
 	violations := validateGetPostHistoryById(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -34,12 +34,7 @@ func (server *ServicePosts) GetPostHistoryById(ctx context.Context, req *pb.GetP
 		}
 	}
 
-	postType, err := server.Store.GetPostTypeById(ctx, post.PostTypeID)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get post type: %v", err)
-	}
-
-	rsp := converters.ConvertHistoryPost(post, postType)
+	rsp := converters.ConvertPostHistory(post)
 
 	return rsp, nil
 }

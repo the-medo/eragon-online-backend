@@ -7,18 +7,18 @@ import (
 )
 
 //TODO: maybe, once generics will help... -_-
+// complete copy of ConvertGetPostsByModuleRow, but with different name
 
-func ConvertViewPostToDataPost(viewPost db.ViewPost) *pb.DataPost {
-	pbPost := &pb.DataPost{
-		Id:         viewPost.ID,
-		PostTypeId: viewPost.PostTypeID,
-		UserId:     viewPost.UserID,
-		Title:      viewPost.Title,
-		Content:    viewPost.Content,
-		CreatedAt:  timestamppb.New(viewPost.CreatedAt),
-		IsDraft:    viewPost.IsDraft,
-		IsPrivate:  viewPost.IsPrivate,
-		Tags:       viewPost.Tags,
+func ConvertViewPost(viewPost db.ViewPost) *pb.ViewPost {
+	pbPost := &pb.ViewPost{
+		Id:        viewPost.ID,
+		UserId:    viewPost.UserID,
+		Title:     viewPost.Title,
+		Content:   viewPost.Content,
+		CreatedAt: timestamppb.New(viewPost.CreatedAt),
+		IsDraft:   viewPost.IsDraft,
+		IsPrivate: viewPost.IsPrivate,
+		Tags:      viewPost.Tags,
 	}
 
 	if viewPost.DeletedAt.Valid == true {
@@ -60,85 +60,6 @@ func ConvertViewPostToDataPost(viewPost db.ViewPost) *pb.DataPost {
 	if viewPost.ModuleType.Valid == true {
 		convertedModuleType := ConvertModuleTypeToPB(viewPost.ModuleType.ModuleType)
 		pbPost.ModuleType = &convertedModuleType
-	}
-
-	return pbPost
-}
-
-func ConvertViewPost(viewPost db.ViewPost) *pb.Post {
-	pbPost := &pb.Post{
-		Post: ConvertViewPostToDataPost(viewPost),
-		PostType: &pb.DataPostType{
-			Id:         viewPost.PostTypeID,
-			Name:       viewPost.PostTypeName,
-			Draftable:  viewPost.PostTypeDraftable,
-			Privatable: viewPost.PostTypePrivatable,
-		},
-	}
-
-	return pbPost
-}
-
-func ConvertViewPostByModuleToPost(viewPost db.GetPostsByModuleRow) *pb.Post {
-	pbPost := &pb.Post{
-		Post: &pb.DataPost{
-			Id:         viewPost.ID,
-			PostTypeId: viewPost.PostTypeID,
-			UserId:     viewPost.UserID,
-			Title:      viewPost.Title,
-			Content:    viewPost.Content,
-			CreatedAt:  timestamppb.New(viewPost.CreatedAt),
-			IsDraft:    viewPost.IsDraft,
-			IsPrivate:  viewPost.IsPrivate,
-			Tags:       viewPost.Tags,
-		},
-		PostType: &pb.DataPostType{
-			Id:         viewPost.PostTypeID,
-			Name:       viewPost.PostTypeName,
-			Draftable:  viewPost.PostTypeDraftable,
-			Privatable: viewPost.PostTypePrivatable,
-		},
-	}
-
-	if viewPost.DeletedAt.Valid == true {
-		pbPost.Post.DeletedAt = timestamppb.New(viewPost.DeletedAt.Time)
-	}
-
-	if viewPost.LastUpdatedAt.Valid == true {
-		pbPost.Post.LastUpdatedAt = timestamppb.New(viewPost.LastUpdatedAt.Time)
-	}
-
-	if viewPost.LastUpdatedUserID.Valid == true {
-		pbPost.Post.LastUpdatedUserId = viewPost.LastUpdatedUserID.Int32
-	}
-
-	if viewPost.Description.Valid == true {
-		pbPost.Post.Description = viewPost.Description.String
-	}
-
-	if viewPost.ThumbnailImgID.Valid == true {
-		pbPost.Post.ImageThumbnailId = viewPost.ThumbnailImgID.Int32
-	}
-
-	if viewPost.ThumbnailImgUrl.Valid == true {
-		pbPost.Post.ImageThumbnailUrl = viewPost.ThumbnailImgUrl.String
-	}
-
-	if viewPost.EntityID.Valid == true {
-		pbPost.Post.EntityId = &viewPost.EntityID.Int32
-	}
-
-	if viewPost.ModuleID.Valid == true {
-		pbPost.Post.ModuleId = &viewPost.ModuleID.Int32
-	}
-
-	if viewPost.ModuleTypeID.Valid == true {
-		pbPost.Post.ModuleId = &viewPost.ModuleTypeID.Int32
-	}
-
-	if viewPost.ModuleType.Valid == true {
-		convertedModuleType := ConvertModuleTypeToPB(viewPost.ModuleType.ModuleType)
-		pbPost.Post.ModuleType = &convertedModuleType
 	}
 
 	return pbPost

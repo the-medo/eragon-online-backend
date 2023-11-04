@@ -34,5 +34,5 @@ message MenuItemPost {
   int32 menuItemId = 1;
   int32 postId = 2;
   int32 position = 3;
-  DataPost post = 4;
+  ViewPost post = 4;
 }
