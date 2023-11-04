@@ -186,7 +186,7 @@ func TestCreateUserAPI(t *testing.T) {
 			taskDistributor := mockwk.NewMockTaskDistributor(taskCtrl)
 
 			tc.buildStubs(store, taskDistributor)
-			server := NewTestServer(t, store, taskDistributor)
+			server := api.NewTestServer(t, store, taskDistributor)
 
 			res, err := server.CreateUser(context.Background(), tc.req)
 			tc.checkResponse(t, res, err)
