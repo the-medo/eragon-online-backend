@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -19,7 +20,17 @@ func (server *ServiceWorlds) UpdateWorld(ctx context.Context, req *pb.UpdateWorl
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.CheckWorldAdmin(ctx, req.GetWorldId(), true)
+	var needsEntityPermission []db.EntityType
+
+	if req.DescriptionPostId != nil {
+		needsEntityPermission = append(needsEntityPermission, db.EntityTypePost)
+	}
+
+	_, _, err := server.CheckModuleTypePermissions(ctx, db.ModuleTypeWorld, req.GetWorldId(), &srv.ModulePermission{
+		NeedsSuperAdmin:       true,
+		NeedsEntityPermission: &needsEntityPermission,
+	})
+
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed to update world: %v", err)
 	}
@@ -48,37 +59,9 @@ func (server *ServiceWorlds) UpdateWorld(ctx context.Context, req *pb.UpdateWorl
 		},
 	}
 
-	changesMade := arg.Name.Valid || arg.BasedOn.Valid || arg.ShortDescription.Valid || arg.Public.Valid || arg.DescriptionPostID.Valid
-	if changesMade {
-		_, err = server.Store.UpdateWorld(ctx, arg)
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to update world: %v", err)
-		}
-	}
-
-	argImages := db.UpdateWorldImagesParams{
-		WorldID: req.GetWorldId(),
-		ThumbnailImgID: sql.NullInt32{
-			Int32: req.GetImageThumbnailId(),
-			Valid: req.ImageThumbnailId != nil,
-		},
-		HeaderImgID: sql.NullInt32{
-			Int32: req.GetImageHeaderId(),
-			Valid: req.ImageHeaderId != nil,
-		},
-		AvatarImgID: sql.NullInt32{
-			Int32: req.GetImageAvatarId(),
-			Valid: req.ImageAvatarId != nil,
-		},
-	}
-
-	changesMade = argImages.ThumbnailImgID.Valid || argImages.HeaderImgID.Valid || argImages.AvatarImgID.Valid
-
-	if changesMade {
-		_, err = server.Store.UpdateWorldImages(ctx, argImages)
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to update world: %v", err)
-		}
+	_, err = server.Store.UpdateWorld(ctx, arg)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update world: %v", err)
 	}
 
 	world, err := server.Store.GetWorldByID(ctx, req.GetWorldId())
@@ -118,24 +101,6 @@ func validateUpdateWorldRequest(req *pb.UpdateWorldRequest) (violations []*errde
 	if req.DescriptionPostId != nil {
 		if err := validator.ValidatePostId(req.GetDescriptionPostId()); err != nil {
 			violations = append(violations, e.FieldViolation("description_post_id", err))
-		}
-	}
-
-	if req.ImageAvatarId != nil {
-		if err := validator.ValidateImageId(req.GetImageAvatarId()); err != nil {
-			violations = append(violations, e.FieldViolation("image_avatar_id", err))
-		}
-	}
-
-	if req.ImageThumbnailId != nil {
-		if err := validator.ValidateImageId(req.GetImageThumbnailId()); err != nil {
-			violations = append(violations, e.FieldViolation("image_thumbnail_id", err))
-		}
-	}
-
-	if req.ImageHeaderId != nil {
-		if err := validator.ValidateImageId(req.GetImageHeaderId()); err != nil {
-			violations = append(violations, e.FieldViolation("image_header_id", err))
 		}
 	}
 

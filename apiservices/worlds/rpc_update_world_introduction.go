@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -19,7 +20,9 @@ func (server *ServiceWorlds) UpdateWorldIntroduction(ctx context.Context, req *p
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	authPayload, err := server.CheckWorldAdmin(ctx, req.GetWorldId(), false)
+	authPayload, module, err := server.CheckModuleTypePermissions(ctx, db.ModuleTypeWorld, req.GetWorldId(), &srv.ModulePermission{
+		NeedsEntityPermission: &[]db.EntityType{db.EntityTypePost},
+	})
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed update introduction: %v", err)
 	}
@@ -57,12 +60,16 @@ func (server *ServiceWorlds) UpdateWorldIntroduction(ctx context.Context, req *p
 			return nil, status.Errorf(codes.Internal, "failed to update world: %s", err)
 		}
 
-		_, err = server.Store.CreateWorldPost(ctx, db.CreateWorldPostParams{
-			WorldID: req.WorldId,
-			PostID:  post.ID,
+		_, err = server.Store.CreateEntity(ctx, db.CreateEntityParams{
+			Type:     db.EntityTypePost,
+			ModuleID: module.ID,
+			PostID: sql.NullInt32{
+				Int32: post.ID,
+				Valid: true,
+			},
 		})
 		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to create world post: %s", err)
+			return nil, status.Errorf(codes.Internal, "failed to create entity post: %s", err)
 		}
 
 		viewPost, err := server.Store.GetPostById(ctx, post.ID)

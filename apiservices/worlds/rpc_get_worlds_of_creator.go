@@ -15,7 +15,7 @@ func (server *ServiceWorlds) GetWorldsOfCreator(ctx context.Context, req *pb.Get
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	worldsWithAdminInfo, err := server.Store.GetWorldsOfUser(ctx, req.UserId)
+	worldsWithAdminInfo, err := server.Store.GetModulesOfUser(ctx, req.UserId)
 	if err != nil {
 		return nil, err
 	}

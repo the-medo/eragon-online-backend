@@ -8,7 +8,7 @@ import (
 	"github.com/the-medo/talebound-backend/token"
 )
 
-func (core *ServiceCore) CheckModuleTypePermissions(ctx context.Context, moduleType db.ModuleType, id int32, modulePermissions *ModulePermission) (*token.Payload, error) {
+func (core *ServiceCore) CheckModuleTypePermissions(ctx context.Context, moduleType db.ModuleType, id int32, modulePermissions *ModulePermission) (*token.Payload, *db.Module, error) {
 	module, err := core.Store.GetModule(ctx, db.GetModuleParams{
 		WorldID: sql.NullInt32{
 			Int32: id,
@@ -30,10 +30,11 @@ func (core *ServiceCore) CheckModuleTypePermissions(ctx context.Context, moduleT
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("%v does not exist", moduleType)
+			return nil, nil, fmt.Errorf("%v does not exist", moduleType)
 		}
-		return nil, fmt.Errorf("failed to get world : %w", err)
+		return nil, nil, fmt.Errorf("failed to get world : %w", err)
 	}
 
-	return core.CheckModuleIdPermissions(ctx, module.ID, modulePermissions)
+	authPayload, err := core.CheckModuleIdPermissions(ctx, module.ID, modulePermissions)
+	return authPayload, &module, err
 }

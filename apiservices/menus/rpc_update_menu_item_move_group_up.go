@@ -3,6 +3,7 @@ package menus
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/e"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -17,7 +18,9 @@ func (server *ServiceMenus) UpdateMenuItemMoveGroupUp(ctx context.Context, req *
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.CheckMenuAdmin(ctx, req.GetMenuId(), false)
+	_, err := server.CheckMenuPermissions(ctx, req.GetMenuId(), &srv.ModulePermission{
+		NeedsMenuPermission: true,
+	})
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed to move menu item group: %v", err)
 	}

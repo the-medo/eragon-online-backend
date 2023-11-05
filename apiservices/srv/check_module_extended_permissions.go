@@ -8,9 +8,9 @@ import (
 	"github.com/the-medo/talebound-backend/token"
 )
 
-func (core *ServiceCore) CheckModuleExtendedPermissions(ctx context.Context, module *pb.Module, modulePermissions *ModulePermission) (*token.Payload, error) {
+func (core *ServiceCore) CheckModuleExtendedPermissions(ctx context.Context, module *pb.Module, modulePermissions *ModulePermission) (*token.Payload, *db.Module, error) {
 	if module == nil {
-		return nil, fmt.Errorf("module is nil")
+		return nil, nil, fmt.Errorf("module is nil")
 	}
 
 	if module.WorldId != nil && module.GetWorldId() > 0 {
@@ -29,5 +29,5 @@ func (core *ServiceCore) CheckModuleExtendedPermissions(ctx context.Context, mod
 		return core.CheckModuleTypePermissions(ctx, db.ModuleTypeCharacter, module.GetCharacterId(), modulePermissions)
 	}
 
-	return nil, fmt.Errorf("module does not have a valid id")
+	return nil, nil, fmt.Errorf("module does not have a valid id")
 }

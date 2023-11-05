@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/e"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -19,7 +20,9 @@ func (server *ServiceMenus) UpdateMenuItemPost(ctx context.Context, req *pb.Upda
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.CheckMenuAdmin(ctx, req.GetMenuId(), false)
+	_, err := server.CheckMenuPermissions(ctx, req.GetMenuId(), &srv.ModulePermission{
+		NeedsMenuPermission: true,
+	})
 	if err != nil {
 		return nil, status.Errorf(codes.PermissionDenied, "failed update menu item post: %v", err)
 	}

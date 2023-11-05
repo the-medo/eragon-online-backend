@@ -4183,18 +4183,6 @@
                 "descriptionPostId": {
                   "type": "integer",
                   "format": "int32"
-                },
-                "imageAvatarId": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "imageThumbnailId": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "imageHeaderId": {
-                  "type": "integer",
-                  "format": "int32"
                 }
               }
             }
