@@ -14,8 +14,7 @@ import (
 	"github.com/rs/cors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/the-medo/talebound-backend/api"
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/api/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	_ "github.com/the-medo/talebound-backend/doc/statik"
 	"github.com/the-medo/talebound-backend/mail"
@@ -99,7 +98,7 @@ func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.Ta
 		log.Fatal().Err(err).Msg("Cannot create server:")
 	}
 
-	grpcLogger := grpc.UnaryInterceptor(api.GrpcLogger)
+	grpcLogger := grpc.UnaryInterceptor(util.GrpcLogger)
 	grpcServer := grpc.NewServer(grpcLogger)
 
 	pb.RegisterLocationsServer(grpcServer, server)
@@ -202,7 +201,7 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	}
 
 	log.Info().Msgf("Starting HTTP gateway server at %s", listener.Addr().String())
-	handler := api.HttpLogger(muxWithCORS)
+	handler := util.HttpLogger(muxWithCORS)
 	err = http.Serve(listener, handler)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot start HTTP gateway server:")
