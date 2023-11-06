@@ -3,27 +3,20 @@ syntax = "proto3";
 package pb;
 
 import "services/worlds/world.proto";
+import "services/modules/module.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
-
-message WorldOfCreatorResponse {
-  World world = 1;
-  bool superAdmin = 2;
-}
-
-message GetWorldsOfCreatorRequest {
-  int32 userId = 1;
-}
-
-message GetWorldsOfCreatorResponse {
-  repeated WorldOfCreatorResponse worlds = 1;
-}
 
 message CreateWorldRequest {
   string name = 1;
   string shortDescription = 2;
   string basedOn = 3;
+}
+
+message CreateWorldResponse {
+  World world = 1;
+  Module module = 2;
 }
 
 message UpdateWorldRequest {

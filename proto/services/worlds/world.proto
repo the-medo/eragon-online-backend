@@ -13,10 +13,5 @@ message World {
   google.protobuf.Timestamp createdAt = 4;
   string basedOn = 5;
   string shortDescription = 6;
-  string imageAvatar = 7;
-  string imageThumbnail = 8;
-  string imageHeader = 9;
-  optional int32 descriptionPostId = 10;
-  repeated int32 tags = 11;
-  int32 worldMenuId = 12;
+  optional int32 descriptionPostId = 7;
 }

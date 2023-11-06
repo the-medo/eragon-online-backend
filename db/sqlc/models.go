@@ -601,6 +601,15 @@ type User struct {
 	IntroductionPostID sql.NullInt32 `json:"introduction_post_id"`
 }
 
+type UserModule struct {
+	UserID              int32        `json:"user_id"`
+	ModuleID            int32        `json:"module_id"`
+	Admin               bool         `json:"admin"`
+	Favorite            bool         `json:"favorite"`
+	Following           bool         `json:"following"`
+	EntityNotifications []EntityType `json:"entity_notifications"`
+}
+
 type UserPasswordReset struct {
 	UserID    int32     `json:"user_id"`
 	Code      string    `json:"code"`

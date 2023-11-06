@@ -9,7 +9,7 @@ option go_package = "github.com/the-medo/talebound-backend/pb";
 
 
 message GetMapsRequest {
-  Module module = 1;
+  ModuleDefinition module = 1;
 }
 
 message GetMapsResponse {

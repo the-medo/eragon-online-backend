@@ -67,6 +67,26 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
+		_, err = q.UpsertUserModule(ctx, UpsertUserModuleParams{
+			ModuleID: module.ID,
+			UserID:   arg.UserId,
+			Admin: sql.NullBool{
+				Bool:  true,
+				Valid: true,
+			},
+			Following: sql.NullBool{
+				Bool:  true,
+				Valid: true,
+			},
+			Favorite: sql.NullBool{
+				Bool:  true,
+				Valid: true,
+			},
+		})
+		if err != nil {
+			return err
+		}
+
 		_, err = q.CreateMenuItem(ctx, CreateMenuItemParams{
 			MenuID:       menu.ID,
 			MenuItemCode: "overview",

@@ -69,6 +69,7 @@ type Querier interface {
 	DeleteModuleTag(ctx context.Context, arg DeleteModuleTagParams) error
 	DeleteModuleTypeTagAvailable(ctx context.Context, id int32) error
 	DeletePost(ctx context.Context, postID int32) error
+	DeleteUserModule(ctx context.Context, arg DeleteUserModuleParams) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
 	DeleteWorld(ctx context.Context, worldID int32) error
 	EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error
@@ -127,7 +128,7 @@ type Querier interface {
 	GetModuleEntityTagsAvailable(ctx context.Context, moduleID int32) ([]ModuleEntityTagsAvailable, error)
 	GetModuleTypeTagAvailable(ctx context.Context, tagID int32) (ViewModuleTypeTagsAvailable, error)
 	GetModuleTypeTagsAvailable(ctx context.Context, moduleType ModuleType) ([]ViewModuleTypeTagsAvailable, error)
-	GetModulesOfUser(ctx context.Context, userID int32) ([]ViewModuleAdmin, error)
+	GetModulesOfAdmin(ctx context.Context, userID int32) ([]ViewModuleAdmin, error)
 	GetPostById(ctx context.Context, postID int32) (ViewPost, error)
 	GetPostHistoryById(ctx context.Context, postHistoryID int32) (GetPostHistoryByIdRow, error)
 	GetPostHistoryByPostId(ctx context.Context, postID int32) ([]GetPostHistoryByPostIdRow, error)
@@ -137,11 +138,13 @@ type Querier interface {
 	GetUserByEmail(ctx context.Context, email string) (ViewUser, error)
 	GetUserById(ctx context.Context, id int32) (ViewUser, error)
 	GetUserByUsername(ctx context.Context, username string) (ViewUser, error)
+	GetUserModules(ctx context.Context, userID int32) ([]GetUserModulesRow, error)
 	GetUserPasswordReset(ctx context.Context, code string) (UserPasswordReset, error)
 	GetUserRoles(ctx context.Context, userID int32) ([]GetUserRolesRow, error)
 	GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error)
 	GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error)
 	GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWorld, error)
+	GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]ViewWorld, error)
 	GetWorldsCount(ctx context.Context, arg GetWorldsCountParams) (int64, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
 	InsertPostHistory(ctx context.Context, postID int32) (PostHistory, error)
@@ -173,6 +176,7 @@ type Querier interface {
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)
 	UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World, error)
+	UpsertUserModule(ctx context.Context, arg UpsertUserModuleParams) (UserModule, error)
 }
 
 var _ Querier = (*Queries)(nil)

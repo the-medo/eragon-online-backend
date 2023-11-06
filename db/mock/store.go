@@ -880,6 +880,20 @@ func (mr *MockStoreMockRecorder) DeletePost(arg0, arg1 interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePost", reflect.TypeOf((*MockStore)(nil).DeletePost), arg0, arg1)
 }
 
+// DeleteUserModule mocks base method.
+func (m *MockStore) DeleteUserModule(arg0 context.Context, arg1 db.DeleteUserModuleParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteUserModule", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteUserModule indicates an expected call of DeleteUserModule.
+func (mr *MockStoreMockRecorder) DeleteUserModule(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUserModule", reflect.TypeOf((*MockStore)(nil).DeleteUserModule), arg0, arg1)
+}
+
 // DeleteUserPasswordReset mocks base method.
 func (m *MockStore) DeleteUserPasswordReset(arg0 context.Context, arg1 db.DeleteUserPasswordResetParams) error {
 	m.ctrl.T.Helper()
@@ -1747,19 +1761,19 @@ func (mr *MockStoreMockRecorder) GetModuleTypeTagsAvailable(arg0, arg1 interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetModuleTypeTagsAvailable", reflect.TypeOf((*MockStore)(nil).GetModuleTypeTagsAvailable), arg0, arg1)
 }
 
-// GetModulesOfUser mocks base method.
-func (m *MockStore) GetModulesOfUser(arg0 context.Context, arg1 int32) ([]db.ViewModuleAdmin, error) {
+// GetModulesOfAdmin mocks base method.
+func (m *MockStore) GetModulesOfAdmin(arg0 context.Context, arg1 int32) ([]db.ViewModuleAdmin, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetModulesOfUser", arg0, arg1)
+	ret := m.ctrl.Call(m, "GetModulesOfAdmin", arg0, arg1)
 	ret0, _ := ret[0].([]db.ViewModuleAdmin)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetModulesOfUser indicates an expected call of GetModulesOfUser.
-func (mr *MockStoreMockRecorder) GetModulesOfUser(arg0, arg1 interface{}) *gomock.Call {
+// GetModulesOfAdmin indicates an expected call of GetModulesOfAdmin.
+func (mr *MockStoreMockRecorder) GetModulesOfAdmin(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetModulesOfUser", reflect.TypeOf((*MockStore)(nil).GetModulesOfUser), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetModulesOfAdmin", reflect.TypeOf((*MockStore)(nil).GetModulesOfAdmin), arg0, arg1)
 }
 
 // GetPostById mocks base method.
@@ -1897,6 +1911,21 @@ func (mr *MockStoreMockRecorder) GetUserByUsername(arg0, arg1 interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByUsername", reflect.TypeOf((*MockStore)(nil).GetUserByUsername), arg0, arg1)
 }
 
+// GetUserModules mocks base method.
+func (m *MockStore) GetUserModules(arg0 context.Context, arg1 int32) ([]db.GetUserModulesRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserModules", arg0, arg1)
+	ret0, _ := ret[0].([]db.GetUserModulesRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserModules indicates an expected call of GetUserModules.
+func (mr *MockStoreMockRecorder) GetUserModules(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserModules", reflect.TypeOf((*MockStore)(nil).GetUserModules), arg0, arg1)
+}
+
 // GetUserPasswordReset mocks base method.
 func (m *MockStore) GetUserPasswordReset(arg0 context.Context, arg1 string) (db.UserPasswordReset, error) {
 	m.ctrl.T.Helper()
@@ -1970,6 +1999,21 @@ func (m *MockStore) GetWorlds(arg0 context.Context, arg1 db.GetWorldsParams) ([]
 func (mr *MockStoreMockRecorder) GetWorlds(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorlds", reflect.TypeOf((*MockStore)(nil).GetWorlds), arg0, arg1)
+}
+
+// GetWorldsByIDs mocks base method.
+func (m *MockStore) GetWorldsByIDs(arg0 context.Context, arg1 []int32) ([]db.ViewWorld, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWorldsByIDs", arg0, arg1)
+	ret0, _ := ret[0].([]db.ViewWorld)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWorldsByIDs indicates an expected call of GetWorldsByIDs.
+func (mr *MockStoreMockRecorder) GetWorldsByIDs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorldsByIDs", reflect.TypeOf((*MockStore)(nil).GetWorldsByIDs), arg0, arg1)
 }
 
 // GetWorldsCount mocks base method.
@@ -2460,6 +2504,21 @@ func (m *MockStore) UpdateWorld(arg0 context.Context, arg1 db.UpdateWorldParams)
 func (mr *MockStoreMockRecorder) UpdateWorld(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWorld", reflect.TypeOf((*MockStore)(nil).UpdateWorld), arg0, arg1)
+}
+
+// UpsertUserModule mocks base method.
+func (m *MockStore) UpsertUserModule(arg0 context.Context, arg1 db.UpsertUserModuleParams) (db.UserModule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpsertUserModule", arg0, arg1)
+	ret0, _ := ret[0].(db.UserModule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertUserModule indicates an expected call of UpsertUserModule.
+func (mr *MockStoreMockRecorder) UpsertUserModule(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertUserModule", reflect.TypeOf((*MockStore)(nil).UpsertUserModule), arg0, arg1)
 }
 
 // VerifyEmailTx mocks base method.

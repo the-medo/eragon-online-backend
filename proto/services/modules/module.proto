@@ -5,14 +5,44 @@ package pb;
 import "google/protobuf/timestamp.proto";
 import "services/users/user.proto";
 import "services/entities/entity.proto";
+import "services/modules/module_type.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
-message Module {
+message ModuleDefinition {
   optional int32 worldId = 1;
   optional int32 questId = 2;
   optional int32 characterId = 3;
   optional int32 systemId = 4;
+}
+
+message Module {
+  int32 id = 1;
+  ModuleType moduleType = 2;
+  optional int32 worldId = 3;
+  optional int32 questId = 4;
+  optional int32 characterId = 5;
+  optional int32 systemId = 6;
+  int32 menuId = 7;
+  int32 headerImgId = 8;
+  int32 thumbnailImgId = 9;
+  int32 avatarImgId = 10;
+}
+
+message ViewModule {
+  int32 moduleId = 1;
+  ModuleType moduleType = 2;
+  optional int32 moduleWorldId = 3;
+  optional int32 moduleQuestId = 4;
+  optional int32 moduleCharacterId = 5;
+  optional int32 moduleSystemId = 6;
+  int32 menuId = 7;
+  int32 headerImgId = 8;
+  string headerImgUrl = 9;
+  int32 thumbnailImgId = 10;
+  string thumbnailImgUrl = 11;
+  int32 avatarImgId = 12;
+  string avatarImgUrl = 13;
 }
 
 message ModuleAdmin {

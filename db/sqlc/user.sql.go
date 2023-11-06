@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 )
 
 const addUserPasswordReset = `-- name: AddUserPasswordReset :one
@@ -78,6 +79,20 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.IntroductionPostID,
 	)
 	return i, err
+}
+
+const deleteUserModule = `-- name: DeleteUserModule :exec
+DELETE FROM user_modules WHERE user_id = $1 AND module_id = $2
+`
+
+type DeleteUserModuleParams struct {
+	UserID   int32 `json:"user_id"`
+	ModuleID int32 `json:"module_id"`
+}
+
+func (q *Queries) DeleteUserModule(ctx context.Context, arg DeleteUserModuleParams) error {
+	_, err := q.db.ExecContext(ctx, deleteUserModule, arg.UserID, arg.ModuleID)
+	return err
 }
 
 const deleteUserPasswordReset = `-- name: DeleteUserPasswordReset :exec
@@ -167,6 +182,75 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (ViewU
 		&i.IntroductionPostDeletedAt,
 	)
 	return i, err
+}
+
+const getUserModules = `-- name: GetUserModules :many
+SELECT
+    m.id, m.world_id, m.system_id, m.character_id, m.quest_id, m.module_type, m.menu_id, m.header_img_id, m.thumbnail_img_id, m.avatar_img_id,
+    um.admin,
+    um.favorite,
+    um.following,
+    um.entity_notifications
+FROM
+    user_modules um
+    JOIN modules m ON um.module_id = m.id
+WHERE
+    user_id = $1
+`
+
+type GetUserModulesRow struct {
+	ID                  int32         `json:"id"`
+	WorldID             sql.NullInt32 `json:"world_id"`
+	SystemID            sql.NullInt32 `json:"system_id"`
+	CharacterID         sql.NullInt32 `json:"character_id"`
+	QuestID             sql.NullInt32 `json:"quest_id"`
+	ModuleType          ModuleType    `json:"module_type"`
+	MenuID              sql.NullInt32 `json:"menu_id"`
+	HeaderImgID         sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID      sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID         sql.NullInt32 `json:"avatar_img_id"`
+	Admin               bool          `json:"admin"`
+	Favorite            bool          `json:"favorite"`
+	Following           bool          `json:"following"`
+	EntityNotifications []EntityType  `json:"entity_notifications"`
+}
+
+func (q *Queries) GetUserModules(ctx context.Context, userID int32) ([]GetUserModulesRow, error) {
+	rows, err := q.db.QueryContext(ctx, getUserModules, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetUserModulesRow{}
+	for rows.Next() {
+		var i GetUserModulesRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.WorldID,
+			&i.SystemID,
+			&i.CharacterID,
+			&i.QuestID,
+			&i.ModuleType,
+			&i.MenuID,
+			&i.HeaderImgID,
+			&i.ThumbnailImgID,
+			&i.AvatarImgID,
+			&i.Admin,
+			&i.Favorite,
+			&i.Following,
+			pq.Array(&i.EntityNotifications),
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const getUserPasswordReset = `-- name: GetUserPasswordReset :one
@@ -408,6 +492,48 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		&i.CreatedAt,
 		&i.IsEmailVerified,
 		&i.IntroductionPostID,
+	)
+	return i, err
+}
+
+const upsertUserModule = `-- name: UpsertUserModule :one
+INSERT INTO user_modules (user_id, module_id, admin, favorite, following, entity_notifications)
+VALUES ($1, $2, $3, $4, $5, $6::entity_type[])
+ON CONFLICT (user_id, module_id)
+    DO UPDATE SET
+      admin = COALESCE(EXCLUDED.admin, user_modules.admin),
+      favorite = COALESCE(EXCLUDED.favorite, user_modules.favorite),
+      following = COALESCE(EXCLUDED.following, user_modules.following),
+      entity_notifications = COALESCE(EXCLUDED.entity_notifications, user_modules.entity_notifications)
+RETURNING user_id, module_id, admin, favorite, following, entity_notifications
+`
+
+type UpsertUserModuleParams struct {
+	UserID              int32        `json:"user_id"`
+	ModuleID            int32        `json:"module_id"`
+	Admin               sql.NullBool `json:"admin"`
+	Favorite            sql.NullBool `json:"favorite"`
+	Following           sql.NullBool `json:"following"`
+	EntityNotifications []EntityType `json:"entity_notifications"`
+}
+
+func (q *Queries) UpsertUserModule(ctx context.Context, arg UpsertUserModuleParams) (UserModule, error) {
+	row := q.db.QueryRowContext(ctx, upsertUserModule,
+		arg.UserID,
+		arg.ModuleID,
+		arg.Admin,
+		arg.Favorite,
+		arg.Following,
+		pq.Array(arg.EntityNotifications),
+	)
+	var i UserModule
+	err := row.Scan(
+		&i.UserID,
+		&i.ModuleID,
+		&i.Admin,
+		&i.Favorite,
+		&i.Following,
+		pq.Array(&i.EntityNotifications),
 	)
 	return i, err
 }

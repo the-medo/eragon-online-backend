@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-11-04T15:10:16.575Z
+-- Generated at: 2023-11-05T13:13:59.478Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -97,6 +97,15 @@ CREATE TABLE "sessions" (
   "is_blocked" boolean NOT NULL DEFAULT false,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "expired_at" timestamptz NOT NULL DEFAULT (now() + INTERVAL '15 minutes')
+);
+
+CREATE TABLE "user_modules" (
+  "user_id" int NOT NULL,
+  "module_id" int NOT NULL,
+  "admin" bool NOT NULL,
+  "favorite" bool NOT NULL,
+  "following" bool NOT NULL,
+  "entity_notifications" entity_type[]
 );
 
 CREATE TABLE "evaluations" (
@@ -430,6 +439,8 @@ CREATE TABLE "entity_group_content" (
   "content_entity_group_id" int
 );
 
+CREATE UNIQUE INDEX ON "user_modules" ("user_id", "module_id");
+
 CREATE UNIQUE INDEX ON "evaluation_votes" ("evaluation_id", "user_id", "user_id_voter");
 
 CREATE UNIQUE INDEX ON "user_roles" ("role_id", "user_id");
@@ -491,6 +502,10 @@ ALTER TABLE "users" ADD FOREIGN KEY ("img_id") REFERENCES "images" ("id");
 ALTER TABLE "users" ADD FOREIGN KEY ("introduction_post_id") REFERENCES "posts" ("id");
 
 ALTER TABLE "sessions" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+ALTER TABLE "user_modules" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+ALTER TABLE "user_modules" ADD FOREIGN KEY ("module_id") REFERENCES "modules" ("id");
 
 ALTER TABLE "evaluation_votes" ADD FOREIGN KEY ("evaluation_id") REFERENCES "evaluations" ("id");
 

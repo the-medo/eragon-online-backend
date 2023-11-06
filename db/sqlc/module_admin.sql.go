@@ -262,7 +262,7 @@ func (q *Queries) GetModuleAdmins(ctx context.Context, moduleID int32) ([]GetMod
 	return items, nil
 }
 
-const getModulesOfUser = `-- name: GetModulesOfUser :many
+const getModulesOfAdmin = `-- name: GetModulesOfAdmin :many
 SELECT
     id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, user_id, approved, super_admin, allowed_entity_types, allowed_menu
 FROM
@@ -271,8 +271,8 @@ WHERE
     user_id = $1 AND approved = 1
 `
 
-func (q *Queries) GetModulesOfUser(ctx context.Context, userID int32) ([]ViewModuleAdmin, error) {
-	rows, err := q.db.QueryContext(ctx, getModulesOfUser, userID)
+func (q *Queries) GetModulesOfAdmin(ctx context.Context, userID int32) ([]ViewModuleAdmin, error) {
+	rows, err := q.db.QueryContext(ctx, getModulesOfAdmin, userID)
 	if err != nil {
 		return nil, err
 	}

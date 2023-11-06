@@ -26,7 +26,7 @@ RETURNING *;
 -- name: DeleteModuleAdmin :exec
 DELETE FROM module_admins WHERE module_id = sqlc.arg(module_id) AND user_id = sqlc.arg(user_id);
 
--- name: GetModulesOfUser :many
+-- name: GetModulesOfAdmin :many
 SELECT
     *
 FROM

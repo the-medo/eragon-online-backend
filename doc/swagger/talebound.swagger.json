@@ -88,6 +88,176 @@
         ]
       }
     },
+    "/auth/login": {
+      "post": {
+        "summary": "Login user",
+        "description": "login user - get user object and set HttpOnly cookies",
+        "operationId": "Auth_LoginUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbLoginUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Logout user",
+        "description": "logout user - it clears HttpOnly cookies - no request data required",
+        "operationId": "Auth_LogoutUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/reset/auth-code": {
+      "post": {
+        "summary": "Confirm password reset",
+        "description": "in case a user forgot their password, they can confirm the password reset using this endpoint",
+        "operationId": "Auth_ResetPasswordVerifyCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordVerifyCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordVerifyCodeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/reset/auth-code-validity": {
+      "get": {
+        "summary": "Validate reset password secret code",
+        "description": "validate reset password secret code",
+        "operationId": "Auth_ResetPasswordVerifyCodeValidity",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordVerifyCodeValidityResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "secretCode",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/reset/send-code": {
+      "post": {
+        "summary": "Request password reset",
+        "description": "in case a user forgot their password, they can request a password reset using this endpoint",
+        "operationId": "Auth_ResetPasswordSendCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordSendCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordSendCodeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
     "/entities/groups": {
       "post": {
         "summary": "Create entity group",
@@ -3344,176 +3514,6 @@
         ]
       }
     },
-    "/users/login": {
-      "post": {
-        "summary": "Login user",
-        "description": "login user - get user object and set HttpOnly cookies",
-        "operationId": "Users_LoginUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbLoginUserResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbLoginUserRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Users"
-        ]
-      }
-    },
-    "/users/logout": {
-      "post": {
-        "summary": "Logout user",
-        "description": "logout user - it clears HttpOnly cookies - no request data required",
-        "operationId": "Users_LogoutUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          }
-        ],
-        "tags": [
-          "Users"
-        ]
-      }
-    },
-    "/users/reset/auth-code": {
-      "post": {
-        "summary": "Confirm password reset",
-        "description": "in case a user forgot their password, they can confirm the password reset using this endpoint",
-        "operationId": "Users_ResetPasswordVerifyCode",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbResetPasswordVerifyCodeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbResetPasswordVerifyCodeRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Users"
-        ]
-      }
-    },
-    "/users/reset/auth-code-validity": {
-      "get": {
-        "summary": "Validate reset password secret code",
-        "description": "validate reset password secret code",
-        "operationId": "Users_ResetPasswordVerifyCodeValidity",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbResetPasswordVerifyCodeValidityResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "secretCode",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Users"
-        ]
-      }
-    },
-    "/users/reset/send-code": {
-      "post": {
-        "summary": "Request password reset",
-        "description": "in case a user forgot their password, they can request a password reset using this endpoint",
-        "operationId": "Users_ResetPasswordSendCode",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbResetPasswordSendCodeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbResetPasswordSendCodeRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Users"
-        ]
-      }
-    },
     "/users/roles": {
       "get": {
         "summary": "Get user roles (admin, moderator, etc.)",
@@ -3888,6 +3888,39 @@
         ]
       }
     },
+    "/users/{userId}/modules": {
+      "get": {
+        "summary": "Get creator's worlds",
+        "description": "gets list of worlds that the creator is part of",
+        "operationId": "Users_GetUserModules",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetUserModulesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
     "/users/{userId}/posts": {
       "get": {
         "summary": "Get user posts",
@@ -3975,39 +4008,6 @@
         ]
       }
     },
-    "/users/{userId}/worlds": {
-      "get": {
-        "summary": "Get creator's worlds",
-        "description": "gets list of worlds that the creator is part of",
-        "operationId": "Users_GetWorldsOfCreator",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetWorldsOfCreatorResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Users"
-        ]
-      }
-    },
     "/worlds": {
       "get": {
         "summary": "Get worlds ",
@@ -4078,7 +4078,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbWorld"
+              "$ref": "#/definitions/pbCreateWorldResponse"
             }
           },
           "default": {
@@ -4526,6 +4526,17 @@
         },
         "basedOn": {
           "type": "string"
+        }
+      }
+    },
+    "pbCreateWorldResponse": {
+      "type": "object",
+      "properties": {
+        "world": {
+          "$ref": "#/definitions/pbWorld"
+        },
+        "module": {
+          "$ref": "#/definitions/pbModule"
         }
       }
     },
@@ -5008,6 +5019,25 @@
         }
       }
     },
+    "pbGetUserModulesResponse": {
+      "type": "object",
+      "properties": {
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewModule"
+          }
+        },
+        "worlds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbWorld"
+          }
+        }
+      }
+    },
     "pbGetUserPostsResponse": {
       "type": "object",
       "properties": {
@@ -5040,18 +5070,6 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbUser"
-          }
-        }
-      }
-    },
-    "pbGetWorldsOfCreatorResponse": {
-      "type": "object",
-      "properties": {
-        "worlds": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbWorldOfCreatorResponse"
           }
         }
       }
@@ -5239,6 +5257,13 @@
     "pbModule": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
         "worldId": {
           "type": "integer",
           "format": "int32"
@@ -5252,6 +5277,22 @@
           "format": "int32"
         },
         "systemId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "menuId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "headerImgId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "thumbnailImgId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "avatarImgId": {
           "type": "integer",
           "format": "int32"
         }
@@ -5293,6 +5334,27 @@
         },
         "allowedMenu": {
           "type": "boolean"
+        }
+      }
+    },
+    "pbModuleDefinition": {
+      "type": "object",
+      "properties": {
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "questId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "characterId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "systemId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -5823,6 +5885,59 @@
         }
       }
     },
+    "pbViewModule": {
+      "type": "object",
+      "properties": {
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "moduleWorldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleQuestId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleCharacterId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleSystemId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "menuId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "headerImgId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "headerImgUrl": {
+          "type": "string"
+        },
+        "thumbnailImgId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "thumbnailImgUrl": {
+          "type": "string"
+        },
+        "avatarImgId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "avatarImgUrl": {
+          "type": "string"
+        }
+      }
+    },
     "pbViewPost": {
       "type": "object",
       "properties": {
@@ -5982,40 +6097,9 @@
         "shortDescription": {
           "type": "string"
         },
-        "imageAvatar": {
-          "type": "string"
-        },
-        "imageThumbnail": {
-          "type": "string"
-        },
-        "imageHeader": {
-          "type": "string"
-        },
         "descriptionPostId": {
           "type": "integer",
           "format": "int32"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "worldMenuId": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
-    "pbWorldOfCreatorResponse": {
-      "type": "object",
-      "properties": {
-        "world": {
-          "$ref": "#/definitions/pbWorld"
-        },
-        "superAdmin": {
-          "type": "boolean"
         }
       }
     },

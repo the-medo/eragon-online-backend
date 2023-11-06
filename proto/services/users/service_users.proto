@@ -4,20 +4,16 @@ package pb;
 
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
-
-import "google/protobuf/empty.proto";
 import "services/users/rpc_user_roles.proto";
 import "services/users/rpc_get_user.proto";
 import "services/users/rpc_update_user.proto";
-import "services/users/rpc_reset_password.proto";
-import "services/users/rpc_login_user.proto";
 import "services/users/rpc_create_user.proto";
 import "services/users/user.proto";
 import "services/evaluations/rpc_user_evaluations.proto";
 import "services/images/rpc_upload_image.proto";
 import "services/posts/post.proto";
 import "services/posts/rpc_post.proto";
-import "services/worlds/rpc_world.proto";
+import "services/users/rpc_users.proto";
 
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
@@ -113,60 +109,6 @@ service Users {
     };
   };
 
-  // ============= LOGIN & LOGOUT =================
-  rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {
-    option (google.api.http) = {
-      post: "/users/login"
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "login user - get user object and set HttpOnly cookies";
-      summary: "Login user";
-    };
-  };
-
-  rpc LogoutUser(google.protobuf.Empty) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      post: "/users/logout"
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "logout user - it clears HttpOnly cookies - no request data required";
-      summary: "Logout user";
-    };
-  };
-
-  rpc ResetPasswordSendCode(ResetPasswordSendCodeRequest) returns (ResetPasswordSendCodeResponse) {
-    option (google.api.http) = {
-      post: "/users/reset/send-code"
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "in case a user forgot their password, they can request a password reset using this endpoint";
-      summary: "Request password reset";
-    };
-  };
-
-  rpc ResetPasswordVerifyCode(ResetPasswordVerifyCodeRequest) returns (ResetPasswordVerifyCodeResponse) {
-    option (google.api.http) = {
-      post: "/users/reset/auth-code"
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "in case a user forgot their password, they can confirm the password reset using this endpoint";
-      summary: "Confirm password reset";
-    };
-  };
-
-  rpc ResetPasswordVerifyCodeValidity(ResetPasswordVerifyCodeValidityRequest) returns (ResetPasswordVerifyCodeValidityResponse) {
-    option (google.api.http) = {
-      get: "/users/reset/auth-code-validity"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "validate reset password secret code";
-      summary: "Validate reset password secret code";
-    };
-  };
 
 
   rpc CreateOrUpdateEvaluationVote(CreateOrUpdateEvaluationVoteRequest) returns (CreateOrUpdateEvaluationVoteResponse) {
@@ -231,7 +173,6 @@ service Users {
     };
   };
 
-
   rpc GetUserPosts(GetUserPostsRequest) returns (GetUserPostsResponse) {
     option (google.api.http) = {
       get: "/users/{userId}/posts"
@@ -242,10 +183,9 @@ service Users {
     };
   };
 
-
-  rpc GetWorldsOfCreator(GetWorldsOfCreatorRequest) returns (GetWorldsOfCreatorResponse) {
+  rpc GetUserModules(GetUserModulesRequest) returns (GetUserModulesResponse) {
     option (google.api.http) = {
-      get: "/users/{userId}/worlds"
+      get: "/users/{userId}/modules"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "gets list of worlds that the creator is part of";

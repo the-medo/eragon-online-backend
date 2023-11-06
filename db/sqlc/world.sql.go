@@ -181,6 +181,55 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 	return items, nil
 }
 
+const getWorldsByIDs = `-- name: GetWorldsByIDs :many
+SELECT id, name, public, created_at, short_description, based_on, description_post_id, module_id, module_world_id, module_system_id, module_character_id, module_quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM view_worlds WHERE id = ANY($1::int[])
+`
+
+func (q *Queries) GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]ViewWorld, error) {
+	rows, err := q.db.QueryContext(ctx, getWorldsByIDs, pq.Array(worldIds))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ViewWorld{}
+	for rows.Next() {
+		var i ViewWorld
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Public,
+			&i.CreatedAt,
+			&i.ShortDescription,
+			&i.BasedOn,
+			&i.DescriptionPostID,
+			&i.ModuleID,
+			&i.ModuleWorldID,
+			&i.ModuleSystemID,
+			&i.ModuleCharacterID,
+			&i.ModuleQuestID,
+			&i.ModuleType,
+			&i.MenuID,
+			&i.HeaderImgID,
+			&i.ThumbnailImgID,
+			&i.AvatarImgID,
+			&i.ImageHeader,
+			&i.ImageThumbnail,
+			&i.ImageAvatar,
+			pq.Array(&i.Tags),
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getWorldsCount = `-- name: GetWorldsCount :one
 SELECT COUNT(*) FROM view_worlds
 WHERE ($1::boolean IS NULL OR public = $1) AND

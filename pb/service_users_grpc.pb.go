@@ -11,7 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -28,11 +27,6 @@ const (
 	Users_CreateUser_FullMethodName                         = "/pb.Users/CreateUser"
 	Users_UpdateUser_FullMethodName                         = "/pb.Users/UpdateUser"
 	Users_UpdateUserIntroduction_FullMethodName             = "/pb.Users/UpdateUserIntroduction"
-	Users_LoginUser_FullMethodName                          = "/pb.Users/LoginUser"
-	Users_LogoutUser_FullMethodName                         = "/pb.Users/LogoutUser"
-	Users_ResetPasswordSendCode_FullMethodName              = "/pb.Users/ResetPasswordSendCode"
-	Users_ResetPasswordVerifyCode_FullMethodName            = "/pb.Users/ResetPasswordVerifyCode"
-	Users_ResetPasswordVerifyCodeValidity_FullMethodName    = "/pb.Users/ResetPasswordVerifyCodeValidity"
 	Users_CreateOrUpdateEvaluationVote_FullMethodName       = "/pb.Users/CreateOrUpdateEvaluationVote"
 	Users_GetEvaluationVotesByUserId_FullMethodName         = "/pb.Users/GetEvaluationVotesByUserId"
 	Users_GetEvaluationVotesByUserIdAndVoter_FullMethodName = "/pb.Users/GetEvaluationVotesByUserIdAndVoter"
@@ -40,7 +34,7 @@ const (
 	Users_GetAverageUserEvaluationsByType_FullMethodName    = "/pb.Users/GetAverageUserEvaluationsByType"
 	Users_UploadUserAvatar_FullMethodName                   = "/pb.Users/UploadUserAvatar"
 	Users_GetUserPosts_FullMethodName                       = "/pb.Users/GetUserPosts"
-	Users_GetWorldsOfCreator_FullMethodName                 = "/pb.Users/GetWorldsOfCreator"
+	Users_GetUserModules_FullMethodName                     = "/pb.Users/GetUserModules"
 )
 
 // UsersClient is the client API for Users service.
@@ -56,12 +50,6 @@ type UsersClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*ViewPost, error)
-	// ============= LOGIN & LOGOUT =================
-	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
-	LogoutUser(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	ResetPasswordSendCode(ctx context.Context, in *ResetPasswordSendCodeRequest, opts ...grpc.CallOption) (*ResetPasswordSendCodeResponse, error)
-	ResetPasswordVerifyCode(ctx context.Context, in *ResetPasswordVerifyCodeRequest, opts ...grpc.CallOption) (*ResetPasswordVerifyCodeResponse, error)
-	ResetPasswordVerifyCodeValidity(ctx context.Context, in *ResetPasswordVerifyCodeValidityRequest, opts ...grpc.CallOption) (*ResetPasswordVerifyCodeValidityResponse, error)
 	CreateOrUpdateEvaluationVote(ctx context.Context, in *CreateOrUpdateEvaluationVoteRequest, opts ...grpc.CallOption) (*CreateOrUpdateEvaluationVoteResponse, error)
 	GetEvaluationVotesByUserId(ctx context.Context, in *GetEvaluationVotesByUserIdRequest, opts ...grpc.CallOption) (*GetEvaluationVotesByUserIdResponse, error)
 	GetEvaluationVotesByUserIdAndVoter(ctx context.Context, in *GetEvaluationVotesByUserIdAndVoterRequest, opts ...grpc.CallOption) (*GetEvaluationVotesByUserIdAndVoterResponse, error)
@@ -69,7 +57,7 @@ type UsersClient interface {
 	GetAverageUserEvaluationsByType(ctx context.Context, in *GetAverageUserEvaluationsByTypeRequest, opts ...grpc.CallOption) (*GetAverageUserEvaluationsByTypeResponse, error)
 	UploadUserAvatar(ctx context.Context, in *UploadUserAvatarRequest, opts ...grpc.CallOption) (*UploadUserAvatarResponse, error)
 	GetUserPosts(ctx context.Context, in *GetUserPostsRequest, opts ...grpc.CallOption) (*GetUserPostsResponse, error)
-	GetWorldsOfCreator(ctx context.Context, in *GetWorldsOfCreatorRequest, opts ...grpc.CallOption) (*GetWorldsOfCreatorResponse, error)
+	GetUserModules(ctx context.Context, in *GetUserModulesRequest, opts ...grpc.CallOption) (*GetUserModulesResponse, error)
 }
 
 type usersClient struct {
@@ -152,51 +140,6 @@ func (c *usersClient) UpdateUserIntroduction(ctx context.Context, in *UpdateUser
 	return out, nil
 }
 
-func (c *usersClient) LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error) {
-	out := new(LoginUserResponse)
-	err := c.cc.Invoke(ctx, Users_LoginUser_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *usersClient) LogoutUser(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Users_LogoutUser_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *usersClient) ResetPasswordSendCode(ctx context.Context, in *ResetPasswordSendCodeRequest, opts ...grpc.CallOption) (*ResetPasswordSendCodeResponse, error) {
-	out := new(ResetPasswordSendCodeResponse)
-	err := c.cc.Invoke(ctx, Users_ResetPasswordSendCode_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *usersClient) ResetPasswordVerifyCode(ctx context.Context, in *ResetPasswordVerifyCodeRequest, opts ...grpc.CallOption) (*ResetPasswordVerifyCodeResponse, error) {
-	out := new(ResetPasswordVerifyCodeResponse)
-	err := c.cc.Invoke(ctx, Users_ResetPasswordVerifyCode_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *usersClient) ResetPasswordVerifyCodeValidity(ctx context.Context, in *ResetPasswordVerifyCodeValidityRequest, opts ...grpc.CallOption) (*ResetPasswordVerifyCodeValidityResponse, error) {
-	out := new(ResetPasswordVerifyCodeValidityResponse)
-	err := c.cc.Invoke(ctx, Users_ResetPasswordVerifyCodeValidity_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *usersClient) CreateOrUpdateEvaluationVote(ctx context.Context, in *CreateOrUpdateEvaluationVoteRequest, opts ...grpc.CallOption) (*CreateOrUpdateEvaluationVoteResponse, error) {
 	out := new(CreateOrUpdateEvaluationVoteResponse)
 	err := c.cc.Invoke(ctx, Users_CreateOrUpdateEvaluationVote_FullMethodName, in, out, opts...)
@@ -260,9 +203,9 @@ func (c *usersClient) GetUserPosts(ctx context.Context, in *GetUserPostsRequest,
 	return out, nil
 }
 
-func (c *usersClient) GetWorldsOfCreator(ctx context.Context, in *GetWorldsOfCreatorRequest, opts ...grpc.CallOption) (*GetWorldsOfCreatorResponse, error) {
-	out := new(GetWorldsOfCreatorResponse)
-	err := c.cc.Invoke(ctx, Users_GetWorldsOfCreator_FullMethodName, in, out, opts...)
+func (c *usersClient) GetUserModules(ctx context.Context, in *GetUserModulesRequest, opts ...grpc.CallOption) (*GetUserModulesResponse, error) {
+	out := new(GetUserModulesResponse)
+	err := c.cc.Invoke(ctx, Users_GetUserModules_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -282,12 +225,6 @@ type UsersServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*ViewPost, error)
-	// ============= LOGIN & LOGOUT =================
-	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
-	LogoutUser(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
-	ResetPasswordSendCode(context.Context, *ResetPasswordSendCodeRequest) (*ResetPasswordSendCodeResponse, error)
-	ResetPasswordVerifyCode(context.Context, *ResetPasswordVerifyCodeRequest) (*ResetPasswordVerifyCodeResponse, error)
-	ResetPasswordVerifyCodeValidity(context.Context, *ResetPasswordVerifyCodeValidityRequest) (*ResetPasswordVerifyCodeValidityResponse, error)
 	CreateOrUpdateEvaluationVote(context.Context, *CreateOrUpdateEvaluationVoteRequest) (*CreateOrUpdateEvaluationVoteResponse, error)
 	GetEvaluationVotesByUserId(context.Context, *GetEvaluationVotesByUserIdRequest) (*GetEvaluationVotesByUserIdResponse, error)
 	GetEvaluationVotesByUserIdAndVoter(context.Context, *GetEvaluationVotesByUserIdAndVoterRequest) (*GetEvaluationVotesByUserIdAndVoterResponse, error)
@@ -295,7 +232,7 @@ type UsersServer interface {
 	GetAverageUserEvaluationsByType(context.Context, *GetAverageUserEvaluationsByTypeRequest) (*GetAverageUserEvaluationsByTypeResponse, error)
 	UploadUserAvatar(context.Context, *UploadUserAvatarRequest) (*UploadUserAvatarResponse, error)
 	GetUserPosts(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error)
-	GetWorldsOfCreator(context.Context, *GetWorldsOfCreatorRequest) (*GetWorldsOfCreatorResponse, error)
+	GetUserModules(context.Context, *GetUserModulesRequest) (*GetUserModulesResponse, error)
 	mustEmbedUnimplementedUsersServer()
 }
 
@@ -327,21 +264,6 @@ func (UnimplementedUsersServer) UpdateUser(context.Context, *UpdateUserRequest) 
 func (UnimplementedUsersServer) UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*ViewPost, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserIntroduction not implemented")
 }
-func (UnimplementedUsersServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
-}
-func (UnimplementedUsersServer) LogoutUser(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method LogoutUser not implemented")
-}
-func (UnimplementedUsersServer) ResetPasswordSendCode(context.Context, *ResetPasswordSendCodeRequest) (*ResetPasswordSendCodeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ResetPasswordSendCode not implemented")
-}
-func (UnimplementedUsersServer) ResetPasswordVerifyCode(context.Context, *ResetPasswordVerifyCodeRequest) (*ResetPasswordVerifyCodeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ResetPasswordVerifyCode not implemented")
-}
-func (UnimplementedUsersServer) ResetPasswordVerifyCodeValidity(context.Context, *ResetPasswordVerifyCodeValidityRequest) (*ResetPasswordVerifyCodeValidityResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ResetPasswordVerifyCodeValidity not implemented")
-}
 func (UnimplementedUsersServer) CreateOrUpdateEvaluationVote(context.Context, *CreateOrUpdateEvaluationVoteRequest) (*CreateOrUpdateEvaluationVoteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOrUpdateEvaluationVote not implemented")
 }
@@ -363,8 +285,8 @@ func (UnimplementedUsersServer) UploadUserAvatar(context.Context, *UploadUserAva
 func (UnimplementedUsersServer) GetUserPosts(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserPosts not implemented")
 }
-func (UnimplementedUsersServer) GetWorldsOfCreator(context.Context, *GetWorldsOfCreatorRequest) (*GetWorldsOfCreatorResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWorldsOfCreator not implemented")
+func (UnimplementedUsersServer) GetUserModules(context.Context, *GetUserModulesRequest) (*GetUserModulesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserModules not implemented")
 }
 func (UnimplementedUsersServer) mustEmbedUnimplementedUsersServer() {}
 
@@ -523,96 +445,6 @@ func _Users_UpdateUserIntroduction_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Users_LoginUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginUserRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UsersServer).LoginUser(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Users_LoginUser_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).LoginUser(ctx, req.(*LoginUserRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Users_LogoutUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UsersServer).LogoutUser(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Users_LogoutUser_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).LogoutUser(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Users_ResetPasswordSendCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ResetPasswordSendCodeRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UsersServer).ResetPasswordSendCode(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Users_ResetPasswordSendCode_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).ResetPasswordSendCode(ctx, req.(*ResetPasswordSendCodeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Users_ResetPasswordVerifyCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ResetPasswordVerifyCodeRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UsersServer).ResetPasswordVerifyCode(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Users_ResetPasswordVerifyCode_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).ResetPasswordVerifyCode(ctx, req.(*ResetPasswordVerifyCodeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Users_ResetPasswordVerifyCodeValidity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ResetPasswordVerifyCodeValidityRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UsersServer).ResetPasswordVerifyCodeValidity(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Users_ResetPasswordVerifyCodeValidity_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).ResetPasswordVerifyCodeValidity(ctx, req.(*ResetPasswordVerifyCodeValidityRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Users_CreateOrUpdateEvaluationVote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateOrUpdateEvaluationVoteRequest)
 	if err := dec(in); err != nil {
@@ -739,20 +571,20 @@ func _Users_GetUserPosts_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Users_GetWorldsOfCreator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetWorldsOfCreatorRequest)
+func _Users_GetUserModules_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserModulesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UsersServer).GetWorldsOfCreator(ctx, in)
+		return srv.(UsersServer).GetUserModules(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Users_GetWorldsOfCreator_FullMethodName,
+		FullMethod: Users_GetUserModules_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).GetWorldsOfCreator(ctx, req.(*GetWorldsOfCreatorRequest))
+		return srv.(UsersServer).GetUserModules(ctx, req.(*GetUserModulesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -797,26 +629,6 @@ var Users_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Users_UpdateUserIntroduction_Handler,
 		},
 		{
-			MethodName: "LoginUser",
-			Handler:    _Users_LoginUser_Handler,
-		},
-		{
-			MethodName: "LogoutUser",
-			Handler:    _Users_LogoutUser_Handler,
-		},
-		{
-			MethodName: "ResetPasswordSendCode",
-			Handler:    _Users_ResetPasswordSendCode_Handler,
-		},
-		{
-			MethodName: "ResetPasswordVerifyCode",
-			Handler:    _Users_ResetPasswordVerifyCode_Handler,
-		},
-		{
-			MethodName: "ResetPasswordVerifyCodeValidity",
-			Handler:    _Users_ResetPasswordVerifyCodeValidity_Handler,
-		},
-		{
 			MethodName: "CreateOrUpdateEvaluationVote",
 			Handler:    _Users_CreateOrUpdateEvaluationVote_Handler,
 		},
@@ -845,8 +657,8 @@ var Users_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Users_GetUserPosts_Handler,
 		},
 		{
-			MethodName: "GetWorldsOfCreator",
-			Handler:    _Users_GetWorldsOfCreator_Handler,
+			MethodName: "GetUserModules",
+			Handler:    _Users_GetUserModules_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

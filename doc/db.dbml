@@ -93,6 +93,19 @@ Table sessions {
   expired_at timestamptz [not null, default: `now() + INTERVAL '15 minutes'`]
 }
 
+Table user_modules {
+  user_id int [not null, ref: > users.id]
+  module_id int [not null, ref: > modules.id]
+  admin bool [not null]
+  favorite bool [not null]
+  following bool [not null]
+  entity_notifications entity_type[]
+
+  indexes {
+    (user_id, module_id) [unique]
+  }
+}
+
 enum evaluation_type {
   self
   dm

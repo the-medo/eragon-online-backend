@@ -31,7 +31,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WorldsClient interface {
-	CreateWorld(ctx context.Context, in *CreateWorldRequest, opts ...grpc.CallOption) (*World, error)
+	CreateWorld(ctx context.Context, in *CreateWorldRequest, opts ...grpc.CallOption) (*CreateWorldResponse, error)
 	UpdateWorld(ctx context.Context, in *UpdateWorldRequest, opts ...grpc.CallOption) (*World, error)
 	UploadWorldImage(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error)
 	GetWorlds(ctx context.Context, in *GetWorldsRequest, opts ...grpc.CallOption) (*GetWorldsResponse, error)
@@ -47,8 +47,8 @@ func NewWorldsClient(cc grpc.ClientConnInterface) WorldsClient {
 	return &worldsClient{cc}
 }
 
-func (c *worldsClient) CreateWorld(ctx context.Context, in *CreateWorldRequest, opts ...grpc.CallOption) (*World, error) {
-	out := new(World)
+func (c *worldsClient) CreateWorld(ctx context.Context, in *CreateWorldRequest, opts ...grpc.CallOption) (*CreateWorldResponse, error) {
+	out := new(CreateWorldResponse)
 	err := c.cc.Invoke(ctx, Worlds_CreateWorld_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -105,7 +105,7 @@ func (c *worldsClient) UpdateWorldIntroduction(ctx context.Context, in *UpdateWo
 // All implementations must embed UnimplementedWorldsServer
 // for forward compatibility
 type WorldsServer interface {
-	CreateWorld(context.Context, *CreateWorldRequest) (*World, error)
+	CreateWorld(context.Context, *CreateWorldRequest) (*CreateWorldResponse, error)
 	UpdateWorld(context.Context, *UpdateWorldRequest) (*World, error)
 	UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error)
 	GetWorlds(context.Context, *GetWorldsRequest) (*GetWorldsResponse, error)
@@ -118,7 +118,7 @@ type WorldsServer interface {
 type UnimplementedWorldsServer struct {
 }
 
-func (UnimplementedWorldsServer) CreateWorld(context.Context, *CreateWorldRequest) (*World, error) {
+func (UnimplementedWorldsServer) CreateWorld(context.Context, *CreateWorldRequest) (*CreateWorldResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateWorld not implemented")
 }
 func (UnimplementedWorldsServer) UpdateWorld(context.Context, *UpdateWorldRequest) (*World, error) {

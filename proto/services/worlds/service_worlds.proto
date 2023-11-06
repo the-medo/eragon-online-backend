@@ -15,7 +15,7 @@ option go_package = "github.com/the-medo/talebound-backend/pb";
 
 service Worlds {
 
-  rpc CreateWorld(CreateWorldRequest) returns (World) {
+  rpc CreateWorld(CreateWorldRequest) returns (CreateWorldResponse) {
     option (google.api.http) = {
       post: "/worlds"
       body: "*"

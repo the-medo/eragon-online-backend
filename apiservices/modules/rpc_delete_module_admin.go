@@ -2,6 +2,7 @@ package modules
 
 import (
 	"context"
+	"database/sql"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/apiservices/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
@@ -39,6 +40,25 @@ func (server *ServiceModules) DeleteModuleAdmin(ctx context.Context, req *pb.Del
 	err = server.Store.DeleteModuleAdmin(ctx, arg)
 	if err != nil {
 		return nil, err
+	}
+
+	userModule, err := server.Store.UpsertUserModule(ctx, db.UpsertUserModuleParams{
+		ModuleID: req.GetModuleId(),
+		UserID:   req.GetUserId(),
+		Admin: sql.NullBool{
+			Bool:  false,
+			Valid: true,
+		},
+	})
+
+	if userModule.Admin == false && userModule.Following == false && userModule.Favorite == false {
+		err = server.Store.DeleteUserModule(ctx, db.DeleteUserModuleParams{
+			ModuleID: req.GetModuleId(),
+			UserID:   req.GetUserId(),
+		})
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return nil, nil
