@@ -1,16 +1,16 @@
 package evaluations
 
 import (
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	"github.com/the-medo/talebound-backend/pb"
 )
 
 type ServiceEvaluations struct {
 	pb.UnimplementedEvaluationsServer
-	*srv.ServiceCore
+	*servicecore.ServiceCore
 }
 
-func NewEvaluationsService(core *srv.ServiceCore) *ServiceEvaluations {
+func NewEvaluationsService(core *servicecore.ServiceCore) *ServiceEvaluations {
 	return &ServiceEvaluations{
 		ServiceCore: core,
 	}

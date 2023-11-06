@@ -1,16 +1,16 @@
 package locations
 
 import (
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	"github.com/the-medo/talebound-backend/pb"
 )
 
 type ServiceLocations struct {
 	pb.UnimplementedLocationsServer
-	*srv.ServiceCore
+	*servicecore.ServiceCore
 }
 
-func NewLocationsService(core *srv.ServiceCore) *ServiceLocations {
+func NewLocationsService(core *servicecore.ServiceCore) *ServiceLocations {
 	return &ServiceLocations{
 		ServiceCore: core,
 	}

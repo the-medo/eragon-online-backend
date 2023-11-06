@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServiceWorlds) CreateWorld(ctx context.Context, req *pb.CreateWorldRequest) (*pb.World, error) {
+func (server *ServiceWorlds) CreateWorld(ctx context.Context, req *pb.CreateWorldRequest) (*pb.CreateWorldResponse, error) {
 	violations := validateCreateWorldRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -44,7 +44,10 @@ func (server *ServiceWorlds) CreateWorld(ctx context.Context, req *pb.CreateWorl
 		return nil, status.Errorf(codes.Internal, "failed to create world: %s", err)
 	}
 
-	rsp := converters.ConvertViewWorld(txResult)
+	rsp := &pb.CreateWorldResponse{
+		World: converters.ConvertViewWorld(txResult),
+		//Module: TODO
+	}
 
 	return rsp, nil
 }

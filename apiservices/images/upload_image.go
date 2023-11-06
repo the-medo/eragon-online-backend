@@ -5,7 +5,7 @@ import (
 	"context"
 	cloudflareGo "github.com/cloudflare/cloudflare-go"
 	"github.com/the-medo/talebound-backend/api/e"
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -19,7 +19,7 @@ import (
 	"io"
 )
 
-func UploadImage(service *srv.ServiceCore, ctx context.Context, request *pb.UploadImageRequest) (*pb.UploadImageResponse, error) {
+func UploadImage(service *servicecore.ServiceCore, ctx context.Context, request *pb.UploadImageRequest) (*pb.UploadImageResponse, error) {
 	violations := validateUploadImageRequest(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

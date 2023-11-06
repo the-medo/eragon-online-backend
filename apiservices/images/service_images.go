@@ -1,16 +1,16 @@
 package images
 
 import (
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	"github.com/the-medo/talebound-backend/pb"
 )
 
 type ServiceImages struct {
 	pb.UnimplementedImagesServer
-	*srv.ServiceCore
+	*servicecore.ServiceCore
 }
 
-func NewImagesService(core *srv.ServiceCore) *ServiceImages {
+func NewImagesService(core *servicecore.ServiceCore) *ServiceImages {
 	return &ServiceImages{
 		ServiceCore: core,
 	}

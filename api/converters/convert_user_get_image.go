@@ -2,12 +2,12 @@ package converters
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 )
 
-func ConvertUserGetImage(server *srv.ServiceCore, ctx context.Context, user db.User) *pb.User {
+func ConvertUserGetImage(server *servicecore.ServiceCore, ctx context.Context, user db.User) *pb.User {
 	pbUser := ConvertUser(user, nil)
 
 	if user.ImgID.Valid == true {

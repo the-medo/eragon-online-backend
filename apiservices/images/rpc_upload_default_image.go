@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/rs/zerolog/log"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/constants"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/pb"
@@ -34,7 +34,7 @@ func (server *ServiceImages) UploadDefaultImage(ctx context.Context, request *pb
 
 	log.Info().Int32("ImageTypeId", request.GetImageTypeId()).Str("filename", request.GetFilename()).Msgf("Uploading default image: %s", filename)
 
-	dbImg, err := server.UploadAndInsertToDb(ctx, request.GetData(), api.ImageTypeIds(request.GetImageTypeId()), filename, authPayload.UserId)
+	dbImg, err := UploadAndInsertToDb(server.ServiceCore, ctx, request.GetData(), constants.ImageTypeIds(request.GetImageTypeId()), filename, authPayload.UserId)
 	if err != nil {
 		return nil, err
 	}

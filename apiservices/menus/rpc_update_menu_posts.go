@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/the-medo/talebound-backend/api/e"
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -21,7 +21,7 @@ func (server *ServiceMenus) UpdateMenuPosts(ctx context.Context, req *pb.UpdateM
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.CheckMenuPermissions(ctx, req.GetMenuId(), &srv.ModulePermission{
+	_, err := server.CheckMenuPermissions(ctx, req.GetMenuId(), &servicecore.ModulePermission{
 		NeedsMenuPermission: true,
 	})
 	if err != nil {

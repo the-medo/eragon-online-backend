@@ -5,7 +5,7 @@ import (
 	"github.com/the-medo/talebound-backend/pb"
 )
 
-func ValidateMapModule(module *pb.Module) error {
+func ValidateMapModule(module *pb.ModuleDefinition) error {
 	inputCount := 0
 
 	if module.WorldId != nil {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/e"
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -25,7 +25,7 @@ func (server *ServiceModules) DeleteModuleAdmin(ctx context.Context, req *pb.Del
 		return nil, e.UnauthenticatedError(err)
 	}
 	//user can remove himself from module even if he is not super admin
-	_, err = server.CheckModuleIdPermissions(ctx, req.GetModuleId(), &srv.ModulePermission{
+	_, err = server.CheckModuleIdPermissions(ctx, req.GetModuleId(), &servicecore.ModulePermission{
 		NeedsSuperAdmin: req.GetUserId() != authPayload.UserId,
 	})
 	if err != nil {

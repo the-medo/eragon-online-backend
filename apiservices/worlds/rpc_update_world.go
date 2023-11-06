@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -26,7 +26,7 @@ func (server *ServiceWorlds) UpdateWorld(ctx context.Context, req *pb.UpdateWorl
 		needsEntityPermission = append(needsEntityPermission, db.EntityTypePost)
 	}
 
-	_, _, err := server.CheckModuleTypePermissions(ctx, db.ModuleTypeWorld, req.GetWorldId(), &srv.ModulePermission{
+	_, _, err := server.CheckModuleTypePermissions(ctx, db.ModuleTypeWorld, req.GetWorldId(), &servicecore.ModulePermission{
 		NeedsSuperAdmin:       true,
 		NeedsEntityPermission: &needsEntityPermission,
 	})

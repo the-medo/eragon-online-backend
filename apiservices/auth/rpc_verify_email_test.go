@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/apiservices/testutils"
 	mockdb "github.com/the-medo/talebound-backend/db/mock"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -17,7 +17,7 @@ import (
 )
 
 func TestVerifyEmailAPI(t *testing.T) {
-	user, _ := api.RandomUser(t)
+	user, _ := testutils.RandomUser(t)
 	verifyEmail := randomVerifyEmail(t, user)
 
 	testCases := []struct {
@@ -183,7 +183,7 @@ func TestVerifyEmailAPI(t *testing.T) {
 			store := mockdb.NewMockStore(storeCtrl)
 
 			tc.buildStubs(store)
-			server := api.NewTestServer(t, store, nil)
+			server := NewTestAuthService(t, store, nil)
 
 			res, err := server.VerifyEmail(context.Background(), tc.req)
 			tc.checkResponse(t, res, err)

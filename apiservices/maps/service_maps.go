@@ -1,16 +1,16 @@
 package maps
 
 import (
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	"github.com/the-medo/talebound-backend/pb"
 )
 
 type ServiceMaps struct {
 	pb.UnimplementedMapsServer
-	*srv.ServiceCore
+	*servicecore.ServiceCore
 }
 
-func NewMapsService(core *srv.ServiceCore) *ServiceMaps {
+func NewMapsService(core *servicecore.ServiceCore) *ServiceMaps {
 	return &ServiceMaps{
 		ServiceCore: core,
 	}

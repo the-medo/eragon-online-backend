@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -18,7 +18,7 @@ func (server *ServiceModules) UpdateModuleAdmin(ctx context.Context, req *pb.Upd
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.CheckModuleIdPermissions(ctx, req.GetModuleId(), &srv.ModulePermission{
+	_, err := server.CheckModuleIdPermissions(ctx, req.GetModuleId(), &servicecore.ModulePermission{
 		NeedsSuperAdmin: true,
 	})
 	if err != nil {

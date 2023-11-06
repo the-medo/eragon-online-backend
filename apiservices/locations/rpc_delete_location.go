@@ -3,7 +3,7 @@ package locations
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/e"
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -17,7 +17,7 @@ func (server *ServiceLocations) DeleteLocation(ctx context.Context, request *pb.
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeLocation, request.GetLocationId(), &srv.ModulePermission{
+	_, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeLocation, request.GetLocationId(), &servicecore.ModulePermission{
 		NeedsEntityPermission: &[]db.EntityType{db.EntityTypeLocation},
 	})
 

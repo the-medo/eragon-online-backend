@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/apiservices/testutils"
 	"reflect"
 	"testing"
 
@@ -56,7 +56,7 @@ func EqCreateUserTxParams(arg db.CreateUserTxParams, password string, user db.Us
 }
 
 func TestCreateUserAPI(t *testing.T) {
-	user, password := api.RandomUser(t)
+	user, password := testutils.RandomUser(t)
 
 	testCases := []struct {
 		name          string
@@ -186,7 +186,7 @@ func TestCreateUserAPI(t *testing.T) {
 			taskDistributor := mockwk.NewMockTaskDistributor(taskCtrl)
 
 			tc.buildStubs(store, taskDistributor)
-			server := api.NewTestServer(t, store, taskDistributor)
+			server := NewTestUsersService(t, store, taskDistributor)
 
 			res, err := server.CreateUser(context.Background(), tc.req)
 			tc.checkResponse(t, res, err)

@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/constants"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
 	"github.com/the-medo/talebound-backend/apiservices/images"
@@ -41,7 +41,7 @@ func (server *ServiceUsers) UploadUserAvatar(ctx context.Context, request *pb.Up
 
 	filename := fmt.Sprintf("avatar-%d", request.GetUserId())
 
-	dbImg, err := images.UploadAndInsertToDb(server.ServiceCore, ctx, request.GetData(), api.ImageTypeIdUserAvatar, filename, request.GetUserId())
+	dbImg, err := images.UploadAndInsertToDb(server.ServiceCore, ctx, request.GetData(), constants.ImageTypeIdUserAvatar, filename, request.GetUserId())
 	if err != nil {
 		return nil, err
 	}

@@ -3,7 +3,7 @@ package users
 import (
 	"context"
 	"database/sql"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/apiservices/testutils"
 	"testing"
 	"time"
 
@@ -19,7 +19,7 @@ import (
 )
 
 func TestUpdateUserAPI(t *testing.T) {
-	user, _ := api.RandomUser(t)
+	user, _ := testutils.RandomUser(t)
 
 	newUsername := util.RandomOwner()
 	newEmail := util.RandomEmail()
@@ -72,7 +72,7 @@ func TestUpdateUserAPI(t *testing.T) {
 					Return(db.Image{}, nil)
 			},
 			buildContext: func(t *testing.T, tokenMaker token.Maker) context.Context {
-				return api.NewContextWithCookie(t, tokenMaker, user.ID, time.Minute)
+				return testutils.NewContextWithCookie(t, tokenMaker, user.ID, time.Minute)
 			},
 			checkResponse: func(t *testing.T, res *pb.UpdateUserResponse, err error) {
 				require.NoError(t, err)
@@ -96,7 +96,7 @@ func TestUpdateUserAPI(t *testing.T) {
 					Return(db.User{}, sql.ErrNoRows)
 			},
 			buildContext: func(t *testing.T, tokenMaker token.Maker) context.Context {
-				return api.NewContextWithCookie(t, tokenMaker, user.ID, time.Minute)
+				return testutils.NewContextWithCookie(t, tokenMaker, user.ID, time.Minute)
 			},
 			checkResponse: func(t *testing.T, res *pb.UpdateUserResponse, err error) {
 				require.Error(t, err)
@@ -117,7 +117,7 @@ func TestUpdateUserAPI(t *testing.T) {
 					Times(0)
 			},
 			buildContext: func(t *testing.T, tokenMaker token.Maker) context.Context {
-				return api.NewContextWithCookie(t, tokenMaker, user.ID, time.Minute)
+				return testutils.NewContextWithCookie(t, tokenMaker, user.ID, time.Minute)
 			},
 			checkResponse: func(t *testing.T, res *pb.UpdateUserResponse, err error) {
 				require.Error(t, err)
@@ -138,7 +138,7 @@ func TestUpdateUserAPI(t *testing.T) {
 					Times(0)
 			},
 			buildContext: func(t *testing.T, tokenMaker token.Maker) context.Context {
-				return api.NewContextWithCookie(t, tokenMaker, user.ID, -time.Minute)
+				return testutils.NewContextWithCookie(t, tokenMaker, user.ID, -time.Minute)
 			},
 			checkResponse: func(t *testing.T, res *pb.UpdateUserResponse, err error) {
 				require.Error(t, err)
@@ -179,7 +179,7 @@ func TestUpdateUserAPI(t *testing.T) {
 			store := mockdb.NewMockStore(storeCtrl)
 
 			tc.buildStubs(store)
-			server := api.NewTestServer(t, store, nil)
+			server := NewTestUsersService(t, store, nil)
 
 			ctx := tc.buildContext(t, server.TokenMaker)
 			res, err := server.UpdateUser(ctx, tc.req)

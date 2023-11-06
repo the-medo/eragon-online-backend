@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/apiservices/testutils"
 	mockdb "github.com/the-medo/talebound-backend/db/mock"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
@@ -17,10 +17,10 @@ import (
 )
 
 func TestLoginUserAPI(t *testing.T) {
-	test := api.MockServerTransportStream{}
+	test := testutils.MockServerTransportStream{}
 	ctx := grpc.NewContextWithServerTransportStream(context.Background(), &test)
-	user, password := api.RandomUser(t)
-	viewUser := api.RandomViewUser(t, user)
+	user, password := testutils.RandomUser(t)
+	viewUser := testutils.RandomViewUser(t, user)
 
 	testCases := []struct {
 		name          string
@@ -49,7 +49,7 @@ func TestLoginUserAPI(t *testing.T) {
 					Return(db.Session{}, nil)
 			},
 			checkResponse: func(t *testing.T, res *pb.LoginUserResponse, err error) {
-				api.RequireMatchUser(t, *res.GetUser(), user)
+				testutils.RequireMatchUser(t, *res.GetUser(), user)
 			},
 		},
 		{
@@ -175,7 +175,7 @@ func TestLoginUserAPI(t *testing.T) {
 			store := mockdb.NewMockStore(storeCtrl)
 
 			tc.buildStubs(store)
-			server := api.NewTestServer(t, store, nil)
+			server := NewTestAuthService(t, store, nil)
 
 			res, err := server.LoginUser(ctx, tc.req)
 			tc.checkResponse(t, res, err)

@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -20,7 +20,7 @@ func (server *ServiceEntities) UpdateEntityGroup(ctx context.Context, request *p
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	err := server.CheckEntityGroupAccess(ctx, request.GetEntityGroupId(), &srv.ModulePermission{
+	err := server.CheckEntityGroupAccess(ctx, request.GetEntityGroupId(), &servicecore.ModulePermission{
 		NeedsMenuPermission: true,
 	})
 	if err != nil {

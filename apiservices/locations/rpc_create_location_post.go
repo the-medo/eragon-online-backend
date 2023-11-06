@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"github.com/the-medo/talebound-backend/api/converters"
 	"github.com/the-medo/talebound-backend/api/e"
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -19,7 +19,7 @@ func (server *ServiceLocations) CreateLocationPost(ctx context.Context, request 
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	authPayload, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeLocation, request.GetLocationId(), &srv.ModulePermission{
+	authPayload, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeLocation, request.GetLocationId(), &servicecore.ModulePermission{
 		NeedsEntityPermission: &[]db.EntityType{db.EntityTypeLocation, db.EntityTypePost},
 	})
 

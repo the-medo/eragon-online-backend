@@ -2,16 +2,16 @@ package images
 
 import (
 	"context"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/constants"
 	"github.com/the-medo/talebound-backend/api/converters"
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func UploadAndInsertToDb(service *srv.ServiceCore, ctx context.Context, data []byte, imgTypeId api.ImageTypeIds, filename string, userId int32) (*db.Image, error) {
+func UploadAndInsertToDb(service *servicecore.ServiceCore, ctx context.Context, data []byte, imgTypeId constants.ImageTypeIds, filename string, userId int32) (*db.Image, error) {
 
 	//upload image to cloudflare
 	uploadRequest := &pb.UploadImageRequest{

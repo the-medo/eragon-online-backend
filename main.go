@@ -15,6 +15,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/apiservices/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	_ "github.com/the-medo/talebound-backend/doc/statik"
 	"github.com/the-medo/talebound-backend/mail"
@@ -93,7 +94,7 @@ func runTaskProcessor(config util.Config, redisOpt asynq.RedisClientOpt, store d
 }
 
 func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) {
-	server, err := api.NewServer(config, store, taskDistributor)
+	server, err := srv.NewServer(config, store, taskDistributor)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot create server:")
 	}
@@ -149,7 +150,7 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	server, err := api.NewServer(config, store, taskDistributor)
+	server, err := srv.NewServer(config, store, taskDistributor)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot create server:")
 	}

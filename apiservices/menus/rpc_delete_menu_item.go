@@ -3,7 +3,7 @@ package menus
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/e"
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -18,7 +18,7 @@ func (server *ServiceMenus) DeleteMenuItem(ctx context.Context, req *pb.DeleteMe
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.CheckMenuPermissions(ctx, req.GetMenuId(), &srv.ModulePermission{
+	_, err := server.CheckMenuPermissions(ctx, req.GetMenuId(), &servicecore.ModulePermission{
 		NeedsMenuPermission: true,
 	})
 	if err != nil {

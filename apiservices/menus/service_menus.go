@@ -1,16 +1,16 @@
 package menus
 
 import (
-	"github.com/the-medo/talebound-backend/apiservices/srv"
+	"github.com/the-medo/talebound-backend/apiservices/servicecore"
 	"github.com/the-medo/talebound-backend/pb"
 )
 
 type ServiceMenus struct {
 	pb.UnimplementedMenusServer
-	*srv.ServiceCore
+	*servicecore.ServiceCore
 }
 
-func NewMenusService(core *srv.ServiceCore) *ServiceMenus {
+func NewMenusService(core *servicecore.ServiceCore) *ServiceMenus {
 	return &ServiceMenus{
 		ServiceCore: core,
 	}
