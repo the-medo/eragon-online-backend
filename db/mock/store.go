@@ -502,10 +502,10 @@ func (mr *MockStoreMockRecorder) CreateWorld(arg0, arg1 interface{}) *gomock.Cal
 }
 
 // CreateWorldTx mocks base method.
-func (m *MockStore) CreateWorldTx(arg0 context.Context, arg1 db.CreateWorldTxParams) (db.ViewWorld, error) {
+func (m *MockStore) CreateWorldTx(arg0 context.Context, arg1 db.CreateWorldTxParams) (db.CreateWorldTxResult, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateWorldTx", arg0, arg1)
-	ret0, _ := ret[0].(db.ViewWorld)
+	ret0, _ := ret[0].(db.CreateWorldTxResult)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

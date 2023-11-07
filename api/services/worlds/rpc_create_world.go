@@ -45,8 +45,8 @@ func (server *ServiceWorlds) CreateWorld(ctx context.Context, req *pb.CreateWorl
 	}
 
 	rsp := &pb.CreateWorldResponse{
-		World: converters.ConvertViewWorld(txResult),
-		//Module: TODO
+		World:  converters.ConvertViewWorld(*txResult.ViewWorld),
+		Module: converters.ConvertModule(*txResult.Module),
 	}
 
 	return rsp, nil

@@ -11,6 +11,11 @@ type CreateWorldTxParams struct {
 	CreateWorldParams
 }
 
+type CreateWorldTxResult struct {
+	ViewWorld *ViewWorld
+	Module    *Module
+}
+
 func insertSubMenuItem(ctx context.Context, q *Queries, menuId int32, position int32, code string, name string, isMain bool) error {
 
 	_, err := q.CreateMenuItem(ctx, CreateMenuItemParams{
@@ -30,8 +35,8 @@ func insertSubMenuItem(ctx context.Context, q *Queries, menuId int32, position i
 	return nil
 }
 
-func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParams) (ViewWorld, error) {
-	var result ViewWorld
+func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParams) (CreateWorldTxResult, error) {
+	var result CreateWorldTxResult
 
 	err := store.execTx(ctx, func(q *Queries) error {
 		var err error
@@ -165,18 +170,22 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
-		result = ViewWorld{
-			ID:               world.ID,
-			Name:             world.Name,
-			CreatedAt:        world.CreatedAt,
-			Public:           world.Public,
-			BasedOn:          world.BasedOn,
-			ShortDescription: world.ShortDescription,
-			ModuleID:         module.ID,
-			ModuleType:       ModuleTypeWorld,
-			ModuleWorldID:    sql.NullInt32{Int32: world.ID, Valid: true},
-			MenuID:           sql.NullInt32{Int32: menu.ID, Valid: true},
+		result = CreateWorldTxResult{
+			ViewWorld: &ViewWorld{
+				ID:               world.ID,
+				Name:             world.Name,
+				CreatedAt:        world.CreatedAt,
+				Public:           world.Public,
+				BasedOn:          world.BasedOn,
+				ShortDescription: world.ShortDescription,
+				ModuleID:         module.ID,
+				ModuleType:       ModuleTypeWorld,
+				ModuleWorldID:    sql.NullInt32{Int32: world.ID, Valid: true},
+				MenuID:           sql.NullInt32{Int32: menu.ID, Valid: true},
+			},
+			Module: &module,
 		}
+
 		return nil
 	})
 
