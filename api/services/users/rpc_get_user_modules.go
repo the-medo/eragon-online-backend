@@ -2,12 +2,16 @@ package users
 
 import (
 	"context"
+	"github.com/goccy/go-json"
+	"github.com/the-medo/talebound-backend/api/apihelpers"
 	"github.com/the-medo/talebound-backend/converters"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 func (server *ServiceUsers) GetUserModules(ctx context.Context, req *pb.GetUserModulesRequest) (*pb.GetUserModulesResponse, error) {
@@ -21,7 +25,7 @@ func (server *ServiceUsers) GetUserModules(ctx context.Context, req *pb.GetUserM
 		return nil, err
 	}
 
-	moduleIDs := make([]int32, 0)
+	moduleIDs := make([]int32, len(userModules))
 	worldIDs := make([]int32, 0)
 	systemIDs := make([]int32, 0)
 	characterIDs := make([]int32, 0)
@@ -33,7 +37,6 @@ func (server *ServiceUsers) GetUserModules(ctx context.Context, req *pb.GetUserM
 	}
 
 	for i, userModule := range userModules {
-		moduleIDs = append(moduleIDs, userModule.ID)
 
 		if userModule.ModuleType == db.ModuleTypeWorld {
 			worldIDs = append(worldIDs, userModule.WorldID.Int32)
@@ -45,6 +48,7 @@ func (server *ServiceUsers) GetUserModules(ctx context.Context, req *pb.GetUserM
 			questIDs = append(questIDs, userModule.QuestID.Int32)
 		}
 
+		moduleIDs[i] = userModule.ID
 		rsp.UserModules[i] = converters.ConvertGetUserModulesRow(userModule)
 	}
 
@@ -68,6 +72,21 @@ func (server *ServiceUsers) GetUserModules(ctx context.Context, req *pb.GetUserM
 		for i, world := range worlds {
 			rsp.Worlds[i] = converters.ConvertViewWorld(world)
 		}
+	}
+
+	fetchInterface := &apihelpers.FetchInterface{
+		ModuleIds: moduleIDs,
+		WorldIds:  worldIDs,
+	}
+
+	fetchIdsHeader, err := json.Marshal(fetchInterface)
+
+	md := metadata.Pairs(
+		"X-Fetch-Ids", string(fetchIdsHeader),
+	)
+	err = grpc.SendHeader(ctx, md)
+	if err != nil {
+		return nil, err
 	}
 
 	//TODO: Implement the rest of these
