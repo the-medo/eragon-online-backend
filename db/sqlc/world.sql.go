@@ -86,7 +86,7 @@ func (q *Queries) DeleteWorld(ctx context.Context, worldID int32) error {
 }
 
 const getWorldByID = `-- name: GetWorldByID :one
-SELECT id, name, public, created_at, short_description, based_on, description_post_id, module_id, module_world_id, module_system_id, module_character_id, module_quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM view_worlds WHERE id = $1 LIMIT 1
+SELECT id, name, public, created_at, short_description, based_on, description_post_id, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM view_worlds WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error) {
@@ -101,11 +101,6 @@ func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, e
 		&i.BasedOn,
 		&i.DescriptionPostID,
 		&i.ModuleID,
-		&i.ModuleWorldID,
-		&i.ModuleSystemID,
-		&i.ModuleCharacterID,
-		&i.ModuleQuestID,
-		&i.ModuleType,
 		&i.MenuID,
 		&i.HeaderImgID,
 		&i.ThumbnailImgID,
@@ -119,7 +114,7 @@ func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, e
 }
 
 const getWorlds = `-- name: GetWorlds :many
-SELECT id, name, public, created_at, short_description, based_on, description_post_id, module_id, module_world_id, module_system_id, module_character_id, module_quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM get_worlds($1::boolean, $2::integer[], $3::VARCHAR, 'DESC', $4, $5)
+SELECT id, name, public, created_at, short_description, based_on, description_post_id, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM get_worlds($1::boolean, $2::integer[], $3::VARCHAR, 'DESC', $4, $5)
 `
 
 type GetWorldsParams struct {
@@ -154,11 +149,6 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 			&i.BasedOn,
 			&i.DescriptionPostID,
 			&i.ModuleID,
-			&i.ModuleWorldID,
-			&i.ModuleSystemID,
-			&i.ModuleCharacterID,
-			&i.ModuleQuestID,
-			&i.ModuleType,
 			&i.MenuID,
 			&i.HeaderImgID,
 			&i.ThumbnailImgID,
@@ -182,7 +172,7 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 }
 
 const getWorldsByIDs = `-- name: GetWorldsByIDs :many
-SELECT id, name, public, created_at, short_description, based_on, description_post_id, module_id, module_world_id, module_system_id, module_character_id, module_quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM view_worlds WHERE id = ANY($1::int[])
+SELECT id, name, public, created_at, short_description, based_on, description_post_id, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM view_worlds WHERE id = ANY($1::int[])
 `
 
 func (q *Queries) GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]ViewWorld, error) {
@@ -203,11 +193,6 @@ func (q *Queries) GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]ViewW
 			&i.BasedOn,
 			&i.DescriptionPostID,
 			&i.ModuleID,
-			&i.ModuleWorldID,
-			&i.ModuleSystemID,
-			&i.ModuleCharacterID,
-			&i.ModuleQuestID,
-			&i.ModuleType,
 			&i.MenuID,
 			&i.HeaderImgID,
 			&i.ThumbnailImgID,

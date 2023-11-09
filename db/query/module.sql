@@ -10,6 +10,9 @@ WHERE
 -- name: GetModuleById :one
 SELECT * FROM modules WHERE id = sqlc.arg(module_id);
 
+-- name: GetModulesByIDs :many
+SELECT * FROM view_modules WHERE module_id = ANY(@module_ids::int[]);
+
 -- name: CreateModule :one
 INSERT INTO modules (module_type, menu_id, world_id, quest_id, character_id, system_id)
 VALUES (sqlc.arg(module_type), sqlc.arg(menu_id), sqlc.narg(world_id), sqlc.narg(quest_id), sqlc.narg(character_id), sqlc.narg(system_id))

@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServiceWorlds) UpdateWorld(ctx context.Context, req *pb.UpdateWorldRequest) (*pb.World, error) {
+func (server *ServiceWorlds) UpdateWorld(ctx context.Context, req *pb.UpdateWorldRequest) (*pb.ViewWorld, error) {
 	violations := validateUpdateWorldRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

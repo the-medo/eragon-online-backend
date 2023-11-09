@@ -1761,6 +1761,21 @@ func (mr *MockStoreMockRecorder) GetModuleTypeTagsAvailable(arg0, arg1 interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetModuleTypeTagsAvailable", reflect.TypeOf((*MockStore)(nil).GetModuleTypeTagsAvailable), arg0, arg1)
 }
 
+// GetModulesByIDs mocks base method.
+func (m *MockStore) GetModulesByIDs(arg0 context.Context, arg1 []int32) ([]db.ViewModule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetModulesByIDs", arg0, arg1)
+	ret0, _ := ret[0].([]db.ViewModule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetModulesByIDs indicates an expected call of GetModulesByIDs.
+func (mr *MockStoreMockRecorder) GetModulesByIDs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetModulesByIDs", reflect.TypeOf((*MockStore)(nil).GetModulesByIDs), arg0, arg1)
+}
+
 // GetModulesOfAdmin mocks base method.
 func (m *MockStore) GetModulesOfAdmin(arg0 context.Context, arg1 int32) ([]db.ViewModuleAdmin, error) {
 	m.ctrl.T.Helper()

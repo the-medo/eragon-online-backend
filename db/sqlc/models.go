@@ -848,11 +848,6 @@ type ViewWorld struct {
 	BasedOn           string         `json:"based_on"`
 	DescriptionPostID sql.NullInt32  `json:"description_post_id"`
 	ModuleID          int32          `json:"module_id"`
-	ModuleWorldID     sql.NullInt32  `json:"module_world_id"`
-	ModuleSystemID    sql.NullInt32  `json:"module_system_id"`
-	ModuleCharacterID sql.NullInt32  `json:"module_character_id"`
-	ModuleQuestID     sql.NullInt32  `json:"module_quest_id"`
-	ModuleType        ModuleType     `json:"module_type"`
 	MenuID            sql.NullInt32  `json:"menu_id"`
 	HeaderImgID       sql.NullInt32  `json:"header_img_id"`
 	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`

@@ -43,6 +43,7 @@ message ViewModule {
   string thumbnailImgUrl = 11;
   int32 avatarImgId = 12;
   string avatarImgUrl = 13;
+  repeated int32 tags = 14;
 }
 
 message ModuleAdmin {

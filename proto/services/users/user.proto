@@ -4,6 +4,7 @@ package pb;
 
 import "google/protobuf/timestamp.proto";
 import "services/images/image.proto";
+import "services/entities/entity.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -33,3 +34,11 @@ message ViewUser {
   optional google.protobuf.Timestamp introductionPostDeletedAt = 11;
 }
 
+message UserModule {
+  int32 userId = 1;
+  int32 moduleId = 2;
+  bool admin = 3;
+  bool favorite = 4;
+  bool following = 5;
+  repeated EntityType entityNotifications = 8;
+}

@@ -9,7 +9,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *ServiceWorlds) GetWorldById(ctx context.Context, req *pb.GetWorldByIdRequest) (*pb.World, error) {
+func (server *ServiceWorlds) GetWorldById(ctx context.Context, req *pb.GetWorldByIdRequest) (*pb.ViewWorld, error) {
 	violations := validateGetWorldById(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)

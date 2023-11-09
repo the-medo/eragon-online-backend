@@ -15,8 +15,8 @@ message CreateWorldRequest {
 }
 
 message CreateWorldResponse {
-  World world = 1;
-  Module module = 2;
+  ViewWorld world = 1;
+  ViewModule module = 2;
 }
 
 message UpdateWorldRequest {
@@ -48,7 +48,7 @@ message GetWorldsRequest {
 }
 
 message GetWorldsResponse {
-  repeated World worlds = 1;
+  repeated ViewWorld worlds = 1;
   int32 totalCount = 2;
 }
 

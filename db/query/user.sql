@@ -80,6 +80,7 @@ DELETE FROM user_password_reset WHERE user_id = @user_id AND code = @code;
 -- name: GetUserModules :many
 SELECT
     m.*,
+    um.user_id,
     um.admin,
     um.favorite,
     um.following,

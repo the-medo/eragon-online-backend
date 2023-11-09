@@ -54,7 +54,7 @@ func (server *ServiceWorlds) GetWorlds(ctx context.Context, req *pb.GetWorldsReq
 	}
 
 	rsp := &pb.GetWorldsResponse{
-		Worlds:     make([]*pb.World, len(worlds)),
+		Worlds:     make([]*pb.ViewWorld, len(worlds)),
 		TotalCount: int32(totalCount),
 	}
 

@@ -128,6 +128,7 @@ type Querier interface {
 	GetModuleEntityTagsAvailable(ctx context.Context, moduleID int32) ([]ModuleEntityTagsAvailable, error)
 	GetModuleTypeTagAvailable(ctx context.Context, tagID int32) (ViewModuleTypeTagsAvailable, error)
 	GetModuleTypeTagsAvailable(ctx context.Context, moduleType ModuleType) ([]ViewModuleTypeTagsAvailable, error)
+	GetModulesByIDs(ctx context.Context, moduleIds []int32) ([]ViewModule, error)
 	GetModulesOfAdmin(ctx context.Context, userID int32) ([]ViewModuleAdmin, error)
 	GetPostById(ctx context.Context, postID int32) (ViewPost, error)
 	GetPostHistoryById(ctx context.Context, postHistoryID int32) (GetPostHistoryByIdRow, error)

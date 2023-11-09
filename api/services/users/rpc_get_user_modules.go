@@ -21,27 +21,44 @@ func (server *ServiceUsers) GetUserModules(ctx context.Context, req *pb.GetUserM
 		return nil, err
 	}
 
+	moduleIDs := make([]int32, 0)
 	worldIDs := make([]int32, 0)
 	systemIDs := make([]int32, 0)
 	characterIDs := make([]int32, 0)
 	questIDs := make([]int32, 0)
 
-	for _, module := range userModules {
-		if module.ModuleType == db.ModuleTypeWorld {
-			worldIDs = append(worldIDs, module.WorldID.Int32)
-		} else if module.ModuleType == db.ModuleTypeSystem {
-			systemIDs = append(systemIDs, module.SystemID.Int32)
-		} else if module.ModuleType == db.ModuleTypeCharacter {
-			characterIDs = append(characterIDs, module.CharacterID.Int32)
-		} else if module.ModuleType == db.ModuleTypeQuest {
-			questIDs = append(questIDs, module.QuestID.Int32)
+	rsp := &pb.GetUserModulesResponse{
+		UserModules: make([]*pb.UserModule, len(userModules)),
+		Modules:     make([]*pb.ViewModule, len(userModules)),
+	}
+
+	for i, userModule := range userModules {
+		moduleIDs = append(moduleIDs, userModule.ID)
+
+		if userModule.ModuleType == db.ModuleTypeWorld {
+			worldIDs = append(worldIDs, userModule.WorldID.Int32)
+		} else if userModule.ModuleType == db.ModuleTypeSystem {
+			systemIDs = append(systemIDs, userModule.SystemID.Int32)
+		} else if userModule.ModuleType == db.ModuleTypeCharacter {
+			characterIDs = append(characterIDs, userModule.CharacterID.Int32)
+		} else if userModule.ModuleType == db.ModuleTypeQuest {
+			questIDs = append(questIDs, userModule.QuestID.Int32)
+		}
+
+		rsp.UserModules[i] = converters.ConvertGetUserModulesRow(userModule)
+	}
+
+	if len(moduleIDs) > 0 {
+		modules, err := server.Store.GetModulesByIDs(ctx, moduleIDs)
+		if err != nil {
+			return nil, err
+		}
+		for i, module := range modules {
+			rsp.Modules[i] = converters.ConvertViewModule(module)
 		}
 	}
 
-	rsp := &pb.GetUserModulesResponse{
-		Modules: make([]*pb.ViewModule, len(userModules)),
-		Worlds:  make([]*pb.World, len(worldIDs)),
-	}
+	rsp.Worlds = make([]*pb.ViewWorld, len(worldIDs))
 
 	if len(worldIDs) > 0 {
 		worlds, err := server.Store.GetWorldsByIDs(ctx, worldIDs)
