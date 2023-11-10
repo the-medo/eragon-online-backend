@@ -51,28 +51,28 @@ func (server *ServiceUsers) GetUserModules(ctx context.Context, req *pb.GetUserM
 		moduleIDs[i] = userModule.ID
 		rsp.UserModules[i] = converters.ConvertGetUserModulesRow(userModule)
 	}
+	//
+	//if len(moduleIDs) > 0 {
+	//	modules, err := server.Store.GetModulesByIDs(ctx, moduleIDs)
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//	for i, module := range modules {
+	//		rsp.Modules[i] = converters.ConvertViewModule(module)
+	//	}
+	//}
 
-	if len(moduleIDs) > 0 {
-		modules, err := server.Store.GetModulesByIDs(ctx, moduleIDs)
-		if err != nil {
-			return nil, err
-		}
-		for i, module := range modules {
-			rsp.Modules[i] = converters.ConvertViewModule(module)
-		}
-	}
-
-	rsp.Worlds = make([]*pb.ViewWorld, len(worldIDs))
-
-	if len(worldIDs) > 0 {
-		worlds, err := server.Store.GetWorldsByIDs(ctx, worldIDs)
-		if err != nil {
-			return nil, err
-		}
-		for i, world := range worlds {
-			rsp.Worlds[i] = converters.ConvertViewWorld(world)
-		}
-	}
+	//rsp.Worlds = make([]*pb.ViewWorld, len(worldIDs))
+	//
+	//if len(worldIDs) > 0 {
+	//	worlds, err := server.Store.GetWorldsByIDs(ctx, worldIDs)
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//	for i, world := range worlds {
+	//		rsp.Worlds[i] = converters.ConvertViewWorld(world)
+	//	}
+	//}
 
 	fetchInterface := &apihelpers.FetchInterface{
 		ModuleIds: moduleIDs,

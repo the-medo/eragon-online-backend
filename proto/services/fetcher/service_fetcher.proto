@@ -1,0 +1,26 @@
+
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "services/fetcher/rpc_fetcher.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Fetcher {
+  // ============= IMAGES ================
+
+  rpc RunFetcher(RunFetcherRequest) returns (RunFetcherResponse) {
+    option (google.api.http) = {
+      post: "/fetcher",
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Run fetcher - get modules and entities by their ID";
+      summary: "Run fetcher - get modules and entities by ID";
+    };
+  };
+}

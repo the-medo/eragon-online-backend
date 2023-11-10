@@ -20,6 +20,9 @@
       "name": "Evaluations"
     },
     {
+      "name": "Fetcher"
+    },
+    {
       "name": "Images"
     },
     {
@@ -601,6 +604,40 @@
         ],
         "tags": [
           "Evaluations"
+        ]
+      }
+    },
+    "/fetcher": {
+      "post": {
+        "summary": "Run fetcher - get modules and entities by ID",
+        "description": "Run fetcher - get modules and entities by their ID",
+        "operationId": "Fetcher_RunFetcher",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbRunFetcherResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbRunFetcherRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Fetcher"
         ]
       }
     },
@@ -5261,6 +5298,50 @@
         }
       }
     },
+    "pbModule": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "questId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "characterId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "systemId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "menuId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "headerImgId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "thumbnailImgId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "avatarImgId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "pbModuleAdmin": {
       "type": "object",
       "properties": {
@@ -5476,6 +5557,100 @@
         },
         "description": {
           "type": "string"
+        }
+      }
+    },
+    "pbRunFetcherRequest": {
+      "type": "object",
+      "properties": {
+        "moduleIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "worldIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "systemIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "questIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "characterIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "entityIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "postIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "imageIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "locationIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "mapIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "pbRunFetcherResponse": {
+      "type": "object",
+      "properties": {
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbModule"
+          }
+        },
+        "worlds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbWorld"
+          }
         }
       }
     },
@@ -6134,6 +6309,35 @@
             "type": "integer",
             "format": "int32"
           }
+        }
+      }
+    },
+    "pbWorld": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "public": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "basedOn": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "descriptionPostId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

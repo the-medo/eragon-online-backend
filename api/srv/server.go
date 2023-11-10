@@ -6,6 +6,7 @@ import (
 	"github.com/the-medo/talebound-backend/api/services/auth"
 	"github.com/the-medo/talebound-backend/api/services/entities"
 	"github.com/the-medo/talebound-backend/api/services/evaluations"
+	"github.com/the-medo/talebound-backend/api/services/fetcher"
 	"github.com/the-medo/talebound-backend/api/services/images"
 	"github.com/the-medo/talebound-backend/api/services/locations"
 	"github.com/the-medo/talebound-backend/api/services/maps"
@@ -35,6 +36,7 @@ type Server struct {
 	*images.ServiceImages
 	*auth.ServiceAuth
 	*worlds.ServiceWorlds
+	*fetcher.ServiceFetcher
 	Config          util.Config
 	Store           db.Store
 	TaskDistributor worker.TaskDistributor
@@ -62,6 +64,7 @@ func NewServer(config util.Config, store db.Store, taskDistributor worker.TaskDi
 		ServiceImages:      images.NewImagesService(serverCore),
 		ServiceAuth:        auth.NewAuthService(serverCore),
 		ServiceWorlds:      worlds.NewWorldsService(serverCore),
+		ServiceFetcher:     fetcher.NewFetcherService(serverCore),
 		Config:             serverCore.Config,
 		Store:              serverCore.Store,
 		TaskDistributor:    serverCore.TaskDistributor,

@@ -123,33 +123,29 @@ func (q *Queries) GetModuleById(ctx context.Context, moduleID int32) (Module, er
 }
 
 const getModulesByIDs = `-- name: GetModulesByIDs :many
-SELECT module_id, module_world_id, module_system_id, module_character_id, module_quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM view_modules WHERE module_id = ANY($1::int[])
+SELECT id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id FROM modules WHERE id = ANY($1::int[])
 `
 
-func (q *Queries) GetModulesByIDs(ctx context.Context, moduleIds []int32) ([]ViewModule, error) {
+func (q *Queries) GetModulesByIDs(ctx context.Context, moduleIds []int32) ([]Module, error) {
 	rows, err := q.db.QueryContext(ctx, getModulesByIDs, pq.Array(moduleIds))
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []ViewModule{}
+	items := []Module{}
 	for rows.Next() {
-		var i ViewModule
+		var i Module
 		if err := rows.Scan(
-			&i.ModuleID,
-			&i.ModuleWorldID,
-			&i.ModuleSystemID,
-			&i.ModuleCharacterID,
-			&i.ModuleQuestID,
+			&i.ID,
+			&i.WorldID,
+			&i.SystemID,
+			&i.CharacterID,
+			&i.QuestID,
 			&i.ModuleType,
 			&i.MenuID,
 			&i.HeaderImgID,
 			&i.ThumbnailImgID,
 			&i.AvatarImgID,
-			&i.ImageHeader,
-			&i.ImageThumbnail,
-			&i.ImageAvatar,
-			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
 		}

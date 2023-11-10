@@ -1762,10 +1762,10 @@ func (mr *MockStoreMockRecorder) GetModuleTypeTagsAvailable(arg0, arg1 interface
 }
 
 // GetModulesByIDs mocks base method.
-func (m *MockStore) GetModulesByIDs(arg0 context.Context, arg1 []int32) ([]db.ViewModule, error) {
+func (m *MockStore) GetModulesByIDs(arg0 context.Context, arg1 []int32) ([]db.Module, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetModulesByIDs", arg0, arg1)
-	ret0, _ := ret[0].([]db.ViewModule)
+	ret0, _ := ret[0].([]db.Module)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -2017,10 +2017,10 @@ func (mr *MockStoreMockRecorder) GetWorlds(arg0, arg1 interface{}) *gomock.Call 
 }
 
 // GetWorldsByIDs mocks base method.
-func (m *MockStore) GetWorldsByIDs(arg0 context.Context, arg1 []int32) ([]db.ViewWorld, error) {
+func (m *MockStore) GetWorldsByIDs(arg0 context.Context, arg1 []int32) ([]db.World, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWorldsByIDs", arg0, arg1)
-	ret0, _ := ret[0].([]db.ViewWorld)
+	ret0, _ := ret[0].([]db.World)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

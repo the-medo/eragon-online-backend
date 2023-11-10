@@ -172,18 +172,18 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 }
 
 const getWorldsByIDs = `-- name: GetWorldsByIDs :many
-SELECT id, name, public, created_at, short_description, based_on, description_post_id, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM view_worlds WHERE id = ANY($1::int[])
+SELECT id, name, public, created_at, short_description, based_on, description_post_id FROM worlds WHERE id = ANY($1::int[])
 `
 
-func (q *Queries) GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]ViewWorld, error) {
+func (q *Queries) GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]World, error) {
 	rows, err := q.db.QueryContext(ctx, getWorldsByIDs, pq.Array(worldIds))
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []ViewWorld{}
+	items := []World{}
 	for rows.Next() {
-		var i ViewWorld
+		var i World
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
@@ -192,15 +192,6 @@ func (q *Queries) GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]ViewW
 			&i.ShortDescription,
 			&i.BasedOn,
 			&i.DescriptionPostID,
-			&i.ModuleID,
-			&i.MenuID,
-			&i.HeaderImgID,
-			&i.ThumbnailImgID,
-			&i.AvatarImgID,
-			&i.ImageHeader,
-			&i.ImageThumbnail,
-			&i.ImageAvatar,
-			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
 		}

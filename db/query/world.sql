@@ -26,7 +26,7 @@ DELETE FROM worlds WHERE id = @world_id;
 SELECT * FROM view_worlds WHERE id = @world_id LIMIT 1;
 
 -- name: GetWorldsByIDs :many
-SELECT * FROM view_worlds WHERE id = ANY(@world_ids::int[]);
+SELECT * FROM worlds WHERE id = ANY(@world_ids::int[]);
 
 -- name: GetWorlds :many
 SELECT * FROM get_worlds(@is_public::boolean, @tags::integer[], @order_by::VARCHAR, 'DESC', @page_limit, @page_offset);

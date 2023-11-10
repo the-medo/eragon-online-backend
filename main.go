@@ -113,6 +113,7 @@ func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.Ta
 	pb.RegisterImagesServer(grpcServer, server)
 	pb.RegisterAuthServer(grpcServer, server)
 	pb.RegisterWorldsServer(grpcServer, server)
+	pb.RegisterFetcherServer(grpcServer, server)
 
 	reflection.Register(grpcServer)
 
@@ -166,6 +167,7 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	err = pb.RegisterImagesHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterAuthHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterWorldsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterFetcherHandlerServer(ctx, grpcMux, server)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot register handler server")
 	}
@@ -175,15 +177,18 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 
 	var muxWithCORS http.Handler
 
+	//TODO - check Fetch-Ids header - should be in allowed or exposed?
 	if config.Environment == "development" {
 		corsMiddleware := cors.New(cors.Options{
 			AllowedOrigins:   []string{config.FullDomain},
 			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
-			AllowedHeaders:   []string{"Content-Type", "Set-Cookie"},
+			AllowedHeaders:   []string{"Content-Type", "Set-Cookie", "Fetch-Ids"},
+			ExposedHeaders:   []string{"Fetch-Ids"},
 			AllowCredentials: true,
 		})
 		muxWithCORS = corsMiddleware.Handler(mux)
 	} else {
+		//TODO PROD - check if everything works in production
 		muxWithCORS = cors.Default().Handler(mux)
 	}
 
