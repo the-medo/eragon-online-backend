@@ -238,6 +238,46 @@ func (q *Queries) GetPostHistoryByPostId(ctx context.Context, postID int32) ([]G
 	return items, nil
 }
 
+const getPostsByIDs = `-- name: GetPostsByIDs :many
+SELECT id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id FROM posts WHERE id = ANY($1::int[])
+`
+
+func (q *Queries) GetPostsByIDs(ctx context.Context, postIds []int32) ([]Post, error) {
+	rows, err := q.db.QueryContext(ctx, getPostsByIDs, pq.Array(postIds))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Post{}
+	for rows.Next() {
+		var i Post
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.Title,
+			&i.Content,
+			&i.CreatedAt,
+			&i.DeletedAt,
+			&i.LastUpdatedAt,
+			&i.LastUpdatedUserID,
+			&i.IsDraft,
+			&i.IsPrivate,
+			&i.Description,
+			&i.ThumbnailImgID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getPostsByModule = `-- name: GetPostsByModule :many
 WITH cte AS (
     SELECT

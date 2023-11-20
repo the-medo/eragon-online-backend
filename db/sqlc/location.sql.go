@@ -116,6 +116,39 @@ func (q *Queries) GetLocations(ctx context.Context) ([]ViewLocation, error) {
 	return items, nil
 }
 
+const getLocationsByIDs = `-- name: GetLocationsByIDs :many
+SELECT id, name, description, post_id, thumbnail_image_id FROM locations WHERE id = ANY($1::int[])
+`
+
+func (q *Queries) GetLocationsByIDs(ctx context.Context, locationIds []int32) ([]Location, error) {
+	rows, err := q.db.QueryContext(ctx, getLocationsByIDs, pq.Array(locationIds))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Location{}
+	for rows.Next() {
+		var i Location
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Description,
+			&i.PostID,
+			&i.ThumbnailImageID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getLocationsByModule = `-- name: GetLocationsByModule :many
 SELECT id, name, description, post_id, thumbnail_image_id, thumbnail_image_url, post_title, entity_id, module_id, module_type, module_type_id, tags FROM view_locations
 WHERE module_id = $1

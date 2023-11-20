@@ -11,6 +11,9 @@ SELECT * FROM view_locations
 WHERE module_id = sqlc.arg(module_id)
 ;
 
+-- name: GetLocationsByIDs :many
+SELECT * FROM locations WHERE id = ANY(@location_ids::int[]);
+
 -- name: GetLocationByID :one
 SELECT * FROM view_locations WHERE id = sqlc.arg(id);
 

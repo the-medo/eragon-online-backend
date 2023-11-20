@@ -4,6 +4,11 @@ package pb;
 
 import "services/modules/module.proto";
 import "services/worlds/world.proto";
+import "services/entities/entity.proto";
+import "services/posts/post.proto";
+import "services/images/image.proto";
+import "services/maps/map.proto";
+import "services/locations/location.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -23,4 +28,9 @@ message RunFetcherRequest {
 message RunFetcherResponse {
   repeated Module modules = 1;
   repeated World worlds = 2;
+  repeated Entity entities = 3;
+  repeated Post posts = 4;
+  repeated Image images = 5;
+  repeated Map maps = 6;
+  repeated Location locations = 7;
 }

@@ -183,6 +183,41 @@ func (q *Queries) GetEntities(ctx context.Context, arg GetEntitiesParams) (ViewE
 	return i, err
 }
 
+const getEntitiesByIDs = `-- name: GetEntitiesByIDs :many
+SELECT id, type, post_id, map_id, location_id, image_id, module_id FROM entities WHERE id = ANY($1::int[])
+`
+
+func (q *Queries) GetEntitiesByIDs(ctx context.Context, entityIds []int32) ([]Entity, error) {
+	rows, err := q.db.QueryContext(ctx, getEntitiesByIDs, pq.Array(entityIds))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Entity{}
+	for rows.Next() {
+		var i Entity
+		if err := rows.Scan(
+			&i.ID,
+			&i.Type,
+			&i.PostID,
+			&i.MapID,
+			&i.LocationID,
+			&i.ImageID,
+			&i.ModuleID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getEntityByID = `-- name: GetEntityByID :one
 SELECT id, type, post_id, map_id, location_id, image_id, module_id FROM entities WHERE id = $1
 `

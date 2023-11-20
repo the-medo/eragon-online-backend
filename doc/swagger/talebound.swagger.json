@@ -5175,6 +5175,29 @@
         }
       }
     },
+    "pbLocation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "postId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "thumbnailImageId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "pbLoginUserRequest": {
       "type": "object",
       "properties": {
@@ -5202,6 +5225,36 @@
         "refreshTokenExpiresAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbMap": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "height": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "thumbnailImageId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -5430,6 +5483,54 @@
       ],
       "default": "SQUARE"
     },
+    "pbPost": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deletedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isDraft": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "imageThumbnailId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "pbPostHistory": {
       "type": "object",
       "properties": {
@@ -5650,6 +5751,41 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbWorld"
+          }
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbEntity"
+          }
+        },
+        "posts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbPost"
+          }
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbImage"
+          }
+        },
+        "maps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbMap"
+          }
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbLocation"
           }
         }
       }

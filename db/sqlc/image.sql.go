@@ -10,6 +10,7 @@ import (
 	"database/sql"
 
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 )
 
 const createImage = `-- name: CreateImage :one
@@ -146,6 +147,44 @@ func (q *Queries) GetImages(ctx context.Context, arg GetImagesParams) ([]Image, 
 		arg.PageOffset,
 		arg.PageLimit,
 	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Image{}
+	for rows.Next() {
+		var i Image
+		if err := rows.Scan(
+			&i.ID,
+			&i.ImageTypeID,
+			&i.Name,
+			&i.Url,
+			&i.CreatedAt,
+			&i.BaseUrl,
+			&i.ImgGuid,
+			&i.UserID,
+			&i.Width,
+			&i.Height,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getImagesByIDs = `-- name: GetImagesByIDs :many
+SELECT id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height FROM images WHERE id = ANY($1::int[])
+`
+
+func (q *Queries) GetImagesByIDs(ctx context.Context, imageIds []int32) ([]Image, error) {
+	rows, err := q.db.QueryContext(ctx, getImagesByIDs, pq.Array(imageIds))
 	if err != nil {
 		return nil, err
 	}

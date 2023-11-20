@@ -996,6 +996,21 @@ func (mr *MockStoreMockRecorder) GetEntities(arg0, arg1 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntities", reflect.TypeOf((*MockStore)(nil).GetEntities), arg0, arg1)
 }
 
+// GetEntitiesByIDs mocks base method.
+func (m *MockStore) GetEntitiesByIDs(arg0 context.Context, arg1 []int32) ([]db.Entity, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEntitiesByIDs", arg0, arg1)
+	ret0, _ := ret[0].([]db.Entity)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEntitiesByIDs indicates an expected call of GetEntitiesByIDs.
+func (mr *MockStoreMockRecorder) GetEntitiesByIDs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntitiesByIDs", reflect.TypeOf((*MockStore)(nil).GetEntitiesByIDs), arg0, arg1)
+}
+
 // GetEntityByID mocks base method.
 func (m *MockStore) GetEntityByID(arg0 context.Context, arg1 int32) (db.Entity, error) {
 	m.ctrl.T.Helper()
@@ -1311,6 +1326,21 @@ func (mr *MockStoreMockRecorder) GetImages(arg0, arg1 interface{}) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImages", reflect.TypeOf((*MockStore)(nil).GetImages), arg0, arg1)
 }
 
+// GetImagesByIDs mocks base method.
+func (m *MockStore) GetImagesByIDs(arg0 context.Context, arg1 []int32) ([]db.Image, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetImagesByIDs", arg0, arg1)
+	ret0, _ := ret[0].([]db.Image)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetImagesByIDs indicates an expected call of GetImagesByIDs.
+func (mr *MockStoreMockRecorder) GetImagesByIDs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImagesByIDs", reflect.TypeOf((*MockStore)(nil).GetImagesByIDs), arg0, arg1)
+}
+
 // GetImagesByImageTypeId mocks base method.
 func (m *MockStore) GetImagesByImageTypeId(arg0 context.Context, arg1 sql.NullInt32) ([]db.Image, error) {
 	m.ctrl.T.Helper()
@@ -1369,6 +1399,21 @@ func (m *MockStore) GetLocations(arg0 context.Context) ([]db.ViewLocation, error
 func (mr *MockStoreMockRecorder) GetLocations(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLocations", reflect.TypeOf((*MockStore)(nil).GetLocations), arg0)
+}
+
+// GetLocationsByIDs mocks base method.
+func (m *MockStore) GetLocationsByIDs(arg0 context.Context, arg1 []int32) ([]db.Location, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetLocationsByIDs", arg0, arg1)
+	ret0, _ := ret[0].([]db.Location)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetLocationsByIDs indicates an expected call of GetLocationsByIDs.
+func (mr *MockStoreMockRecorder) GetLocationsByIDs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLocationsByIDs", reflect.TypeOf((*MockStore)(nil).GetLocationsByIDs), arg0, arg1)
 }
 
 // GetLocationsByModule mocks base method.
@@ -1534,6 +1579,21 @@ func (m *MockStore) GetMaps(arg0 context.Context, arg1 sql.NullInt32) ([]db.View
 func (mr *MockStoreMockRecorder) GetMaps(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMaps", reflect.TypeOf((*MockStore)(nil).GetMaps), arg0, arg1)
+}
+
+// GetMapsByIDs mocks base method.
+func (m *MockStore) GetMapsByIDs(arg0 context.Context, arg1 []int32) ([]db.Map, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMapsByIDs", arg0, arg1)
+	ret0, _ := ret[0].([]db.Map)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMapsByIDs indicates an expected call of GetMapsByIDs.
+func (mr *MockStoreMockRecorder) GetMapsByIDs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMapsByIDs", reflect.TypeOf((*MockStore)(nil).GetMapsByIDs), arg0, arg1)
 }
 
 // GetMenu mocks base method.
@@ -1834,6 +1894,21 @@ func (m *MockStore) GetPostHistoryByPostId(arg0 context.Context, arg1 int32) ([]
 func (mr *MockStoreMockRecorder) GetPostHistoryByPostId(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostHistoryByPostId", reflect.TypeOf((*MockStore)(nil).GetPostHistoryByPostId), arg0, arg1)
+}
+
+// GetPostsByIDs mocks base method.
+func (m *MockStore) GetPostsByIDs(arg0 context.Context, arg1 []int32) ([]db.Post, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPostsByIDs", arg0, arg1)
+	ret0, _ := ret[0].([]db.Post)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPostsByIDs indicates an expected call of GetPostsByIDs.
+func (mr *MockStoreMockRecorder) GetPostsByIDs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostsByIDs", reflect.TypeOf((*MockStore)(nil).GetPostsByIDs), arg0, arg1)
 }
 
 // GetPostsByModule mocks base method.

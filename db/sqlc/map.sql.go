@@ -595,6 +595,41 @@ func (q *Queries) GetMaps(ctx context.Context, moduleID sql.NullInt32) ([]ViewMa
 	return items, nil
 }
 
+const getMapsByIDs = `-- name: GetMapsByIDs :many
+SELECT id, name, type, description, width, height, thumbnail_image_id FROM maps WHERE id = ANY($1::int[])
+`
+
+func (q *Queries) GetMapsByIDs(ctx context.Context, mapIds []int32) ([]Map, error) {
+	rows, err := q.db.QueryContext(ctx, getMapsByIDs, pq.Array(mapIds))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Map{}
+	for rows.Next() {
+		var i Map
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Type,
+			&i.Description,
+			&i.Width,
+			&i.Height,
+			&i.ThumbnailImageID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const updateMap = `-- name: UpdateMap :one
 UPDATE maps
 SET

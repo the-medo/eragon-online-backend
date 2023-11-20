@@ -17,6 +17,9 @@ RETURNING *;
 -- name: GetImageById :one
 SELECT * FROM images WHERE id = @id LIMIT 1;
 
+-- name: GetImagesByIDs :many
+SELECT * FROM images WHERE id = ANY(@image_ids::int[]);
+
 -- name: GetImageByGUID :one
 SELECT * FROM images WHERE img_guid = @img_guid LIMIT 1;
 

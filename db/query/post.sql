@@ -21,6 +21,9 @@ FROM
 WHERE
     id = sqlc.arg(post_id);
 
+-- name: GetPostsByIDs :many
+SELECT * FROM posts WHERE id = ANY(@post_ids::int[]);
+
 -- name: GetPostsByUserId :many
 SELECT
     *

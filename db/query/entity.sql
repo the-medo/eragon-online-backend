@@ -139,6 +139,9 @@ WHERE
     AND module_id = sqlc.arg(module_id)
 ;
 
+-- name: GetEntitiesByIDs :many
+SELECT * FROM entities WHERE id = ANY(@entity_ids::int[]);
+
 -- name: GetEntityByPostId :one
 SELECT * FROM entities WHERE post_id = sqlc.arg(post_id);
 

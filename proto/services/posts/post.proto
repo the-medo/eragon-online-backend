@@ -7,6 +7,21 @@ import "services/modules/module_type.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
+message Post {
+  int32 id = 1;
+  int32 userId = 2;
+  string title = 3;
+  string content = 4;
+  string description = 5;
+  google.protobuf.Timestamp createdAt = 6;
+  google.protobuf.Timestamp deletedAt = 7;
+  google.protobuf.Timestamp lastUpdatedAt = 8;
+  int32 lastUpdatedUserId = 9;
+  bool isDraft = 10;
+  bool isPrivate = 11;
+  int32 imageThumbnailId = 12;
+}
+
 message ViewPost {
   int32 id = 1;
   int32 userId = 2;

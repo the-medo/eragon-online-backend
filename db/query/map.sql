@@ -12,6 +12,8 @@ WHERE
     vm.module_id = sqlc.arg(module_id);
 ;
 
+-- name: GetMapsByIDs :many
+SELECT * FROM maps WHERE id = ANY(@map_ids::int[]);
 
 -- name: GetMapByID :one
 SELECT * FROM view_maps WHERE id = sqlc.arg(id);
