@@ -15,7 +15,6 @@ type Querier interface {
 	AddChatMessage(ctx context.Context, arg AddChatMessageParams) (Chat, error)
 	AddUserPasswordReset(ctx context.Context, arg AddUserPasswordResetParams) (UserPasswordReset, error)
 	AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error)
-	AssignPostByMenuId(ctx context.Context, arg AssignPostByMenuIdParams) error
 	CreateEntity(ctx context.Context, arg CreateEntityParams) (Entity, error)
 	CreateEntityGroup(ctx context.Context, arg CreateEntityGroupParams) (EntityGroup, error)
 	CreateEntityGroupContent(ctx context.Context, arg CreateEntityGroupContentParams) (EntityGroupContent, error)

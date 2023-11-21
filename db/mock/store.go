@@ -82,20 +82,6 @@ func (mr *MockStoreMockRecorder) AddUserRole(arg0, arg1 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddUserRole", reflect.TypeOf((*MockStore)(nil).AddUserRole), arg0, arg1)
 }
 
-// AssignPostByMenuId mocks base method.
-func (m *MockStore) AssignPostByMenuId(arg0 context.Context, arg1 db.AssignPostByMenuIdParams) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AssignPostByMenuId", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// AssignPostByMenuId indicates an expected call of AssignPostByMenuId.
-func (mr *MockStoreMockRecorder) AssignPostByMenuId(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AssignPostByMenuId", reflect.TypeOf((*MockStore)(nil).AssignPostByMenuId), arg0, arg1)
-}
-
 // CreateEntity mocks base method.
 func (m *MockStore) CreateEntity(arg0 context.Context, arg1 db.CreateEntityParams) (db.Entity, error) {
 	m.ctrl.T.Helper()
