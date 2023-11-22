@@ -5733,6 +5733,13 @@
             "type": "integer",
             "format": "int32"
           }
+        },
+        "userIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
         }
       }
     },
@@ -5757,7 +5764,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbEntity"
+            "$ref": "#/definitions/pbViewEntity"
           }
         },
         "posts": {
@@ -5786,6 +5793,13 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbLocation"
+          }
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbUser"
           }
         }
       }
@@ -5920,9 +5934,6 @@
         "isEmailVerified": {
           "type": "boolean"
         },
-        "img": {
-          "$ref": "#/definitions/pbImage"
-        },
         "introductionPostId": {
           "type": "integer",
           "format": "int32"
@@ -5974,6 +5985,52 @@
       "properties": {
         "isVerified": {
           "type": "boolean"
+        }
+      }
+    },
+    "pbViewEntity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "$ref": "#/definitions/pbEntityType"
+        },
+        "postId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "mapId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "locationId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "imageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "moduleTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
         }
       }
     },

@@ -6,7 +6,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func ConvertUser(user db.User, img *pb.Image) *pb.User {
+func ConvertUser(user db.User) *pb.User {
 	pbUser := &pb.User{
 		Id:                user.ID,
 		Username:          user.Username,
@@ -18,7 +18,6 @@ func ConvertUser(user db.User, img *pb.Image) *pb.User {
 
 	if user.ImgID.Valid == true {
 		pbUser.ImgId = &user.ImgID.Int32
-		pbUser.Img = img
 	}
 
 	return pbUser

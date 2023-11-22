@@ -983,10 +983,10 @@ func (mr *MockStoreMockRecorder) GetEntities(arg0, arg1 interface{}) *gomock.Cal
 }
 
 // GetEntitiesByIDs mocks base method.
-func (m *MockStore) GetEntitiesByIDs(arg0 context.Context, arg1 []int32) ([]db.Entity, error) {
+func (m *MockStore) GetEntitiesByIDs(arg0 context.Context, arg1 []int32) ([]db.ViewEntity, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetEntitiesByIDs", arg0, arg1)
-	ret0, _ := ret[0].([]db.Entity)
+	ret0, _ := ret[0].([]db.ViewEntity)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -2045,6 +2045,21 @@ func (m *MockStore) GetUsers(arg0 context.Context, arg1 db.GetUsersParams) ([]db
 func (mr *MockStoreMockRecorder) GetUsers(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUsers", reflect.TypeOf((*MockStore)(nil).GetUsers), arg0, arg1)
+}
+
+// GetUsersByIDs mocks base method.
+func (m *MockStore) GetUsersByIDs(arg0 context.Context, arg1 []int32) ([]db.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUsersByIDs", arg0, arg1)
+	ret0, _ := ret[0].([]db.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUsersByIDs indicates an expected call of GetUsersByIDs.
+func (mr *MockStoreMockRecorder) GetUsersByIDs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUsersByIDs", reflect.TypeOf((*MockStore)(nil).GetUsersByIDs), arg0, arg1)
 }
 
 // GetWorldByID mocks base method.

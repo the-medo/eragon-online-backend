@@ -9,6 +9,9 @@ VALUES
     ($1, $2, $3)
 RETURNING *;
 
+-- name: GetUsersByIDs :many
+SELECT * FROM users WHERE id = ANY(@user_ids::int[]);
+
 -- name: GetUserById :one
 SELECT * FROM view_users WHERE id = $1 LIMIT 1;
 

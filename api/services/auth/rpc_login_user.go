@@ -69,7 +69,7 @@ func (server *ServiceAuth) LoginUser(ctx context.Context, req *pb.LoginUserReque
 
 	user := converters.ConvertViewUserToUser(viewUser)
 	rsp := &pb.LoginUserResponse{
-		User:                  converters.ConvertUserGetImage(server.ServiceCore, ctx, user),
+		User:                  converters.ConvertUser(user),
 		SessionId:             session.ID.String(),
 		AccessTokenExpiresAt:  timestamppb.New(accessPayload.ExpiredAt),
 		RefreshTokenExpiresAt: timestamppb.New(refreshPayload.ExpiredAt),

@@ -3,7 +3,6 @@ syntax = "proto3";
 package pb;
 
 import "google/protobuf/timestamp.proto";
-import "services/images/image.proto";
 import "services/entities/entity.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
@@ -16,8 +15,7 @@ message User {
   google.protobuf.Timestamp passwordChangedAt = 5;
   google.protobuf.Timestamp createdAt = 6;
   bool isEmailVerified = 7;
-  Image img = 8;
-  optional int32 introductionPostId = 9;
+  optional int32 introductionPostId = 8;
 }
 
 message ViewUser {

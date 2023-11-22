@@ -12,4 +12,6 @@ type FetchInterface struct {
 	ImageIds    []int32 `json:"image_ids,omitempty"`
 	LocationIds []int32 `json:"location_ids,omitempty"`
 	MapIds      []int32 `json:"map_ids,omitempty"`
+
+	UserIds []int32 `json:"user_ids,omitempty"`
 }

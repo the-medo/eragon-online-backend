@@ -396,6 +396,43 @@ func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersR
 	return items, nil
 }
 
+const getUsersByIDs = `-- name: GetUsersByIDs :many
+SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id FROM users WHERE id = ANY($1::int[])
+`
+
+func (q *Queries) GetUsersByIDs(ctx context.Context, userIds []int32) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, getUsersByIDs, pq.Array(userIds))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []User{}
+	for rows.Next() {
+		var i User
+		if err := rows.Scan(
+			&i.ID,
+			&i.Username,
+			&i.HashedPassword,
+			&i.Email,
+			&i.ImgID,
+			&i.PasswordChangedAt,
+			&i.CreatedAt,
+			&i.IsEmailVerified,
+			&i.IntroductionPostID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const hasUserRole = `-- name: HasUserRole :one
 SELECT
     user_id, role_id, created_at, id, name, description

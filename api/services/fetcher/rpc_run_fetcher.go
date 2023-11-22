@@ -2,11 +2,15 @@ package fetcher
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/the-medo/talebound-backend/api/apihelpers"
 	"github.com/the-medo/talebound-backend/converters"
 	"github.com/the-medo/talebound-backend/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcherRequest) (*pb.RunFetcherResponse, error) {
@@ -17,6 +21,8 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 
 	rsp := &pb.RunFetcherResponse{}
 
+	fetchInterface := &apihelpers.FetchInterface{}
+
 	if req.ModuleIds != nil {
 		data, err := server.Store.GetModulesByIDs(ctx, req.ModuleIds)
 		if err != nil {
@@ -26,6 +32,35 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 		rsp.Modules = make([]*pb.Module, len(data))
 		for i, item := range data {
 			rsp.Modules[i] = converters.ConvertModule(item)
+
+			if item.WorldID.Valid {
+				fetchInterface.WorldIds = append(fetchInterface.WorldIds, item.WorldID.Int32)
+			}
+
+			if item.SystemID.Valid {
+				fetchInterface.SystemIds = append(fetchInterface.SystemIds, item.SystemID.Int32)
+			}
+
+			if item.CharacterID.Valid {
+				fetchInterface.CharacterIds = append(fetchInterface.CharacterIds, item.CharacterID.Int32)
+			}
+
+			if item.QuestID.Valid {
+				fetchInterface.QuestIds = append(fetchInterface.QuestIds, item.QuestID.Int32)
+			}
+
+			if item.HeaderImgID.Valid {
+				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.HeaderImgID.Int32)
+			}
+
+			if item.ThumbnailImgID.Valid {
+				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.ThumbnailImgID.Int32)
+			}
+
+			if item.AvatarImgID.Valid {
+				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.AvatarImgID.Int32)
+			}
+
 		}
 	}
 
@@ -38,6 +73,10 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 		rsp.Worlds = make([]*pb.World, len(data))
 		for i, item := range data {
 			rsp.Worlds[i] = converters.ConvertWorld(item)
+
+			if item.DescriptionPostID.Valid {
+				fetchInterface.PostIds = append(fetchInterface.PostIds, item.DescriptionPostID.Int32)
+			}
 		}
 	}
 
@@ -47,9 +86,27 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 			return nil, err
 		}
 
-		rsp.Entities = make([]*pb.Entity, len(data))
+		rsp.Entities = make([]*pb.ViewEntity, len(data))
 		for i, item := range data {
-			rsp.Entities[i] = converters.ConvertEntity(item)
+			rsp.Entities[i] = converters.ConvertViewEntity(item)
+
+			fetchInterface.ModuleIds = append(fetchInterface.ModuleIds, item.ModuleID)
+
+			if item.PostID.Valid {
+				fetchInterface.PostIds = append(fetchInterface.PostIds, item.PostID.Int32)
+			}
+
+			if item.MapID.Valid {
+				fetchInterface.MapIds = append(fetchInterface.MapIds, item.MapID.Int32)
+			}
+
+			if item.LocationID.Valid {
+				fetchInterface.LocationIds = append(fetchInterface.LocationIds, item.LocationID.Int32)
+			}
+
+			if item.ImageID.Valid {
+				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.ImageID.Int32)
+			}
 		}
 	}
 
@@ -62,6 +119,16 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 		rsp.Posts = make([]*pb.Post, len(data))
 		for i, item := range data {
 			rsp.Posts[i] = converters.ConvertPost(item)
+
+			if item.ThumbnailImgID.Valid {
+				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.ThumbnailImgID.Int32)
+			}
+
+			fetchInterface.UserIds = append(fetchInterface.UserIds, item.UserID)
+
+			if item.LastUpdatedUserID.Valid {
+				fetchInterface.UserIds = append(fetchInterface.UserIds, item.LastUpdatedUserID.Int32)
+			}
 		}
 	}
 
@@ -74,6 +141,8 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 		rsp.Images = make([]*pb.Image, len(data))
 		for i, item := range data {
 			rsp.Images[i] = converters.ConvertImage(&item)
+
+			fetchInterface.UserIds = append(fetchInterface.UserIds, item.UserID)
 		}
 	}
 
@@ -86,6 +155,10 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 		rsp.Maps = make([]*pb.Map, len(data))
 		for i, item := range data {
 			rsp.Maps[i] = converters.ConvertMap(item)
+
+			if item.ThumbnailImageID.Valid {
+				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.ThumbnailImageID.Int32)
+			}
 		}
 	}
 
@@ -98,7 +171,41 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 		rsp.Locations = make([]*pb.Location, len(data))
 		for i, item := range data {
 			rsp.Locations[i] = converters.ConvertLocation(item)
+
+			if item.PostID.Valid {
+				fetchInterface.PostIds = append(fetchInterface.PostIds, item.PostID.Int32)
+			}
+
+			if item.ThumbnailImageID.Valid {
+				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.ThumbnailImageID.Int32)
+			}
 		}
+	}
+
+	if req.UserIds != nil {
+		data, err := server.Store.GetUsersByIDs(ctx, req.UserIds)
+		if err != nil {
+			return nil, err
+		}
+
+		rsp.Users = make([]*pb.User, len(data))
+		for i, item := range data {
+			rsp.Users[i] = converters.ConvertUser(item)
+
+			if item.IntroductionPostID.Valid {
+				fetchInterface.PostIds = append(fetchInterface.PostIds, item.IntroductionPostID.Int32)
+			}
+		}
+	}
+
+	fetchIdsHeader, err := json.Marshal(fetchInterface)
+
+	md := metadata.Pairs(
+		"X-Fetch-Ids", string(fetchIdsHeader),
+	)
+	err = grpc.SendHeader(ctx, md)
+	if err != nil {
+		return nil, err
 	}
 
 	return rsp, nil
@@ -143,6 +250,10 @@ func validateRunFetcherRequest(req *pb.RunFetcherRequest) (violations []*errdeta
 
 	if req.LocationIds != nil {
 		violations = append(violations, validator.ValidateSliceOfIds(req.LocationIds, "location_id")...)
+	}
+
+	if req.UserIds != nil {
+		violations = append(violations, validator.ValidateSliceOfIds(req.UserIds, "user_id")...)
 	}
 
 	return violations

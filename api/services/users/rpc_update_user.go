@@ -84,7 +84,7 @@ func (server *ServiceUsers) UpdateUser(ctx context.Context, req *pb.UpdateUserRe
 	}
 
 	rsp := &pb.UpdateUserResponse{
-		User: converters.ConvertUserGetImage(server.ServiceCore, ctx, user),
+		User: converters.ConvertUser(user),
 	}
 
 	return rsp, nil
