@@ -3,6 +3,8 @@ package auth
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
+	"github.com/the-medo/talebound-backend/api/apihelpers"
 	"github.com/the-medo/talebound-backend/converters"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/e"
@@ -75,12 +77,25 @@ func (server *ServiceAuth) LoginUser(ctx context.Context, req *pb.LoginUserReque
 		RefreshTokenExpiresAt: timestamppb.New(refreshPayload.ExpiredAt),
 	}
 
+	fetchInterface := &apihelpers.FetchInterface{
+		UserIds:  []int32{user.ID},
+		ImageIds: []int32{},
+	}
+
+	if user.ImgID.Valid {
+		fetchInterface.ImageIds = append(fetchInterface.ImageIds, user.ImgID.Int32)
+	}
+
+	fetchIdsHeader, err := json.Marshal(fetchInterface)
+
 	md := metadata.Pairs(
 		"X-Access-Token", accessToken,
 		"X-Access-Token-Expires-At", accessPayload.ExpiredAt.Format(util.TimeLayout),
 		"X-Refresh-Token", refreshToken,
 		"X-Refresh-Token-Expires-At", refreshPayload.ExpiredAt.Format(util.TimeLayout),
+		"X-Fetch-Ids", string(fetchIdsHeader),
 	)
+
 	err = grpc.SendHeader(ctx, md)
 	if err != nil {
 		return nil, err

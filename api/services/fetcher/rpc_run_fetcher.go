@@ -7,6 +7,7 @@ import (
 	"github.com/the-medo/talebound-backend/converters"
 	"github.com/the-medo/talebound-backend/e"
 	"github.com/the-medo/talebound-backend/pb"
+	"github.com/the-medo/talebound-backend/util"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc"
@@ -34,31 +35,31 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 			rsp.Modules[i] = converters.ConvertModule(item)
 
 			if item.WorldID.Valid {
-				fetchInterface.WorldIds = append(fetchInterface.WorldIds, item.WorldID.Int32)
+				fetchInterface.WorldIds = util.Upsert(fetchInterface.WorldIds, item.WorldID.Int32)
 			}
 
 			if item.SystemID.Valid {
-				fetchInterface.SystemIds = append(fetchInterface.SystemIds, item.SystemID.Int32)
+				fetchInterface.SystemIds = util.Upsert(fetchInterface.SystemIds, item.SystemID.Int32)
 			}
 
 			if item.CharacterID.Valid {
-				fetchInterface.CharacterIds = append(fetchInterface.CharacterIds, item.CharacterID.Int32)
+				fetchInterface.CharacterIds = util.Upsert(fetchInterface.CharacterIds, item.CharacterID.Int32)
 			}
 
 			if item.QuestID.Valid {
-				fetchInterface.QuestIds = append(fetchInterface.QuestIds, item.QuestID.Int32)
+				fetchInterface.QuestIds = util.Upsert(fetchInterface.QuestIds, item.QuestID.Int32)
 			}
 
 			if item.HeaderImgID.Valid {
-				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.HeaderImgID.Int32)
+				fetchInterface.ImageIds = util.Upsert(fetchInterface.ImageIds, item.HeaderImgID.Int32)
 			}
 
 			if item.ThumbnailImgID.Valid {
-				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.ThumbnailImgID.Int32)
+				fetchInterface.ImageIds = util.Upsert(fetchInterface.ImageIds, item.ThumbnailImgID.Int32)
 			}
 
 			if item.AvatarImgID.Valid {
-				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.AvatarImgID.Int32)
+				fetchInterface.ImageIds = util.Upsert(fetchInterface.ImageIds, item.AvatarImgID.Int32)
 			}
 
 		}
@@ -75,7 +76,7 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 			rsp.Worlds[i] = converters.ConvertWorld(item)
 
 			if item.DescriptionPostID.Valid {
-				fetchInterface.PostIds = append(fetchInterface.PostIds, item.DescriptionPostID.Int32)
+				fetchInterface.PostIds = util.Upsert(fetchInterface.PostIds, item.DescriptionPostID.Int32)
 			}
 		}
 	}
@@ -90,22 +91,22 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 		for i, item := range data {
 			rsp.Entities[i] = converters.ConvertViewEntity(item)
 
-			fetchInterface.ModuleIds = append(fetchInterface.ModuleIds, item.ModuleID)
+			fetchInterface.ModuleIds = util.Upsert(fetchInterface.ModuleIds, item.ModuleID)
 
 			if item.PostID.Valid {
-				fetchInterface.PostIds = append(fetchInterface.PostIds, item.PostID.Int32)
+				fetchInterface.PostIds = util.Upsert(fetchInterface.PostIds, item.PostID.Int32)
 			}
 
 			if item.MapID.Valid {
-				fetchInterface.MapIds = append(fetchInterface.MapIds, item.MapID.Int32)
+				fetchInterface.MapIds = util.Upsert(fetchInterface.MapIds, item.MapID.Int32)
 			}
 
 			if item.LocationID.Valid {
-				fetchInterface.LocationIds = append(fetchInterface.LocationIds, item.LocationID.Int32)
+				fetchInterface.LocationIds = util.Upsert(fetchInterface.LocationIds, item.LocationID.Int32)
 			}
 
 			if item.ImageID.Valid {
-				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.ImageID.Int32)
+				fetchInterface.ImageIds = util.Upsert(fetchInterface.ImageIds, item.ImageID.Int32)
 			}
 		}
 	}
@@ -121,13 +122,13 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 			rsp.Posts[i] = converters.ConvertPost(item)
 
 			if item.ThumbnailImgID.Valid {
-				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.ThumbnailImgID.Int32)
+				fetchInterface.ImageIds = util.Upsert(fetchInterface.ImageIds, item.ThumbnailImgID.Int32)
 			}
 
-			fetchInterface.UserIds = append(fetchInterface.UserIds, item.UserID)
+			fetchInterface.UserIds = util.Upsert(fetchInterface.UserIds, item.UserID)
 
 			if item.LastUpdatedUserID.Valid {
-				fetchInterface.UserIds = append(fetchInterface.UserIds, item.LastUpdatedUserID.Int32)
+				fetchInterface.UserIds = util.Upsert(fetchInterface.UserIds, item.LastUpdatedUserID.Int32)
 			}
 		}
 	}
@@ -142,7 +143,7 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 		for i, item := range data {
 			rsp.Images[i] = converters.ConvertImage(&item)
 
-			fetchInterface.UserIds = append(fetchInterface.UserIds, item.UserID)
+			fetchInterface.UserIds = util.Upsert(fetchInterface.UserIds, item.UserID)
 		}
 	}
 
@@ -157,7 +158,7 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 			rsp.Maps[i] = converters.ConvertMap(item)
 
 			if item.ThumbnailImageID.Valid {
-				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.ThumbnailImageID.Int32)
+				fetchInterface.ImageIds = util.Upsert(fetchInterface.ImageIds, item.ThumbnailImageID.Int32)
 			}
 		}
 	}
@@ -173,11 +174,11 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 			rsp.Locations[i] = converters.ConvertLocation(item)
 
 			if item.PostID.Valid {
-				fetchInterface.PostIds = append(fetchInterface.PostIds, item.PostID.Int32)
+				fetchInterface.PostIds = util.Upsert(fetchInterface.PostIds, item.PostID.Int32)
 			}
 
 			if item.ThumbnailImageID.Valid {
-				fetchInterface.ImageIds = append(fetchInterface.ImageIds, item.ThumbnailImageID.Int32)
+				fetchInterface.ImageIds = util.Upsert(fetchInterface.ImageIds, item.ThumbnailImageID.Int32)
 			}
 		}
 	}
@@ -193,7 +194,7 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 			rsp.Users[i] = converters.ConvertUser(item)
 
 			if item.IntroductionPostID.Valid {
-				fetchInterface.PostIds = append(fetchInterface.PostIds, item.IntroductionPostID.Int32)
+				fetchInterface.PostIds = util.Upsert(fetchInterface.PostIds, item.IntroductionPostID.Int32)
 			}
 		}
 	}

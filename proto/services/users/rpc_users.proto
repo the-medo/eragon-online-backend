@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package pb;
 
-import "services/modules/module.proto";
-import "services/worlds/world.proto";
 import "services/users/user.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
@@ -14,6 +12,4 @@ message GetUserModulesRequest {
 
 message GetUserModulesResponse {
   repeated UserModule userModules = 1;
-  repeated ViewModule modules = 2;
-  repeated ViewWorld worlds = 3;
 }

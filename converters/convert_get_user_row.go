@@ -18,15 +18,6 @@ func ConvertGetUserRow(user db.GetUsersRow) *pb.User {
 
 	if user.ImgID.Valid == true {
 		pbUser.ImgId = &user.ImgID.Int32
-		pbUser.Img = &pb.Image{
-			Id:          user.ImgID.Int32,
-			ImgGuid:     user.ImgGuid.UUID.String(),
-			ImageTypeId: user.ImageTypeID.Int32,
-			Name:        user.Name.String,
-			Url:         user.Url.String,
-			BaseUrl:     user.BaseUrl.String,
-			CreatedAt:   timestamppb.New(user.CreatedAt_2.Time),
-		}
 	}
 
 	return pbUser

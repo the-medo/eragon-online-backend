@@ -33,7 +33,6 @@ func (server *ServiceUsers) GetUserModules(ctx context.Context, req *pb.GetUserM
 
 	rsp := &pb.GetUserModulesResponse{
 		UserModules: make([]*pb.UserModule, len(userModules)),
-		Modules:     make([]*pb.ViewModule, len(userModules)),
 	}
 
 	for i, userModule := range userModules {
@@ -51,32 +50,13 @@ func (server *ServiceUsers) GetUserModules(ctx context.Context, req *pb.GetUserM
 		moduleIDs[i] = userModule.ID
 		rsp.UserModules[i] = converters.ConvertGetUserModulesRow(userModule)
 	}
-	//
-	//if len(moduleIDs) > 0 {
-	//	modules, err := server.Store.GetModulesByIDs(ctx, moduleIDs)
-	//	if err != nil {
-	//		return nil, err
-	//	}
-	//	for i, module := range modules {
-	//		rsp.Modules[i] = converters.ConvertViewModule(module)
-	//	}
-	//}
-
-	//rsp.Worlds = make([]*pb.ViewWorld, len(worldIDs))
-	//
-	//if len(worldIDs) > 0 {
-	//	worlds, err := server.Store.GetWorldsByIDs(ctx, worldIDs)
-	//	if err != nil {
-	//		return nil, err
-	//	}
-	//	for i, world := range worlds {
-	//		rsp.Worlds[i] = converters.ConvertViewWorld(world)
-	//	}
-	//}
 
 	fetchInterface := &apihelpers.FetchInterface{
-		ModuleIds: moduleIDs,
-		WorldIds:  worldIDs,
+		ModuleIds:    moduleIDs,
+		WorldIds:     worldIDs,
+		SystemIds:    systemIDs,
+		CharacterIds: characterIDs,
+		QuestIds:     questIDs,
 	}
 
 	fetchIdsHeader, err := json.Marshal(fetchInterface)
@@ -88,42 +68,6 @@ func (server *ServiceUsers) GetUserModules(ctx context.Context, req *pb.GetUserM
 	if err != nil {
 		return nil, err
 	}
-
-	//TODO: Implement the rest of these
-
-	/*
-		if len(systemIDs) > 0 {
-			systems, err := server.Store.GetSystemsByIDs(ctx, systemIDs)
-			if err != nil {
-				return nil, err
-			}
-			for i, system := range systems {
-				rsp.Worlds[i] = converters.ConvertViewSystem(system)
-			}
-		}*/
-
-	/*
-		if len(characterIDs) > 0 {
-			characters, err := server.Store.GetCharactersByIDs(ctx, characterIDs)
-			if err != nil {
-				return nil, err
-			}
-			for i, character := range characters {
-				rsp.Worlds[i] = converters.ConvertViewCharacter(character)
-			}
-		}*/
-
-	/*
-		if len(questIDs) > 0 {
-			quests, err := server.Store.GetQuestsByIDs(ctx, questIDs)
-			if err != nil {
-				return nil, err
-			}
-			for i, quest := range quests {
-				rsp.Worlds[i] = converters.ConvertViewQuest(quest)
-			}
-		}*/
-
 	return rsp, nil
 }
 
