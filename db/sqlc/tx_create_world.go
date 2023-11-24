@@ -59,10 +59,7 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 
 		module, err := q.CreateModule(ctx, CreateModuleParams{
 			ModuleType: ModuleTypeWorld,
-			MenuID: sql.NullInt32{
-				Int32: menu.ID,
-				Valid: true,
-			},
+			MenuID:     menu.ID,
 			WorldID: sql.NullInt32{
 				Int32: world.ID,
 				Valid: true,
@@ -179,13 +176,13 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 				BasedOn:          world.BasedOn,
 				ShortDescription: world.ShortDescription,
 				ModuleID:         module.ID,
-				MenuID:           sql.NullInt32{Int32: menu.ID, Valid: true},
+				MenuID:           menu.ID,
 			},
 			Module: &ViewModule{
 				ModuleID:      module.ID,
 				ModuleType:    ModuleTypeWorld,
 				ModuleWorldID: sql.NullInt32{Int32: world.ID, Valid: true},
-				MenuID:        sql.NullInt32{Int32: menu.ID, Valid: true},
+				MenuID:        menu.ID,
 			},
 		}
 

@@ -27,7 +27,7 @@ INSERT INTO images
 )
 VALUES
     ($1, $2, $3, $4, $5, $6, $7, $8)
-RETURNING id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height
+RETURNING id, user_id, img_guid, image_type_id, name, url, base_url, created_at, width, height
 `
 
 type CreateImageParams struct {
@@ -55,13 +55,13 @@ func (q *Queries) CreateImage(ctx context.Context, arg CreateImageParams) (Image
 	var i Image
 	err := row.Scan(
 		&i.ID,
+		&i.UserID,
+		&i.ImgGuid,
 		&i.ImageTypeID,
 		&i.Name,
 		&i.Url,
-		&i.CreatedAt,
 		&i.BaseUrl,
-		&i.ImgGuid,
-		&i.UserID,
+		&i.CreatedAt,
 		&i.Width,
 		&i.Height,
 	)
@@ -78,7 +78,7 @@ func (q *Queries) DeleteImage(ctx context.Context, id int32) error {
 }
 
 const getImageByGUID = `-- name: GetImageByGUID :one
-SELECT id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height FROM images WHERE img_guid = $1 LIMIT 1
+SELECT id, user_id, img_guid, image_type_id, name, url, base_url, created_at, width, height FROM images WHERE img_guid = $1 LIMIT 1
 `
 
 func (q *Queries) GetImageByGUID(ctx context.Context, imgGuid uuid.NullUUID) (Image, error) {
@@ -86,13 +86,13 @@ func (q *Queries) GetImageByGUID(ctx context.Context, imgGuid uuid.NullUUID) (Im
 	var i Image
 	err := row.Scan(
 		&i.ID,
+		&i.UserID,
+		&i.ImgGuid,
 		&i.ImageTypeID,
 		&i.Name,
 		&i.Url,
-		&i.CreatedAt,
 		&i.BaseUrl,
-		&i.ImgGuid,
-		&i.UserID,
+		&i.CreatedAt,
 		&i.Width,
 		&i.Height,
 	)
@@ -100,7 +100,7 @@ func (q *Queries) GetImageByGUID(ctx context.Context, imgGuid uuid.NullUUID) (Im
 }
 
 const getImageById = `-- name: GetImageById :one
-SELECT id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height FROM images WHERE id = $1 LIMIT 1
+SELECT id, user_id, img_guid, image_type_id, name, url, base_url, created_at, width, height FROM images WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetImageById(ctx context.Context, id int32) (Image, error) {
@@ -108,13 +108,13 @@ func (q *Queries) GetImageById(ctx context.Context, id int32) (Image, error) {
 	var i Image
 	err := row.Scan(
 		&i.ID,
+		&i.UserID,
+		&i.ImgGuid,
 		&i.ImageTypeID,
 		&i.Name,
 		&i.Url,
-		&i.CreatedAt,
 		&i.BaseUrl,
-		&i.ImgGuid,
-		&i.UserID,
+		&i.CreatedAt,
 		&i.Width,
 		&i.Height,
 	)
@@ -123,7 +123,7 @@ func (q *Queries) GetImageById(ctx context.Context, id int32) (Image, error) {
 
 const getImages = `-- name: GetImages :many
 SELECT
-    id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height
+    id, user_id, img_guid, image_type_id, name, url, base_url, created_at, width, height
 FROM
     images
 WHERE
@@ -156,13 +156,13 @@ func (q *Queries) GetImages(ctx context.Context, arg GetImagesParams) ([]Image, 
 		var i Image
 		if err := rows.Scan(
 			&i.ID,
+			&i.UserID,
+			&i.ImgGuid,
 			&i.ImageTypeID,
 			&i.Name,
 			&i.Url,
-			&i.CreatedAt,
 			&i.BaseUrl,
-			&i.ImgGuid,
-			&i.UserID,
+			&i.CreatedAt,
 			&i.Width,
 			&i.Height,
 		); err != nil {
@@ -180,7 +180,7 @@ func (q *Queries) GetImages(ctx context.Context, arg GetImagesParams) ([]Image, 
 }
 
 const getImagesByIDs = `-- name: GetImagesByIDs :many
-SELECT id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height FROM images WHERE id = ANY($1::int[])
+SELECT id, user_id, img_guid, image_type_id, name, url, base_url, created_at, width, height FROM images WHERE id = ANY($1::int[])
 `
 
 func (q *Queries) GetImagesByIDs(ctx context.Context, imageIds []int32) ([]Image, error) {
@@ -194,13 +194,13 @@ func (q *Queries) GetImagesByIDs(ctx context.Context, imageIds []int32) ([]Image
 		var i Image
 		if err := rows.Scan(
 			&i.ID,
+			&i.UserID,
+			&i.ImgGuid,
 			&i.ImageTypeID,
 			&i.Name,
 			&i.Url,
-			&i.CreatedAt,
 			&i.BaseUrl,
-			&i.ImgGuid,
-			&i.UserID,
+			&i.CreatedAt,
 			&i.Width,
 			&i.Height,
 		); err != nil {
@@ -218,7 +218,7 @@ func (q *Queries) GetImagesByIDs(ctx context.Context, imageIds []int32) ([]Image
 }
 
 const getImagesByImageTypeId = `-- name: GetImagesByImageTypeId :many
-SELECT id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height FROM images WHERE image_type_id = $1
+SELECT id, user_id, img_guid, image_type_id, name, url, base_url, created_at, width, height FROM images WHERE image_type_id = $1
 `
 
 func (q *Queries) GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.NullInt32) ([]Image, error) {
@@ -232,13 +232,13 @@ func (q *Queries) GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.Null
 		var i Image
 		if err := rows.Scan(
 			&i.ID,
+			&i.UserID,
+			&i.ImgGuid,
 			&i.ImageTypeID,
 			&i.Name,
 			&i.Url,
-			&i.CreatedAt,
 			&i.BaseUrl,
-			&i.ImgGuid,
-			&i.UserID,
+			&i.CreatedAt,
 			&i.Width,
 			&i.Height,
 		); err != nil {
@@ -287,7 +287,7 @@ SET
     height = COALESCE($8, height)
 WHERE
     id = $9
-RETURNING id, image_type_id, name, url, created_at, base_url, img_guid, user_id, width, height
+RETURNING id, user_id, img_guid, image_type_id, name, url, base_url, created_at, width, height
 `
 
 type UpdateImageParams struct {
@@ -317,13 +317,13 @@ func (q *Queries) UpdateImage(ctx context.Context, arg UpdateImageParams) (Image
 	var i Image
 	err := row.Scan(
 		&i.ID,
+		&i.UserID,
+		&i.ImgGuid,
 		&i.ImageTypeID,
 		&i.Name,
 		&i.Url,
-		&i.CreatedAt,
 		&i.BaseUrl,
-		&i.ImgGuid,
-		&i.UserID,
+		&i.CreatedAt,
 		&i.Width,
 		&i.Height,
 	)

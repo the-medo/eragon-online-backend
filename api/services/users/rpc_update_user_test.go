@@ -66,10 +66,6 @@ func TestUpdateUserAPI(t *testing.T) {
 					UpdateUser(gomock.Any(), gomock.Eq(arg)).
 					Times(1).
 					Return(updatedUser, nil)
-				store.EXPECT().
-					GetImageById(gomock.Any(), gomock.Any()).
-					Times(1).
-					Return(db.Image{}, nil)
 			},
 			buildContext: func(t *testing.T, tokenMaker token.Maker) context.Context {
 				return testutils2.NewContextWithCookie(t, tokenMaker, user.ID, time.Minute)

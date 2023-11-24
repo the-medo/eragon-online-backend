@@ -38,7 +38,7 @@ INSERT INTO worlds (
     short_description
 ) VALUES (
      $1, $2, $3
- ) RETURNING id, name, public, created_at, short_description, based_on, description_post_id
+ ) RETURNING id, name, based_on, public, created_at, short_description, description_post_id
 `
 
 type CreateWorldParams struct {
@@ -53,10 +53,10 @@ func (q *Queries) CreateWorld(ctx context.Context, arg CreateWorldParams) (World
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
+		&i.BasedOn,
 		&i.Public,
 		&i.CreatedAt,
 		&i.ShortDescription,
-		&i.BasedOn,
 		&i.DescriptionPostID,
 	)
 	return i, err
@@ -86,7 +86,7 @@ func (q *Queries) DeleteWorld(ctx context.Context, worldID int32) error {
 }
 
 const getWorldByID = `-- name: GetWorldByID :one
-SELECT id, name, public, created_at, short_description, based_on, description_post_id, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM view_worlds WHERE id = $1 LIMIT 1
+SELECT id, name, based_on, public, created_at, short_description, description_post_id, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM view_worlds WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error) {
@@ -95,26 +95,23 @@ func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, e
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
+		&i.BasedOn,
 		&i.Public,
 		&i.CreatedAt,
 		&i.ShortDescription,
-		&i.BasedOn,
 		&i.DescriptionPostID,
 		&i.ModuleID,
 		&i.MenuID,
 		&i.HeaderImgID,
 		&i.ThumbnailImgID,
 		&i.AvatarImgID,
-		&i.ImageHeader,
-		&i.ImageThumbnail,
-		&i.ImageAvatar,
 		pq.Array(&i.Tags),
 	)
 	return i, err
 }
 
 const getWorlds = `-- name: GetWorlds :many
-SELECT id, name, public, created_at, short_description, based_on, description_post_id, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, image_header, image_thumbnail, image_avatar, tags FROM get_worlds($1::boolean, $2::integer[], $3::VARCHAR, 'DESC', $4, $5)
+SELECT id, name, based_on, public, created_at, short_description, description_post_id, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM get_worlds($1::boolean, $2::integer[], $3::VARCHAR, 'DESC', $4, $5)
 `
 
 type GetWorldsParams struct {
@@ -143,19 +140,16 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
+			&i.BasedOn,
 			&i.Public,
 			&i.CreatedAt,
 			&i.ShortDescription,
-			&i.BasedOn,
 			&i.DescriptionPostID,
 			&i.ModuleID,
 			&i.MenuID,
 			&i.HeaderImgID,
 			&i.ThumbnailImgID,
 			&i.AvatarImgID,
-			&i.ImageHeader,
-			&i.ImageThumbnail,
-			&i.ImageAvatar,
 			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
@@ -172,7 +166,7 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 }
 
 const getWorldsByIDs = `-- name: GetWorldsByIDs :many
-SELECT id, name, public, created_at, short_description, based_on, description_post_id FROM worlds WHERE id = ANY($1::int[])
+SELECT id, name, based_on, public, created_at, short_description, description_post_id FROM worlds WHERE id = ANY($1::int[])
 `
 
 func (q *Queries) GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]World, error) {
@@ -187,10 +181,10 @@ func (q *Queries) GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]World
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
+			&i.BasedOn,
 			&i.Public,
 			&i.CreatedAt,
 			&i.ShortDescription,
-			&i.BasedOn,
 			&i.DescriptionPostID,
 		); err != nil {
 			return nil, err
@@ -234,7 +228,7 @@ SET
     description_post_id = COALESCE($5, description_post_id)
 WHERE
     id = $6
-RETURNING id, name, public, created_at, short_description, based_on, description_post_id
+RETURNING id, name, based_on, public, created_at, short_description, description_post_id
 `
 
 type UpdateWorldParams struct {
@@ -259,10 +253,10 @@ func (q *Queries) UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
+		&i.BasedOn,
 		&i.Public,
 		&i.CreatedAt,
 		&i.ShortDescription,
-		&i.BasedOn,
 		&i.DescriptionPostID,
 	)
 	return i, err

@@ -130,7 +130,7 @@ const createMapPinType = `-- name: CreateMapPinType :one
 
 INSERT INTO map_pin_types (shape, background_color, border_color, icon_color, icon, icon_size, width, map_pin_type_group_id, section)
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 )
-RETURNING id, shape, background_color, border_color, icon_color, icon, icon_size, width, section, map_pin_type_group_id
+RETURNING id, map_pin_type_group_id, shape, background_color, border_color, icon_color, icon, icon_size, width, section
 `
 
 type CreateMapPinTypeParams struct {
@@ -161,6 +161,7 @@ func (q *Queries) CreateMapPinType(ctx context.Context, arg CreateMapPinTypePara
 	var i MapPinType
 	err := row.Scan(
 		&i.ID,
+		&i.MapPinTypeGroupID,
 		&i.Shape,
 		&i.BackgroundColor,
 		&i.BorderColor,
@@ -169,7 +170,6 @@ func (q *Queries) CreateMapPinType(ctx context.Context, arg CreateMapPinTypePara
 		&i.IconSize,
 		&i.Width,
 		&i.Section,
-		&i.MapPinTypeGroupID,
 	)
 	return i, err
 }
@@ -259,7 +259,7 @@ func (q *Queries) DeleteMapPinsForMapLayer(ctx context.Context, mapLayerID sql.N
 
 const getMapAssignments = `-- name: GetMapAssignments :one
 SELECT
-    m.id, m.world_id, m.system_id, m.character_id, m.quest_id, m.module_type, m.menu_id, m.header_img_id, m.thumbnail_img_id, m.avatar_img_id
+    m.id, m.module_type, m.menu_id, m.header_img_id, m.thumbnail_img_id, m.avatar_img_id, m.world_id, m.system_id, m.character_id, m.quest_id
 FROM
     entities e
     LEFT JOIN modules m ON e.module_id = m.id
@@ -268,15 +268,15 @@ WHERE e.map_id = $1
 
 type GetMapAssignmentsRow struct {
 	ID             sql.NullInt32  `json:"id"`
-	WorldID        sql.NullInt32  `json:"world_id"`
-	SystemID       sql.NullInt32  `json:"system_id"`
-	CharacterID    sql.NullInt32  `json:"character_id"`
-	QuestID        sql.NullInt32  `json:"quest_id"`
 	ModuleType     NullModuleType `json:"module_type"`
 	MenuID         sql.NullInt32  `json:"menu_id"`
 	HeaderImgID    sql.NullInt32  `json:"header_img_id"`
 	ThumbnailImgID sql.NullInt32  `json:"thumbnail_img_id"`
 	AvatarImgID    sql.NullInt32  `json:"avatar_img_id"`
+	WorldID        sql.NullInt32  `json:"world_id"`
+	SystemID       sql.NullInt32  `json:"system_id"`
+	CharacterID    sql.NullInt32  `json:"character_id"`
+	QuestID        sql.NullInt32  `json:"quest_id"`
 }
 
 func (q *Queries) GetMapAssignments(ctx context.Context, mapID sql.NullInt32) (GetMapAssignmentsRow, error) {
@@ -284,15 +284,15 @@ func (q *Queries) GetMapAssignments(ctx context.Context, mapID sql.NullInt32) (G
 	var i GetMapAssignmentsRow
 	err := row.Scan(
 		&i.ID,
-		&i.WorldID,
-		&i.SystemID,
-		&i.CharacterID,
-		&i.QuestID,
 		&i.ModuleType,
 		&i.MenuID,
 		&i.HeaderImgID,
 		&i.ThumbnailImgID,
 		&i.AvatarImgID,
+		&i.WorldID,
+		&i.SystemID,
+		&i.CharacterID,
+		&i.QuestID,
 	)
 	return i, err
 }
@@ -422,7 +422,7 @@ func (q *Queries) GetMapPinTypeGroupIdForMap(ctx context.Context, mapID sql.Null
 
 const getMapPinTypesForMap = `-- name: GetMapPinTypesForMap :many
 SELECT
-    mpt.id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.section, mpt.map_pin_type_group_id
+    mpt.id, mpt.map_pin_type_group_id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.section
 FROM
     map_pin_types mpt
     JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
@@ -441,6 +441,7 @@ func (q *Queries) GetMapPinTypesForMap(ctx context.Context, mapID sql.NullInt32)
 		var i MapPinType
 		if err := rows.Scan(
 			&i.ID,
+			&i.MapPinTypeGroupID,
 			&i.Shape,
 			&i.BackgroundColor,
 			&i.BorderColor,
@@ -449,7 +450,6 @@ func (q *Queries) GetMapPinTypesForMap(ctx context.Context, mapID sql.NullInt32)
 			&i.IconSize,
 			&i.Width,
 			&i.Section,
-			&i.MapPinTypeGroupID,
 		); err != nil {
 			return nil, err
 		}
@@ -466,7 +466,7 @@ func (q *Queries) GetMapPinTypesForMap(ctx context.Context, mapID sql.NullInt32)
 
 const getMapPinTypesForWorld = `-- name: GetMapPinTypesForWorld :many
 SELECT
-    mpt.id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.section, mpt.map_pin_type_group_id
+    mpt.id, mpt.map_pin_type_group_id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.section
 FROM
     map_pin_types mpt
     JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
@@ -485,6 +485,7 @@ func (q *Queries) GetMapPinTypesForWorld(ctx context.Context, worldID sql.NullIn
 		var i MapPinType
 		if err := rows.Scan(
 			&i.ID,
+			&i.MapPinTypeGroupID,
 			&i.Shape,
 			&i.BackgroundColor,
 			&i.BorderColor,
@@ -493,7 +494,6 @@ func (q *Queries) GetMapPinTypesForWorld(ctx context.Context, worldID sql.NullIn
 			&i.IconSize,
 			&i.Width,
 			&i.Section,
-			&i.MapPinTypeGroupID,
 		); err != nil {
 			return nil, err
 		}
@@ -784,7 +784,7 @@ SET
     width = COALESCE($7, width),
     section = COALESCE($8, section)
 WHERE id = $9
-RETURNING id, shape, background_color, border_color, icon_color, icon, icon_size, width, section, map_pin_type_group_id
+RETURNING id, map_pin_type_group_id, shape, background_color, border_color, icon_color, icon, icon_size, width, section
 `
 
 type UpdateMapPinTypeParams struct {
@@ -814,6 +814,7 @@ func (q *Queries) UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypePara
 	var i MapPinType
 	err := row.Scan(
 		&i.ID,
+		&i.MapPinTypeGroupID,
 		&i.Shape,
 		&i.BackgroundColor,
 		&i.BorderColor,
@@ -822,7 +823,6 @@ func (q *Queries) UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypePara
 		&i.IconSize,
 		&i.Width,
 		&i.Section,
-		&i.MapPinTypeGroupID,
 	)
 	return i, err
 }

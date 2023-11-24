@@ -23,7 +23,7 @@ func (core *ServiceCore) CheckMenuPermissions(ctx context.Context, menuId int32,
 
 	moduleAdmin, err := core.Store.GetModuleAdminByMenuId(ctx, db.GetModuleAdminByMenuIdParams{
 		UserID: authPayload.UserId,
-		MenuID: sql.NullInt32{Int32: menuId, Valid: true},
+		MenuID: menuId,
 	})
 
 	if err != nil {

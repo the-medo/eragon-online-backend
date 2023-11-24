@@ -186,7 +186,7 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (ViewU
 
 const getUserModules = `-- name: GetUserModules :many
 SELECT
-    m.id, m.world_id, m.system_id, m.character_id, m.quest_id, m.module_type, m.menu_id, m.header_img_id, m.thumbnail_img_id, m.avatar_img_id,
+    m.id, m.module_type, m.menu_id, m.header_img_id, m.thumbnail_img_id, m.avatar_img_id, m.world_id, m.system_id, m.character_id, m.quest_id,
     um.user_id,
     um.admin,
     um.favorite,
@@ -201,15 +201,15 @@ WHERE
 
 type GetUserModulesRow struct {
 	ID                  int32         `json:"id"`
+	ModuleType          ModuleType    `json:"module_type"`
+	MenuID              int32         `json:"menu_id"`
+	HeaderImgID         sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID      sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID         sql.NullInt32 `json:"avatar_img_id"`
 	WorldID             sql.NullInt32 `json:"world_id"`
 	SystemID            sql.NullInt32 `json:"system_id"`
 	CharacterID         sql.NullInt32 `json:"character_id"`
 	QuestID             sql.NullInt32 `json:"quest_id"`
-	ModuleType          ModuleType    `json:"module_type"`
-	MenuID              sql.NullInt32 `json:"menu_id"`
-	HeaderImgID         sql.NullInt32 `json:"header_img_id"`
-	ThumbnailImgID      sql.NullInt32 `json:"thumbnail_img_id"`
-	AvatarImgID         sql.NullInt32 `json:"avatar_img_id"`
 	UserID              int32         `json:"user_id"`
 	Admin               bool          `json:"admin"`
 	Favorite            bool          `json:"favorite"`
@@ -228,15 +228,15 @@ func (q *Queries) GetUserModules(ctx context.Context, userID int32) ([]GetUserMo
 		var i GetUserModulesRow
 		if err := rows.Scan(
 			&i.ID,
-			&i.WorldID,
-			&i.SystemID,
-			&i.CharacterID,
-			&i.QuestID,
 			&i.ModuleType,
 			&i.MenuID,
 			&i.HeaderImgID,
 			&i.ThumbnailImgID,
 			&i.AvatarImgID,
+			&i.WorldID,
+			&i.SystemID,
+			&i.CharacterID,
+			&i.QuestID,
 			&i.UserID,
 			&i.Admin,
 			&i.Favorite,
@@ -317,7 +317,7 @@ func (q *Queries) GetUserRoles(ctx context.Context, userID int32) ([]GetUserRole
 
 const getUsers = `-- name: GetUsers :many
 SELECT
-    u.id, username, hashed_password, email, img_id, password_changed_at, u.created_at, is_email_verified, introduction_post_id, i.id, image_type_id, name, url, i.created_at, base_url, img_guid, user_id, width, height
+    u.id, username, hashed_password, email, img_id, password_changed_at, u.created_at, is_email_verified, introduction_post_id, i.id, user_id, img_guid, image_type_id, name, url, base_url, i.created_at, width, height
 FROM
     users AS u
     LEFT JOIN images i ON u.img_id = i.id
@@ -342,13 +342,13 @@ type GetUsersRow struct {
 	IsEmailVerified    bool           `json:"is_email_verified"`
 	IntroductionPostID sql.NullInt32  `json:"introduction_post_id"`
 	ID_2               sql.NullInt32  `json:"id_2"`
+	UserID             sql.NullInt32  `json:"user_id"`
+	ImgGuid            uuid.NullUUID  `json:"img_guid"`
 	ImageTypeID        sql.NullInt32  `json:"image_type_id"`
 	Name               sql.NullString `json:"name"`
 	Url                sql.NullString `json:"url"`
-	CreatedAt_2        sql.NullTime   `json:"created_at_2"`
 	BaseUrl            sql.NullString `json:"base_url"`
-	ImgGuid            uuid.NullUUID  `json:"img_guid"`
-	UserID             sql.NullInt32  `json:"user_id"`
+	CreatedAt_2        sql.NullTime   `json:"created_at_2"`
 	Width              sql.NullInt32  `json:"width"`
 	Height             sql.NullInt32  `json:"height"`
 }
@@ -373,13 +373,13 @@ func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersR
 			&i.IsEmailVerified,
 			&i.IntroductionPostID,
 			&i.ID_2,
+			&i.UserID,
+			&i.ImgGuid,
 			&i.ImageTypeID,
 			&i.Name,
 			&i.Url,
-			&i.CreatedAt_2,
 			&i.BaseUrl,
-			&i.ImgGuid,
-			&i.UserID,
+			&i.CreatedAt_2,
 			&i.Width,
 			&i.Height,
 		); err != nil {

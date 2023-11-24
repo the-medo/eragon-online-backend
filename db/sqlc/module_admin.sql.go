@@ -76,7 +76,7 @@ func (q *Queries) DeleteModuleAdmin(ctx context.Context, arg DeleteModuleAdminPa
 
 const getEntityModuleAdmin = `-- name: GetEntityModuleAdmin :one
 SELECT
-    vma.id, vma.world_id, vma.system_id, vma.character_id, vma.quest_id, vma.module_type, vma.menu_id, vma.header_img_id, vma.thumbnail_img_id, vma.avatar_img_id, vma.user_id, vma.approved, vma.super_admin, vma.allowed_entity_types, vma.allowed_menu
+    vma.id, vma.module_type, vma.menu_id, vma.header_img_id, vma.thumbnail_img_id, vma.avatar_img_id, vma.world_id, vma.system_id, vma.character_id, vma.quest_id, vma.user_id, vma.approved, vma.super_admin, vma.allowed_entity_types, vma.allowed_menu
 FROM
     entities e
     JOIN view_module_admins vma ON e.module_id = vma.id
@@ -96,15 +96,15 @@ func (q *Queries) GetEntityModuleAdmin(ctx context.Context, arg GetEntityModuleA
 	var i ViewModuleAdmin
 	err := row.Scan(
 		&i.ID,
-		&i.WorldID,
-		&i.SystemID,
-		&i.CharacterID,
-		&i.QuestID,
 		&i.ModuleType,
 		&i.MenuID,
 		&i.HeaderImgID,
 		&i.ThumbnailImgID,
 		&i.AvatarImgID,
+		&i.WorldID,
+		&i.SystemID,
+		&i.CharacterID,
+		&i.QuestID,
 		&i.UserID,
 		&i.Approved,
 		&i.SuperAdmin,
@@ -115,7 +115,7 @@ func (q *Queries) GetEntityModuleAdmin(ctx context.Context, arg GetEntityModuleA
 }
 
 const getModuleAdmin = `-- name: GetModuleAdmin :one
-SELECT id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, user_id, approved, super_admin, allowed_entity_types, allowed_menu FROM view_module_admins WHERE user_id = $1 AND id = $2
+SELECT id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, world_id, system_id, character_id, quest_id, user_id, approved, super_admin, allowed_entity_types, allowed_menu FROM view_module_admins WHERE user_id = $1 AND id = $2
 `
 
 type GetModuleAdminParams struct {
@@ -128,15 +128,15 @@ func (q *Queries) GetModuleAdmin(ctx context.Context, arg GetModuleAdminParams) 
 	var i ViewModuleAdmin
 	err := row.Scan(
 		&i.ID,
-		&i.WorldID,
-		&i.SystemID,
-		&i.CharacterID,
-		&i.QuestID,
 		&i.ModuleType,
 		&i.MenuID,
 		&i.HeaderImgID,
 		&i.ThumbnailImgID,
 		&i.AvatarImgID,
+		&i.WorldID,
+		&i.SystemID,
+		&i.CharacterID,
+		&i.QuestID,
 		&i.UserID,
 		&i.Approved,
 		&i.SuperAdmin,
@@ -147,12 +147,12 @@ func (q *Queries) GetModuleAdmin(ctx context.Context, arg GetModuleAdminParams) 
 }
 
 const getModuleAdminByMenuId = `-- name: GetModuleAdminByMenuId :one
-SELECT id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, user_id, approved, super_admin, allowed_entity_types, allowed_menu FROM view_module_admins WHERE user_id = $1 AND menu_id = $2
+SELECT id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, world_id, system_id, character_id, quest_id, user_id, approved, super_admin, allowed_entity_types, allowed_menu FROM view_module_admins WHERE user_id = $1 AND menu_id = $2
 `
 
 type GetModuleAdminByMenuIdParams struct {
-	UserID int32         `json:"user_id"`
-	MenuID sql.NullInt32 `json:"menu_id"`
+	UserID int32 `json:"user_id"`
+	MenuID int32 `json:"menu_id"`
 }
 
 func (q *Queries) GetModuleAdminByMenuId(ctx context.Context, arg GetModuleAdminByMenuIdParams) (ViewModuleAdmin, error) {
@@ -160,15 +160,15 @@ func (q *Queries) GetModuleAdminByMenuId(ctx context.Context, arg GetModuleAdmin
 	var i ViewModuleAdmin
 	err := row.Scan(
 		&i.ID,
-		&i.WorldID,
-		&i.SystemID,
-		&i.CharacterID,
-		&i.QuestID,
 		&i.ModuleType,
 		&i.MenuID,
 		&i.HeaderImgID,
 		&i.ThumbnailImgID,
 		&i.AvatarImgID,
+		&i.WorldID,
+		&i.SystemID,
+		&i.CharacterID,
+		&i.QuestID,
 		&i.UserID,
 		&i.Approved,
 		&i.SuperAdmin,
@@ -264,7 +264,7 @@ func (q *Queries) GetModuleAdmins(ctx context.Context, moduleID int32) ([]GetMod
 
 const getModulesOfAdmin = `-- name: GetModulesOfAdmin :many
 SELECT
-    id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, user_id, approved, super_admin, allowed_entity_types, allowed_menu
+    id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, world_id, system_id, character_id, quest_id, user_id, approved, super_admin, allowed_entity_types, allowed_menu
 FROM
     view_module_admins
 WHERE
@@ -282,15 +282,15 @@ func (q *Queries) GetModulesOfAdmin(ctx context.Context, userID int32) ([]ViewMo
 		var i ViewModuleAdmin
 		if err := rows.Scan(
 			&i.ID,
-			&i.WorldID,
-			&i.SystemID,
-			&i.CharacterID,
-			&i.QuestID,
 			&i.ModuleType,
 			&i.MenuID,
 			&i.HeaderImgID,
 			&i.ThumbnailImgID,
 			&i.AvatarImgID,
+			&i.WorldID,
+			&i.SystemID,
+			&i.CharacterID,
+			&i.QuestID,
 			&i.UserID,
 			&i.Approved,
 			&i.SuperAdmin,

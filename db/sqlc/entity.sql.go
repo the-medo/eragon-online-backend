@@ -15,7 +15,7 @@ import (
 const createEntity = `-- name: CreateEntity :one
 INSERT INTO entities (type, module_id, post_id, map_id, location_id, image_id)
 VALUES ($1, $2, $3, $4, $5, $6)
-RETURNING id, type, post_id, map_id, location_id, image_id, module_id
+RETURNING id, module_id, type, post_id, map_id, location_id, image_id
 `
 
 type CreateEntityParams struct {
@@ -39,12 +39,12 @@ func (q *Queries) CreateEntity(ctx context.Context, arg CreateEntityParams) (Ent
 	var i Entity
 	err := row.Scan(
 		&i.ID,
+		&i.ModuleID,
 		&i.Type,
 		&i.PostID,
 		&i.MapID,
 		&i.LocationID,
 		&i.ImageID,
-		&i.ModuleID,
 	)
 	return i, err
 }
@@ -152,7 +152,7 @@ func (q *Queries) EntityGroupContentChangePositions(ctx context.Context, arg Ent
 
 const getEntities = `-- name: GetEntities :one
 SELECT
-    id, type, post_id, map_id, location_id, image_id, module_id, module_type, module_type_id, tags
+    id, module_id, type, post_id, map_id, location_id, image_id, module_type, module_type_id, tags
 FROM
     view_entities
 WHERE
@@ -170,12 +170,12 @@ func (q *Queries) GetEntities(ctx context.Context, arg GetEntitiesParams) (ViewE
 	var i ViewEntity
 	err := row.Scan(
 		&i.ID,
+		&i.ModuleID,
 		&i.Type,
 		&i.PostID,
 		&i.MapID,
 		&i.LocationID,
 		&i.ImageID,
-		&i.ModuleID,
 		&i.ModuleType,
 		&i.ModuleTypeID,
 		pq.Array(&i.Tags),
@@ -184,7 +184,7 @@ func (q *Queries) GetEntities(ctx context.Context, arg GetEntitiesParams) (ViewE
 }
 
 const getEntitiesByIDs = `-- name: GetEntitiesByIDs :many
-SELECT id, type, post_id, map_id, location_id, image_id, module_id, module_type, module_type_id, tags FROM view_entities WHERE id = ANY($1::int[])
+SELECT id, module_id, type, post_id, map_id, location_id, image_id, module_type, module_type_id, tags FROM view_entities WHERE id = ANY($1::int[])
 `
 
 func (q *Queries) GetEntitiesByIDs(ctx context.Context, entityIds []int32) ([]ViewEntity, error) {
@@ -198,12 +198,12 @@ func (q *Queries) GetEntitiesByIDs(ctx context.Context, entityIds []int32) ([]Vi
 		var i ViewEntity
 		if err := rows.Scan(
 			&i.ID,
+			&i.ModuleID,
 			&i.Type,
 			&i.PostID,
 			&i.MapID,
 			&i.LocationID,
 			&i.ImageID,
-			&i.ModuleID,
 			&i.ModuleType,
 			&i.ModuleTypeID,
 			pq.Array(&i.Tags),
@@ -222,7 +222,7 @@ func (q *Queries) GetEntitiesByIDs(ctx context.Context, entityIds []int32) ([]Vi
 }
 
 const getEntityByID = `-- name: GetEntityByID :one
-SELECT id, type, post_id, map_id, location_id, image_id, module_id FROM entities WHERE id = $1
+SELECT id, module_id, type, post_id, map_id, location_id, image_id FROM entities WHERE id = $1
 `
 
 func (q *Queries) GetEntityByID(ctx context.Context, id int32) (Entity, error) {
@@ -230,18 +230,18 @@ func (q *Queries) GetEntityByID(ctx context.Context, id int32) (Entity, error) {
 	var i Entity
 	err := row.Scan(
 		&i.ID,
+		&i.ModuleID,
 		&i.Type,
 		&i.PostID,
 		&i.MapID,
 		&i.LocationID,
 		&i.ImageID,
-		&i.ModuleID,
 	)
 	return i, err
 }
 
 const getEntityByImageId = `-- name: GetEntityByImageId :one
-SELECT id, type, post_id, map_id, location_id, image_id, module_id FROM entities WHERE image_id = $1
+SELECT id, module_id, type, post_id, map_id, location_id, image_id FROM entities WHERE image_id = $1
 `
 
 func (q *Queries) GetEntityByImageId(ctx context.Context, imageID sql.NullInt32) (Entity, error) {
@@ -249,18 +249,18 @@ func (q *Queries) GetEntityByImageId(ctx context.Context, imageID sql.NullInt32)
 	var i Entity
 	err := row.Scan(
 		&i.ID,
+		&i.ModuleID,
 		&i.Type,
 		&i.PostID,
 		&i.MapID,
 		&i.LocationID,
 		&i.ImageID,
-		&i.ModuleID,
 	)
 	return i, err
 }
 
 const getEntityByLocationId = `-- name: GetEntityByLocationId :one
-SELECT id, type, post_id, map_id, location_id, image_id, module_id FROM entities WHERE location_id = $1
+SELECT id, module_id, type, post_id, map_id, location_id, image_id FROM entities WHERE location_id = $1
 `
 
 func (q *Queries) GetEntityByLocationId(ctx context.Context, locationID sql.NullInt32) (Entity, error) {
@@ -268,18 +268,18 @@ func (q *Queries) GetEntityByLocationId(ctx context.Context, locationID sql.Null
 	var i Entity
 	err := row.Scan(
 		&i.ID,
+		&i.ModuleID,
 		&i.Type,
 		&i.PostID,
 		&i.MapID,
 		&i.LocationID,
 		&i.ImageID,
-		&i.ModuleID,
 	)
 	return i, err
 }
 
 const getEntityByMapId = `-- name: GetEntityByMapId :one
-SELECT id, type, post_id, map_id, location_id, image_id, module_id FROM entities WHERE map_id = $1
+SELECT id, module_id, type, post_id, map_id, location_id, image_id FROM entities WHERE map_id = $1
 `
 
 func (q *Queries) GetEntityByMapId(ctx context.Context, mapID sql.NullInt32) (Entity, error) {
@@ -287,18 +287,18 @@ func (q *Queries) GetEntityByMapId(ctx context.Context, mapID sql.NullInt32) (En
 	var i Entity
 	err := row.Scan(
 		&i.ID,
+		&i.ModuleID,
 		&i.Type,
 		&i.PostID,
 		&i.MapID,
 		&i.LocationID,
 		&i.ImageID,
-		&i.ModuleID,
 	)
 	return i, err
 }
 
 const getEntityByPostId = `-- name: GetEntityByPostId :one
-SELECT id, type, post_id, map_id, location_id, image_id, module_id FROM entities WHERE post_id = $1
+SELECT id, module_id, type, post_id, map_id, location_id, image_id FROM entities WHERE post_id = $1
 `
 
 func (q *Queries) GetEntityByPostId(ctx context.Context, postID sql.NullInt32) (Entity, error) {
@@ -306,12 +306,12 @@ func (q *Queries) GetEntityByPostId(ctx context.Context, postID sql.NullInt32) (
 	var i Entity
 	err := row.Scan(
 		&i.ID,
+		&i.ModuleID,
 		&i.Type,
 		&i.PostID,
 		&i.MapID,
 		&i.LocationID,
 		&i.ImageID,
-		&i.ModuleID,
 	)
 	return i, err
 }
@@ -496,7 +496,7 @@ SET
     location_id = COALESCE($4, location_id),
     image_id = COALESCE($5, image_id)
 WHERE id = $6
-RETURNING id, type, post_id, map_id, location_id, image_id, module_id
+RETURNING id, module_id, type, post_id, map_id, location_id, image_id
 `
 
 type UpdateEntityParams struct {
@@ -520,12 +520,12 @@ func (q *Queries) UpdateEntity(ctx context.Context, arg UpdateEntityParams) (Ent
 	var i Entity
 	err := row.Scan(
 		&i.ID,
+		&i.ModuleID,
 		&i.Type,
 		&i.PostID,
 		&i.MapID,
 		&i.LocationID,
 		&i.ImageID,
-		&i.ModuleID,
 	)
 	return i, err
 }

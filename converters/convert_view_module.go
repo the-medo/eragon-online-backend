@@ -10,6 +10,7 @@ func ConvertViewModule(dbModule db.ViewModule) *pb.ViewModule {
 		ModuleId:   dbModule.ModuleID,
 		ModuleType: ConvertModuleTypeToPB(dbModule.ModuleType),
 		Tags:       dbModule.Tags,
+		MenuId:     dbModule.MenuID,
 	}
 
 	if dbModule.ModuleWorldID.Valid {
@@ -28,10 +29,6 @@ func ConvertViewModule(dbModule db.ViewModule) *pb.ViewModule {
 		pbModule.ModuleSystemId = &dbModule.ModuleSystemID.Int32
 	}
 
-	if dbModule.MenuID.Valid {
-		pbModule.MenuId = dbModule.MenuID.Int32
-	}
-
 	if dbModule.HeaderImgID.Valid {
 		pbModule.HeaderImgId = dbModule.HeaderImgID.Int32
 	}
@@ -42,18 +39,6 @@ func ConvertViewModule(dbModule db.ViewModule) *pb.ViewModule {
 
 	if dbModule.AvatarImgID.Valid {
 		pbModule.AvatarImgId = dbModule.AvatarImgID.Int32
-	}
-
-	if dbModule.ImageHeader.Valid {
-		pbModule.HeaderImgUrl = dbModule.ImageHeader.String
-	}
-
-	if dbModule.ImageThumbnail.Valid {
-		pbModule.ThumbnailImgUrl = dbModule.ImageThumbnail.String
-	}
-
-	if dbModule.ImageAvatar.Valid {
-		pbModule.AvatarImgUrl = dbModule.ImageAvatar.String
 	}
 
 	return pbModule

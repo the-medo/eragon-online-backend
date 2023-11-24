@@ -111,8 +111,8 @@ const (
 	ImageVariant200x200  ImageVariant = "200x200"
 	ImageVariant300x300  ImageVariant = "300x300"
 	ImageVariant30x30    ImageVariant = "30x30"
-	ImageVariantPublic   ImageVariant = "public"
 	ImageVariantOriginal ImageVariant = "original"
+	ImageVariantPublic   ImageVariant = "public"
 	ImageVariant600x400  ImageVariant = "600x400"
 	ImageVariant400x600  ImageVariant = "400x600"
 	ImageVariant300x200  ImageVariant = "300x200"
@@ -286,12 +286,12 @@ type Chat struct {
 
 type Entity struct {
 	ID         int32         `json:"id"`
+	ModuleID   int32         `json:"module_id"`
 	Type       EntityType    `json:"type"`
 	PostID     sql.NullInt32 `json:"post_id"`
 	MapID      sql.NullInt32 `json:"map_id"`
 	LocationID sql.NullInt32 `json:"location_id"`
 	ImageID    sql.NullInt32 `json:"image_id"`
-	ModuleID   int32         `json:"module_id"`
 }
 
 type EntityGroup struct {
@@ -333,13 +333,13 @@ type EvaluationVote struct {
 
 type Image struct {
 	ID          int32          `json:"id"`
+	UserID      int32          `json:"user_id"`
+	ImgGuid     uuid.NullUUID  `json:"img_guid"`
 	ImageTypeID sql.NullInt32  `json:"image_type_id"`
 	Name        sql.NullString `json:"name"`
 	Url         string         `json:"url"`
-	CreatedAt   time.Time      `json:"created_at"`
 	BaseUrl     string         `json:"base_url"`
-	ImgGuid     uuid.NullUUID  `json:"img_guid"`
-	UserID      int32          `json:"user_id"`
+	CreatedAt   time.Time      `json:"created_at"`
 	Width       int32          `json:"width"`
 	Height      int32          `json:"height"`
 }
@@ -393,6 +393,7 @@ type MapPin struct {
 
 type MapPinType struct {
 	ID                int32          `json:"id"`
+	MapPinTypeGroupID int32          `json:"map_pin_type_group_id"`
 	Shape             PinShape       `json:"shape"`
 	BackgroundColor   sql.NullString `json:"background_color"`
 	BorderColor       sql.NullString `json:"border_color"`
@@ -401,7 +402,6 @@ type MapPinType struct {
 	IconSize          sql.NullInt32  `json:"icon_size"`
 	Width             sql.NullInt32  `json:"width"`
 	Section           string         `json:"section"`
-	MapPinTypeGroupID int32          `json:"map_pin_type_group_id"`
 }
 
 type MapPinTypeGroup struct {
@@ -436,15 +436,15 @@ type MenuItemPost struct {
 // Groups higher-level sections into one table. Contains worlds, quests, characters and play systems.
 type Module struct {
 	ID             int32         `json:"id"`
+	ModuleType     ModuleType    `json:"module_type"`
+	MenuID         int32         `json:"menu_id"`
+	HeaderImgID    sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID    sql.NullInt32 `json:"avatar_img_id"`
 	WorldID        sql.NullInt32 `json:"world_id"`
 	SystemID       sql.NullInt32 `json:"system_id"`
 	CharacterID    sql.NullInt32 `json:"character_id"`
 	QuestID        sql.NullInt32 `json:"quest_id"`
-	ModuleType     ModuleType    `json:"module_type"`
-	MenuID         sql.NullInt32 `json:"menu_id"`
-	HeaderImgID    sql.NullInt32 `json:"header_img_id"`
-	ThumbnailImgID sql.NullInt32 `json:"thumbnail_img_id"`
-	AvatarImgID    sql.NullInt32 `json:"avatar_img_id"`
 }
 
 type ModuleAdmin struct {
@@ -488,6 +488,7 @@ type Post struct {
 	ID                int32          `json:"id"`
 	UserID            int32          `json:"user_id"`
 	Title             string         `json:"title"`
+	Description       sql.NullString `json:"description"`
 	Content           string         `json:"content"`
 	CreatedAt         time.Time      `json:"created_at"`
 	DeletedAt         sql.NullTime   `json:"deleted_at"`
@@ -495,7 +496,6 @@ type Post struct {
 	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
 	IsDraft           bool           `json:"is_draft"`
 	IsPrivate         bool           `json:"is_private"`
-	Description       sql.NullString `json:"description"`
 	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
 }
 
@@ -504,6 +504,7 @@ type PostHistory struct {
 	PostID            int32          `json:"post_id"`
 	UserID            int32          `json:"user_id"`
 	Title             string         `json:"title"`
+	Description       sql.NullString `json:"description"`
 	Content           string         `json:"content"`
 	CreatedAt         time.Time      `json:"created_at"`
 	DeletedAt         sql.NullTime   `json:"deleted_at"`
@@ -511,7 +512,6 @@ type PostHistory struct {
 	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
 	IsDraft           bool           `json:"is_draft"`
 	IsPrivate         bool           `json:"is_private"`
-	Description       sql.NullString `json:"description"`
 	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
 }
 
@@ -641,12 +641,12 @@ type ViewConnectionsPost struct {
 
 type ViewEntity struct {
 	ID           int32          `json:"id"`
+	ModuleID     int32          `json:"module_id"`
 	Type         EntityType     `json:"type"`
 	PostID       sql.NullInt32  `json:"post_id"`
 	MapID        sql.NullInt32  `json:"map_id"`
 	LocationID   sql.NullInt32  `json:"location_id"`
 	ImageID      sql.NullInt32  `json:"image_id"`
-	ModuleID     int32          `json:"module_id"`
 	ModuleType   NullModuleType `json:"module_type"`
 	ModuleTypeID int32          `json:"module_type_id"`
 	Tags         []int32        `json:"tags"`
@@ -654,13 +654,13 @@ type ViewEntity struct {
 
 type ViewImage struct {
 	ID           int32          `json:"id"`
+	UserID       int32          `json:"user_id"`
+	ImgGuid      uuid.NullUUID  `json:"img_guid"`
 	ImageTypeID  sql.NullInt32  `json:"image_type_id"`
 	Name         sql.NullString `json:"name"`
 	Url          string         `json:"url"`
-	CreatedAt    time.Time      `json:"created_at"`
 	BaseUrl      string         `json:"base_url"`
-	ImgGuid      uuid.NullUUID  `json:"img_guid"`
-	UserID       int32          `json:"user_id"`
+	CreatedAt    time.Time      `json:"created_at"`
 	Width        int32          `json:"width"`
 	Height       int32          `json:"height"`
 	EntityID     sql.NullInt32  `json:"entity_id"`
@@ -743,6 +743,7 @@ type ViewMenuItemPost struct {
 	ID                int32          `json:"id"`
 	UserID            int32          `json:"user_id"`
 	Title             string         `json:"title"`
+	Description       sql.NullString `json:"description"`
 	Content           string         `json:"content"`
 	CreatedAt         time.Time      `json:"created_at"`
 	DeletedAt         sql.NullTime   `json:"deleted_at"`
@@ -750,7 +751,6 @@ type ViewMenuItemPost struct {
 	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
 	IsDraft           bool           `json:"is_draft"`
 	IsPrivate         bool           `json:"is_private"`
-	Description       sql.NullString `json:"description"`
 	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
 	ThumbnailImgUrl   sql.NullString `json:"thumbnail_img_url"`
 	EntityID          sql.NullInt32  `json:"entity_id"`
@@ -761,33 +761,30 @@ type ViewMenuItemPost struct {
 }
 
 type ViewModule struct {
-	ModuleID          int32          `json:"module_id"`
-	ModuleWorldID     sql.NullInt32  `json:"module_world_id"`
-	ModuleSystemID    sql.NullInt32  `json:"module_system_id"`
-	ModuleCharacterID sql.NullInt32  `json:"module_character_id"`
-	ModuleQuestID     sql.NullInt32  `json:"module_quest_id"`
-	ModuleType        ModuleType     `json:"module_type"`
-	MenuID            sql.NullInt32  `json:"menu_id"`
-	HeaderImgID       sql.NullInt32  `json:"header_img_id"`
-	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
-	AvatarImgID       sql.NullInt32  `json:"avatar_img_id"`
-	ImageHeader       sql.NullString `json:"image_header"`
-	ImageThumbnail    sql.NullString `json:"image_thumbnail"`
-	ImageAvatar       sql.NullString `json:"image_avatar"`
-	Tags              []int32        `json:"tags"`
+	ModuleID          int32         `json:"module_id"`
+	ModuleWorldID     sql.NullInt32 `json:"module_world_id"`
+	ModuleSystemID    sql.NullInt32 `json:"module_system_id"`
+	ModuleCharacterID sql.NullInt32 `json:"module_character_id"`
+	ModuleQuestID     sql.NullInt32 `json:"module_quest_id"`
+	ModuleType        ModuleType    `json:"module_type"`
+	MenuID            int32         `json:"menu_id"`
+	HeaderImgID       sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID    sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID       sql.NullInt32 `json:"avatar_img_id"`
+	Tags              []int32       `json:"tags"`
 }
 
 type ViewModuleAdmin struct {
 	ID                 int32         `json:"id"`
+	ModuleType         ModuleType    `json:"module_type"`
+	MenuID             int32         `json:"menu_id"`
+	HeaderImgID        sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID     sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID        sql.NullInt32 `json:"avatar_img_id"`
 	WorldID            sql.NullInt32 `json:"world_id"`
 	SystemID           sql.NullInt32 `json:"system_id"`
 	CharacterID        sql.NullInt32 `json:"character_id"`
 	QuestID            sql.NullInt32 `json:"quest_id"`
-	ModuleType         ModuleType    `json:"module_type"`
-	MenuID             sql.NullInt32 `json:"menu_id"`
-	HeaderImgID        sql.NullInt32 `json:"header_img_id"`
-	ThumbnailImgID     sql.NullInt32 `json:"thumbnail_img_id"`
-	AvatarImgID        sql.NullInt32 `json:"avatar_img_id"`
 	UserID             int32         `json:"user_id"`
 	Approved           int32         `json:"approved"`
 	SuperAdmin         bool          `json:"super_admin"`
@@ -806,6 +803,7 @@ type ViewPost struct {
 	ID                int32          `json:"id"`
 	UserID            int32          `json:"user_id"`
 	Title             string         `json:"title"`
+	Description       sql.NullString `json:"description"`
 	Content           string         `json:"content"`
 	CreatedAt         time.Time      `json:"created_at"`
 	DeletedAt         sql.NullTime   `json:"deleted_at"`
@@ -813,7 +811,6 @@ type ViewPost struct {
 	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
 	IsDraft           bool           `json:"is_draft"`
 	IsPrivate         bool           `json:"is_private"`
-	Description       sql.NullString `json:"description"`
 	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
 	ThumbnailImgUrl   sql.NullString `json:"thumbnail_img_url"`
 	EntityID          sql.NullInt32  `json:"entity_id"`
@@ -840,30 +837,27 @@ type ViewUser struct {
 }
 
 type ViewWorld struct {
-	ID                int32          `json:"id"`
-	Name              string         `json:"name"`
-	Public            bool           `json:"public"`
-	CreatedAt         time.Time      `json:"created_at"`
-	ShortDescription  string         `json:"short_description"`
-	BasedOn           string         `json:"based_on"`
-	DescriptionPostID sql.NullInt32  `json:"description_post_id"`
-	ModuleID          int32          `json:"module_id"`
-	MenuID            sql.NullInt32  `json:"menu_id"`
-	HeaderImgID       sql.NullInt32  `json:"header_img_id"`
-	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
-	AvatarImgID       sql.NullInt32  `json:"avatar_img_id"`
-	ImageHeader       sql.NullString `json:"image_header"`
-	ImageThumbnail    sql.NullString `json:"image_thumbnail"`
-	ImageAvatar       sql.NullString `json:"image_avatar"`
-	Tags              []int32        `json:"tags"`
+	ID                int32         `json:"id"`
+	Name              string        `json:"name"`
+	BasedOn           string        `json:"based_on"`
+	Public            bool          `json:"public"`
+	CreatedAt         time.Time     `json:"created_at"`
+	ShortDescription  string        `json:"short_description"`
+	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
+	ModuleID          int32         `json:"module_id"`
+	MenuID            int32         `json:"menu_id"`
+	HeaderImgID       sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID    sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID       sql.NullInt32 `json:"avatar_img_id"`
+	Tags              []int32       `json:"tags"`
 }
 
 type World struct {
 	ID                int32         `json:"id"`
 	Name              string        `json:"name"`
+	BasedOn           string        `json:"based_on"`
 	Public            bool          `json:"public"`
 	CreatedAt         time.Time     `json:"created_at"`
 	ShortDescription  string        `json:"short_description"`
-	BasedOn           string        `json:"based_on"`
 	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
 }

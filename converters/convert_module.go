@@ -9,10 +9,7 @@ func ConvertModule(dbModule db.Module) *pb.Module {
 	pbModule := &pb.Module{
 		Id:         dbModule.ID,
 		ModuleType: ConvertModuleTypeToPB(dbModule.ModuleType),
-	}
-
-	if dbModule.MenuID.Valid {
-		pbModule.MenuId = dbModule.MenuID.Int32
+		MenuId:     dbModule.MenuID,
 	}
 
 	if dbModule.HeaderImgID.Valid {

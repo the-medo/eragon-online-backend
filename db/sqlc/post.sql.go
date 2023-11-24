@@ -26,7 +26,7 @@ INSERT INTO posts
 )
 VALUES
     ($1, $2, $3, $4, $5, $6, $7)
-RETURNING id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id
+RETURNING id, user_id, title, description, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, thumbnail_img_id
 `
 
 type CreatePostParams struct {
@@ -54,6 +54,7 @@ func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, e
 		&i.ID,
 		&i.UserID,
 		&i.Title,
+		&i.Description,
 		&i.Content,
 		&i.CreatedAt,
 		&i.DeletedAt,
@@ -61,7 +62,6 @@ func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, e
 		&i.LastUpdatedUserID,
 		&i.IsDraft,
 		&i.IsPrivate,
-		&i.Description,
 		&i.ThumbnailImgID,
 	)
 	return i, err
@@ -82,7 +82,7 @@ func (q *Queries) DeletePost(ctx context.Context, postID int32) error {
 
 const getPostById = `-- name: GetPostById :one
 SELECT
-    id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, thumbnail_img_url, entity_id, module_id, module_type, module_type_id, tags
+    id, user_id, title, description, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, thumbnail_img_id, thumbnail_img_url, entity_id, module_id, module_type, module_type_id, tags
 FROM
     view_posts
 WHERE
@@ -96,6 +96,7 @@ func (q *Queries) GetPostById(ctx context.Context, postID int32) (ViewPost, erro
 		&i.ID,
 		&i.UserID,
 		&i.Title,
+		&i.Description,
 		&i.Content,
 		&i.CreatedAt,
 		&i.DeletedAt,
@@ -103,7 +104,6 @@ func (q *Queries) GetPostById(ctx context.Context, postID int32) (ViewPost, erro
 		&i.LastUpdatedUserID,
 		&i.IsDraft,
 		&i.IsPrivate,
-		&i.Description,
 		&i.ThumbnailImgID,
 		&i.ThumbnailImgUrl,
 		&i.EntityID,
@@ -239,7 +239,7 @@ func (q *Queries) GetPostHistoryByPostId(ctx context.Context, postID int32) ([]G
 }
 
 const getPostsByIDs = `-- name: GetPostsByIDs :many
-SELECT id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id FROM posts WHERE id = ANY($1::int[])
+SELECT id, user_id, title, description, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, thumbnail_img_id FROM posts WHERE id = ANY($1::int[])
 `
 
 func (q *Queries) GetPostsByIDs(ctx context.Context, postIds []int32) ([]Post, error) {
@@ -255,6 +255,7 @@ func (q *Queries) GetPostsByIDs(ctx context.Context, postIds []int32) ([]Post, e
 			&i.ID,
 			&i.UserID,
 			&i.Title,
+			&i.Description,
 			&i.Content,
 			&i.CreatedAt,
 			&i.DeletedAt,
@@ -262,7 +263,6 @@ func (q *Queries) GetPostsByIDs(ctx context.Context, postIds []int32) ([]Post, e
 			&i.LastUpdatedUserID,
 			&i.IsDraft,
 			&i.IsPrivate,
-			&i.Description,
 			&i.ThumbnailImgID,
 		); err != nil {
 			return nil, err
@@ -281,7 +281,7 @@ func (q *Queries) GetPostsByIDs(ctx context.Context, postIds []int32) ([]Post, e
 const getPostsByModule = `-- name: GetPostsByModule :many
 WITH cte AS (
     SELECT
-        vp.id, vp.user_id, vp.title, vp.content, vp.created_at, vp.deleted_at, vp.last_updated_at, vp.last_updated_user_id, vp.is_draft, vp.is_private, vp.description, vp.thumbnail_img_id, vp.thumbnail_img_url, vp.entity_id, vp.module_id, vp.module_type, vp.module_type_id, vp.tags
+        vp.id, vp.user_id, vp.title, vp.description, vp.content, vp.created_at, vp.deleted_at, vp.last_updated_at, vp.last_updated_user_id, vp.is_draft, vp.is_private, vp.thumbnail_img_id, vp.thumbnail_img_url, vp.entity_id, vp.module_id, vp.module_type, vp.module_type_id, vp.tags
     FROM
         view_posts vp
         LEFT JOIN modules m ON m.id = vp.module_id
@@ -291,7 +291,7 @@ WITH cte AS (
 )
 SELECT
     CAST((SELECT count(*) FROM cte) as integer) as total_count,
-    cte.id, cte.user_id, cte.title, cte.content, cte.created_at, cte.deleted_at, cte.last_updated_at, cte.last_updated_user_id, cte.is_draft, cte.is_private, cte.description, cte.thumbnail_img_id, cte.thumbnail_img_url, cte.entity_id, cte.module_id, cte.module_type, cte.module_type_id, cte.tags
+    cte.id, cte.user_id, cte.title, cte.description, cte.content, cte.created_at, cte.deleted_at, cte.last_updated_at, cte.last_updated_user_id, cte.is_draft, cte.is_private, cte.thumbnail_img_id, cte.thumbnail_img_url, cte.entity_id, cte.module_id, cte.module_type, cte.module_type_id, cte.tags
 FROM cte
 ORDER BY created_at DESC
 LIMIT $2
@@ -309,6 +309,7 @@ type GetPostsByModuleRow struct {
 	ID                int32          `json:"id"`
 	UserID            int32          `json:"user_id"`
 	Title             string         `json:"title"`
+	Description       sql.NullString `json:"description"`
 	Content           string         `json:"content"`
 	CreatedAt         time.Time      `json:"created_at"`
 	DeletedAt         sql.NullTime   `json:"deleted_at"`
@@ -316,7 +317,6 @@ type GetPostsByModuleRow struct {
 	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
 	IsDraft           bool           `json:"is_draft"`
 	IsPrivate         bool           `json:"is_private"`
-	Description       sql.NullString `json:"description"`
 	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
 	ThumbnailImgUrl   sql.NullString `json:"thumbnail_img_url"`
 	EntityID          sql.NullInt32  `json:"entity_id"`
@@ -340,6 +340,7 @@ func (q *Queries) GetPostsByModule(ctx context.Context, arg GetPostsByModulePara
 			&i.ID,
 			&i.UserID,
 			&i.Title,
+			&i.Description,
 			&i.Content,
 			&i.CreatedAt,
 			&i.DeletedAt,
@@ -347,7 +348,6 @@ func (q *Queries) GetPostsByModule(ctx context.Context, arg GetPostsByModulePara
 			&i.LastUpdatedUserID,
 			&i.IsDraft,
 			&i.IsPrivate,
-			&i.Description,
 			&i.ThumbnailImgID,
 			&i.ThumbnailImgUrl,
 			&i.EntityID,
@@ -371,7 +371,7 @@ func (q *Queries) GetPostsByModule(ctx context.Context, arg GetPostsByModulePara
 
 const getPostsByUserId = `-- name: GetPostsByUserId :many
 SELECT
-    id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id, thumbnail_img_url, entity_id, module_id, module_type, module_type_id, tags
+    id, user_id, title, description, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, thumbnail_img_id, thumbnail_img_url, entity_id, module_id, module_type, module_type_id, tags
 FROM
     view_posts
 WHERE
@@ -401,6 +401,7 @@ func (q *Queries) GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdPara
 			&i.ID,
 			&i.UserID,
 			&i.Title,
+			&i.Description,
 			&i.Content,
 			&i.CreatedAt,
 			&i.DeletedAt,
@@ -408,7 +409,6 @@ func (q *Queries) GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdPara
 			&i.LastUpdatedUserID,
 			&i.IsDraft,
 			&i.IsPrivate,
-			&i.Description,
 			&i.ThumbnailImgID,
 			&i.ThumbnailImgUrl,
 			&i.EntityID,
@@ -462,7 +462,7 @@ FROM
     posts
 WHERE
     posts.id = $1
-RETURNING id, post_id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id
+RETURNING id, post_id, user_id, title, description, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, thumbnail_img_id
 `
 
 func (q *Queries) InsertPostHistory(ctx context.Context, postID int32) (PostHistory, error) {
@@ -473,6 +473,7 @@ func (q *Queries) InsertPostHistory(ctx context.Context, postID int32) (PostHist
 		&i.PostID,
 		&i.UserID,
 		&i.Title,
+		&i.Description,
 		&i.Content,
 		&i.CreatedAt,
 		&i.DeletedAt,
@@ -480,7 +481,6 @@ func (q *Queries) InsertPostHistory(ctx context.Context, postID int32) (PostHist
 		&i.LastUpdatedUserID,
 		&i.IsDraft,
 		&i.IsPrivate,
-		&i.Description,
 		&i.ThumbnailImgID,
 	)
 	return i, err
@@ -499,7 +499,7 @@ SET
     thumbnail_img_id = COALESCE($7, thumbnail_img_id)
 WHERE
     posts.id = $8
-RETURNING id, user_id, title, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, description, thumbnail_img_id
+RETURNING id, user_id, title, description, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, thumbnail_img_id
 `
 
 type UpdatePostParams struct {
@@ -529,6 +529,7 @@ func (q *Queries) UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, e
 		&i.ID,
 		&i.UserID,
 		&i.Title,
+		&i.Description,
 		&i.Content,
 		&i.CreatedAt,
 		&i.DeletedAt,
@@ -536,7 +537,6 @@ func (q *Queries) UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, e
 		&i.LastUpdatedUserID,
 		&i.IsDraft,
 		&i.IsPrivate,
-		&i.Description,
 		&i.ThumbnailImgID,
 	)
 	return i, err

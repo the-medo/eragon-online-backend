@@ -16,14 +16,11 @@ func ConvertViewWorld(world db.ViewWorld) *pb.ViewWorld {
 		ShortDescription: world.ShortDescription,
 		BasedOn:          world.BasedOn,
 		Tags:             world.Tags,
+		MenuId:           world.MenuID,
 	}
 
 	if world.DescriptionPostID.Valid == true {
 		pbViewWorld.DescriptionPostId = &world.DescriptionPostID.Int32
-	}
-
-	if world.MenuID.Valid {
-		pbViewWorld.MenuId = world.MenuID.Int32
 	}
 
 	if world.HeaderImgID.Valid {
@@ -36,18 +33,6 @@ func ConvertViewWorld(world db.ViewWorld) *pb.ViewWorld {
 
 	if world.AvatarImgID.Valid {
 		pbViewWorld.AvatarImgId = world.AvatarImgID.Int32
-	}
-
-	if world.ImageHeader.Valid {
-		pbViewWorld.HeaderImgUrl = world.ImageHeader.String
-	}
-
-	if world.ImageThumbnail.Valid {
-		pbViewWorld.ThumbnailImgUrl = world.ImageThumbnail.String
-	}
-
-	if world.ImageAvatar.Valid {
-		pbViewWorld.AvatarImgUrl = world.ImageAvatar.String
 	}
 
 	return pbViewWorld
