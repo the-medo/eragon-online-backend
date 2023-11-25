@@ -28,7 +28,7 @@ message RunFetcherRequest {
 }
 
 message RunFetcherResponse {
-  repeated Module modules = 1;
+  repeated ViewModule modules = 1;
   repeated World worlds = 2;
   repeated ViewEntity entities = 3;
   repeated Post posts = 4;

@@ -761,17 +761,17 @@ type ViewMenuItemPost struct {
 }
 
 type ViewModule struct {
-	ModuleID          int32         `json:"module_id"`
-	ModuleWorldID     sql.NullInt32 `json:"module_world_id"`
-	ModuleSystemID    sql.NullInt32 `json:"module_system_id"`
-	ModuleCharacterID sql.NullInt32 `json:"module_character_id"`
-	ModuleQuestID     sql.NullInt32 `json:"module_quest_id"`
-	ModuleType        ModuleType    `json:"module_type"`
-	MenuID            int32         `json:"menu_id"`
-	HeaderImgID       sql.NullInt32 `json:"header_img_id"`
-	ThumbnailImgID    sql.NullInt32 `json:"thumbnail_img_id"`
-	AvatarImgID       sql.NullInt32 `json:"avatar_img_id"`
-	Tags              []int32       `json:"tags"`
+	ID             int32         `json:"id"`
+	WorldID        sql.NullInt32 `json:"world_id"`
+	SystemID       sql.NullInt32 `json:"system_id"`
+	CharacterID    sql.NullInt32 `json:"character_id"`
+	QuestID        sql.NullInt32 `json:"quest_id"`
+	ModuleType     ModuleType    `json:"module_type"`
+	MenuID         int32         `json:"menu_id"`
+	HeaderImgID    sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID    sql.NullInt32 `json:"avatar_img_id"`
+	Tags           []int32       `json:"tags"`
 }
 
 type ViewModuleAdmin struct {

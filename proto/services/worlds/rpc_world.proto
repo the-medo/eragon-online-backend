@@ -48,7 +48,7 @@ message GetWorldsRequest {
 }
 
 message GetWorldsResponse {
-  repeated ViewWorld worlds = 1;
+  repeated int32 worldIds = 1;
   int32 totalCount = 2;
 }
 

@@ -30,12 +30,12 @@ message Module {
 }
 
 message ViewModule {
-  int32 moduleId = 1;
+  int32 id = 1;
   ModuleType moduleType = 2;
-  optional int32 moduleWorldId = 3;
-  optional int32 moduleQuestId = 4;
-  optional int32 moduleCharacterId = 5;
-  optional int32 moduleSystemId = 6;
+  optional int32 worldId = 3;
+  optional int32 questId = 4;
+  optional int32 characterId = 5;
+  optional int32 systemId = 6;
   int32 menuId = 7;
   int32 headerImgId = 8;
   string headerImgUrl = 9;

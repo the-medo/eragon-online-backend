@@ -30,9 +30,9 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 			return nil, err
 		}
 
-		rsp.Modules = make([]*pb.Module, len(data))
+		rsp.Modules = make([]*pb.ViewModule, len(data))
 		for i, item := range data {
-			rsp.Modules[i] = converters.ConvertModule(item)
+			rsp.Modules[i] = converters.ConvertViewModule(item)
 
 			if item.WorldID.Valid {
 				fetchInterface.WorldIds = util.Upsert(fetchInterface.WorldIds, item.WorldID.Int32)

@@ -5107,11 +5107,11 @@
     "pbGetWorldsResponse": {
       "type": "object",
       "properties": {
-        "worlds": {
+        "worldIds": {
           "type": "array",
           "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbViewWorld"
+            "type": "integer",
+            "format": "int32"
           }
         },
         "totalCount": {
@@ -5334,50 +5334,6 @@
         },
         "post": {
           "$ref": "#/definitions/pbViewPost"
-        }
-      }
-    },
-    "pbModule": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "moduleType": {
-          "$ref": "#/definitions/pbModuleType"
-        },
-        "worldId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "questId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "characterId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "systemId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "menuId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "headerImgId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "thumbnailImgId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "avatarImgId": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     },
@@ -5736,7 +5692,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbModule"
+            "$ref": "#/definitions/pbViewModule"
           }
         },
         "worlds": {
@@ -6233,26 +6189,26 @@
     "pbViewModule": {
       "type": "object",
       "properties": {
-        "moduleId": {
+        "id": {
           "type": "integer",
           "format": "int32"
         },
         "moduleType": {
           "$ref": "#/definitions/pbModuleType"
         },
-        "moduleWorldId": {
+        "worldId": {
           "type": "integer",
           "format": "int32"
         },
-        "moduleQuestId": {
+        "questId": {
           "type": "integer",
           "format": "int32"
         },
-        "moduleCharacterId": {
+        "characterId": {
           "type": "integer",
           "format": "int32"
         },
-        "moduleSystemId": {
+        "systemId": {
           "type": "integer",
           "format": "int32"
         },

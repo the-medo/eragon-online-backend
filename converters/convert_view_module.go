@@ -7,26 +7,23 @@ import (
 
 func ConvertViewModule(dbModule db.ViewModule) *pb.ViewModule {
 	pbModule := &pb.ViewModule{
-		ModuleId:   dbModule.ModuleID,
+		Id:         dbModule.ID,
 		ModuleType: ConvertModuleTypeToPB(dbModule.ModuleType),
 		Tags:       dbModule.Tags,
 		MenuId:     dbModule.MenuID,
 	}
 
-	if dbModule.ModuleWorldID.Valid {
-		pbModule.ModuleWorldId = &dbModule.ModuleWorldID.Int32
+	if dbModule.WorldID.Valid {
+		pbModule.WorldId = &dbModule.WorldID.Int32
 	}
-	if dbModule.ModuleWorldID.Valid {
-		pbModule.ModuleWorldId = &dbModule.ModuleWorldID.Int32
+	if dbModule.QuestID.Valid {
+		pbModule.QuestId = &dbModule.QuestID.Int32
 	}
-	if dbModule.ModuleQuestID.Valid {
-		pbModule.ModuleQuestId = &dbModule.ModuleQuestID.Int32
+	if dbModule.CharacterID.Valid {
+		pbModule.CharacterId = &dbModule.CharacterID.Int32
 	}
-	if dbModule.ModuleCharacterID.Valid {
-		pbModule.ModuleCharacterId = &dbModule.ModuleCharacterID.Int32
-	}
-	if dbModule.ModuleSystemID.Valid {
-		pbModule.ModuleSystemId = &dbModule.ModuleSystemID.Int32
+	if dbModule.SystemID.Valid {
+		pbModule.SystemId = &dbModule.SystemID.Int32
 	}
 
 	if dbModule.HeaderImgID.Valid {

@@ -2,14 +2,16 @@ package worlds
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/the-medo/talebound-backend/api/apihelpers"
-	"github.com/the-medo/talebound-backend/converters"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 func (server *ServiceWorlds) GetWorlds(ctx context.Context, req *pb.GetWorldsRequest) (*pb.GetWorldsResponse, error) {
@@ -53,13 +55,30 @@ func (server *ServiceWorlds) GetWorlds(ctx context.Context, req *pb.GetWorldsReq
 		return nil, err
 	}
 
+	moduleIds := make([]int32, len(worlds))
 	rsp := &pb.GetWorldsResponse{
-		Worlds:     make([]*pb.ViewWorld, len(worlds)),
+		WorldIds:   make([]int32, len(worlds)),
 		TotalCount: int32(totalCount),
 	}
 
 	for i, world := range worlds {
-		rsp.Worlds[i] = converters.ConvertViewWorld(world)
+		rsp.WorldIds[i] = world.ID
+		moduleIds[i] = world.ModuleID
+	}
+
+	fetchInterface := &apihelpers.FetchInterface{
+		ModuleIds: moduleIds,
+		WorldIds:  rsp.WorldIds,
+	}
+
+	fetchIdsHeader, err := json.Marshal(fetchInterface)
+
+	md := metadata.Pairs(
+		"X-Fetch-Ids", string(fetchIdsHeader),
+	)
+	err = grpc.SendHeader(ctx, md)
+	if err != nil {
+		return nil, err
 	}
 
 	return rsp, nil

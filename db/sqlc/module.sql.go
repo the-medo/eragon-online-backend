@@ -101,51 +101,53 @@ func (q *Queries) GetModule(ctx context.Context, arg GetModuleParams) (Module, e
 }
 
 const getModuleById = `-- name: GetModuleById :one
-SELECT id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, world_id, system_id, character_id, quest_id FROM modules WHERE id = $1
+SELECT id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM view_modules WHERE id = $1
 `
 
-func (q *Queries) GetModuleById(ctx context.Context, moduleID int32) (Module, error) {
+func (q *Queries) GetModuleById(ctx context.Context, moduleID int32) (ViewModule, error) {
 	row := q.db.QueryRowContext(ctx, getModuleById, moduleID)
-	var i Module
+	var i ViewModule
 	err := row.Scan(
 		&i.ID,
+		&i.WorldID,
+		&i.SystemID,
+		&i.CharacterID,
+		&i.QuestID,
 		&i.ModuleType,
 		&i.MenuID,
 		&i.HeaderImgID,
 		&i.ThumbnailImgID,
 		&i.AvatarImgID,
-		&i.WorldID,
-		&i.SystemID,
-		&i.CharacterID,
-		&i.QuestID,
+		pq.Array(&i.Tags),
 	)
 	return i, err
 }
 
 const getModulesByIDs = `-- name: GetModulesByIDs :many
-SELECT id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, world_id, system_id, character_id, quest_id FROM modules WHERE id = ANY($1::int[])
+SELECT id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM view_modules WHERE id = ANY($1::int[])
 `
 
-func (q *Queries) GetModulesByIDs(ctx context.Context, moduleIds []int32) ([]Module, error) {
+func (q *Queries) GetModulesByIDs(ctx context.Context, moduleIds []int32) ([]ViewModule, error) {
 	rows, err := q.db.QueryContext(ctx, getModulesByIDs, pq.Array(moduleIds))
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Module{}
+	items := []ViewModule{}
 	for rows.Next() {
-		var i Module
+		var i ViewModule
 		if err := rows.Scan(
 			&i.ID,
+			&i.WorldID,
+			&i.SystemID,
+			&i.CharacterID,
+			&i.QuestID,
 			&i.ModuleType,
 			&i.MenuID,
 			&i.HeaderImgID,
 			&i.ThumbnailImgID,
 			&i.AvatarImgID,
-			&i.WorldID,
-			&i.SystemID,
-			&i.CharacterID,
-			&i.QuestID,
+			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
 		}

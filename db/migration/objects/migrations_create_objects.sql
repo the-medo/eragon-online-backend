@@ -276,27 +276,21 @@ WHERE e.post_id IS NOT NULL
 --====================================
 
 CREATE VIEW view_modules AS
-SELECT m.id as module_id,
-       m.world_id as module_world_id,
-       m.system_id as module_system_id,
-       m.character_id as module_character_id,
-       m.quest_id as module_quest_id,
+SELECT m.id as id,
+       m.world_id as world_id,
+       m.system_id as system_id,
+       m.character_id as character_id,
+       m.quest_id as quest_id,
        m.module_type as module_type,
        m.menu_id as menu_id,
        m.header_img_id as header_img_id,
        m.thumbnail_img_id as thumbnail_img_id,
        m.avatar_img_id as avatar_img_id,
-       tags.tags AS tags
+       cast(array_agg(tags.tag_id) as integer[]) AS tags
 FROM
     modules m
-        LEFT JOIN (
-        SELECT
-            mt.module_id,
-            cast(array_agg(mt.tag_id) as integer[]) AS tags
-        FROM
-            module_tags mt
-        GROUP BY mt.module_id
-    ) tags ON tags.module_id = m.id
+    LEFT JOIN module_tags tags ON tags.module_id = m.id
+GROUP BY m.id
 ;
 
 
@@ -306,7 +300,7 @@ FROM
 CREATE VIEW view_worlds AS
 SELECT
     w.*,
-    vm.module_id,
+    vm.id as module_id,
     vm.menu_id,
     vm.header_img_id,
     vm.thumbnail_img_id,
@@ -314,7 +308,7 @@ SELECT
     vm.tags
 FROM
     worlds w
-    JOIN view_modules vm ON w.id = vm.module_world_id
+    JOIN view_modules vm ON w.id = vm.world_id
 ;
 
 --====================================

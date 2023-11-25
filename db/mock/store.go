@@ -1748,10 +1748,10 @@ func (mr *MockStoreMockRecorder) GetModuleAdmins(arg0, arg1 interface{}) *gomock
 }
 
 // GetModuleById mocks base method.
-func (m *MockStore) GetModuleById(arg0 context.Context, arg1 int32) (db.Module, error) {
+func (m *MockStore) GetModuleById(arg0 context.Context, arg1 int32) (db.ViewModule, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetModuleById", arg0, arg1)
-	ret0, _ := ret[0].(db.Module)
+	ret0, _ := ret[0].(db.ViewModule)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1808,10 +1808,10 @@ func (mr *MockStoreMockRecorder) GetModuleTypeTagsAvailable(arg0, arg1 interface
 }
 
 // GetModulesByIDs mocks base method.
-func (m *MockStore) GetModulesByIDs(arg0 context.Context, arg1 []int32) ([]db.Module, error) {
+func (m *MockStore) GetModulesByIDs(arg0 context.Context, arg1 []int32) ([]db.ViewModule, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetModulesByIDs", arg0, arg1)
-	ret0, _ := ret[0].([]db.Module)
+	ret0, _ := ret[0].([]db.ViewModule)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

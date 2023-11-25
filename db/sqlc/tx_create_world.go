@@ -179,10 +179,10 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 				MenuID:           menu.ID,
 			},
 			Module: &ViewModule{
-				ModuleID:      module.ID,
-				ModuleType:    ModuleTypeWorld,
-				ModuleWorldID: sql.NullInt32{Int32: world.ID, Valid: true},
-				MenuID:        menu.ID,
+				ID:         module.ID,
+				ModuleType: ModuleTypeWorld,
+				WorldID:    sql.NullInt32{Int32: world.ID, Valid: true},
+				MenuID:     menu.ID,
 			},
 		}
 
