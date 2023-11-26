@@ -13,7 +13,7 @@ RETURNING *;
 SELECT * FROM users WHERE id = ANY(@user_ids::int[]);
 
 -- name: GetUserById :one
-SELECT * FROM view_users WHERE id = $1 LIMIT 1;
+SELECT * FROM users WHERE id = $1 LIMIT 1;
 
 -- name: GetUserByUsername :one
 SELECT * FROM view_users WHERE username = $1 LIMIT 1;

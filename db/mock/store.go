@@ -1958,10 +1958,10 @@ func (mr *MockStoreMockRecorder) GetUserByEmail(arg0, arg1 interface{}) *gomock.
 }
 
 // GetUserById mocks base method.
-func (m *MockStore) GetUserById(arg0 context.Context, arg1 int32) (db.ViewUser, error) {
+func (m *MockStore) GetUserById(arg0 context.Context, arg1 int32) (db.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserById", arg0, arg1)
-	ret0, _ := ret[0].(db.ViewUser)
+	ret0, _ := ret[0].(db.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

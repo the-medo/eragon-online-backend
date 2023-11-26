@@ -141,7 +141,7 @@ type Querier interface {
 	GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdParams) ([]ViewPost, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUserByEmail(ctx context.Context, email string) (ViewUser, error)
-	GetUserById(ctx context.Context, id int32) (ViewUser, error)
+	GetUserById(ctx context.Context, id int32) (User, error)
 	GetUserByUsername(ctx context.Context, username string) (ViewUser, error)
 	GetUserModules(ctx context.Context, userID int32) ([]GetUserModulesRow, error)
 	GetUserPasswordReset(ctx context.Context, code string) (UserPasswordReset, error)

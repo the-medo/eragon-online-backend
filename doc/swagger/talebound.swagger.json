@@ -3679,39 +3679,6 @@
         ]
       }
     },
-    "/users/id/{userId}": {
-      "get": {
-        "summary": "Get user",
-        "description": "returns information about one user",
-        "operationId": "Users_GetUserById",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbViewUser"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Users"
-        ]
-      }
-    },
     "/users/roles": {
       "get": {
         "summary": "Get user roles (admin, moderator, etc.)",
@@ -3770,6 +3737,39 @@
             "schema": {
               "$ref": "#/definitions/pbAddRoleToUserRequest"
             }
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "summary": "Get user",
+        "description": "returns information about one user",
+        "operationId": "Users_GetUserById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUser"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "tags": [
@@ -5501,7 +5501,7 @@
     "pbModuleAdmin": {
       "type": "object",
       "properties": {
-        "worldId": {
+        "moduleId": {
           "type": "integer",
           "format": "int32"
         },
@@ -5510,7 +5510,7 @@
           "format": "int32"
         },
         "user": {
-          "$ref": "#/definitions/pbViewUser"
+          "$ref": "#/definitions/pbUser"
         },
         "createdAt": {
           "type": "string",
@@ -6496,50 +6496,6 @@
         "count": {
           "type": "integer",
           "format": "int32"
-        }
-      }
-    },
-    "pbViewUser": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "username": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "imgId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "passwordChangedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "isEmailVerified": {
-          "type": "boolean"
-        },
-        "avatarImageUrl": {
-          "type": "string"
-        },
-        "avatarImageGuid": {
-          "type": "string"
-        },
-        "introductionPostId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "introductionPostDeletedAt": {
-          "type": "string",
-          "format": "date-time"
         }
       }
     },

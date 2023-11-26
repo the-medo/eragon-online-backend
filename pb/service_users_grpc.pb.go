@@ -46,7 +46,7 @@ type UsersClient interface {
 	AddRoleToUser(ctx context.Context, in *AddRoleToUserRequest, opts ...grpc.CallOption) (*AddRoleToUserResponse, error)
 	RemoveRoleFromUser(ctx context.Context, in *RemoveRoleFromUserRequest, opts ...grpc.CallOption) (*RemoveRoleFromUserResponse, error)
 	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
-	GetUserById(ctx context.Context, in *GetUserByIdRequest, opts ...grpc.CallOption) (*ViewUser, error)
+	GetUserById(ctx context.Context, in *GetUserByIdRequest, opts ...grpc.CallOption) (*User, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*Post, error)
@@ -104,8 +104,8 @@ func (c *usersClient) GetUsers(ctx context.Context, in *GetUsersRequest, opts ..
 	return out, nil
 }
 
-func (c *usersClient) GetUserById(ctx context.Context, in *GetUserByIdRequest, opts ...grpc.CallOption) (*ViewUser, error) {
-	out := new(ViewUser)
+func (c *usersClient) GetUserById(ctx context.Context, in *GetUserByIdRequest, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
 	err := c.cc.Invoke(ctx, Users_GetUserById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -221,7 +221,7 @@ type UsersServer interface {
 	AddRoleToUser(context.Context, *AddRoleToUserRequest) (*AddRoleToUserResponse, error)
 	RemoveRoleFromUser(context.Context, *RemoveRoleFromUserRequest) (*RemoveRoleFromUserResponse, error)
 	GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error)
-	GetUserById(context.Context, *GetUserByIdRequest) (*ViewUser, error)
+	GetUserById(context.Context, *GetUserByIdRequest) (*User, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*Post, error)
@@ -252,7 +252,7 @@ func (UnimplementedUsersServer) RemoveRoleFromUser(context.Context, *RemoveRoleF
 func (UnimplementedUsersServer) GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
 }
-func (UnimplementedUsersServer) GetUserById(context.Context, *GetUserByIdRequest) (*ViewUser, error) {
+func (UnimplementedUsersServer) GetUserById(context.Context, *GetUserByIdRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserById not implemented")
 }
 func (UnimplementedUsersServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {

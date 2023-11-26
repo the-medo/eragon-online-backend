@@ -135,12 +135,12 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (ViewUser, e
 }
 
 const getUserById = `-- name: GetUserById :one
-SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id, avatar_image_id, avatar_image_url, avatar_image_guid, introduction_post_deleted_at FROM view_users WHERE id = $1 LIMIT 1
+SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id FROM users WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) GetUserById(ctx context.Context, id int32) (ViewUser, error) {
+func (q *Queries) GetUserById(ctx context.Context, id int32) (User, error) {
 	row := q.db.QueryRowContext(ctx, getUserById, id)
-	var i ViewUser
+	var i User
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
@@ -151,10 +151,6 @@ func (q *Queries) GetUserById(ctx context.Context, id int32) (ViewUser, error) {
 		&i.CreatedAt,
 		&i.IsEmailVerified,
 		&i.IntroductionPostID,
-		&i.AvatarImageID,
-		&i.AvatarImageUrl,
-		&i.AvatarImageGuid,
-		&i.IntroductionPostDeletedAt,
 	)
 	return i, err
 }

@@ -47,9 +47,9 @@ message ViewModule {
 }
 
 message ModuleAdmin {
-  int32 worldId = 1;
+  int32 moduleId = 1;
   int32 userId = 2;
-  ViewUser user = 3;
+  User user = 3;
   google.protobuf.Timestamp createdAt = 4;
   bool superAdmin = 5;
   int32 approved = 6;

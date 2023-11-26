@@ -6,11 +6,11 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func ConvertModuleAdmin(dbModuleAdmin db.ModuleAdmin, dbViewUser db.ViewUser) *pb.ModuleAdmin {
+func ConvertModuleAdmin(dbModuleAdmin db.ModuleAdmin, dbUser db.User) *pb.ModuleAdmin {
 	pbModuleAdmin := &pb.ModuleAdmin{
-		WorldId:            dbModuleAdmin.ModuleID,
+		ModuleId:           dbModuleAdmin.ModuleID,
 		UserId:             dbModuleAdmin.UserID,
-		User:               ConvertViewUser(dbViewUser),
+		User:               ConvertUser(dbUser),
 		CreatedAt:          timestamppb.New(dbModuleAdmin.CreatedAt),
 		SuperAdmin:         dbModuleAdmin.SuperAdmin,
 		Approved:           dbModuleAdmin.Approved,

@@ -7,7 +7,7 @@ import (
 )
 
 func ConvertModuleAdminRow(dbModuleAdmin db.GetModuleAdminsRow) *pb.ModuleAdmin {
-	pbViewUser := &pb.ViewUser{
+	pbUser := &pb.User{
 		Id:                dbModuleAdmin.ID,
 		Username:          dbModuleAdmin.Username,
 		Email:             dbModuleAdmin.Email,
@@ -17,30 +17,17 @@ func ConvertModuleAdminRow(dbModuleAdmin db.GetModuleAdminsRow) *pb.ModuleAdmin 
 	}
 
 	if dbModuleAdmin.ImgID.Valid == true {
-		pbViewUser.ImgId = &dbModuleAdmin.ImgID.Int32
-	}
-
-	if dbModuleAdmin.AvatarImageUrl.Valid == true {
-		pbViewUser.AvatarImageUrl = &dbModuleAdmin.AvatarImageUrl.String
-	}
-
-	if dbModuleAdmin.AvatarImageGuid.Valid == true {
-		avatarImageGuid := dbModuleAdmin.AvatarImageGuid.UUID.String()
-		pbViewUser.AvatarImageGuid = &avatarImageGuid
+		pbUser.ImgId = &dbModuleAdmin.ImgID.Int32
 	}
 
 	if dbModuleAdmin.IntroductionPostID.Valid == true {
-		pbViewUser.IntroductionPostId = &dbModuleAdmin.IntroductionPostID.Int32
-	}
-
-	if dbModuleAdmin.IntroductionPostDeletedAt.Valid == true {
-		pbViewUser.IntroductionPostDeletedAt = timestamppb.New(dbModuleAdmin.IntroductionPostDeletedAt.Time)
+		pbUser.IntroductionPostId = &dbModuleAdmin.IntroductionPostID.Int32
 	}
 
 	pbModuleAdmin := &pb.ModuleAdmin{
-		WorldId:            dbModuleAdmin.ModuleID,
+		ModuleId:           dbModuleAdmin.ModuleID,
 		UserId:             dbModuleAdmin.ID,
-		User:               pbViewUser,
+		User:               pbUser,
 		CreatedAt:          timestamppb.New(dbModuleAdmin.ModuleAdminCreatedAt),
 		SuperAdmin:         dbModuleAdmin.ModuleAdminSuperAdmin,
 		Approved:           dbModuleAdmin.ModuleAdminApproved,

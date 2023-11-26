@@ -66,9 +66,9 @@ service Users {
     };
   };
 
-  rpc GetUserById(GetUserByIdRequest) returns (ViewUser) {
+  rpc GetUserById(GetUserByIdRequest) returns (User) {
     option (google.api.http) = {
-      get: "/users/id/{userId}"
+      get: "/users/{userId}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "returns information about one user";

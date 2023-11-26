@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServiceUsers) GetUserById(ctx context.Context, req *pb.GetUserByIdRequest) (*pb.ViewUser, error) {
+func (server *ServiceUsers) GetUserById(ctx context.Context, req *pb.GetUserByIdRequest) (*pb.User, error) {
 
 	violations := validateGetUserById(req)
 	if violations != nil {
@@ -23,7 +23,7 @@ func (server *ServiceUsers) GetUserById(ctx context.Context, req *pb.GetUserById
 		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
 	}
 
-	return converters.ConvertViewUser(user), nil
+	return converters.ConvertUser(user), nil
 }
 
 func validateGetUserById(req *pb.GetUserByIdRequest) (violations []*errdetails.BadRequest_FieldViolation) {
