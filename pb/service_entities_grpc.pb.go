@@ -20,6 +20,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Entities_GetEntityById_FullMethodName            = "/pb.Entities/GetEntityById"
 	Entities_CreateEntityGroup_FullMethodName        = "/pb.Entities/CreateEntityGroup"
 	Entities_UpdateEntityGroup_FullMethodName        = "/pb.Entities/UpdateEntityGroup"
 	Entities_DeleteEntityGroup_FullMethodName        = "/pb.Entities/DeleteEntityGroup"
@@ -32,6 +33,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EntitiesClient interface {
+	GetEntityById(ctx context.Context, in *GetEntityByIdRequest, opts ...grpc.CallOption) (*ViewEntity, error)
 	CreateEntityGroup(ctx context.Context, in *CreateEntityGroupRequest, opts ...grpc.CallOption) (*EntityGroup, error)
 	UpdateEntityGroup(ctx context.Context, in *UpdateEntityGroupRequest, opts ...grpc.CallOption) (*EntityGroup, error)
 	DeleteEntityGroup(ctx context.Context, in *DeleteEntityGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -46,6 +48,15 @@ type entitiesClient struct {
 
 func NewEntitiesClient(cc grpc.ClientConnInterface) EntitiesClient {
 	return &entitiesClient{cc}
+}
+
+func (c *entitiesClient) GetEntityById(ctx context.Context, in *GetEntityByIdRequest, opts ...grpc.CallOption) (*ViewEntity, error) {
+	out := new(ViewEntity)
+	err := c.cc.Invoke(ctx, Entities_GetEntityById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *entitiesClient) CreateEntityGroup(ctx context.Context, in *CreateEntityGroupRequest, opts ...grpc.CallOption) (*EntityGroup, error) {
@@ -106,6 +117,7 @@ func (c *entitiesClient) DeleteEntityGroupContent(ctx context.Context, in *Delet
 // All implementations must embed UnimplementedEntitiesServer
 // for forward compatibility
 type EntitiesServer interface {
+	GetEntityById(context.Context, *GetEntityByIdRequest) (*ViewEntity, error)
 	CreateEntityGroup(context.Context, *CreateEntityGroupRequest) (*EntityGroup, error)
 	UpdateEntityGroup(context.Context, *UpdateEntityGroupRequest) (*EntityGroup, error)
 	DeleteEntityGroup(context.Context, *DeleteEntityGroupRequest) (*emptypb.Empty, error)
@@ -119,6 +131,9 @@ type EntitiesServer interface {
 type UnimplementedEntitiesServer struct {
 }
 
+func (UnimplementedEntitiesServer) GetEntityById(context.Context, *GetEntityByIdRequest) (*ViewEntity, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEntityById not implemented")
+}
 func (UnimplementedEntitiesServer) CreateEntityGroup(context.Context, *CreateEntityGroupRequest) (*EntityGroup, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateEntityGroup not implemented")
 }
@@ -148,6 +163,24 @@ type UnsafeEntitiesServer interface {
 
 func RegisterEntitiesServer(s grpc.ServiceRegistrar, srv EntitiesServer) {
 	s.RegisterService(&Entities_ServiceDesc, srv)
+}
+
+func _Entities_GetEntityById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEntityByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EntitiesServer).GetEntityById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Entities_GetEntityById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EntitiesServer).GetEntityById(ctx, req.(*GetEntityByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Entities_CreateEntityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -265,6 +298,10 @@ var Entities_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.Entities",
 	HandlerType: (*EntitiesServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetEntityById",
+			Handler:    _Entities_GetEntityById_Handler,
+		},
 		{
 			MethodName: "CreateEntityGroup",
 			Handler:    _Entities_CreateEntityGroup_Handler,

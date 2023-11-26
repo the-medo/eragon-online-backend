@@ -5,12 +5,12 @@ import (
 	"github.com/the-medo/talebound-backend/pb"
 )
 
-func ConvertMenuItemPost(menuItemPost db.MenuItemPost, post db.ViewPost) *pb.MenuItemPost {
+func ConvertMenuItemPost(menuItemPost db.MenuItemPost, post db.Post) *pb.MenuItemPost {
 	pbMenuItemPost := &pb.MenuItemPost{
 		MenuItemId: menuItemPost.MenuItemID.Int32,
 		PostId:     menuItemPost.PostID,
 		Position:   menuItemPost.Position,
-		Post:       ConvertViewPost(post),
+		Post:       ConvertPost(post),
 	}
 
 	return pbMenuItemPost

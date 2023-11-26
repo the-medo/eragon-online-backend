@@ -86,12 +86,12 @@ func (q *Queries) DeleteWorld(ctx context.Context, worldID int32) error {
 }
 
 const getWorldByID = `-- name: GetWorldByID :one
-SELECT id, name, based_on, public, created_at, short_description, description_post_id, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM view_worlds WHERE id = $1 LIMIT 1
+SELECT id, name, based_on, public, created_at, short_description, description_post_id FROM worlds WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error) {
+func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (World, error) {
 	row := q.db.QueryRowContext(ctx, getWorldByID, worldID)
-	var i ViewWorld
+	var i World
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
@@ -100,12 +100,6 @@ func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, e
 		&i.CreatedAt,
 		&i.ShortDescription,
 		&i.DescriptionPostID,
-		&i.ModuleID,
-		&i.MenuID,
-		&i.HeaderImgID,
-		&i.ThumbnailImgID,
-		&i.AvatarImgID,
-		pq.Array(&i.Tags),
 	)
 	return i, err
 }

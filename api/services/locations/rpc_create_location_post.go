@@ -12,7 +12,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *ServiceLocations) CreateLocationPost(ctx context.Context, request *pb.CreateLocationPostRequest) (*pb.ViewLocation, error) {
+func (server *ServiceLocations) CreateLocationPost(ctx context.Context, request *pb.CreateLocationPostRequest) (*pb.Location, error) {
 
 	violations := validateCreateLocationPost(request)
 	if violations != nil {
@@ -23,14 +23,14 @@ func (server *ServiceLocations) CreateLocationPost(ctx context.Context, request 
 		NeedsEntityPermission: &[]db.EntityType{db.EntityTypeLocation, db.EntityTypePost},
 	})
 
-	location, err := server.Store.GetLocationByID(ctx, request.GetLocationId())
+	viewLocation, err := server.Store.GetViewLocationById(ctx, request.GetLocationId())
 	if err != nil {
 		return nil, err
 	}
 
 	newPost, err := server.Store.CreatePost(ctx, db.CreatePostParams{
 		UserID:    authPayload.UserId,
-		Title:     location.Name,
+		Title:     viewLocation.Name,
 		IsDraft:   false,
 		IsPrivate: false,
 		Content:   "",
@@ -39,7 +39,7 @@ func (server *ServiceLocations) CreateLocationPost(ctx context.Context, request 
 		return nil, err
 	}
 
-	_, err = server.Store.UpdateLocation(ctx, db.UpdateLocationParams{
+	location, err := server.Store.UpdateLocation(ctx, db.UpdateLocationParams{
 		ID: request.GetLocationId(),
 		PostID: sql.NullInt32{
 			Int32: newPost.ID,
@@ -52,7 +52,7 @@ func (server *ServiceLocations) CreateLocationPost(ctx context.Context, request 
 
 	_, err = server.Store.CreateEntity(ctx, db.CreateEntityParams{
 		Type:     db.EntityTypePost,
-		ModuleID: location.ModuleID,
+		ModuleID: viewLocation.ModuleID,
 		PostID: sql.NullInt32{
 			Int32: newPost.ID,
 			Valid: true,
@@ -62,9 +62,8 @@ func (server *ServiceLocations) CreateLocationPost(ctx context.Context, request 
 		return nil, err
 	}
 
-	rsp := converters.ConvertViewLocation(location)
+	rsp := converters.ConvertLocation(location)
 	rsp.PostId = &newPost.ID
-	rsp.PostTitle = &newPost.Title
 
 	return rsp, nil
 }

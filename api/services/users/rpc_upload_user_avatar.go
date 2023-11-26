@@ -61,7 +61,7 @@ func (server *ServiceUsers) UploadUserAvatar(ctx context.Context, request *pb.Up
 
 	return &pb.UploadUserAvatarResponse{
 		UserId: request.GetUserId(),
-		Image:  converters.ConvertImage(dbImg),
+		Image:  converters.ConvertImage(*dbImg),
 	}, nil
 }
 

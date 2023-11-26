@@ -222,12 +222,12 @@ func (q *Queries) GetEntitiesByIDs(ctx context.Context, entityIds []int32) ([]Vi
 }
 
 const getEntityByID = `-- name: GetEntityByID :one
-SELECT id, module_id, type, post_id, map_id, location_id, image_id FROM entities WHERE id = $1
+SELECT id, module_id, type, post_id, map_id, location_id, image_id, module_type, module_type_id, tags FROM view_entities WHERE id = $1
 `
 
-func (q *Queries) GetEntityByID(ctx context.Context, id int32) (Entity, error) {
+func (q *Queries) GetEntityByID(ctx context.Context, id int32) (ViewEntity, error) {
 	row := q.db.QueryRowContext(ctx, getEntityByID, id)
-	var i Entity
+	var i ViewEntity
 	err := row.Scan(
 		&i.ID,
 		&i.ModuleID,
@@ -236,6 +236,9 @@ func (q *Queries) GetEntityByID(ctx context.Context, id int32) (Entity, error) {
 		&i.MapID,
 		&i.LocationID,
 		&i.ImageID,
+		&i.ModuleType,
+		&i.ModuleTypeID,
+		pq.Array(&i.Tags),
 	)
 	return i, err
 }

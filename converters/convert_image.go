@@ -6,7 +6,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func ConvertImage(dbImage *db.Image) *pb.Image {
+func ConvertImage(dbImage db.Image) *pb.Image {
 	pbImage := &pb.Image{
 		Id:          dbImage.ID,
 		ImgGuid:     dbImage.ImgGuid.UUID.String(),

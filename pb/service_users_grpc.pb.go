@@ -49,7 +49,7 @@ type UsersClient interface {
 	GetUserById(ctx context.Context, in *GetUserByIdRequest, opts ...grpc.CallOption) (*ViewUser, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
-	UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*ViewPost, error)
+	UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*Post, error)
 	CreateOrUpdateEvaluationVote(ctx context.Context, in *CreateOrUpdateEvaluationVoteRequest, opts ...grpc.CallOption) (*CreateOrUpdateEvaluationVoteResponse, error)
 	GetEvaluationVotesByUserId(ctx context.Context, in *GetEvaluationVotesByUserIdRequest, opts ...grpc.CallOption) (*GetEvaluationVotesByUserIdResponse, error)
 	GetEvaluationVotesByUserIdAndVoter(ctx context.Context, in *GetEvaluationVotesByUserIdAndVoterRequest, opts ...grpc.CallOption) (*GetEvaluationVotesByUserIdAndVoterResponse, error)
@@ -131,8 +131,8 @@ func (c *usersClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opt
 	return out, nil
 }
 
-func (c *usersClient) UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*ViewPost, error) {
-	out := new(ViewPost)
+func (c *usersClient) UpdateUserIntroduction(ctx context.Context, in *UpdateUserIntroductionRequest, opts ...grpc.CallOption) (*Post, error) {
+	out := new(Post)
 	err := c.cc.Invoke(ctx, Users_UpdateUserIntroduction_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -224,7 +224,7 @@ type UsersServer interface {
 	GetUserById(context.Context, *GetUserByIdRequest) (*ViewUser, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
-	UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*ViewPost, error)
+	UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*Post, error)
 	CreateOrUpdateEvaluationVote(context.Context, *CreateOrUpdateEvaluationVoteRequest) (*CreateOrUpdateEvaluationVoteResponse, error)
 	GetEvaluationVotesByUserId(context.Context, *GetEvaluationVotesByUserIdRequest) (*GetEvaluationVotesByUserIdResponse, error)
 	GetEvaluationVotesByUserIdAndVoter(context.Context, *GetEvaluationVotesByUserIdAndVoterRequest) (*GetEvaluationVotesByUserIdAndVoterResponse, error)
@@ -261,7 +261,7 @@ func (UnimplementedUsersServer) CreateUser(context.Context, *CreateUserRequest) 
 func (UnimplementedUsersServer) UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedUsersServer) UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*ViewPost, error) {
+func (UnimplementedUsersServer) UpdateUserIntroduction(context.Context, *UpdateUserIntroductionRequest) (*Post, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserIntroduction not implemented")
 }
 func (UnimplementedUsersServer) CreateOrUpdateEvaluationVote(context.Context, *CreateOrUpdateEvaluationVoteRequest) (*CreateOrUpdateEvaluationVoteResponse, error) {

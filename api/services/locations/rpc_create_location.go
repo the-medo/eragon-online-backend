@@ -12,7 +12,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.CreateLocationRequest) (*pb.ViewLocation, error) {
+func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.CreateLocationRequest) (*pb.Location, error) {
 	violations := validateCreateLocation(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -38,7 +38,7 @@ func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.
 		return nil, err
 	}
 
-	entity, err := server.Store.CreateEntity(ctx, db.CreateEntityParams{
+	_, err = server.Store.CreateEntity(ctx, db.CreateEntityParams{
 		Type:     db.EntityTypeLocation,
 		ModuleID: request.GetModuleId(),
 		LocationID: sql.NullInt32{
@@ -50,12 +50,7 @@ func (server *ServiceLocations) CreateLocation(ctx context.Context, request *pb.
 		return nil, err
 	}
 
-	viewLocation, err := server.Store.GetLocationByID(ctx, entity.LocationID.Int32)
-	if err != nil {
-		return nil, err
-	}
-
-	rsp := converters.ConvertViewLocation(viewLocation)
+	rsp := converters.ConvertLocation(location)
 
 	return rsp, nil
 }

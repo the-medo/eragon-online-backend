@@ -2,10 +2,12 @@ syntax = "proto3";
 
 package pb;
 
-//import "services/entities/entity.proto";
-
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
+
+message GetEntityByIdRequest {
+  int32 entityId = 1;
+}
 
 message CreateEntityGroupRequest {
   int32 parentEntityGroupId = 1;

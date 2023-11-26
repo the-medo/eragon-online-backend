@@ -13,6 +13,17 @@ import "google/protobuf/empty.proto";
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 service Maps {
+
+  rpc GetMapById(GetMapByIdRequest) returns (Map) {
+    option (google.api.http) = {
+      get: "/maps/{mapId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get map by id";
+      summary: "Get map by id";
+    };
+  };
+
   rpc GetMaps(GetMapsRequest) returns (GetMapsResponse) {
     option (google.api.http) = {
       get: "/maps"
@@ -34,7 +45,7 @@ service Maps {
     };
   };
 
-  rpc UpdateMap(UpdateMapRequest) returns (ViewMap) {
+  rpc UpdateMap(UpdateMapRequest) returns (Map) {
     option (google.api.http) = {
       patch: "/maps/{mapId}"
       body: "*"

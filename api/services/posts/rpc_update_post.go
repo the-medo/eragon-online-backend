@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServicePosts) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest) (*pb.ViewPost, error) {
+func (server *ServicePosts) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest) (*pb.Post, error) {
 	violations := validateUpdatePostRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -65,12 +65,7 @@ func (server *ServicePosts) UpdatePost(ctx context.Context, req *pb.UpdatePostRe
 		return nil, status.Errorf(codes.Internal, "failed to update post: %v", err)
 	}
 
-	viewPost, err := server.Store.GetPostById(ctx, post.ID)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
-	}
-
-	rsp := converters.ConvertViewPost(viewPost)
+	rsp := converters.ConvertPost(post)
 
 	return rsp, nil
 }

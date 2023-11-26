@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServiceWorlds) UpdateWorld(ctx context.Context, req *pb.UpdateWorldRequest) (*pb.ViewWorld, error) {
+func (server *ServiceWorlds) UpdateWorld(ctx context.Context, req *pb.UpdateWorldRequest) (*pb.World, error) {
 	violations := validateUpdateWorldRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -69,7 +69,7 @@ func (server *ServiceWorlds) UpdateWorld(ctx context.Context, req *pb.UpdateWorl
 		return nil, status.Errorf(codes.Internal, "failed to retrieve updated world: %v", err)
 	}
 
-	rsp := converters.ConvertViewWorld(world)
+	rsp := converters.ConvertWorld(world)
 
 	return rsp, nil
 }

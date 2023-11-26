@@ -77,7 +77,7 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 		return nil, err
 	}
 
-	viewMap, err := server.Store.GetMapByID(ctx, newMap.ID)
+	m, err := server.Store.GetMapById(ctx, newMap.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 	}
 
 	rsp := &pb.CreateMapResponse{
-		Map:   converters.ConvertViewMap(viewMap),
+		Map:   converters.ConvertMap(m),
 		Layer: converters.ConvertViewMapLayer(viewMapLayer[0]),
 	}
 

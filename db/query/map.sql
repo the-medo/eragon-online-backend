@@ -15,8 +15,8 @@ WHERE
 -- name: GetMapsByIDs :many
 SELECT * FROM maps WHERE id = ANY(@map_ids::int[]);
 
--- name: GetMapByID :one
-SELECT * FROM view_maps WHERE id = sqlc.arg(id);
+-- name: GetMapById :one
+SELECT * FROM maps WHERE id = sqlc.arg(id);
 
 -- name: UpdateMap :one
 UPDATE maps

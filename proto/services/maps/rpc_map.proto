@@ -8,6 +8,10 @@ import "services/modules/module.proto";
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 
+message GetMapByIdRequest {
+  int32 mapId = 1;
+}
+
 message GetMapsRequest {
   ModuleDefinition module = 1;
 }
@@ -26,7 +30,7 @@ message CreateMapRequest {
 }
 
 message CreateMapResponse {
-  ViewMap map = 1;
+  Map map = 1;
   ViewMapLayer layer = 2;
 }
 

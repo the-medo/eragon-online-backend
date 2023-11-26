@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServicePosts) GetPostById(ctx context.Context, req *pb.GetPostByIdRequest) (*pb.ViewPost, error) {
+func (server *ServicePosts) GetPostById(ctx context.Context, req *pb.GetPostByIdRequest) (*pb.Post, error) {
 	violations := validateGetPostByIdRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -22,7 +22,7 @@ func (server *ServicePosts) GetPostById(ctx context.Context, req *pb.GetPostById
 		return nil, status.Errorf(codes.Internal, "failed to get post: %v", err)
 	}
 
-	rsp := converters.ConvertViewPost(post)
+	rsp := converters.ConvertPost(post)
 
 	return rsp, nil
 }

@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Images_GetImageById_FullMethodName       = "/pb.Images/GetImageById"
 	Images_GetImages_FullMethodName          = "/pb.Images/GetImages"
 	Images_UploadDefaultImage_FullMethodName = "/pb.Images/UploadDefaultImage"
 )
@@ -27,6 +28,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ImagesClient interface {
+	GetImageById(ctx context.Context, in *GetImageByIdRequest, opts ...grpc.CallOption) (*Image, error)
 	GetImages(ctx context.Context, in *GetImagesRequest, opts ...grpc.CallOption) (*GetImagesResponse, error)
 	UploadDefaultImage(ctx context.Context, in *UploadImageRequest, opts ...grpc.CallOption) (*Image, error)
 }
@@ -37,6 +39,15 @@ type imagesClient struct {
 
 func NewImagesClient(cc grpc.ClientConnInterface) ImagesClient {
 	return &imagesClient{cc}
+}
+
+func (c *imagesClient) GetImageById(ctx context.Context, in *GetImageByIdRequest, opts ...grpc.CallOption) (*Image, error) {
+	out := new(Image)
+	err := c.cc.Invoke(ctx, Images_GetImageById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *imagesClient) GetImages(ctx context.Context, in *GetImagesRequest, opts ...grpc.CallOption) (*GetImagesResponse, error) {
@@ -61,6 +72,7 @@ func (c *imagesClient) UploadDefaultImage(ctx context.Context, in *UploadImageRe
 // All implementations must embed UnimplementedImagesServer
 // for forward compatibility
 type ImagesServer interface {
+	GetImageById(context.Context, *GetImageByIdRequest) (*Image, error)
 	GetImages(context.Context, *GetImagesRequest) (*GetImagesResponse, error)
 	UploadDefaultImage(context.Context, *UploadImageRequest) (*Image, error)
 	mustEmbedUnimplementedImagesServer()
@@ -70,6 +82,9 @@ type ImagesServer interface {
 type UnimplementedImagesServer struct {
 }
 
+func (UnimplementedImagesServer) GetImageById(context.Context, *GetImageByIdRequest) (*Image, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetImageById not implemented")
+}
 func (UnimplementedImagesServer) GetImages(context.Context, *GetImagesRequest) (*GetImagesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetImages not implemented")
 }
@@ -87,6 +102,24 @@ type UnsafeImagesServer interface {
 
 func RegisterImagesServer(s grpc.ServiceRegistrar, srv ImagesServer) {
 	s.RegisterService(&Images_ServiceDesc, srv)
+}
+
+func _Images_GetImageById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetImageByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImagesServer).GetImageById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Images_GetImageById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImagesServer).GetImageById(ctx, req.(*GetImageByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Images_GetImages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -132,6 +165,10 @@ var Images_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.Images",
 	HandlerType: (*ImagesServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetImageById",
+			Handler:    _Images_GetImageById_Handler,
+		},
 		{
 			MethodName: "GetImages",
 			Handler:    _Images_GetImages_Handler,

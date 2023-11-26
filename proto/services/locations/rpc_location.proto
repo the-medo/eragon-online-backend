@@ -7,6 +7,10 @@ import "services/modules/module.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
+message GetLocationByIdRequest {
+  int32 locationId = 1;
+}
+
 message GetLocationsRequest {
   ModuleDefinition module = 1;
 }

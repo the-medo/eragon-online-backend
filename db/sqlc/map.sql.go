@@ -297,13 +297,13 @@ func (q *Queries) GetMapAssignments(ctx context.Context, mapID sql.NullInt32) (G
 	return i, err
 }
 
-const getMapByID = `-- name: GetMapByID :one
-SELECT id, name, type, description, width, height, thumbnail_image_id, thumbnail_image_url, entity_id, module_id, module_type, module_type_id, tags FROM view_maps WHERE id = $1
+const getMapById = `-- name: GetMapById :one
+SELECT id, name, type, description, width, height, thumbnail_image_id FROM maps WHERE id = $1
 `
 
-func (q *Queries) GetMapByID(ctx context.Context, id int32) (ViewMap, error) {
-	row := q.db.QueryRowContext(ctx, getMapByID, id)
-	var i ViewMap
+func (q *Queries) GetMapById(ctx context.Context, id int32) (Map, error) {
+	row := q.db.QueryRowContext(ctx, getMapById, id)
+	var i Map
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
@@ -312,12 +312,6 @@ func (q *Queries) GetMapByID(ctx context.Context, id int32) (ViewMap, error) {
 		&i.Width,
 		&i.Height,
 		&i.ThumbnailImageID,
-		&i.ThumbnailImageUrl,
-		&i.EntityID,
-		&i.ModuleID,
-		&i.ModuleType,
-		&i.ModuleTypeID,
-		pq.Array(&i.Tags),
 	)
 	return i, err
 }

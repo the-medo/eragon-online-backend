@@ -51,7 +51,7 @@ VALUES (sqlc.arg(type), sqlc.arg(module_id), sqlc.narg(post_id), sqlc.narg(map_i
 RETURNING *;
 
 -- name: GetEntityByID :one
-SELECT * FROM entities WHERE id = sqlc.arg(id);
+SELECT * FROM view_entities WHERE id = sqlc.arg(id);
 
 -- name: UpdateEntity :one
 UPDATE entities

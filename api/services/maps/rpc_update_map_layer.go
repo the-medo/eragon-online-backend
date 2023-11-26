@@ -32,7 +32,7 @@ func (server *ServiceMaps) UpdateMapLayer(ctx context.Context, request *pb.Updat
 	if request.Name != nil || request.ImageId != nil || request.Enabled != nil || request.Sublayer != nil {
 
 		if request.ImageId != nil {
-			mapRow, err := server.Store.GetMapByID(ctx, request.GetMapId())
+			mapRow, err := server.Store.GetMapById(ctx, request.GetMapId())
 			if err != nil {
 				return nil, err
 			}

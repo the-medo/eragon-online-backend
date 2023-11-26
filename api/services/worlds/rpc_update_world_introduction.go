@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServiceWorlds) UpdateWorldIntroduction(ctx context.Context, req *pb.UpdateWorldIntroductionRequest) (*pb.ViewPost, error) {
+func (server *ServiceWorlds) UpdateWorldIntroduction(ctx context.Context, req *pb.UpdateWorldIntroductionRequest) (*pb.Post, error) {
 	violations := validateUpdateWorldIntroductionRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -72,12 +72,7 @@ func (server *ServiceWorlds) UpdateWorldIntroduction(ctx context.Context, req *p
 			return nil, status.Errorf(codes.Internal, "failed to create entity post: %s", err)
 		}
 
-		viewPost, err := server.Store.GetPostById(ctx, post.ID)
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
-		}
-
-		return converters.ConvertViewPost(viewPost), nil
+		return converters.ConvertPost(post), nil
 	} else {
 		//update existing post
 		arg := db.UpdatePostParams{
@@ -96,12 +91,7 @@ func (server *ServiceWorlds) UpdateWorldIntroduction(ctx context.Context, req *p
 			return nil, status.Errorf(codes.Internal, "failed to update post: %s", err)
 		}
 
-		viewPost, err := server.Store.GetPostById(ctx, post.ID)
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
-		}
-
-		return converters.ConvertViewPost(viewPost), nil
+		return converters.ConvertPost(post), nil
 	}
 }
 

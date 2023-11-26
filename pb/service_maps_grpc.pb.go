@@ -20,6 +20,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Maps_GetMapById_FullMethodName       = "/pb.Maps/GetMapById"
 	Maps_GetMaps_FullMethodName          = "/pb.Maps/GetMaps"
 	Maps_CreateMap_FullMethodName        = "/pb.Maps/CreateMap"
 	Maps_UpdateMap_FullMethodName        = "/pb.Maps/UpdateMap"
@@ -42,9 +43,10 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MapsClient interface {
+	GetMapById(ctx context.Context, in *GetMapByIdRequest, opts ...grpc.CallOption) (*Map, error)
 	GetMaps(ctx context.Context, in *GetMapsRequest, opts ...grpc.CallOption) (*GetMapsResponse, error)
 	CreateMap(ctx context.Context, in *CreateMapRequest, opts ...grpc.CallOption) (*CreateMapResponse, error)
-	UpdateMap(ctx context.Context, in *UpdateMapRequest, opts ...grpc.CallOption) (*ViewMap, error)
+	UpdateMap(ctx context.Context, in *UpdateMapRequest, opts ...grpc.CallOption) (*Map, error)
 	DeleteMap(ctx context.Context, in *DeleteMapRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetMapLayers(ctx context.Context, in *GetMapLayersRequest, opts ...grpc.CallOption) (*GetMapLayersResponse, error)
 	CreateMapLayer(ctx context.Context, in *CreateMapLayerRequest, opts ...grpc.CallOption) (*ViewMapLayer, error)
@@ -68,6 +70,15 @@ func NewMapsClient(cc grpc.ClientConnInterface) MapsClient {
 	return &mapsClient{cc}
 }
 
+func (c *mapsClient) GetMapById(ctx context.Context, in *GetMapByIdRequest, opts ...grpc.CallOption) (*Map, error) {
+	out := new(Map)
+	err := c.cc.Invoke(ctx, Maps_GetMapById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *mapsClient) GetMaps(ctx context.Context, in *GetMapsRequest, opts ...grpc.CallOption) (*GetMapsResponse, error) {
 	out := new(GetMapsResponse)
 	err := c.cc.Invoke(ctx, Maps_GetMaps_FullMethodName, in, out, opts...)
@@ -86,8 +97,8 @@ func (c *mapsClient) CreateMap(ctx context.Context, in *CreateMapRequest, opts .
 	return out, nil
 }
 
-func (c *mapsClient) UpdateMap(ctx context.Context, in *UpdateMapRequest, opts ...grpc.CallOption) (*ViewMap, error) {
-	out := new(ViewMap)
+func (c *mapsClient) UpdateMap(ctx context.Context, in *UpdateMapRequest, opts ...grpc.CallOption) (*Map, error) {
+	out := new(Map)
 	err := c.cc.Invoke(ctx, Maps_UpdateMap_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -216,9 +227,10 @@ func (c *mapsClient) UpdateMapPin(ctx context.Context, in *UpdateMapPinRequest, 
 // All implementations must embed UnimplementedMapsServer
 // for forward compatibility
 type MapsServer interface {
+	GetMapById(context.Context, *GetMapByIdRequest) (*Map, error)
 	GetMaps(context.Context, *GetMapsRequest) (*GetMapsResponse, error)
 	CreateMap(context.Context, *CreateMapRequest) (*CreateMapResponse, error)
-	UpdateMap(context.Context, *UpdateMapRequest) (*ViewMap, error)
+	UpdateMap(context.Context, *UpdateMapRequest) (*Map, error)
 	DeleteMap(context.Context, *DeleteMapRequest) (*emptypb.Empty, error)
 	GetMapLayers(context.Context, *GetMapLayersRequest) (*GetMapLayersResponse, error)
 	CreateMapLayer(context.Context, *CreateMapLayerRequest) (*ViewMapLayer, error)
@@ -239,13 +251,16 @@ type MapsServer interface {
 type UnimplementedMapsServer struct {
 }
 
+func (UnimplementedMapsServer) GetMapById(context.Context, *GetMapByIdRequest) (*Map, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMapById not implemented")
+}
 func (UnimplementedMapsServer) GetMaps(context.Context, *GetMapsRequest) (*GetMapsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMaps not implemented")
 }
 func (UnimplementedMapsServer) CreateMap(context.Context, *CreateMapRequest) (*CreateMapResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMap not implemented")
 }
-func (UnimplementedMapsServer) UpdateMap(context.Context, *UpdateMapRequest) (*ViewMap, error) {
+func (UnimplementedMapsServer) UpdateMap(context.Context, *UpdateMapRequest) (*Map, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMap not implemented")
 }
 func (UnimplementedMapsServer) DeleteMap(context.Context, *DeleteMapRequest) (*emptypb.Empty, error) {
@@ -298,6 +313,24 @@ type UnsafeMapsServer interface {
 
 func RegisterMapsServer(s grpc.ServiceRegistrar, srv MapsServer) {
 	s.RegisterService(&Maps_ServiceDesc, srv)
+}
+
+func _Maps_GetMapById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMapByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MapsServer).GetMapById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Maps_GetMapById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MapsServer).GetMapById(ctx, req.(*GetMapByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Maps_GetMaps_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -595,6 +628,10 @@ var Maps_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.Maps",
 	HandlerType: (*MapsServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetMapById",
+			Handler:    _Maps_GetMapById_Handler,
+		},
 		{
 			MethodName: "GetMaps",
 			Handler:    _Maps_GetMaps_Handler,

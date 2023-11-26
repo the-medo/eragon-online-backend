@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	Modules_GetModuleId_FullMethodName       = "/pb.Modules/GetModuleId"
+	Modules_GetModuleById_FullMethodName     = "/pb.Modules/GetModuleById"
 	Modules_GetModuleAdmins_FullMethodName   = "/pb.Modules/GetModuleAdmins"
 	Modules_CreateModuleAdmin_FullMethodName = "/pb.Modules/CreateModuleAdmin"
 	Modules_UpdateModuleAdmin_FullMethodName = "/pb.Modules/UpdateModuleAdmin"
@@ -32,6 +33,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ModulesClient interface {
 	GetModuleId(ctx context.Context, in *GetModuleIdRequest, opts ...grpc.CallOption) (*GetModuleIdResponse, error)
+	GetModuleById(ctx context.Context, in *GetModuleByIdRequest, opts ...grpc.CallOption) (*ViewModule, error)
 	GetModuleAdmins(ctx context.Context, in *GetModuleAdminsRequest, opts ...grpc.CallOption) (*GetModuleAdminsResponse, error)
 	CreateModuleAdmin(ctx context.Context, in *CreateModuleAdminRequest, opts ...grpc.CallOption) (*ModuleAdmin, error)
 	UpdateModuleAdmin(ctx context.Context, in *UpdateModuleAdminRequest, opts ...grpc.CallOption) (*ModuleAdmin, error)
@@ -49,6 +51,15 @@ func NewModulesClient(cc grpc.ClientConnInterface) ModulesClient {
 func (c *modulesClient) GetModuleId(ctx context.Context, in *GetModuleIdRequest, opts ...grpc.CallOption) (*GetModuleIdResponse, error) {
 	out := new(GetModuleIdResponse)
 	err := c.cc.Invoke(ctx, Modules_GetModuleId_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modulesClient) GetModuleById(ctx context.Context, in *GetModuleByIdRequest, opts ...grpc.CallOption) (*ViewModule, error) {
+	out := new(ViewModule)
+	err := c.cc.Invoke(ctx, Modules_GetModuleById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -96,6 +107,7 @@ func (c *modulesClient) DeleteModuleAdmin(ctx context.Context, in *DeleteModuleA
 // for forward compatibility
 type ModulesServer interface {
 	GetModuleId(context.Context, *GetModuleIdRequest) (*GetModuleIdResponse, error)
+	GetModuleById(context.Context, *GetModuleByIdRequest) (*ViewModule, error)
 	GetModuleAdmins(context.Context, *GetModuleAdminsRequest) (*GetModuleAdminsResponse, error)
 	CreateModuleAdmin(context.Context, *CreateModuleAdminRequest) (*ModuleAdmin, error)
 	UpdateModuleAdmin(context.Context, *UpdateModuleAdminRequest) (*ModuleAdmin, error)
@@ -109,6 +121,9 @@ type UnimplementedModulesServer struct {
 
 func (UnimplementedModulesServer) GetModuleId(context.Context, *GetModuleIdRequest) (*GetModuleIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetModuleId not implemented")
+}
+func (UnimplementedModulesServer) GetModuleById(context.Context, *GetModuleByIdRequest) (*ViewModule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetModuleById not implemented")
 }
 func (UnimplementedModulesServer) GetModuleAdmins(context.Context, *GetModuleAdminsRequest) (*GetModuleAdminsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetModuleAdmins not implemented")
@@ -149,6 +164,24 @@ func _Modules_GetModuleId_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModulesServer).GetModuleId(ctx, req.(*GetModuleIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Modules_GetModuleById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetModuleByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModulesServer).GetModuleById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Modules_GetModuleById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModulesServer).GetModuleById(ctx, req.(*GetModuleByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -235,6 +268,10 @@ var Modules_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetModuleId",
 			Handler:    _Modules_GetModuleId_Handler,
+		},
+		{
+			MethodName: "GetModuleById",
+			Handler:    _Modules_GetModuleById_Handler,
 		},
 		{
 			MethodName: "GetModuleAdmins",

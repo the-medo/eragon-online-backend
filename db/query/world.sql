@@ -23,7 +23,7 @@ RETURNING *;
 DELETE FROM worlds WHERE id = @world_id;
 
 -- name: GetWorldByID :one
-SELECT * FROM view_worlds WHERE id = @world_id LIMIT 1;
+SELECT * FROM worlds WHERE id = @world_id LIMIT 1;
 
 -- name: GetWorldsByIDs :many
 SELECT * FROM worlds WHERE id = ANY(@world_ids::int[]);

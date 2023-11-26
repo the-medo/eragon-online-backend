@@ -11,7 +11,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *ServiceMaps) UpdateMap(ctx context.Context, request *pb.UpdateMapRequest) (*pb.ViewMap, error) {
+func (server *ServiceMaps) UpdateMap(ctx context.Context, request *pb.UpdateMapRequest) (*pb.Map, error) {
 	violations := validateUpdateMap(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -47,12 +47,12 @@ func (server *ServiceMaps) UpdateMap(ctx context.Context, request *pb.UpdateMapR
 		return nil, err
 	}
 
-	viewMap, err := server.Store.GetMapByID(ctx, request.GetMapId())
+	m, err := server.Store.GetMapById(ctx, request.GetMapId())
 	if err != nil {
 		return nil, err
 	}
 
-	rsp := converters.ConvertViewMap(viewMap)
+	rsp := converters.ConvertMap(m)
 
 	return rsp, nil
 }

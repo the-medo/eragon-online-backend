@@ -82,16 +82,16 @@ func (q *Queries) DeletePost(ctx context.Context, postID int32) error {
 
 const getPostById = `-- name: GetPostById :one
 SELECT
-    id, user_id, title, description, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, thumbnail_img_id, thumbnail_img_url, entity_id, module_id, module_type, module_type_id, tags
+    id, user_id, title, description, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, thumbnail_img_id
 FROM
-    view_posts
+    posts
 WHERE
     id = $1
 `
 
-func (q *Queries) GetPostById(ctx context.Context, postID int32) (ViewPost, error) {
+func (q *Queries) GetPostById(ctx context.Context, postID int32) (Post, error) {
 	row := q.db.QueryRowContext(ctx, getPostById, postID)
-	var i ViewPost
+	var i Post
 	err := row.Scan(
 		&i.ID,
 		&i.UserID,
@@ -105,12 +105,6 @@ func (q *Queries) GetPostById(ctx context.Context, postID int32) (ViewPost, erro
 		&i.IsDraft,
 		&i.IsPrivate,
 		&i.ThumbnailImgID,
-		&i.ThumbnailImgUrl,
-		&i.EntityID,
-		&i.ModuleID,
-		&i.ModuleType,
-		&i.ModuleTypeID,
-		pq.Array(&i.Tags),
 	)
 	return i, err
 }

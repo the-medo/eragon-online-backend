@@ -14,7 +14,18 @@ import "google/protobuf/empty.proto";
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 service Locations {
-  rpc UpdateLocation(UpdateLocationRequest) returns (ViewLocation) {
+
+  rpc GetLocationById(GetLocationByIdRequest) returns (Location) {
+    option (google.api.http) = {
+      get: "/locations/{locationId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get location by id";
+      summary: "Get location by id";
+    };
+  };
+
+  rpc UpdateLocation(UpdateLocationRequest) returns (Location) {
     option (google.api.http) = {
       patch: "/locations/{locationId}"
       body: "*"
@@ -35,7 +46,7 @@ service Locations {
     };
   };
 
-  rpc CreateLocation(CreateLocationRequest) returns (ViewLocation) {
+  rpc CreateLocation(CreateLocationRequest) returns (Location) {
     option (google.api.http) = {
       post: "/locations"
       body: "*"
@@ -66,7 +77,7 @@ service Locations {
     };
   };
 
-  rpc CreateLocationPost(CreateLocationPostRequest) returns (ViewLocation) {
+  rpc CreateLocationPost(CreateLocationPostRequest) returns (Location) {
     option (google.api.http) = {
       post: "/locations/{locationId}/posts"
     };

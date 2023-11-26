@@ -141,7 +141,7 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 
 		rsp.Images = make([]*pb.Image, len(data))
 		for i, item := range data {
-			rsp.Images[i] = converters.ConvertImage(&item)
+			rsp.Images[i] = converters.ConvertImage(item)
 
 			fetchInterface.UserIds = util.Upsert(fetchInterface.UserIds, item.UserID)
 		}

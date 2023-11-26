@@ -15,6 +15,16 @@ option go_package = "github.com/the-medo/talebound-backend/pb";
 service Images {
   // ============= IMAGES ================
 
+  rpc GetImageById(GetImageByIdRequest) returns (Image) {
+    option (google.api.http) = {
+      get: "/images/{imageId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get image by id";
+      summary: "Get image by id";
+    };
+  };
+
   rpc GetImages(GetImagesRequest) returns (GetImagesResponse) {
     option (google.api.http) = {
       get: "/images"

@@ -34,7 +34,7 @@ func (server *ServiceMenus) GetMenuItemPostsByMenuId(ctx context.Context, req *p
 			Position:   menuItemPostRow.Position,
 		}
 
-		post := db.ViewPost{
+		post := db.Post{
 			ID:                menuItemPostRow.PostID,
 			UserID:            menuItemPostRow.UserID,
 			Title:             menuItemPostRow.Title,
@@ -47,7 +47,6 @@ func (server *ServiceMenus) GetMenuItemPostsByMenuId(ctx context.Context, req *p
 			IsPrivate:         menuItemPostRow.IsPrivate,
 			Description:       menuItemPostRow.Description,
 			ThumbnailImgID:    menuItemPostRow.ThumbnailImgID,
-			ThumbnailImgUrl:   menuItemPostRow.ThumbnailImgUrl,
 		}
 
 		rsp.MenuItemPosts[i] = converters.ConvertMenuItemPost(mip, post)

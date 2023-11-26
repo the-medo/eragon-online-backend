@@ -14,6 +14,16 @@ option go_package = "github.com/the-medo/talebound-backend/pb";
 
 service Posts {
 
+  rpc GetPostById(GetPostByIdRequest) returns (Post) {
+    option (google.api.http) = {
+      get: "/posts/{postId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get content of post by its ID";
+      summary: "Get post by id";
+    };
+  };
+
   rpc GetPostsByModule(GetPostsByModuleRequest) returns (GetPostsByModuleResponse) {
     option (google.api.http) = {
       get: "/posts"
@@ -21,16 +31,6 @@ service Posts {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "returns posts based on module";
       summary: "Get posts";
-    };
-  };
-
-  rpc GetPostById(GetPostByIdRequest) returns (ViewPost) {
-    option (google.api.http) = {
-      get: "/posts/{postId}"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "get content of post by its ID";
-      summary: "Get post by id";
     };
   };
 
@@ -54,7 +54,7 @@ service Posts {
     };
   };
 
-  rpc CreatePost(CreatePostRequest) returns (ViewPost) {
+  rpc CreatePost(CreatePostRequest) returns (Post) {
     option (google.api.http) = {
       post: "/posts"
       body: "*"
@@ -65,7 +65,7 @@ service Posts {
     };
   };
 
-  rpc UpdatePost(UpdatePostRequest) returns (ViewPost) {
+  rpc UpdatePost(UpdatePostRequest) returns (Post) {
     option (google.api.http) = {
       patch: "/posts/{postId}"
       body: "*"

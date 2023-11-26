@@ -9,7 +9,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *ServiceWorlds) GetWorldById(ctx context.Context, req *pb.GetWorldByIdRequest) (*pb.ViewWorld, error) {
+func (server *ServiceWorlds) GetWorldById(ctx context.Context, req *pb.GetWorldByIdRequest) (*pb.World, error) {
 	violations := validateGetWorldById(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -20,9 +20,7 @@ func (server *ServiceWorlds) GetWorldById(ctx context.Context, req *pb.GetWorldB
 		return nil, err
 	}
 
-	rsp := converters.ConvertViewWorld(world)
-
-	return rsp, nil
+	return converters.ConvertWorld(world), nil
 }
 
 func validateGetWorldById(req *pb.GetWorldByIdRequest) (violations []*errdetails.BadRequest_FieldViolation) {

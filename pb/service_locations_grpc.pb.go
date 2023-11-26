@@ -20,6 +20,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Locations_GetLocationById_FullMethodName    = "/pb.Locations/GetLocationById"
 	Locations_UpdateLocation_FullMethodName     = "/pb.Locations/UpdateLocation"
 	Locations_GetLocations_FullMethodName       = "/pb.Locations/GetLocations"
 	Locations_CreateLocation_FullMethodName     = "/pb.Locations/CreateLocation"
@@ -32,12 +33,13 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LocationsClient interface {
-	UpdateLocation(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error)
+	GetLocationById(ctx context.Context, in *GetLocationByIdRequest, opts ...grpc.CallOption) (*Location, error)
+	UpdateLocation(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*Location, error)
 	GetLocations(ctx context.Context, in *ModuleDefinition, opts ...grpc.CallOption) (*GetLocationsResponse, error)
-	CreateLocation(ctx context.Context, in *CreateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error)
+	CreateLocation(ctx context.Context, in *CreateLocationRequest, opts ...grpc.CallOption) (*Location, error)
 	DeleteLocation(ctx context.Context, in *DeleteLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteBulkLocation(ctx context.Context, in *DeleteBulkLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	CreateLocationPost(ctx context.Context, in *CreateLocationPostRequest, opts ...grpc.CallOption) (*ViewLocation, error)
+	CreateLocationPost(ctx context.Context, in *CreateLocationPostRequest, opts ...grpc.CallOption) (*Location, error)
 }
 
 type locationsClient struct {
@@ -48,8 +50,17 @@ func NewLocationsClient(cc grpc.ClientConnInterface) LocationsClient {
 	return &locationsClient{cc}
 }
 
-func (c *locationsClient) UpdateLocation(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error) {
-	out := new(ViewLocation)
+func (c *locationsClient) GetLocationById(ctx context.Context, in *GetLocationByIdRequest, opts ...grpc.CallOption) (*Location, error) {
+	out := new(Location)
+	err := c.cc.Invoke(ctx, Locations_GetLocationById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *locationsClient) UpdateLocation(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*Location, error) {
+	out := new(Location)
 	err := c.cc.Invoke(ctx, Locations_UpdateLocation_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -66,8 +77,8 @@ func (c *locationsClient) GetLocations(ctx context.Context, in *ModuleDefinition
 	return out, nil
 }
 
-func (c *locationsClient) CreateLocation(ctx context.Context, in *CreateLocationRequest, opts ...grpc.CallOption) (*ViewLocation, error) {
-	out := new(ViewLocation)
+func (c *locationsClient) CreateLocation(ctx context.Context, in *CreateLocationRequest, opts ...grpc.CallOption) (*Location, error) {
+	out := new(Location)
 	err := c.cc.Invoke(ctx, Locations_CreateLocation_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -93,8 +104,8 @@ func (c *locationsClient) DeleteBulkLocation(ctx context.Context, in *DeleteBulk
 	return out, nil
 }
 
-func (c *locationsClient) CreateLocationPost(ctx context.Context, in *CreateLocationPostRequest, opts ...grpc.CallOption) (*ViewLocation, error) {
-	out := new(ViewLocation)
+func (c *locationsClient) CreateLocationPost(ctx context.Context, in *CreateLocationPostRequest, opts ...grpc.CallOption) (*Location, error) {
+	out := new(Location)
 	err := c.cc.Invoke(ctx, Locations_CreateLocationPost_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -106,12 +117,13 @@ func (c *locationsClient) CreateLocationPost(ctx context.Context, in *CreateLoca
 // All implementations must embed UnimplementedLocationsServer
 // for forward compatibility
 type LocationsServer interface {
-	UpdateLocation(context.Context, *UpdateLocationRequest) (*ViewLocation, error)
+	GetLocationById(context.Context, *GetLocationByIdRequest) (*Location, error)
+	UpdateLocation(context.Context, *UpdateLocationRequest) (*Location, error)
 	GetLocations(context.Context, *ModuleDefinition) (*GetLocationsResponse, error)
-	CreateLocation(context.Context, *CreateLocationRequest) (*ViewLocation, error)
+	CreateLocation(context.Context, *CreateLocationRequest) (*Location, error)
 	DeleteLocation(context.Context, *DeleteLocationRequest) (*emptypb.Empty, error)
 	DeleteBulkLocation(context.Context, *DeleteBulkLocationRequest) (*emptypb.Empty, error)
-	CreateLocationPost(context.Context, *CreateLocationPostRequest) (*ViewLocation, error)
+	CreateLocationPost(context.Context, *CreateLocationPostRequest) (*Location, error)
 	mustEmbedUnimplementedLocationsServer()
 }
 
@@ -119,13 +131,16 @@ type LocationsServer interface {
 type UnimplementedLocationsServer struct {
 }
 
-func (UnimplementedLocationsServer) UpdateLocation(context.Context, *UpdateLocationRequest) (*ViewLocation, error) {
+func (UnimplementedLocationsServer) GetLocationById(context.Context, *GetLocationByIdRequest) (*Location, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLocationById not implemented")
+}
+func (UnimplementedLocationsServer) UpdateLocation(context.Context, *UpdateLocationRequest) (*Location, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateLocation not implemented")
 }
 func (UnimplementedLocationsServer) GetLocations(context.Context, *ModuleDefinition) (*GetLocationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLocations not implemented")
 }
-func (UnimplementedLocationsServer) CreateLocation(context.Context, *CreateLocationRequest) (*ViewLocation, error) {
+func (UnimplementedLocationsServer) CreateLocation(context.Context, *CreateLocationRequest) (*Location, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateLocation not implemented")
 }
 func (UnimplementedLocationsServer) DeleteLocation(context.Context, *DeleteLocationRequest) (*emptypb.Empty, error) {
@@ -134,7 +149,7 @@ func (UnimplementedLocationsServer) DeleteLocation(context.Context, *DeleteLocat
 func (UnimplementedLocationsServer) DeleteBulkLocation(context.Context, *DeleteBulkLocationRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBulkLocation not implemented")
 }
-func (UnimplementedLocationsServer) CreateLocationPost(context.Context, *CreateLocationPostRequest) (*ViewLocation, error) {
+func (UnimplementedLocationsServer) CreateLocationPost(context.Context, *CreateLocationPostRequest) (*Location, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateLocationPost not implemented")
 }
 func (UnimplementedLocationsServer) mustEmbedUnimplementedLocationsServer() {}
@@ -148,6 +163,24 @@ type UnsafeLocationsServer interface {
 
 func RegisterLocationsServer(s grpc.ServiceRegistrar, srv LocationsServer) {
 	s.RegisterService(&Locations_ServiceDesc, srv)
+}
+
+func _Locations_GetLocationById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLocationByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LocationsServer).GetLocationById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Locations_GetLocationById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LocationsServer).GetLocationById(ctx, req.(*GetLocationByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Locations_UpdateLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -265,6 +298,10 @@ var Locations_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.Locations",
 	HandlerType: (*LocationsServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetLocationById",
+			Handler:    _Locations_GetLocationById_Handler,
+		},
 		{
 			MethodName: "UpdateLocation",
 			Handler:    _Locations_UpdateLocation_Handler,

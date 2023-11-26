@@ -74,7 +74,7 @@ func (server *ServiceMenus) CreateMenuItemPost(ctx context.Context, req *pb.Crea
 		MenuItemId: req.GetMenuItemId(),
 		PostId:     post.ID,
 		Position:   req.GetPosition(),
-		Post:       converters.ConvertViewPost(post),
+		Post:       converters.ConvertPost(post),
 	}
 
 	if isDescriptionPost {

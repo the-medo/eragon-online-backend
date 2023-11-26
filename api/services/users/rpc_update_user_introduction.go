@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServiceUsers) UpdateUserIntroduction(ctx context.Context, req *pb.UpdateUserIntroductionRequest) (*pb.ViewPost, error) {
+func (server *ServiceUsers) UpdateUserIntroduction(ctx context.Context, req *pb.UpdateUserIntroductionRequest) (*pb.Post, error) {
 	violations := validateUpdateUserIntroductionRequest(req)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -61,12 +61,7 @@ func (server *ServiceUsers) UpdateUserIntroduction(ctx context.Context, req *pb.
 		}
 		_, err = server.Store.UpdateUser(ctx, updateUserArg)
 
-		viewPost, err := server.Store.GetPostById(ctx, post.ID)
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
-		}
-
-		return converters.ConvertViewPost(viewPost), nil
+		return converters.ConvertPost(post), nil
 	} else {
 		//update existing post
 		arg := db.UpdatePostParams{
@@ -89,12 +84,7 @@ func (server *ServiceUsers) UpdateUserIntroduction(ctx context.Context, req *pb.
 			return nil, status.Errorf(codes.Internal, "failed to update post: %s", err)
 		}
 
-		viewPost, err := server.Store.GetPostById(ctx, post.ID)
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to get post: %s", err)
-		}
-
-		return converters.ConvertViewPost(viewPost), nil
+		return converters.ConvertPost(post), nil
 	}
 }
 

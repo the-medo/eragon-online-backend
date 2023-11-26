@@ -19,6 +19,10 @@ message GetModuleIdResponse {
   ModuleType moduleType = 2;
 }
 
+message GetModuleByIdRequest {
+  int32 moduleId = 1;
+}
+
 message GetModuleAdminsRequest {
   int32 moduleId = 1;
 }

@@ -12,9 +12,20 @@ import "google/protobuf/empty.proto";
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 service Entities {
+
+  rpc GetEntityById(GetEntityByIdRequest) returns (ViewEntity) {
+    option (google.api.http) = {
+      get: "/entities/{entityId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets entity by id";
+      summary: "Get entity by id";
+    };
+  };
+
   rpc CreateEntityGroup(CreateEntityGroupRequest) returns (EntityGroup) {
     option (google.api.http) = {
-      post: "/entities/groups"
+      post: "/entities/groups/create"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {

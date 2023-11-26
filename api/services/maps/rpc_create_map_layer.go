@@ -30,7 +30,7 @@ func (server *ServiceMaps) CreateMapLayer(ctx context.Context, request *pb.Creat
 		Sublayer: request.GetSublayer(),
 	}
 
-	mapRow, err := server.Store.GetMapByID(ctx, request.GetMapId())
+	mapRow, err := server.Store.GetMapById(ctx, request.GetMapId())
 	if err != nil {
 		return nil, err
 	}

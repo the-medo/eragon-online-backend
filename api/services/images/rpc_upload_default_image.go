@@ -39,7 +39,7 @@ func (server *ServiceImages) UploadDefaultImage(ctx context.Context, request *pb
 		return nil, err
 	}
 
-	return converters.ConvertImage(dbImg), nil
+	return converters.ConvertImage(*dbImg), nil
 }
 
 func validateUploadDefaultImage(req *pb.UploadImageRequest) (violations []*errdetails.BadRequest_FieldViolation) {

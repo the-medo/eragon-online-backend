@@ -17,7 +17,7 @@ RETURNING *;
 SELECT
     *
 FROM
-    view_posts
+    posts
 WHERE
     id = sqlc.arg(post_id);
 

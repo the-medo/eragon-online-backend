@@ -261,7 +261,7 @@
         ]
       }
     },
-    "/entities/groups": {
+    "/entities/groups/create": {
       "post": {
         "summary": "Create entity group",
         "description": "creates entity group",
@@ -538,6 +538,39 @@
         ]
       }
     },
+    "/entities/{entityId}": {
+      "get": {
+        "summary": "Get entity by id",
+        "description": "gets entity by id",
+        "operationId": "Entities_GetEntityById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewEntity"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
     "/evaluations/id/{id}": {
       "get": {
         "summary": "Get evaluation by id",
@@ -727,6 +760,39 @@
         ]
       }
     },
+    "/images/{imageId}": {
+      "get": {
+        "summary": "Get image by id",
+        "description": "get image by id",
+        "operationId": "Images_GetImageById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbImage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Images"
+        ]
+      }
+    },
     "/locations": {
       "get": {
         "summary": "Get locations",
@@ -824,7 +890,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbViewLocation"
+              "$ref": "#/definitions/pbLocation"
             }
           },
           "default": {
@@ -850,6 +916,37 @@
       }
     },
     "/locations/{locationId}": {
+      "get": {
+        "summary": "Get location by id",
+        "description": "get location by id",
+        "operationId": "Locations_GetLocationById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLocation"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Locations"
+        ]
+      },
       "delete": {
         "summary": "Delete location",
         "description": "deletes location from the world or quest",
@@ -890,7 +987,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbViewLocation"
+              "$ref": "#/definitions/pbLocation"
             }
           },
           "default": {
@@ -947,7 +1044,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbViewLocation"
+              "$ref": "#/definitions/pbLocation"
             }
           },
           "default": {
@@ -1058,6 +1155,37 @@
       }
     },
     "/maps/{mapId}": {
+      "get": {
+        "summary": "Get map by id",
+        "description": "get map by id",
+        "operationId": "Maps_GetMapById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbMap"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      },
       "delete": {
         "summary": "Delete map",
         "description": "deletes a map from the world or quest",
@@ -1098,7 +1226,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbViewMap"
+              "$ref": "#/definitions/pbMap"
             }
           },
           "default": {
@@ -2423,7 +2551,7 @@
         ]
       }
     },
-    "/modules/id": {
+    "/modules/get/id": {
       "get": {
         "summary": "Get id of the module",
         "description": "gets id of the module (based on world id, quest id,...)",
@@ -2468,6 +2596,39 @@
             "name": "systemId",
             "in": "query",
             "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Modules"
+        ]
+      }
+    },
+    "/modules/{moduleId}": {
+      "get": {
+        "summary": "Get module by id",
+        "description": "gets module by id",
+        "operationId": "Modules_GetModuleById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewModule"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
             "type": "integer",
             "format": "int32"
           }
@@ -2723,7 +2884,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbViewPost"
+              "$ref": "#/definitions/pbPost"
             }
           },
           "default": {
@@ -2757,7 +2918,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbViewPost"
+              "$ref": "#/definitions/pbPost"
             }
           },
           "default": {
@@ -2819,7 +2980,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbViewPost"
+              "$ref": "#/definitions/pbPost"
             }
           },
           "default": {
@@ -3885,7 +4046,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbViewPost"
+              "$ref": "#/definitions/pbPost"
             }
           },
           "default": {
@@ -4149,7 +4310,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbViewWorld"
+              "$ref": "#/definitions/pbWorld"
             }
           },
           "default": {
@@ -4180,7 +4341,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbViewWorld"
+              "$ref": "#/definitions/pbWorld"
             }
           },
           "default": {
@@ -4290,7 +4451,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbViewPost"
+              "$ref": "#/definitions/pbPost"
             }
           },
           "default": {
@@ -4462,7 +4623,7 @@
       "type": "object",
       "properties": {
         "map": {
-          "$ref": "#/definitions/pbViewMap"
+          "$ref": "#/definitions/pbMap"
         },
         "layer": {
           "$ref": "#/definitions/pbViewMapLayer"
@@ -5333,7 +5494,7 @@
           "format": "int32"
         },
         "post": {
-          "$ref": "#/definitions/pbViewPost"
+          "$ref": "#/definitions/pbPost"
         }
       }
     },

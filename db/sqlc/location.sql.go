@@ -52,26 +52,19 @@ func (q *Queries) DeleteLocation(ctx context.Context, id int32) error {
 	return err
 }
 
-const getLocationByID = `-- name: GetLocationByID :one
-SELECT id, name, description, post_id, thumbnail_image_id, thumbnail_image_url, post_title, entity_id, module_id, module_type, module_type_id, tags FROM view_locations WHERE id = $1
+const getLocationById = `-- name: GetLocationById :one
+SELECT id, name, description, post_id, thumbnail_image_id FROM locations WHERE id = $1
 `
 
-func (q *Queries) GetLocationByID(ctx context.Context, id int32) (ViewLocation, error) {
-	row := q.db.QueryRowContext(ctx, getLocationByID, id)
-	var i ViewLocation
+func (q *Queries) GetLocationById(ctx context.Context, id int32) (Location, error) {
+	row := q.db.QueryRowContext(ctx, getLocationById, id)
+	var i Location
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
 		&i.Description,
 		&i.PostID,
 		&i.ThumbnailImageID,
-		&i.ThumbnailImageUrl,
-		&i.PostTitle,
-		&i.EntityID,
-		&i.ModuleID,
-		&i.ModuleType,
-		&i.ModuleTypeID,
-		pq.Array(&i.Tags),
 	)
 	return i, err
 }
@@ -188,6 +181,30 @@ func (q *Queries) GetLocationsByModule(ctx context.Context, moduleID int32) ([]V
 		return nil, err
 	}
 	return items, nil
+}
+
+const getViewLocationById = `-- name: GetViewLocationById :one
+SELECT id, name, description, post_id, thumbnail_image_id, thumbnail_image_url, post_title, entity_id, module_id, module_type, module_type_id, tags FROM view_locations WHERE id = $1
+`
+
+func (q *Queries) GetViewLocationById(ctx context.Context, id int32) (ViewLocation, error) {
+	row := q.db.QueryRowContext(ctx, getViewLocationById, id)
+	var i ViewLocation
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Description,
+		&i.PostID,
+		&i.ThumbnailImageID,
+		&i.ThumbnailImageUrl,
+		&i.PostTitle,
+		&i.EntityID,
+		&i.ModuleID,
+		&i.ModuleType,
+		&i.ModuleTypeID,
+		pq.Array(&i.Tags),
+	)
+	return i, err
 }
 
 const updateLocation = `-- name: UpdateLocation :one

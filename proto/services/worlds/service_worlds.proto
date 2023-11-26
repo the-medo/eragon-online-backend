@@ -26,7 +26,7 @@ service Worlds {
     };
   };
 
-  rpc UpdateWorld(UpdateWorldRequest) returns (ViewWorld) {
+  rpc UpdateWorld(UpdateWorldRequest) returns (World) {
     option (google.api.http) = {
       patch: "/worlds/{worldId}"
       body: "*"
@@ -58,7 +58,7 @@ service Worlds {
     };
   };
 
-  rpc GetWorldById(GetWorldByIdRequest) returns (ViewWorld) {
+  rpc GetWorldById(GetWorldByIdRequest) returns (World) {
     option (google.api.http) = {
       get: "/worlds/{worldId}"
     };
@@ -68,7 +68,7 @@ service Worlds {
     };
   };
 
-  rpc UpdateWorldIntroduction(UpdateWorldIntroductionRequest) returns (ViewPost) {
+  rpc UpdateWorldIntroduction(UpdateWorldIntroductionRequest) returns (Post) {
     option (google.api.http) = {
       patch: "/worlds/{worldId}/introduction"
       body: "*"

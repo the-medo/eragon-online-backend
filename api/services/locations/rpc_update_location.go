@@ -12,7 +12,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *ServiceLocations) UpdateLocation(ctx context.Context, request *pb.UpdateLocationRequest) (*pb.ViewLocation, error) {
+func (server *ServiceLocations) UpdateLocation(ctx context.Context, request *pb.UpdateLocationRequest) (*pb.Location, error) {
 	violations := validateUpdateLocation(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -45,17 +45,12 @@ func (server *ServiceLocations) UpdateLocation(ctx context.Context, request *pb.
 		},
 	}
 
-	_, err = server.Store.UpdateLocation(ctx, argLocation)
+	location, err := server.Store.UpdateLocation(ctx, argLocation)
 	if err != nil {
 		return nil, err
 	}
 
-	location, err := server.Store.GetLocationByID(ctx, request.GetLocationId())
-	if err != nil {
-		return nil, err
-	}
-
-	rsp := converters.ConvertViewLocation(location)
+	rsp := converters.ConvertLocation(location)
 
 	return rsp, nil
 }
