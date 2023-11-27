@@ -12,8 +12,8 @@ type CreateWorldTxParams struct {
 }
 
 type CreateWorldTxResult struct {
-	ViewWorld *ViewWorld
-	Module    *ViewModule
+	World  *World
+	Module *ViewModule
 }
 
 func insertSubMenuItem(ctx context.Context, q *Queries, menuId int32, position int32, code string, name string, isMain bool) error {
@@ -168,16 +168,7 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 		}
 
 		result = CreateWorldTxResult{
-			ViewWorld: &ViewWorld{
-				ID:               world.ID,
-				Name:             world.Name,
-				CreatedAt:        world.CreatedAt,
-				Public:           world.Public,
-				BasedOn:          world.BasedOn,
-				ShortDescription: world.ShortDescription,
-				ModuleID:         module.ID,
-				MenuID:           menu.ID,
-			},
+			World: &world,
 			Module: &ViewModule{
 				ID:         module.ID,
 				ModuleType: ModuleTypeWorld,

@@ -23,7 +23,7 @@ service Users {
   // ============= USER ROLES =================
   rpc GetUserRoles(GetUserRolesRequest) returns (GetUserRolesResponse) {
     option (google.api.http) = {
-      get: "/users/roles"
+      get: "/user_roles"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "returns full list of user roles";
@@ -33,7 +33,7 @@ service Users {
 
   rpc AddRoleToUser(AddRoleToUserRequest) returns (AddRoleToUserResponse) {
     option (google.api.http) = {
-      post: "/users/roles"
+      post: "/users_roles"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -44,7 +44,7 @@ service Users {
 
   rpc RemoveRoleFromUser(RemoveRoleFromUserRequest) returns (RemoveRoleFromUserResponse) {
     option (google.api.http) = {
-      delete: "/users/{userId}/roles/{roleId}"
+      delete: "/users_roles/{userId}/roles/{roleId}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "removes role from user";

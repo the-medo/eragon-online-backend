@@ -15,7 +15,7 @@ message CreateWorldRequest {
 }
 
 message CreateWorldResponse {
-  ViewWorld world = 1;
+  World world = 1;
   ViewModule module = 2;
 }
 

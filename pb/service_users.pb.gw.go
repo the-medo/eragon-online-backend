@@ -957,7 +957,7 @@ func RegisterUsersHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Users/GetUserRoles", runtime.WithHTTPPathPattern("/users/roles"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Users/GetUserRoles", runtime.WithHTTPPathPattern("/user_roles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -982,7 +982,7 @@ func RegisterUsersHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Users/AddRoleToUser", runtime.WithHTTPPathPattern("/users/roles"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Users/AddRoleToUser", runtime.WithHTTPPathPattern("/users_roles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1007,7 +1007,7 @@ func RegisterUsersHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Users/RemoveRoleFromUser", runtime.WithHTTPPathPattern("/users/{userId}/roles/{roleId}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Users/RemoveRoleFromUser", runtime.WithHTTPPathPattern("/users_roles/{userId}/roles/{roleId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1396,7 +1396,7 @@ func RegisterUsersHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Users/GetUserRoles", runtime.WithHTTPPathPattern("/users/roles"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Users/GetUserRoles", runtime.WithHTTPPathPattern("/user_roles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1418,7 +1418,7 @@ func RegisterUsersHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Users/AddRoleToUser", runtime.WithHTTPPathPattern("/users/roles"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Users/AddRoleToUser", runtime.WithHTTPPathPattern("/users_roles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1440,7 +1440,7 @@ func RegisterUsersHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Users/RemoveRoleFromUser", runtime.WithHTTPPathPattern("/users/{userId}/roles/{roleId}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Users/RemoveRoleFromUser", runtime.WithHTTPPathPattern("/users_roles/{userId}/roles/{roleId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1746,11 +1746,11 @@ func RegisterUsersHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Users_GetUserRoles_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"users", "roles"}, ""))
+	pattern_Users_GetUserRoles_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"user_roles"}, ""))
 
-	pattern_Users_AddRoleToUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"users", "roles"}, ""))
+	pattern_Users_AddRoleToUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"users_roles"}, ""))
 
-	pattern_Users_RemoveRoleFromUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"users", "userId", "roles", "roleId"}, ""))
+	pattern_Users_RemoveRoleFromUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"users_roles", "userId", "roles", "roleId"}, ""))
 
 	pattern_Users_GetUsers_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"users"}, ""))
 

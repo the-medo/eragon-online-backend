@@ -3575,6 +3575,39 @@
         ]
       }
     },
+    "/user_roles": {
+      "get": {
+        "summary": "Get user roles (admin, moderator, etc.)",
+        "description": "returns full list of user roles",
+        "operationId": "Users_GetUserRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetUserRolesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
     "/users": {
       "get": {
         "summary": "Get list of users",
@@ -3671,71 +3704,6 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/pbUpdateUserRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Users"
-        ]
-      }
-    },
-    "/users/roles": {
-      "get": {
-        "summary": "Get user roles (admin, moderator, etc.)",
-        "description": "returns full list of user roles",
-        "operationId": "Users_GetUserRoles",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetUserRolesResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Users"
-        ]
-      },
-      "post": {
-        "summary": "Add role to user",
-        "description": "adds new role to user",
-        "operationId": "Users_AddRoleToUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbAddRoleToUserResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbAddRoleToUserRequest"
             }
           }
         ],
@@ -4166,7 +4134,41 @@
         ]
       }
     },
-    "/users/{userId}/roles/{roleId}": {
+    "/users_roles": {
+      "post": {
+        "summary": "Add role to user",
+        "description": "adds new role to user",
+        "operationId": "Users_AddRoleToUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbAddRoleToUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbAddRoleToUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users_roles/{userId}/roles/{roleId}": {
       "delete": {
         "summary": "Remove role from user",
         "description": "removes role from user",
@@ -4731,7 +4733,7 @@
       "type": "object",
       "properties": {
         "world": {
-          "$ref": "#/definitions/pbViewWorld"
+          "$ref": "#/definitions/pbWorld"
         },
         "module": {
           "$ref": "#/definitions/pbViewModule"
@@ -6496,71 +6498,6 @@
         "count": {
           "type": "integer",
           "format": "int32"
-        }
-      }
-    },
-    "pbViewWorld": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "name": {
-          "type": "string"
-        },
-        "public": {
-          "type": "boolean"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "basedOn": {
-          "type": "string"
-        },
-        "shortDescription": {
-          "type": "string"
-        },
-        "descriptionPostId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "moduleId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "menuId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "headerImgId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "headerImgUrl": {
-          "type": "string"
-        },
-        "thumbnailImgId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "thumbnailImgUrl": {
-          "type": "string"
-        },
-        "avatarImgId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "avatarImgUrl": {
-          "type": "string"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int32"
-          }
         }
       }
     },
