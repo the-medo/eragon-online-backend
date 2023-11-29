@@ -34,18 +34,18 @@ func (server *ServiceEvaluations) GetAverageUserEvaluationsByType(ctx context.Co
 		AverageEvaluationVote: make([]*pb.AverageEvaluationVote, len(avgEvaluationVotes)),
 	}
 
-	for i, e := range avgEvaluationVotes {
+	for i, eval := range avgEvaluationVotes {
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to convert evaluation type: %v", err)
 		}
 
 		rsp.AverageEvaluationVote[i] = &pb.AverageEvaluationVote{
-			EvaluationId: e.EvaluationID,
+			EvaluationId: eval.EvaluationID,
 			UserId:       req.GetUserId(),
-			Name:         e.Name,
-			Description:  e.Description,
-			Type:         string(e.EvaluationType),
-			Average:      math.Round(e.AvgValue*100) / 100,
+			Name:         eval.Name,
+			Description:  eval.Description,
+			Type:         string(eval.EvaluationType),
+			Average:      math.Round(eval.AvgValue*100) / 100,
 		}
 	}
 

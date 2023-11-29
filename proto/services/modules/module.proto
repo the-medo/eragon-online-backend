@@ -38,12 +38,9 @@ message ViewModule {
   optional int32 systemId = 6;
   int32 menuId = 7;
   int32 headerImgId = 8;
-  string headerImgUrl = 9;
-  int32 thumbnailImgId = 10;
-  string thumbnailImgUrl = 11;
-  int32 avatarImgId = 12;
-  string avatarImgUrl = 13;
-  repeated int32 tags = 14;
+  int32 thumbnailImgId = 9;
+  int32 avatarImgId = 10;
+  repeated int32 tags = 11;
 }
 
 message ModuleAdmin {

@@ -6383,22 +6383,13 @@
           "type": "integer",
           "format": "int32"
         },
-        "headerImgUrl": {
-          "type": "string"
-        },
         "thumbnailImgId": {
           "type": "integer",
           "format": "int32"
         },
-        "thumbnailImgUrl": {
-          "type": "string"
-        },
         "avatarImgId": {
           "type": "integer",
           "format": "int32"
-        },
-        "avatarImgUrl": {
-          "type": "string"
         },
         "tags": {
           "type": "array",
