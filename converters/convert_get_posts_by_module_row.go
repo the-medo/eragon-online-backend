@@ -9,8 +9,8 @@ import (
 //TODO: maybe, once generics will help... -_-
 // complete copy of ConvertViewPost, but with different name
 
-func ConvertGetPostsByModuleRow(viewPost db.GetPostsByModuleRow) *pb.ViewPost {
-	pbPost := &pb.ViewPost{
+func ConvertGetPostsByModuleRow(viewPost db.GetPostsByModuleRow) *pb.Post {
+	pbPost := &pb.Post{
 		Id:        viewPost.ID,
 		UserId:    viewPost.UserID,
 		Title:     viewPost.Title,
@@ -18,7 +18,6 @@ func ConvertGetPostsByModuleRow(viewPost db.GetPostsByModuleRow) *pb.ViewPost {
 		CreatedAt: timestamppb.New(viewPost.CreatedAt),
 		IsDraft:   viewPost.IsDraft,
 		IsPrivate: viewPost.IsPrivate,
-		Tags:      viewPost.Tags,
 	}
 
 	if viewPost.DeletedAt.Valid == true {
@@ -39,27 +38,6 @@ func ConvertGetPostsByModuleRow(viewPost db.GetPostsByModuleRow) *pb.ViewPost {
 
 	if viewPost.ThumbnailImgID.Valid == true {
 		pbPost.ImageThumbnailId = viewPost.ThumbnailImgID.Int32
-	}
-
-	if viewPost.ThumbnailImgUrl.Valid == true {
-		pbPost.ImageThumbnailUrl = viewPost.ThumbnailImgUrl.String
-	}
-
-	if viewPost.EntityID.Valid == true {
-		pbPost.EntityId = &viewPost.EntityID.Int32
-	}
-
-	if viewPost.ModuleID.Valid == true {
-		pbPost.ModuleId = &viewPost.ModuleID.Int32
-	}
-
-	if viewPost.ModuleTypeID.Valid == true {
-		pbPost.ModuleId = &viewPost.ModuleTypeID.Int32
-	}
-
-	if viewPost.ModuleType.Valid == true {
-		convertedModuleType := ConvertModuleTypeToPB(viewPost.ModuleType.ModuleType)
-		pbPost.ModuleType = &convertedModuleType
 	}
 
 	return pbPost

@@ -2830,28 +2830,7 @@
         },
         "parameters": [
           {
-            "name": "worldId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "questId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "characterId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "systemId",
+            "name": "moduleId",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -5210,7 +5189,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbViewPost"
+            "$ref": "#/definitions/pbPost"
           }
         },
         "totalCount": {

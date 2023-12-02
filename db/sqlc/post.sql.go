@@ -275,17 +275,18 @@ func (q *Queries) GetPostsByIDs(ctx context.Context, postIds []int32) ([]Post, e
 const getPostsByModule = `-- name: GetPostsByModule :many
 WITH cte AS (
     SELECT
-        vp.id, vp.user_id, vp.title, vp.description, vp.content, vp.created_at, vp.deleted_at, vp.last_updated_at, vp.last_updated_user_id, vp.is_draft, vp.is_private, vp.thumbnail_img_id, vp.thumbnail_img_url, vp.entity_id, vp.module_id, vp.module_type, vp.module_type_id, vp.tags
+        p.id, p.user_id, p.title, p.description, p.content, p.created_at, p.deleted_at, p.last_updated_at, p.last_updated_user_id, p.is_draft, p.is_private, p.thumbnail_img_id
     FROM
-        view_posts vp
-        LEFT JOIN modules m ON m.id = vp.module_id
+        posts p
+        LEFT JOIN view_entities e ON e.post_id = p.id
+        LEFT JOIN modules m ON m.id = e.module_id
     WHERE
-        m.world_id = $3 AND
-        vp.deleted_at IS NULL
+        m.id = $3 AND
+        p.deleted_at IS NULL
 )
 SELECT
     CAST((SELECT count(*) FROM cte) as integer) as total_count,
-    cte.id, cte.user_id, cte.title, cte.description, cte.content, cte.created_at, cte.deleted_at, cte.last_updated_at, cte.last_updated_user_id, cte.is_draft, cte.is_private, cte.thumbnail_img_id, cte.thumbnail_img_url, cte.entity_id, cte.module_id, cte.module_type, cte.module_type_id, cte.tags
+    cte.id, cte.user_id, cte.title, cte.description, cte.content, cte.created_at, cte.deleted_at, cte.last_updated_at, cte.last_updated_user_id, cte.is_draft, cte.is_private, cte.thumbnail_img_id
 FROM cte
 ORDER BY created_at DESC
 LIMIT $2
@@ -293,9 +294,9 @@ OFFSET $1
 `
 
 type GetPostsByModuleParams struct {
-	PageOffset int32         `json:"page_offset"`
-	PageLimit  int32         `json:"page_limit"`
-	WorldID    sql.NullInt32 `json:"world_id"`
+	PageOffset int32 `json:"page_offset"`
+	PageLimit  int32 `json:"page_limit"`
+	ModuleID   int32 `json:"module_id"`
 }
 
 type GetPostsByModuleRow struct {
@@ -312,16 +313,10 @@ type GetPostsByModuleRow struct {
 	IsDraft           bool           `json:"is_draft"`
 	IsPrivate         bool           `json:"is_private"`
 	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
-	ThumbnailImgUrl   sql.NullString `json:"thumbnail_img_url"`
-	EntityID          sql.NullInt32  `json:"entity_id"`
-	ModuleID          sql.NullInt32  `json:"module_id"`
-	ModuleType        NullModuleType `json:"module_type"`
-	ModuleTypeID      sql.NullInt32  `json:"module_type_id"`
-	Tags              []int32        `json:"tags"`
 }
 
 func (q *Queries) GetPostsByModule(ctx context.Context, arg GetPostsByModuleParams) ([]GetPostsByModuleRow, error) {
-	rows, err := q.db.QueryContext(ctx, getPostsByModule, arg.PageOffset, arg.PageLimit, arg.WorldID)
+	rows, err := q.db.QueryContext(ctx, getPostsByModule, arg.PageOffset, arg.PageLimit, arg.ModuleID)
 	if err != nil {
 		return nil, err
 	}
@@ -343,12 +338,6 @@ func (q *Queries) GetPostsByModule(ctx context.Context, arg GetPostsByModulePara
 			&i.IsDraft,
 			&i.IsPrivate,
 			&i.ThumbnailImgID,
-			&i.ThumbnailImgUrl,
-			&i.EntityID,
-			&i.ModuleID,
-			&i.ModuleType,
-			&i.ModuleTypeID,
-			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
 		}

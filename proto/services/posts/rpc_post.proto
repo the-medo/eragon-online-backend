@@ -9,16 +9,13 @@ option go_package = "github.com/the-medo/talebound-backend/pb";
 
 
 message GetPostsByModuleRequest {
-  optional int32 worldId = 1;
-  optional int32 questId = 2;
-  optional int32 characterId = 3;
-  optional int32 systemId = 4;
-  optional int32 limit = 5;
-  optional int32 offset = 6;
+  int32 moduleId = 1;
+  optional int32 limit = 2;
+  optional int32 offset = 3;
 }
 
 message GetPostsByModuleResponse {
-  repeated ViewPost posts = 1;
+  repeated Post posts = 1;
   int32 totalCount = 2;
 }
 

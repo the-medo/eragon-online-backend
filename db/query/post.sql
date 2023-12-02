@@ -39,13 +39,14 @@ OFFSET @page_offset;
 -- name: GetPostsByModule :many
 WITH cte AS (
     SELECT
-        vp.*
+        p.*
     FROM
-        view_posts vp
-        LEFT JOIN modules m ON m.id = vp.module_id
+        posts p
+        LEFT JOIN view_entities e ON e.post_id = p.id
+        LEFT JOIN modules m ON m.id = e.module_id
     WHERE
-        m.world_id = sqlc.arg(world_id) AND
-        vp.deleted_at IS NULL
+        m.id = sqlc.arg(module_id) AND
+        p.deleted_at IS NULL
 )
 SELECT
     CAST((SELECT count(*) FROM cte) as integer) as total_count,

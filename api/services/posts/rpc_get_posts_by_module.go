@@ -2,7 +2,6 @@ package posts
 
 import (
 	"context"
-	"database/sql"
 	"encoding/json"
 	"github.com/the-medo/talebound-backend/api/apihelpers"
 	"github.com/the-medo/talebound-backend/converters"
@@ -25,17 +24,14 @@ func (server *ServicePosts) GetPostsByModule(ctx context.Context, req *pb.GetPos
 	postRows, err := server.Store.GetPostsByModule(ctx, db.GetPostsByModuleParams{
 		PageOffset: req.GetOffset(),
 		PageLimit:  req.GetLimit(),
-		WorldID: sql.NullInt32{
-			Int32: req.GetWorldId(),
-			Valid: req.WorldId != nil,
-		},
+		ModuleID:   req.GetModuleId(),
 	})
 	if err != nil {
 		return nil, err
 	}
 
 	rsp := &pb.GetPostsByModuleResponse{
-		Posts:      make([]*pb.ViewPost, len(postRows)),
+		Posts:      make([]*pb.Post, len(postRows)),
 		TotalCount: 0,
 	}
 
@@ -81,8 +77,8 @@ func validateGetPostsByModule(req *pb.GetPostsByModuleRequest) (violations []*er
 		violations = append(violations, e.FieldViolation("offset", err))
 	}
 
-	if err := validator.ValidatePostModuleExtended(req.WorldId, req.QuestId, req.SystemId, req.CharacterId); err != nil {
-		violations = append(violations, e.FieldViolation("modules", err))
+	if err := validator.ValidateUniversalId(req.GetModuleId()); err != nil {
+		violations = append(violations, e.FieldViolation("module_id", err))
 	}
 
 	return violations
