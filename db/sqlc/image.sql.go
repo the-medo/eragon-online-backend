@@ -8,6 +8,7 @@ package db
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/lib/pq"
@@ -122,39 +123,74 @@ func (q *Queries) GetImageById(ctx context.Context, id int32) (Image, error) {
 }
 
 const getImages = `-- name: GetImages :many
+WITH cte AS (
+    SELECT
+        id, user_id, img_guid, image_type_id, name, url, base_url, created_at, width, height, entity_id, module_id, module_type, module_type_id, tags
+    FROM get_images($3::int[], $4, $5,  $6, $7, $8, $9, $10, 0, 0)
+)
 SELECT
-    id, user_id, img_guid, image_type_id, name, url, base_url, created_at, width, height
-FROM
-    images
-WHERE
-    (user_id = COALESCE($1, user_id)) AND
-    (image_type_id = COALESCE($2, image_type_id))
-ORDER BY id DESC
-LIMIT $4 OFFSET $3
+    CAST((SELECT count(*) FROM cte) as integer) as total_count,
+    cte.id, cte.user_id, cte.img_guid, cte.image_type_id, cte.name, cte.url, cte.base_url, cte.created_at, cte.width, cte.height, cte.entity_id, cte.module_id, cte.module_type, cte.module_type_id, cte.tags
+FROM cte
+ORDER BY created_at DESC
+LIMIT $2
+    OFFSET $1
 `
 
 type GetImagesParams struct {
-	UserID      sql.NullInt32 `json:"user_id"`
-	ImageTypeID sql.NullInt32 `json:"image_type_id"`
-	PageOffset  int32         `json:"page_offset"`
-	PageLimit   int32         `json:"page_limit"`
+	PageOffset     int32          `json:"page_offset"`
+	PageLimit      int32          `json:"page_limit"`
+	Tags           []int32        `json:"tags"`
+	Width          sql.NullInt32  `json:"width"`
+	Height         sql.NullInt32  `json:"height"`
+	UserID         sql.NullInt32  `json:"user_id"`
+	ModuleID       sql.NullInt32  `json:"module_id"`
+	ModuleType     NullModuleType `json:"module_type"`
+	OrderBy        sql.NullString `json:"order_by"`
+	OrderDirection sql.NullString `json:"order_direction"`
 }
 
-func (q *Queries) GetImages(ctx context.Context, arg GetImagesParams) ([]Image, error) {
+type GetImagesRow struct {
+	TotalCount   int32          `json:"total_count"`
+	ID           int32          `json:"id"`
+	UserID       int32          `json:"user_id"`
+	ImgGuid      uuid.NullUUID  `json:"img_guid"`
+	ImageTypeID  sql.NullInt32  `json:"image_type_id"`
+	Name         sql.NullString `json:"name"`
+	Url          string         `json:"url"`
+	BaseUrl      string         `json:"base_url"`
+	CreatedAt    time.Time      `json:"created_at"`
+	Width        int32          `json:"width"`
+	Height       int32          `json:"height"`
+	EntityID     sql.NullInt32  `json:"entity_id"`
+	ModuleID     sql.NullInt32  `json:"module_id"`
+	ModuleType   NullModuleType `json:"module_type"`
+	ModuleTypeID sql.NullInt32  `json:"module_type_id"`
+	Tags         []int32        `json:"tags"`
+}
+
+func (q *Queries) GetImages(ctx context.Context, arg GetImagesParams) ([]GetImagesRow, error) {
 	rows, err := q.db.QueryContext(ctx, getImages,
-		arg.UserID,
-		arg.ImageTypeID,
 		arg.PageOffset,
 		arg.PageLimit,
+		pq.Array(arg.Tags),
+		arg.Width,
+		arg.Height,
+		arg.UserID,
+		arg.ModuleID,
+		arg.ModuleType,
+		arg.OrderBy,
+		arg.OrderDirection,
 	)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Image{}
+	items := []GetImagesRow{}
 	for rows.Next() {
-		var i Image
+		var i GetImagesRow
 		if err := rows.Scan(
+			&i.TotalCount,
 			&i.ID,
 			&i.UserID,
 			&i.ImgGuid,
@@ -165,6 +201,11 @@ func (q *Queries) GetImages(ctx context.Context, arg GetImagesParams) ([]Image, 
 			&i.CreatedAt,
 			&i.Width,
 			&i.Height,
+			&i.EntityID,
+			&i.ModuleID,
+			&i.ModuleType,
+			&i.ModuleTypeID,
+			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
 		}
@@ -253,25 +294,6 @@ func (q *Queries) GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.Null
 		return nil, err
 	}
 	return items, nil
-}
-
-const getImagesCount = `-- name: GetImagesCount :one
-SELECT COUNT(*) FROM images
-WHERE
-    (user_id = COALESCE($1, user_id)) AND
-    (image_type_id = COALESCE($2, image_type_id))
-`
-
-type GetImagesCountParams struct {
-	UserID      sql.NullInt32 `json:"user_id"`
-	ImageTypeID sql.NullInt32 `json:"image_type_id"`
-}
-
-func (q *Queries) GetImagesCount(ctx context.Context, arg GetImagesCountParams) (int64, error) {
-	row := q.db.QueryRowContext(ctx, getImagesCount, arg.UserID, arg.ImageTypeID)
-	var count int64
-	err := row.Scan(&count)
-	return count, err
 }
 
 const updateImage = `-- name: UpdateImage :one

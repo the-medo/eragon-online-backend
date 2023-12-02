@@ -695,6 +695,13 @@
         },
         "parameters": [
           {
+            "name": "moduleId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
             "name": "userId",
             "in": "query",
             "required": false,
@@ -702,7 +709,31 @@
             "format": "int32"
           },
           {
-            "name": "imageTypeId",
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "width",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "height",
             "in": "query",
             "required": false,
             "type": "integer",

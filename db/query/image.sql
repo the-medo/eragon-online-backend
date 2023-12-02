@@ -45,18 +45,15 @@ RETURNING *;
 DELETE FROM images WHERE id = @id;
 
 -- name: GetImages :many
+WITH cte AS (
+    SELECT
+        *
+    FROM get_images(sqlc.narg(tags)::int[], sqlc.narg(width), sqlc.narg(height),  sqlc.narg(user_id), sqlc.narg(module_id), sqlc.narg(module_type), sqlc.narg(order_by), sqlc.narg(order_direction), 0, 0)
+)
 SELECT
-    *
-FROM
-    images
-WHERE
-    (user_id = COALESCE(sqlc.narg(user_id), user_id)) AND
-    (image_type_id = COALESCE(sqlc.narg(image_type_id), image_type_id))
-ORDER BY id DESC
-LIMIT sqlc.arg(page_limit) OFFSET sqlc.arg(page_offset);
-
--- name: GetImagesCount :one
-SELECT COUNT(*) FROM images
-WHERE
-    (user_id = COALESCE(sqlc.narg(user_id), user_id)) AND
-    (image_type_id = COALESCE(sqlc.narg(image_type_id), image_type_id));
+    CAST((SELECT count(*) FROM cte) as integer) as total_count,
+    cte.*
+FROM cte
+ORDER BY created_at DESC
+LIMIT sqlc.arg(page_limit)
+    OFFSET sqlc.arg(page_offset);

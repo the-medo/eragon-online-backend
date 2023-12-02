@@ -3,14 +3,19 @@ package images
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
+	"fmt"
 	"github.com/the-medo/talebound-backend/api/apihelpers"
 	"github.com/the-medo/talebound-backend/converters"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/e"
 	"github.com/the-medo/talebound-backend/pb"
+	"github.com/the-medo/talebound-backend/util"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
@@ -28,16 +33,29 @@ func (server *ServiceImages) GetImages(ctx context.Context, req *pb.GetImagesReq
 	}
 
 	arg := db.GetImagesParams{
+		PageLimit:  limit,
+		PageOffset: offset,
 		UserID: sql.NullInt32{
 			Int32: req.GetUserId(),
 			Valid: req.UserId != nil,
 		},
-		ImageTypeID: sql.NullInt32{
-			Int32: req.GetImageTypeId(),
-			Valid: req.ImageTypeId != nil,
+		ModuleID: sql.NullInt32{
+			Int32: req.GetModuleId(),
+			Valid: req.ModuleId != nil,
 		},
-		PageLimit:  limit,
-		PageOffset: offset,
+		Width: sql.NullInt32{
+			Int32: req.GetWidth(),
+			Valid: req.Width != nil,
+		},
+		Height: sql.NullInt32{
+			Int32: req.GetHeight(),
+			Valid: req.Height != nil,
+		},
+		OrderBy: sql.NullString{
+			String: req.GetOrderBy(),
+			Valid:  req.OrderBy != nil,
+		},
+		Tags: req.GetTags(),
 	}
 
 	images, err := server.Store.GetImages(ctx, arg)
@@ -45,41 +63,57 @@ func (server *ServiceImages) GetImages(ctx context.Context, req *pb.GetImagesReq
 		return nil, status.Errorf(codes.Internal, "failed to get posts: %v", err)
 	}
 
-	imageCountArg := convertGetImagesParamsToGetImagesCountParams(&arg)
-	totalCount, err := server.Store.GetImagesCount(ctx, imageCountArg)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get posts count: %v", err)
-	}
-
 	rsp := &pb.GetImagesResponse{
 		Images:     make([]*pb.Image, len(images)),
-		TotalCount: int32(totalCount),
+		TotalCount: 0,
+	}
+
+	if len(images) > 0 {
+		rsp.TotalCount = images[0].TotalCount
+	}
+
+	fetchInterface := &apihelpers.FetchInterface{
+		UserIds:   []int32{},
+		ModuleIds: []int32{},
 	}
 
 	for i, image := range images {
-		rsp.Images[i] = converters.ConvertImage(image)
+		rsp.Images[i] = converters.ConvertGetImagesRow(image)
+
+		fetchInterface.UserIds = util.Upsert(fetchInterface.UserIds, image.UserID)
+
+		if image.ModuleID.Valid {
+			fetchInterface.ModuleIds = util.Upsert(fetchInterface.ModuleIds, image.ModuleID.Int32)
+		}
+	}
+
+	fetchIdsHeader, err := json.Marshal(fetchInterface)
+
+	md := metadata.Pairs(
+		"X-Fetch-Ids", string(fetchIdsHeader),
+	)
+
+	err = grpc.SendHeader(ctx, md)
+	if err != nil {
+		return nil, err
 	}
 
 	return rsp, nil
 }
 
-func convertGetImagesParamsToGetImagesCountParams(arg *db.GetImagesParams) db.GetImagesCountParams {
-	return db.GetImagesCountParams{
-		UserID:      arg.UserID,
-		ImageTypeID: arg.ImageTypeID,
-	}
-}
-
 func validateGetImagesRequest(req *pb.GetImagesRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if req.UserId != nil {
-		if err := validator.ValidateUserId(req.GetUserId()); err != nil {
-			violations = append(violations, e.FieldViolation("user_id", err))
+
+	fields := []string{"name", "created_at", "description", "width", "height"}
+
+	if req.OrderBy != nil {
+		if validator.StringInSlice(req.GetOrderBy(), fields) == false {
+			violations = append(violations, e.FieldViolation("order_by", fmt.Errorf("invalid field to order by %s", req.GetOrderBy())))
 		}
 	}
 
-	if req.ImageTypeId != nil {
-		if err := validator.ValidateImageTypeId(req.GetImageTypeId()); err != nil {
-			violations = append(violations, e.FieldViolation("image_type_id", err))
+	if req.UserId != nil {
+		if err := validator.ValidateUserId(req.GetUserId()); err != nil {
+			violations = append(violations, e.FieldViolation("user_id", err))
 		}
 	}
 
