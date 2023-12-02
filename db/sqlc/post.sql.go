@@ -232,20 +232,78 @@ func (q *Queries) GetPostHistoryByPostId(ctx context.Context, postID int32) ([]G
 	return items, nil
 }
 
-const getPostsByIDs = `-- name: GetPostsByIDs :many
-SELECT id, user_id, title, description, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, thumbnail_img_id FROM posts WHERE id = ANY($1::int[])
+const getPosts = `-- name: GetPosts :many
+WITH cte AS (
+    SELECT
+        id, user_id, title, description, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, thumbnail_img_id, thumbnail_img_url, entity_id, module_id, module_type, module_type_id, tags
+    FROM get_posts($3, $4, $5::int[], $6, $7, $8, $9, $10, 0, 0)
+)
+SELECT
+    CAST((SELECT count(*) FROM cte) as integer) as total_count,
+    cte.id, cte.user_id, cte.title, cte.description, cte.content, cte.created_at, cte.deleted_at, cte.last_updated_at, cte.last_updated_user_id, cte.is_draft, cte.is_private, cte.thumbnail_img_id, cte.thumbnail_img_url, cte.entity_id, cte.module_id, cte.module_type, cte.module_type_id, cte.tags
+FROM cte
+ORDER BY created_at DESC
+LIMIT $2
+OFFSET $1
 `
 
-func (q *Queries) GetPostsByIDs(ctx context.Context, postIds []int32) ([]Post, error) {
-	rows, err := q.db.QueryContext(ctx, getPostsByIDs, pq.Array(postIds))
+type GetPostsParams struct {
+	PageOffset     int32          `json:"page_offset"`
+	PageLimit      int32          `json:"page_limit"`
+	IsPrivate      sql.NullBool   `json:"is_private"`
+	IsDraft        sql.NullBool   `json:"is_draft"`
+	Tags           []int32        `json:"tags"`
+	UserID         sql.NullInt32  `json:"user_id"`
+	ModuleID       sql.NullInt32  `json:"module_id"`
+	ModuleType     NullModuleType `json:"module_type"`
+	OrderBy        sql.NullString `json:"order_by"`
+	OrderDirection sql.NullString `json:"order_direction"`
+}
+
+type GetPostsRow struct {
+	TotalCount        int32          `json:"total_count"`
+	ID                int32          `json:"id"`
+	UserID            int32          `json:"user_id"`
+	Title             string         `json:"title"`
+	Description       sql.NullString `json:"description"`
+	Content           string         `json:"content"`
+	CreatedAt         time.Time      `json:"created_at"`
+	DeletedAt         sql.NullTime   `json:"deleted_at"`
+	LastUpdatedAt     sql.NullTime   `json:"last_updated_at"`
+	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
+	IsDraft           bool           `json:"is_draft"`
+	IsPrivate         bool           `json:"is_private"`
+	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
+	ThumbnailImgUrl   sql.NullString `json:"thumbnail_img_url"`
+	EntityID          sql.NullInt32  `json:"entity_id"`
+	ModuleID          sql.NullInt32  `json:"module_id"`
+	ModuleType        NullModuleType `json:"module_type"`
+	ModuleTypeID      sql.NullInt32  `json:"module_type_id"`
+	Tags              []int32        `json:"tags"`
+}
+
+func (q *Queries) GetPosts(ctx context.Context, arg GetPostsParams) ([]GetPostsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getPosts,
+		arg.PageOffset,
+		arg.PageLimit,
+		arg.IsPrivate,
+		arg.IsDraft,
+		pq.Array(arg.Tags),
+		arg.UserID,
+		arg.ModuleID,
+		arg.ModuleType,
+		arg.OrderBy,
+		arg.OrderDirection,
+	)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Post{}
+	items := []GetPostsRow{}
 	for rows.Next() {
-		var i Post
+		var i GetPostsRow
 		if err := rows.Scan(
+			&i.TotalCount,
 			&i.ID,
 			&i.UserID,
 			&i.Title,
@@ -258,6 +316,12 @@ func (q *Queries) GetPostsByIDs(ctx context.Context, postIds []int32) ([]Post, e
 			&i.IsDraft,
 			&i.IsPrivate,
 			&i.ThumbnailImgID,
+			&i.ThumbnailImgUrl,
+			&i.EntityID,
+			&i.ModuleID,
+			&i.ModuleType,
+			&i.ModuleTypeID,
+			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
 		}
@@ -272,60 +336,20 @@ func (q *Queries) GetPostsByIDs(ctx context.Context, postIds []int32) ([]Post, e
 	return items, nil
 }
 
-const getPostsByModule = `-- name: GetPostsByModule :many
-WITH cte AS (
-    SELECT
-        p.id, p.user_id, p.title, p.description, p.content, p.created_at, p.deleted_at, p.last_updated_at, p.last_updated_user_id, p.is_draft, p.is_private, p.thumbnail_img_id
-    FROM
-        posts p
-        LEFT JOIN view_entities e ON e.post_id = p.id
-        LEFT JOIN modules m ON m.id = e.module_id
-    WHERE
-        m.id = $3 AND
-        p.deleted_at IS NULL
-)
-SELECT
-    CAST((SELECT count(*) FROM cte) as integer) as total_count,
-    cte.id, cte.user_id, cte.title, cte.description, cte.content, cte.created_at, cte.deleted_at, cte.last_updated_at, cte.last_updated_user_id, cte.is_draft, cte.is_private, cte.thumbnail_img_id
-FROM cte
-ORDER BY created_at DESC
-LIMIT $2
-OFFSET $1
+const getPostsByIDs = `-- name: GetPostsByIDs :many
+SELECT id, user_id, title, description, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, thumbnail_img_id FROM posts WHERE id = ANY($1::int[])
 `
 
-type GetPostsByModuleParams struct {
-	PageOffset int32 `json:"page_offset"`
-	PageLimit  int32 `json:"page_limit"`
-	ModuleID   int32 `json:"module_id"`
-}
-
-type GetPostsByModuleRow struct {
-	TotalCount        int32          `json:"total_count"`
-	ID                int32          `json:"id"`
-	UserID            int32          `json:"user_id"`
-	Title             string         `json:"title"`
-	Description       sql.NullString `json:"description"`
-	Content           string         `json:"content"`
-	CreatedAt         time.Time      `json:"created_at"`
-	DeletedAt         sql.NullTime   `json:"deleted_at"`
-	LastUpdatedAt     sql.NullTime   `json:"last_updated_at"`
-	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
-	IsDraft           bool           `json:"is_draft"`
-	IsPrivate         bool           `json:"is_private"`
-	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
-}
-
-func (q *Queries) GetPostsByModule(ctx context.Context, arg GetPostsByModuleParams) ([]GetPostsByModuleRow, error) {
-	rows, err := q.db.QueryContext(ctx, getPostsByModule, arg.PageOffset, arg.PageLimit, arg.ModuleID)
+func (q *Queries) GetPostsByIDs(ctx context.Context, postIds []int32) ([]Post, error) {
+	rows, err := q.db.QueryContext(ctx, getPostsByIDs, pq.Array(postIds))
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []GetPostsByModuleRow{}
+	items := []Post{}
 	for rows.Next() {
-		var i GetPostsByModuleRow
+		var i Post
 		if err := rows.Scan(
-			&i.TotalCount,
 			&i.ID,
 			&i.UserID,
 			&i.Title,

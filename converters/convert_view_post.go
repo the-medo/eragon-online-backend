@@ -7,7 +7,7 @@ import (
 )
 
 //TODO: maybe, once generics will help... -_-
-// complete copy of ConvertGetPostsByModuleRow, but with different name
+// complete copy of ConvertGetPostsRow, but with different name
 
 func ConvertViewPost(viewPost db.ViewPost) *pb.ViewPost {
 	pbPost := &pb.ViewPost{

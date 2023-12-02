@@ -24,7 +24,7 @@ service Posts {
     };
   };
 
-  rpc GetPostsByModule(GetPostsByModuleRequest) returns (GetPostsByModuleResponse) {
+  rpc GetPosts(GetPostsRequest) returns (GetPostsResponse) {
     option (google.api.http) = {
       get: "/posts"
     };

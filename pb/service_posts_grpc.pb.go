@@ -20,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	Posts_GetPostById_FullMethodName        = "/pb.Posts/GetPostById"
-	Posts_GetPostsByModule_FullMethodName   = "/pb.Posts/GetPostsByModule"
+	Posts_GetPosts_FullMethodName           = "/pb.Posts/GetPosts"
 	Posts_GetPostHistory_FullMethodName     = "/pb.Posts/GetPostHistory"
 	Posts_GetPostHistoryById_FullMethodName = "/pb.Posts/GetPostHistoryById"
 	Posts_CreatePost_FullMethodName         = "/pb.Posts/CreatePost"
@@ -33,7 +33,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostsClient interface {
 	GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*Post, error)
-	GetPostsByModule(ctx context.Context, in *GetPostsByModuleRequest, opts ...grpc.CallOption) (*GetPostsByModuleResponse, error)
+	GetPosts(ctx context.Context, in *GetPostsRequest, opts ...grpc.CallOption) (*GetPostsResponse, error)
 	GetPostHistory(ctx context.Context, in *GetPostHistoryRequest, opts ...grpc.CallOption) (*GetPostHistoryResponse, error)
 	GetPostHistoryById(ctx context.Context, in *GetPostHistoryByIdRequest, opts ...grpc.CallOption) (*PostHistory, error)
 	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*Post, error)
@@ -58,9 +58,9 @@ func (c *postsClient) GetPostById(ctx context.Context, in *GetPostByIdRequest, o
 	return out, nil
 }
 
-func (c *postsClient) GetPostsByModule(ctx context.Context, in *GetPostsByModuleRequest, opts ...grpc.CallOption) (*GetPostsByModuleResponse, error) {
-	out := new(GetPostsByModuleResponse)
-	err := c.cc.Invoke(ctx, Posts_GetPostsByModule_FullMethodName, in, out, opts...)
+func (c *postsClient) GetPosts(ctx context.Context, in *GetPostsRequest, opts ...grpc.CallOption) (*GetPostsResponse, error) {
+	out := new(GetPostsResponse)
+	err := c.cc.Invoke(ctx, Posts_GetPosts_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +117,7 @@ func (c *postsClient) DeletePost(ctx context.Context, in *DeletePostRequest, opt
 // for forward compatibility
 type PostsServer interface {
 	GetPostById(context.Context, *GetPostByIdRequest) (*Post, error)
-	GetPostsByModule(context.Context, *GetPostsByModuleRequest) (*GetPostsByModuleResponse, error)
+	GetPosts(context.Context, *GetPostsRequest) (*GetPostsResponse, error)
 	GetPostHistory(context.Context, *GetPostHistoryRequest) (*GetPostHistoryResponse, error)
 	GetPostHistoryById(context.Context, *GetPostHistoryByIdRequest) (*PostHistory, error)
 	CreatePost(context.Context, *CreatePostRequest) (*Post, error)
@@ -133,8 +133,8 @@ type UnimplementedPostsServer struct {
 func (UnimplementedPostsServer) GetPostById(context.Context, *GetPostByIdRequest) (*Post, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostById not implemented")
 }
-func (UnimplementedPostsServer) GetPostsByModule(context.Context, *GetPostsByModuleRequest) (*GetPostsByModuleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetPostsByModule not implemented")
+func (UnimplementedPostsServer) GetPosts(context.Context, *GetPostsRequest) (*GetPostsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPosts not implemented")
 }
 func (UnimplementedPostsServer) GetPostHistory(context.Context, *GetPostHistoryRequest) (*GetPostHistoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostHistory not implemented")
@@ -182,20 +182,20 @@ func _Posts_GetPostById_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Posts_GetPostsByModule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetPostsByModuleRequest)
+func _Posts_GetPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPostsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PostsServer).GetPostsByModule(ctx, in)
+		return srv.(PostsServer).GetPosts(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Posts_GetPostsByModule_FullMethodName,
+		FullMethod: Posts_GetPosts_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PostsServer).GetPostsByModule(ctx, req.(*GetPostsByModuleRequest))
+		return srv.(PostsServer).GetPosts(ctx, req.(*GetPostsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -302,8 +302,8 @@ var Posts_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Posts_GetPostById_Handler,
 		},
 		{
-			MethodName: "GetPostsByModule",
-			Handler:    _Posts_GetPostsByModule_Handler,
+			MethodName: "GetPosts",
+			Handler:    _Posts_GetPosts_Handler,
 		},
 		{
 			MethodName: "GetPostHistory",

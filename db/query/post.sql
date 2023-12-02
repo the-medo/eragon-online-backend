@@ -36,25 +36,19 @@ ORDER BY created_at DESC
 LIMIT @page_limit
 OFFSET @page_offset;
 
--- name: GetPostsByModule :many
+-- name: GetPosts :many
 WITH cte AS (
     SELECT
-        p.*
-    FROM
-        posts p
-        LEFT JOIN view_entities e ON e.post_id = p.id
-        LEFT JOIN modules m ON m.id = e.module_id
-    WHERE
-        m.id = sqlc.arg(module_id) AND
-        p.deleted_at IS NULL
+        *
+    FROM get_posts(sqlc.narg(is_private), sqlc.narg(is_draft), sqlc.narg(tags)::int[], sqlc.narg(user_id), sqlc.narg(module_id), sqlc.narg(module_type), sqlc.narg(order_by), sqlc.narg(order_direction), 0, 0)
 )
 SELECT
     CAST((SELECT count(*) FROM cte) as integer) as total_count,
     cte.*
 FROM cte
 ORDER BY created_at DESC
-LIMIT @page_limit
-OFFSET @page_offset;
+LIMIT sqlc.arg(page_limit)
+OFFSET sqlc.arg(page_offset);
 
 -- name: UpdatePost :one
 UPDATE posts

@@ -9,7 +9,7 @@ import (
 //TODO: maybe, once generics will help... -_-
 // complete copy of ConvertViewPost, but with different name
 
-func ConvertGetPostsByModuleRow(viewPost db.GetPostsByModuleRow) *pb.Post {
+func ConvertGetPostsRow(viewPost db.GetPostsRow) *pb.Post {
 	pbPost := &pb.Post{
 		Id:        viewPost.ID,
 		UserId:    viewPost.UserID,

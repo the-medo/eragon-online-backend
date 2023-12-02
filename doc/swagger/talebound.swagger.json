@@ -2813,12 +2813,12 @@
       "get": {
         "summary": "Get posts",
         "description": "returns posts based on module",
-        "operationId": "Posts_GetPostsByModule",
+        "operationId": "Posts_GetPosts",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbGetPostsByModuleResponse"
+              "$ref": "#/definitions/pbGetPostsResponse"
             }
           },
           "default": {
@@ -2835,6 +2835,42 @@
             "required": false,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "isDraft",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "isPrivate",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           },
           {
             "name": "limit",
@@ -5182,7 +5218,7 @@
         }
       }
     },
-    "pbGetPostsByModuleResponse": {
+    "pbGetPostsResponse": {
       "type": "object",
       "properties": {
         "posts": {

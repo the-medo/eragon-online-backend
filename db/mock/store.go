@@ -1882,6 +1882,21 @@ func (mr *MockStoreMockRecorder) GetPostHistoryByPostId(arg0, arg1 interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostHistoryByPostId", reflect.TypeOf((*MockStore)(nil).GetPostHistoryByPostId), arg0, arg1)
 }
 
+// GetPosts mocks base method.
+func (m *MockStore) GetPosts(arg0 context.Context, arg1 db.GetPostsParams) ([]db.GetPostsRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPosts", arg0, arg1)
+	ret0, _ := ret[0].([]db.GetPostsRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPosts indicates an expected call of GetPosts.
+func (mr *MockStoreMockRecorder) GetPosts(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPosts", reflect.TypeOf((*MockStore)(nil).GetPosts), arg0, arg1)
+}
+
 // GetPostsByIDs mocks base method.
 func (m *MockStore) GetPostsByIDs(arg0 context.Context, arg1 []int32) ([]db.Post, error) {
 	m.ctrl.T.Helper()
@@ -1895,21 +1910,6 @@ func (m *MockStore) GetPostsByIDs(arg0 context.Context, arg1 []int32) ([]db.Post
 func (mr *MockStoreMockRecorder) GetPostsByIDs(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostsByIDs", reflect.TypeOf((*MockStore)(nil).GetPostsByIDs), arg0, arg1)
-}
-
-// GetPostsByModule mocks base method.
-func (m *MockStore) GetPostsByModule(arg0 context.Context, arg1 db.GetPostsByModuleParams) ([]db.GetPostsByModuleRow, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetPostsByModule", arg0, arg1)
-	ret0, _ := ret[0].([]db.GetPostsByModuleRow)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetPostsByModule indicates an expected call of GetPostsByModule.
-func (mr *MockStoreMockRecorder) GetPostsByModule(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostsByModule", reflect.TypeOf((*MockStore)(nil).GetPostsByModule), arg0, arg1)
 }
 
 // GetPostsByUserId mocks base method.
