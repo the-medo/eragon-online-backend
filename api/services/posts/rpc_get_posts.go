@@ -110,16 +110,22 @@ func validateGetPosts(req *pb.GetPostsRequest) (violations []*errdetails.BadRequ
 		}
 	}
 
-	if err := validator.ValidateLimit(req.GetLimit()); err != nil {
-		violations = append(violations, e.FieldViolation("limit", err))
+	if req.Limit != nil {
+		if err := validator.ValidateLimit(req.GetLimit()); err != nil {
+			violations = append(violations, e.FieldViolation("limit", err))
+		}
 	}
 
-	if err := validator.ValidateOffset(req.GetOffset()); err != nil {
-		violations = append(violations, e.FieldViolation("offset", err))
+	if req.Offset != nil {
+		if err := validator.ValidateOffset(req.GetOffset()); err != nil {
+			violations = append(violations, e.FieldViolation("offset", err))
+		}
 	}
 
-	if err := validator.ValidateUniversalId(req.GetModuleId()); err != nil {
-		violations = append(violations, e.FieldViolation("module_id", err))
+	if req.ModuleId != nil {
+		if err := validator.ValidateUniversalId(req.GetModuleId()); err != nil {
+			violations = append(violations, e.FieldViolation("module_id", err))
+		}
 	}
 
 	return violations
