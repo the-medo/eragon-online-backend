@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/modules/module_type.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message Location {
+  int32 id = 1;
+  string name = 2;
+  optional string description = 3;
+  optional int32 postId = 4;
+  optional int32 thumbnailImageId = 5;
+}
+
+message ViewLocation {
+  int32 id = 1;
+  string name = 2;
+  optional string description = 3;
+  optional int32 postId = 4;
+  optional string postTitle = 5;
+  optional int32 thumbnailImageId = 6;
+  optional string thumbnailImageUrl = 7;
+  int32 entityId = 8;
+  int32 moduleId = 9;
+  ModuleType moduleType = 10;
+  int32 moduleTypeId = 11;
+  repeated int32 tags = 12;
+}

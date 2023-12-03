@@ -6,14 +6,19 @@ INSERT INTO images
     name,
     url,
     base_url,
-    user_id
+    user_id,
+    width,
+    height
 )
 VALUES
-    (@img_guid, @img_type_id, @name, @url, @base_url, @user_id)
+    (@img_guid, @img_type_id, @name, @url, @base_url, @user_id, @width, @height)
 RETURNING *;
 
 -- name: GetImageById :one
 SELECT * FROM images WHERE id = @id LIMIT 1;
+
+-- name: GetImagesByIDs :many
+SELECT * FROM images WHERE id = ANY(@image_ids::int[]);
 
 -- name: GetImageByGUID :one
 SELECT * FROM images WHERE img_guid = @img_guid LIMIT 1;
@@ -29,7 +34,9 @@ SET
     name = COALESCE(sqlc.arg(name), name),
     url = COALESCE(sqlc.arg(url), url),
     base_url = COALESCE(sqlc.arg(base_url), base_url),
-    user_id = COALESCE(sqlc.arg(user_id), user_id)
+    user_id = COALESCE(sqlc.arg(user_id), user_id),
+    width = COALESCE(sqlc.arg(width), width),
+    height = COALESCE(sqlc.arg(height), height)
 WHERE
     id = sqlc.arg(id)
 RETURNING *;
@@ -38,18 +45,15 @@ RETURNING *;
 DELETE FROM images WHERE id = @id;
 
 -- name: GetImages :many
+WITH cte AS (
+    SELECT
+        *
+    FROM get_images(sqlc.narg(tags)::int[], sqlc.narg(width), sqlc.narg(height),  sqlc.narg(user_id), sqlc.narg(module_id), sqlc.narg(module_type), sqlc.narg(order_by), sqlc.narg(order_direction), 0, 0)
+)
 SELECT
-    *
-FROM
-    images
-WHERE
-    (user_id = COALESCE(sqlc.narg(user_id), user_id)) AND
-    (image_type_id = COALESCE(sqlc.narg(image_type_id), image_type_id))
-ORDER BY id DESC
-LIMIT sqlc.arg(page_limit) OFFSET sqlc.arg(page_offset);
-
--- name: GetImagesCount :one
-SELECT COUNT(*) FROM images
-WHERE
-    (user_id = COALESCE(sqlc.narg(user_id), user_id)) AND
-    (image_type_id = COALESCE(sqlc.narg(image_type_id), image_type_id));
+    CAST((SELECT count(*) FROM cte) as integer) as total_count,
+    cte.*
+FROM cte
+ORDER BY created_at DESC
+LIMIT sqlc.arg(page_limit)
+    OFFSET sqlc.arg(page_offset);

@@ -1,3 +1,32 @@
+DROP VIEW view_menu_item_posts;
+DROP PROCEDURE IF EXISTS move_menu_item_post(INT, INT, INT);
+DROP VIEW view_world_tags_available;
+
+DROP VIEW view_posts;
+CREATE VIEW view_posts AS
+SELECT
+    p.*,
+    pt.name as post_type_name,
+    pt.draftable as post_type_draftable,
+    pt.privatable as post_type_privatable
+FROM
+    posts p
+    JOIN post_types pt ON p.post_type_id = pt.id
+;
+
+-- Alter the `post_history` table
+ALTER TABLE "post_history"
+    DROP COLUMN "description",
+    DROP COLUMN "thumbnail_img_id";
+
+-- Alter the `posts` table
+ALTER TABLE "posts"
+    DROP COLUMN "description",
+    DROP COLUMN "thumbnail_img_id";
+
+DROP VIEW IF EXISTS view_menus;
+DROP PROCEDURE IF EXISTS move_menu_item(INT, INT);
+DROP PROCEDURE IF EXISTS move_group_up(INT);
 
 DELETE FROM "image_types" WHERE id IN (1200, 1300);
 

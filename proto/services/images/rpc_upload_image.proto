@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+import "services/images/image.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message UploadImageRequest {
+  string filename = 1;
+  bytes data = 2;
+  int32 imageTypeId = 3;
+  int32 width = 4;
+  int32 height = 5;
+}
+
+message UploadImageResponse {
+  string id = 1;
+  string filename = 2;
+  repeated string variants = 3;
+  google.protobuf.Timestamp uploadedAt = 4;
+  int32 width = 5;
+  int32 height = 6;
+}
+
+message UploadUserAvatarRequest {
+  int32 userId = 1;
+  bytes data = 2;
+}
+
+message UploadUserAvatarResponse {
+  int32 userId = 1;
+  Image image = 2;
+}

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/modules/module_type.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message Tag {
+  int32 id = 1;
+  string tag = 2;
+}
+
+message ViewTag {
+  int32 id = 1;
+  string tag = 2;
+  ModuleType moduleType = 3;
+  int32 count = 4;
+}
+
+message EntityTagAvailable {
+  int32 id = 1;
+  string tag = 2;
+  int32 moduleId = 3;
+}

@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+import "services/posts/post.proto";
+
+package pb;
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+
+message GetPostsRequest {
+  optional int32 moduleId = 1;
+  optional int32 userId = 2;
+  repeated int32 tags = 3;
+  optional string orderBy = 4;
+  optional bool isDraft = 5;
+  optional bool isPrivate = 6;
+  optional int32 limit = 7;
+  optional int32 offset = 8;
+}
+
+message GetPostsResponse {
+  repeated Post posts = 1;
+  int32 totalCount = 2;
+}
+
+message GetPostByIdRequest {
+  int32 postId = 1;
+}
+
+message GetUserPostsRequest {
+  int32 userId = 1;
+  optional int32 limit = 2;
+  optional int32 offset = 3;
+}
+
+message GetUserPostsResponse {
+  repeated ViewPost posts = 1;
+}
+
+message CreatePostRequest {
+  string title = 1;
+  string content = 2;
+  optional bool isDraft = 3;
+  optional bool isPrivate = 4;
+}
+
+message UpdatePostRequest {
+  int32 postId = 1;
+  optional string title = 2;
+  optional string content = 3;
+  optional string description = 4;
+  optional bool isDraft = 5;
+  optional bool isPrivate = 6;
+  optional int32 imageThumbnailId = 7;
+}
+
+message DeletePostRequest {
+  int32 postId = 1;
+}
+
+message DeletePostResponse {
+  bool success = 1;
+  string message = 2;
+}

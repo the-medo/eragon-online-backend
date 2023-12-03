@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 )
 
 const addUserPasswordReset = `-- name: AddUserPasswordReset :one
@@ -80,6 +81,20 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 	return i, err
 }
 
+const deleteUserModule = `-- name: DeleteUserModule :exec
+DELETE FROM user_modules WHERE user_id = $1 AND module_id = $2
+`
+
+type DeleteUserModuleParams struct {
+	UserID   int32 `json:"user_id"`
+	ModuleID int32 `json:"module_id"`
+}
+
+func (q *Queries) DeleteUserModule(ctx context.Context, arg DeleteUserModuleParams) error {
+	_, err := q.db.ExecContext(ctx, deleteUserModule, arg.UserID, arg.ModuleID)
+	return err
+}
+
 const deleteUserPasswordReset = `-- name: DeleteUserPasswordReset :exec
 DELETE FROM user_password_reset WHERE user_id = $1 AND code = $2
 `
@@ -120,12 +135,12 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (ViewUser, e
 }
 
 const getUserById = `-- name: GetUserById :one
-SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id, avatar_image_id, avatar_image_url, avatar_image_guid, introduction_post_deleted_at FROM view_users WHERE id = $1 LIMIT 1
+SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id FROM users WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) GetUserById(ctx context.Context, id int32) (ViewUser, error) {
+func (q *Queries) GetUserById(ctx context.Context, id int32) (User, error) {
 	row := q.db.QueryRowContext(ctx, getUserById, id)
-	var i ViewUser
+	var i User
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
@@ -136,10 +151,6 @@ func (q *Queries) GetUserById(ctx context.Context, id int32) (ViewUser, error) {
 		&i.CreatedAt,
 		&i.IsEmailVerified,
 		&i.IntroductionPostID,
-		&i.AvatarImageID,
-		&i.AvatarImageUrl,
-		&i.AvatarImageGuid,
-		&i.IntroductionPostDeletedAt,
 	)
 	return i, err
 }
@@ -167,6 +178,78 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (ViewU
 		&i.IntroductionPostDeletedAt,
 	)
 	return i, err
+}
+
+const getUserModules = `-- name: GetUserModules :many
+SELECT
+    m.id, m.module_type, m.menu_id, m.header_img_id, m.thumbnail_img_id, m.avatar_img_id, m.world_id, m.system_id, m.character_id, m.quest_id,
+    um.user_id,
+    um.admin,
+    um.favorite,
+    um.following,
+    um.entity_notifications
+FROM
+    user_modules um
+    JOIN modules m ON um.module_id = m.id
+WHERE
+    user_id = $1
+`
+
+type GetUserModulesRow struct {
+	ID                  int32         `json:"id"`
+	ModuleType          ModuleType    `json:"module_type"`
+	MenuID              int32         `json:"menu_id"`
+	HeaderImgID         sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID      sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID         sql.NullInt32 `json:"avatar_img_id"`
+	WorldID             sql.NullInt32 `json:"world_id"`
+	SystemID            sql.NullInt32 `json:"system_id"`
+	CharacterID         sql.NullInt32 `json:"character_id"`
+	QuestID             sql.NullInt32 `json:"quest_id"`
+	UserID              int32         `json:"user_id"`
+	Admin               bool          `json:"admin"`
+	Favorite            bool          `json:"favorite"`
+	Following           bool          `json:"following"`
+	EntityNotifications []EntityType  `json:"entity_notifications"`
+}
+
+func (q *Queries) GetUserModules(ctx context.Context, userID int32) ([]GetUserModulesRow, error) {
+	rows, err := q.db.QueryContext(ctx, getUserModules, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetUserModulesRow{}
+	for rows.Next() {
+		var i GetUserModulesRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.ModuleType,
+			&i.MenuID,
+			&i.HeaderImgID,
+			&i.ThumbnailImgID,
+			&i.AvatarImgID,
+			&i.WorldID,
+			&i.SystemID,
+			&i.CharacterID,
+			&i.QuestID,
+			&i.UserID,
+			&i.Admin,
+			&i.Favorite,
+			&i.Following,
+			pq.Array(&i.EntityNotifications),
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const getUserPasswordReset = `-- name: GetUserPasswordReset :one
@@ -230,7 +313,7 @@ func (q *Queries) GetUserRoles(ctx context.Context, userID int32) ([]GetUserRole
 
 const getUsers = `-- name: GetUsers :many
 SELECT
-    u.id, username, hashed_password, email, img_id, password_changed_at, u.created_at, is_email_verified, introduction_post_id, i.id, image_type_id, name, url, i.created_at, base_url, img_guid, user_id
+    u.id, username, hashed_password, email, img_id, password_changed_at, u.created_at, is_email_verified, introduction_post_id, i.id, user_id, img_guid, image_type_id, name, url, base_url, i.created_at, width, height
 FROM
     users AS u
     LEFT JOIN images i ON u.img_id = i.id
@@ -255,13 +338,15 @@ type GetUsersRow struct {
 	IsEmailVerified    bool           `json:"is_email_verified"`
 	IntroductionPostID sql.NullInt32  `json:"introduction_post_id"`
 	ID_2               sql.NullInt32  `json:"id_2"`
+	UserID             sql.NullInt32  `json:"user_id"`
+	ImgGuid            uuid.NullUUID  `json:"img_guid"`
 	ImageTypeID        sql.NullInt32  `json:"image_type_id"`
 	Name               sql.NullString `json:"name"`
 	Url                sql.NullString `json:"url"`
-	CreatedAt_2        sql.NullTime   `json:"created_at_2"`
 	BaseUrl            sql.NullString `json:"base_url"`
-	ImgGuid            uuid.NullUUID  `json:"img_guid"`
-	UserID             sql.NullInt32  `json:"user_id"`
+	CreatedAt_2        sql.NullTime   `json:"created_at_2"`
+	Width              sql.NullInt32  `json:"width"`
+	Height             sql.NullInt32  `json:"height"`
 }
 
 func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error) {
@@ -284,13 +369,52 @@ func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersR
 			&i.IsEmailVerified,
 			&i.IntroductionPostID,
 			&i.ID_2,
+			&i.UserID,
+			&i.ImgGuid,
 			&i.ImageTypeID,
 			&i.Name,
 			&i.Url,
-			&i.CreatedAt_2,
 			&i.BaseUrl,
-			&i.ImgGuid,
-			&i.UserID,
+			&i.CreatedAt_2,
+			&i.Width,
+			&i.Height,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getUsersByIDs = `-- name: GetUsersByIDs :many
+SELECT id, username, hashed_password, email, img_id, password_changed_at, created_at, is_email_verified, introduction_post_id FROM users WHERE id = ANY($1::int[])
+`
+
+func (q *Queries) GetUsersByIDs(ctx context.Context, userIds []int32) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, getUsersByIDs, pq.Array(userIds))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []User{}
+	for rows.Next() {
+		var i User
+		if err := rows.Scan(
+			&i.ID,
+			&i.Username,
+			&i.HashedPassword,
+			&i.Email,
+			&i.ImgID,
+			&i.PasswordChangedAt,
+			&i.CreatedAt,
+			&i.IsEmailVerified,
+			&i.IntroductionPostID,
 		); err != nil {
 			return nil, err
 		}
@@ -404,6 +528,48 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		&i.CreatedAt,
 		&i.IsEmailVerified,
 		&i.IntroductionPostID,
+	)
+	return i, err
+}
+
+const upsertUserModule = `-- name: UpsertUserModule :one
+INSERT INTO user_modules (user_id, module_id, admin, favorite, following, entity_notifications)
+VALUES ($1, $2, $3, $4, $5, $6::entity_type[])
+ON CONFLICT (user_id, module_id)
+    DO UPDATE SET
+      admin = COALESCE(EXCLUDED.admin, user_modules.admin),
+      favorite = COALESCE(EXCLUDED.favorite, user_modules.favorite),
+      following = COALESCE(EXCLUDED.following, user_modules.following),
+      entity_notifications = COALESCE(EXCLUDED.entity_notifications, user_modules.entity_notifications)
+RETURNING user_id, module_id, admin, favorite, following, entity_notifications
+`
+
+type UpsertUserModuleParams struct {
+	UserID              int32        `json:"user_id"`
+	ModuleID            int32        `json:"module_id"`
+	Admin               sql.NullBool `json:"admin"`
+	Favorite            sql.NullBool `json:"favorite"`
+	Following           sql.NullBool `json:"following"`
+	EntityNotifications []EntityType `json:"entity_notifications"`
+}
+
+func (q *Queries) UpsertUserModule(ctx context.Context, arg UpsertUserModuleParams) (UserModule, error) {
+	row := q.db.QueryRowContext(ctx, upsertUserModule,
+		arg.UserID,
+		arg.ModuleID,
+		arg.Admin,
+		arg.Favorite,
+		arg.Following,
+		pq.Array(arg.EntityNotifications),
+	)
+	var i UserModule
+	err := row.Scan(
+		&i.UserID,
+		&i.ModuleID,
+		&i.Admin,
+		&i.Favorite,
+		&i.Following,
+		pq.Array(&i.EntityNotifications),
 	)
 	return i, err
 }

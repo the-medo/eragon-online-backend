@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+import "services/modules/module.proto";
+import "services/modules/module_type.proto";
+
+package pb;
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message GetModuleIdRequest {
+  optional int32 worldId = 1;
+  optional int32 questId = 2;
+  optional int32 characterId = 3;
+  optional int32 systemId = 4;
+}
+
+message GetModuleIdResponse {
+  int32 moduleId = 1;
+  ModuleType moduleType = 2;
+}
+
+message GetModuleByIdRequest {
+  int32 moduleId = 1;
+}
+
+message GetModuleAdminsRequest {
+  int32 moduleId = 1;
+}
+
+message GetModuleAdminsResponse {
+  repeated ModuleAdmin moduleAdmins = 1;
+}
+
+message CreateModuleAdminRequest {
+  int32 moduleId = 1;
+  string motivationalLetter = 2;
+}
+
+message UpdateModuleAdminRequest {
+  int32 moduleId = 1;
+  int32 userId = 2;
+  optional bool superAdmin = 3;
+  optional int32 approved = 4;
+  optional string motivationalLetter = 5;
+}
+
+message DeleteModuleAdminRequest {
+  int32 moduleId = 1;
+  int32 userId = 2;
+}

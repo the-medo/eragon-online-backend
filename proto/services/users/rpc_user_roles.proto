@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/users/role.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message GetUserRolesRequest {
+  int32 userId = 1;
+}
+
+message GetUserRolesResponse {
+  repeated Role role = 1;
+}
+
+message AddRoleToUserRequest {
+  int32 userId = 1;
+  int32 roleId = 2;
+}
+
+message AddRoleToUserResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message RemoveRoleFromUserRequest {
+  int32 userId = 1;
+  int32 roleId = 2;
+}
+
+message RemoveRoleFromUserResponse {
+  bool success = 1;
+  string message = 2;
+}

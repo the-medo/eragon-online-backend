@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+import "services/modules/module_type.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+
+enum ImageTypeVariant {
+  unknownImageTypeVariant = 0;
+  v30x30 = 1;
+  v100x100 = 2;
+  v150x150 = 3;
+  v200x200 = 4;
+  v300x300 = 5;
+  v1200x800 = 6;
+  v1920x300 = 7;
+  public = 8;
+  original = 9;
+  v600x400 = 10;
+  v400x600 = 11;
+  v300x200 = 12;
+  v200x300 = 13;
+}
+
+message ImageType {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  ImageTypeVariant variant = 4;
+}
+
+message Image {
+  int32 id = 1;
+  string imgGuid = 2;
+  int32 imageTypeId = 3;
+  string name = 4;
+  string url = 5;
+  string baseUrl = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  int32 userId = 8;
+  int32 width = 9;
+  int32 height = 10;
+}
+
+message ViewImage {
+  int32 id = 1;
+  string imgGuid = 2;
+  int32 imageTypeId = 3;
+  string name = 4;
+  string url = 5;
+  string baseUrl = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  int32 userId = 8;
+  int32 width = 9;
+  int32 height = 10;
+  optional int32 entityId = 11;
+  optional int32 moduleId = 12;
+  optional ModuleType moduleType = 13;
+  optional int32 moduleTypeId = 14;
+  repeated int32 tags = 15;
+}

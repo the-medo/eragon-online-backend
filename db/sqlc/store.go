@@ -10,7 +10,7 @@ import (
 type Store interface {
 	Querier
 	CreateUserTx(ctx context.Context, arg CreateUserTxParams) (CreateUserTxResult, error)
-	CreateWorldTx(ctx context.Context, arg CreateWorldTxParams) (ViewWorld, error)
+	CreateWorldTx(ctx context.Context, arg CreateWorldTxParams) (CreateWorldTxResult, error)
 	VerifyEmailTx(ctx context.Context, arg VerifyEmailTxParams) (VerifyEmailTxResult, error)
 	ResetPasswordRequestTx(ctx context.Context, arg ResetPasswordRequestTxParams) (ResetPasswordRequestTxResult, error)
 	ResetPasswordVerifyTx(ctx context.Context, arg ResetPasswordVerifyTxParams) (ResetPasswordVerifyTxResult, error)

@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/tags/tag.proto";
+import "services/modules/module_type.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+
+message GetModuleTypeAvailableTagsRequest {
+  ModuleType moduleType = 1;
+}
+
+message GetModuleTypeAvailableTagsResponse {
+  repeated ViewTag tags = 1;
+}
+
+message CreateModuleTypeAvailableTagRequest {
+  ModuleType moduleType = 1;
+  string tag = 2;
+}
+
+message UpdateModuleTypeAvailableTagRequest {
+  int32 tagId = 1;
+  string newTag = 2;
+}
+
+message DeleteModuleTypeAvailableTagRequest {
+  int32 tagId = 1;
+}
+
+message CreateModuleTagRequest {
+  int32 moduleId = 1;
+  int32 tagId = 2;
+}
+
+message CreateModuleTagResponse {
+  int32 moduleId = 1;
+  int32 tagId = 2;
+}
+
+message DeleteModuleTagRequest {
+  int32 moduleId = 1;
+  int32 tagId = 2;
+}
+
+
+message GetModuleEntityAvailableTagsRequest {
+  int32 moduleId = 1;
+}
+
+message GetModuleEntityAvailableTagsResponse {
+  repeated Tag tags = 1;
+}
+
+message CreateModuleEntityAvailableTagRequest {
+  int32 moduleId = 1;
+  string tag = 2;
+}
+
+message UpdateModuleEntityAvailableTagRequest {
+  int32 tagId = 1;
+  string newTag = 2;
+}
+
+message DeleteModuleEntityAvailableTagRequest {
+  int32 tagId = 1;
+}
+
+message CreateEntityTagRequest {
+  int32 entityId = 1;
+  int32 tagId = 2;
+}
+
+message CreateEntityTagResponse {
+  int32 entityId = 1;
+  int32 tagId = 2;
+}
+
+message DeleteEntityTagRequest {
+  int32 entityId = 1;
+  int32 tagId = 2;
+}

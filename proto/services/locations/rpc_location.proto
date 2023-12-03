@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/locations/location.proto";
+import "services/modules/module.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message GetLocationByIdRequest {
+  int32 locationId = 1;
+}
+
+message GetLocationsRequest {
+  ModuleDefinition module = 1;
+}
+
+message GetLocationsResponse {
+  repeated ViewLocation locations = 1;
+}
+
+message UpdateLocationRequest {
+  int32 locationId = 1;
+  optional string name = 2;
+  optional string description = 3;
+  optional int32 postId = 4;
+  optional int32 thumbnailImageId = 5;
+}
+
+message CreateLocationRequest {
+  int32 moduleId = 1;
+  string name = 2;
+  optional string description = 3;
+  optional int32 thumbnailImageId = 4;
+}
+
+message CreateLocationPostRequest {
+  int32 locationId = 1;
+}
+
+message DeleteBulkLocationRequest {
+  repeated int32 locationIds = 1;
+}
+
+message DeleteLocationRequest {
+  int32 locationId = 1;
+}
+
+

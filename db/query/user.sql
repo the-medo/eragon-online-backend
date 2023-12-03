@@ -9,8 +9,11 @@ VALUES
     ($1, $2, $3)
 RETURNING *;
 
+-- name: GetUsersByIDs :many
+SELECT * FROM users WHERE id = ANY(@user_ids::int[]);
+
 -- name: GetUserById :one
-SELECT * FROM view_users WHERE id = $1 LIMIT 1;
+SELECT * FROM users WHERE id = $1 LIMIT 1;
 
 -- name: GetUserByUsername :one
 SELECT * FROM view_users WHERE username = $1 LIMIT 1;
@@ -76,3 +79,32 @@ SELECT * FROM user_password_reset WHERE code = @code AND expired_at > NOW() LIMI
 
 -- name: DeleteUserPasswordReset :exec
 DELETE FROM user_password_reset WHERE user_id = @user_id AND code = @code;
+
+-- name: GetUserModules :many
+SELECT
+    m.*,
+    um.user_id,
+    um.admin,
+    um.favorite,
+    um.following,
+    um.entity_notifications
+FROM
+    user_modules um
+    JOIN modules m ON um.module_id = m.id
+WHERE
+    user_id = @user_id
+;
+
+-- name: UpsertUserModule :one
+INSERT INTO user_modules (user_id, module_id, admin, favorite, following, entity_notifications)
+VALUES (sqlc.arg(user_id), sqlc.arg(module_id), sqlc.narg(admin), sqlc.narg(favorite), sqlc.narg(following), sqlc.narg(entity_notifications)::entity_type[])
+ON CONFLICT (user_id, module_id)
+    DO UPDATE SET
+      admin = COALESCE(EXCLUDED.admin, user_modules.admin),
+      favorite = COALESCE(EXCLUDED.favorite, user_modules.favorite),
+      following = COALESCE(EXCLUDED.following, user_modules.following),
+      entity_notifications = COALESCE(EXCLUDED.entity_notifications, user_modules.entity_notifications)
+RETURNING *;
+
+-- name: DeleteUserModule :exec
+DELETE FROM user_modules WHERE user_id = sqlc.arg(user_id) AND module_id = sqlc.arg(module_id);

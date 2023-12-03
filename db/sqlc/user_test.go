@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func createRandomUser(t *testing.T) User {
+func CreateRandomUser(t *testing.T) User {
 	hashedPassword, err := util.HashPassword(util.RandomString(6))
 	require.NoError(t, err)
 
@@ -34,11 +34,11 @@ func createRandomUser(t *testing.T) User {
 }
 
 func TestCreateUser(t *testing.T) {
-	createRandomUser(t)
+	CreateRandomUser(t)
 }
 
 func TestGetUserByUsername(t *testing.T) {
-	user1 := createRandomUser(t)
+	user1 := CreateRandomUser(t)
 	user2, err := testQueries.GetUserByUsername(context.Background(), user1.Username)
 
 	require.NoError(t, err)
@@ -53,7 +53,7 @@ func TestGetUserByUsername(t *testing.T) {
 }
 
 func TestUpdateUserOnlyUsername(t *testing.T) {
-	oldUser := createRandomUser(t)
+	oldUser := CreateRandomUser(t)
 
 	newUsername := util.RandomOwner()
 	updatedUser, err := testQueries.UpdateUser(context.Background(), UpdateUserParams{
@@ -72,7 +72,7 @@ func TestUpdateUserOnlyUsername(t *testing.T) {
 }
 
 func TestUpdateUserOnlyEmail(t *testing.T) {
-	oldUser := createRandomUser(t)
+	oldUser := CreateRandomUser(t)
 
 	newEmail := util.RandomEmail()
 	updatedUser, err := testQueries.UpdateUser(context.Background(), UpdateUserParams{
@@ -91,7 +91,7 @@ func TestUpdateUserOnlyEmail(t *testing.T) {
 }
 
 func TestUpdateUserOnlyHashedPassword(t *testing.T) {
-	oldUser := createRandomUser(t)
+	oldUser := CreateRandomUser(t)
 
 	newPassword := util.RandomString(8)
 	newHashedPassword, err := util.HashPassword(newPassword)
@@ -110,7 +110,7 @@ func TestUpdateUserOnlyHashedPassword(t *testing.T) {
 }
 
 func TestUpdateUserAllFields(t *testing.T) {
-	oldUser := createRandomUser(t)
+	oldUser := CreateRandomUser(t)
 
 	newUsername := util.RandomOwner()
 	newEmail := util.RandomEmail()

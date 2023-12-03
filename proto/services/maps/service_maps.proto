@@ -1,0 +1,194 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "services/maps/rpc_map.proto";
+import "services/maps/map.proto";
+import "google/protobuf/empty.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Maps {
+
+  rpc GetMapById(GetMapByIdRequest) returns (Map) {
+    option (google.api.http) = {
+      get: "/maps/{mapId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get map by id";
+      summary: "Get map by id";
+    };
+  };
+
+  rpc GetMaps(GetMapsRequest) returns (GetMapsResponse) {
+    option (google.api.http) = {
+      get: "/maps"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns maps based on modules (world or quest)";
+      summary: "Get maps";
+    };
+  };
+
+  rpc CreateMap(CreateMapRequest) returns (CreateMapResponse) {
+    option (google.api.http) = {
+      post: "/maps"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates a new map for world or quest";
+      summary: "Create map";
+    };
+  };
+
+  rpc UpdateMap(UpdateMapRequest) returns (Map) {
+    option (google.api.http) = {
+      patch: "/maps/{mapId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates map properties";
+      summary: "Update map";
+    };
+  };
+
+  rpc DeleteMap(DeleteMapRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/maps/{mapId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes a map from the world or quest";
+      summary: "Delete map";
+    };
+  };
+
+  rpc GetMapLayers(GetMapLayersRequest) returns (GetMapLayersResponse) {
+    option (google.api.http) = {
+      get: "/maps/{mapId}/layers"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns layers of the map";
+      summary: "Get map layers";
+    };
+  }
+
+  rpc CreateMapLayer(CreateMapLayerRequest) returns (ViewMapLayer) {
+    option (google.api.http) = {
+      post: "/maps/{mapId}/layers"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates a new layer for the map";
+      summary: "Create map layer";
+    };
+  }
+
+  rpc DeleteMapLayer(DeleteMapLayerRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/maps/{mapId}/layers/{layerId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes a layer from the map";
+      summary: "Delete map layer";
+    };
+  }
+
+  rpc UpdateMapLayer(UpdateMapLayerRequest) returns (ViewMapLayer) {
+    option (google.api.http) = {
+      patch: "/maps/{mapId}/layers/{layerId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates layer properties";
+      summary: "Update map layer";
+    };
+  }
+
+  rpc GetMapPinTypes(GetMapPinTypesRequest) returns (GetMapPinTypesResponse) {
+    option (google.api.http) = {
+      get: "/maps/{mapId}/pin_types"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns pin types of the map";
+      summary: "Get map pin types";
+    };
+  }
+
+  rpc CreateMapPinType(CreateMapPinTypeRequest) returns (MapPinType) {
+    option (google.api.http) = {
+      post: "/maps/{mapId}/pin_types"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates a new pin type for the map";
+      summary: "Create map pin type";
+    };
+  }
+
+  rpc DeleteMapPinType(DeleteMapPinTypeRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/maps/{mapId}/pin_types/{pinTypeId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes a pin type from the map";
+      summary: "Delete map pin type";
+    };
+  }
+
+  rpc UpdateMapPinType(UpdateMapPinTypeRequest) returns (UpdateMapPinTypeResponse) {
+    option (google.api.http) = {
+      patch: "/maps/{mapId}/pin_types/{pinTypeId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates pin type properties";
+      summary: "Update map pin type";
+    };
+  }
+
+  rpc GetMapPins(GetMapPinsRequest) returns (GetMapPinsResponse) {
+    option (google.api.http) = {
+      get: "/maps/{mapId}/pins"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns pins of the map";
+      summary: "Get map pins";
+    };
+  }
+
+  rpc CreateMapPin(CreateMapPinRequest) returns (ViewMapPin) {
+    option (google.api.http) = {
+      post: "/maps/{mapId}/pins"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates a new pin for the map";
+      summary: "Create map pin";
+    };
+  }
+
+  rpc DeleteMapPin(DeleteMapPinRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/maps/{mapId}/pins/{pinId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes a pin from the map";
+      summary: "Delete map pin";
+    };
+  }
+
+  rpc UpdateMapPin(UpdateMapPinRequest) returns (ViewMapPin) {
+    option (google.api.http) = {
+      patch: "/maps/{mapId}/pins/{pinId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates pin properties";
+      summary: "Update map pin";
+    };
+  }
+}

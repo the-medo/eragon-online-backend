@@ -49,6 +49,7 @@ https://github.com/ScoopInstaller/Scoop#readme
 ---
 ### Create migration
 
+`make new_migration name=migration_name`
 `migrate create -ext sql -dir db/migration -seq migration_name`
 
 ---

@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/empty.proto";
+import "services/auth/rpc_verify_email.proto";
+import "services/auth/rpc_reset_password.proto";
+import "services/auth/rpc_login_user.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Auth {
+
+  // ============= VERIFY =================
+  rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {
+    option (google.api.http) = {
+      post: "/auth"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "auth user email";
+      summary: "Verify email";
+    };
+  };
+
+
+  // ============= LOGIN & LOGOUT =================
+  rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {
+    option (google.api.http) = {
+      post: "/auth/login"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "login user - get user object and set HttpOnly cookies";
+      summary: "Login user";
+    };
+  };
+
+  rpc LogoutUser(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/auth/logout"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "logout user - it clears HttpOnly cookies - no request data required";
+      summary: "Logout user";
+    };
+  };
+
+  rpc ResetPasswordSendCode(ResetPasswordSendCodeRequest) returns (ResetPasswordSendCodeResponse) {
+    option (google.api.http) = {
+      post: "/auth/reset/send-code"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "in case a user forgot their password, they can request a password reset using this endpoint";
+      summary: "Request password reset";
+    };
+  };
+
+  rpc ResetPasswordVerifyCode(ResetPasswordVerifyCodeRequest) returns (ResetPasswordVerifyCodeResponse) {
+    option (google.api.http) = {
+      post: "/auth/reset/auth-code"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "in case a user forgot their password, they can confirm the password reset using this endpoint";
+      summary: "Confirm password reset";
+    };
+  };
+
+  rpc ResetPasswordVerifyCodeValidity(ResetPasswordVerifyCodeValidityRequest) returns (ResetPasswordVerifyCodeValidityResponse) {
+    option (google.api.http) = {
+      get: "/auth/reset/auth-code-validity"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "validate reset password secret code";
+      summary: "Validate reset password secret code";
+    };
+  };
+
+}

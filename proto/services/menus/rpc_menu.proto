@@ -1,0 +1,124 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/menus/menu.proto";
+import "services/entities/entity.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+//UpdateMenuRequest
+
+message UpdateMenuRequest {
+    int32 menuId = 1;
+    optional string code = 2;
+    optional int32 headerImgId = 3;
+}
+
+message GetMenuRequest {
+    int32 menuId = 1;
+}
+
+//========== Menu Items ==========
+
+message CreateMenuItemRequest {
+    int32 menuId = 1;
+    string code = 2;
+    string name = 3;
+    optional int32 position = 4;
+    optional bool isMain = 5;
+}
+
+message UpdateMenuItemRequest {
+    int32 menuId = 1;
+    int32 menuItemId = 2;
+    optional string code = 3;
+    optional string name = 4;
+    optional int32 position = 5;
+    optional bool isMain = 6;
+    optional int32 descriptionPostId = 7;
+}
+
+message UpdateMenuItemMoveGroupUpRequest {
+    int32 menuId = 1;
+    int32 menuItemId = 2;
+}
+
+message DeleteMenuItemRequest {
+    int32 menuId = 1;
+    int32 menuItemId = 2;
+}
+
+message GetMenuItemsRequest {
+    int32 menuId = 1;
+}
+
+message GetMenuItemsResponse {
+    repeated MenuItem menuItems = 1;
+}
+
+//========== Menu Item Posts ==========
+
+message CreateMenuItemPostRequest {
+  int32 menuId = 1;
+  int32 menuItemId = 2;
+  optional int32 postId = 3;
+  optional int32 position = 4;
+  optional bool isMenuItemDescriptionPost = 5;
+  optional string title = 6;
+  optional string shortDescription = 7;
+  optional int32 imageThumbnailId = 8;
+}
+
+message UpdateMenuItemPostRequest {
+  int32 menuId = 1;
+  int32 menuItemId = 2;
+  int32 postId = 3;
+  optional int32 newMenuItemId = 4;
+  optional int32 position = 5;
+}
+
+message DeleteMenuItemPostRequest {
+  int32 menuId = 1;
+  int32 menuItemId = 2;
+  int32 postId = 3;
+}
+
+message GetMenuItemPostsRequest {
+  int32 menuId = 1;
+  int32 menuItemId = 2;
+}
+
+message GetMenuItemPostsResponse {
+  repeated MenuItemPost menuItemPosts = 1;
+}
+
+message GetMenuItemPostsByMenuIdRequest {
+  int32 menuId = 1;
+}
+
+message GetMenuItemPostsByMenuIdResponse {
+  repeated MenuItemPost menuItemPosts = 1;
+}
+
+message UpdateMenuPostsRequest {
+  int32 menuId = 1;
+  optional int32 menuItemId = 2;
+  repeated int32 postIds = 3;
+}
+
+message UpdateMenuPostsResponse {
+  repeated MenuItemPost menuItemPosts = 1;
+}
+
+message GetMenuItemContentRequest {
+  int32 menuId = 1;
+  int32 menuItemId = 2;
+}
+
+message GetMenuItemContentResponse {
+  repeated int32 menuItemEntityGroups = 1;
+  repeated EntityGroupContent content = 2;
+  EntityList entityList = 3;
+}
+

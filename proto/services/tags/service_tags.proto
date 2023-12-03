@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "google/protobuf/empty.proto";
+import "services/tags/tag.proto";
+import "services/tags/rpc_tag.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Tags {
+
+  rpc GetModuleTypeAvailableTags(GetModuleTypeAvailableTagsRequest) returns (GetModuleTypeAvailableTagsResponse) {
+    option (google.api.http) = {
+      get: "/tags/available/module_type"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of tags, that are usable for module type";
+      summary: "Get available tags for module type";
+    };
+  };
+
+  rpc CreateModuleTypeAvailableTag(CreateModuleTypeAvailableTagRequest) returns (ViewTag) {
+    option (google.api.http) = {
+      post: "/tags/available/module_type"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates new tag, that can be assigned to modules of given type";
+      summary: "Create module-available tag";
+    };
+  };
+
+  rpc UpdateModuleTypeAvailableTag(UpdateModuleTypeAvailableTagRequest) returns (ViewTag) {
+    option (google.api.http) = {
+      patch: "/tags/available/module_type/{tagId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates module-assignable tag";
+      summary: "Update module-available tag";
+    };
+  };
+
+  rpc DeleteModuleTypeAvailableTag(DeleteModuleTypeAvailableTagRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/tags/available/module_type/{tagId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes available world tag and removes all its assignments";
+      summary: "Delete available world tag";
+    };
+  };
+
+  rpc CreateModuleTag(CreateModuleTagRequest) returns (CreateModuleTagResponse) {
+    option (google.api.http) = {
+      post: "/tags/module/{moduleId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "assigns one tag to the module";
+      summary: "Create module tag";
+    };
+  };
+
+  rpc DeleteModuleTag(DeleteModuleTagRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/tags/module/{moduleId}/tag/{tagId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "removes tag from the module";
+      summary: "Delete module tag";
+    };
+  };
+
+  rpc GetModuleEntityAvailableTags(GetModuleEntityAvailableTagsRequest) returns (GetModuleEntityAvailableTagsResponse) {
+    option (google.api.http) = {
+      get: "/tags/available/entity"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of tags, that are usable for entities inside of module";
+      summary: "Get available tags for entities";
+    };
+  };
+
+  rpc CreateModuleEntityAvailableTag(CreateModuleEntityAvailableTagRequest) returns (EntityTagAvailable) {
+    option (google.api.http) = {
+      post: "/tags/available/entity"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates new tag, that can be assigned to entities inside of given module";
+      summary: "Create entity-available tag";
+    };
+  };
+
+  rpc UpdateModuleEntityAvailableTag(UpdateModuleEntityAvailableTagRequest) returns (EntityTagAvailable) {
+    option (google.api.http) = {
+      patch: "/tags/available/entity/{tagId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates entity-assignable tag";
+      summary: "Update entity-available tag";
+    };
+  };
+
+  rpc DeleteModuleEntityAvailableTag(DeleteModuleEntityAvailableTagRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/tags/available/entity/{tagId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes available tag and removes all its assignments";
+      summary: "Delete entity-available tag";
+    };
+  };
+
+  rpc CreateEntityTag(CreateEntityTagRequest) returns (CreateEntityTagResponse) {
+    option (google.api.http) = {
+      post: "/tags/entity/{entityId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "assigns one tag to the entity";
+      summary: "Create entity tag";
+    };
+  };
+
+  rpc DeleteEntityTag(DeleteEntityTagRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/tags/entity/{entityId}/tag/{tagId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "removes tag from the entity";
+      summary: "Delete entity tag";
+    };
+  };
+}

@@ -3,7 +3,9 @@ packages:
   - name: "db"
     path: "./db/sqlc"
     queries: "./db/query/"
-    schema: "./db/migration/"
+    schema:
+      - "./doc/schema.sql"
+      - "./db/migration/objects/migrations_create_objects.sql"
     engine: "postgresql"
     emit_json_tags: true
     emit_prepared_queries: false

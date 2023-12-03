@@ -18,6 +18,37 @@ enum image_variant {
   250x50
 }
 
+enum pin_shape {
+  square
+  triangle
+  pin
+  circle
+  hexagon
+  octagon
+  star
+  diamond
+  pentagon
+  heart
+  cloud
+}
+
+enum module_type {
+  unknown
+  world
+  quest
+  character
+  system
+}
+
+enum entity_type {
+  unknown
+  post
+  map
+  location
+  character
+  image
+}
+
 Table image_types {
   id int [not null, unique]
   name varchar [unique, not null]
@@ -34,6 +65,8 @@ Table images {
   url varchar [not null]
   base_url varchar [not null]
   created_at timestamptz [not null, default: `now()`]
+  width int [not null, default: 0]
+  height int [not null, default: 0]
 }
 
 Table users {
@@ -58,6 +91,19 @@ Table sessions {
   is_blocked boolean [not null, default: false]
   created_at timestamptz [not null, default: `now()`]
   expired_at timestamptz [not null, default: `now() + INTERVAL '15 minutes'`]
+}
+
+Table user_modules {
+  user_id int [not null, ref: > users.id]
+  module_id int [not null, ref: > modules.id]
+  admin bool [not null]
+  favorite bool [not null]
+  following bool [not null]
+  entity_notifications entity_type[]
+
+  indexes {
+    (user_id, module_id) [unique]
+  }
 }
 
 enum evaluation_type {
@@ -133,60 +179,18 @@ Table worlds {
   description_post_id int [null, ref: > posts.id]
 }
 
-Table world_admins {
-  world_id int [not null, ref: > worlds.id]
+Table module_admins {
+  module_id int [not null, ref: > modules.id]
   user_id int [not null, ref: > users.id]
   created_at timestamptz [not null, default: `now()`]
   super_admin boolean [not null, default: false]
   approved int [not null, note: '0 = NO, 1 = YES, 2 = PENDING']
   motivational_letter varchar [not null]
+  allowed_entity_types entity_type[]
+  allowed_menu boolean [not null, default: false]
 
   indexes {
-    (world_id, user_id) [unique]
-  }
-}
-
-Table world_menu {
-  world_id int [not null, ref: > worlds.id]
-  menu_id int [not null, ref: > menus.id]
-
-  indexes {
-    (world_id, menu_id) [unique]
-  }
-}
-
-Table world_tags_available {
-  id int [pk, increment]
-  tag varchar [not null, unique]
-}
-
-Table world_tags {
-  world_id int [not null, ref: > worlds.id]
-  tag_id int [not null]
-
-  indexes {
-    (world_id, tag_id) [unique]
-  }
-}
-
-Ref: world_tags.tag_id > world_tags_available.id [delete: cascade]
-
-Table world_images {
-  world_id int [pk, ref: > worlds.id]
-  header_img_id int [ref: > images.id]
-  thumbnail_img_id int [ref: > images.id]
-  avatar_img_id int [ref: > images.id]
-}
-
-Table world_activity {
-  world_id int [not null, ref: > worlds.id]
-  date date [not null]
-  post_count int [not null]
-  quest_count int [not null]
-  resource_count int [not null]
-
-  indexes {
-    (world_id, date) [unique]
+    (module_id, user_id) [unique]
   }
 }
 
@@ -287,9 +291,9 @@ Table character_skills {
 
 Table posts {
   id int [pk, increment]
-  post_type_id int [not null, ref: > post_types.id]
   user_id int [not null, ref: > users.id]
   title varchar [not null]
+  description varchar
   content varchar [not null]
   created_at timestamptz [not null, default: `now()`]
   deleted_at timestamptz
@@ -297,21 +301,15 @@ Table posts {
   last_updated_user_id int [ref: > users.id]
   is_draft bool [not null]
   is_private bool [not null]
-}
-
-Table post_types {
-  id int [pk]
-  name varchar [not null]
-  draftable bool [not null, default: true]
-  privatable bool [not null, default: false]
+  thumbnail_img_id int [ref: > images.id]
 }
 
 Table post_history {
   id int [pk, increment]
   post_id int [not null, ref: > posts.id]
-  post_type_id int [not null, ref: > post_types.id]
   user_id int [not null, ref: > users.id]
   title varchar [not null]
+  description varchar
   content varchar [not null]
   created_at timestamptz [not null, default: `now()`]
   deleted_at timestamptz
@@ -319,6 +317,7 @@ Table post_history {
   last_updated_user_id int [ref: > users.id]
   is_draft bool [not null]
   is_private bool [not null]
+  thumbnail_img_id int [ref: > images.id]
 }
 
 Table menus {
@@ -333,18 +332,191 @@ Table menu_items {
   menu_item_code varchar [not null]
   name varchar [not null]
   position int [not null]
-  parent_item_id int [null, ref: > menu_items.id]
+  is_main bool [not null, default: false]
   description_post_id int [null, ref: > posts.id]
+  entity_group_id int [null, ref: > entity_groups.id]
 }
 
 Table menu_item_posts {
-  menu_item_id int [not null, ref: > menu_items.id]
+  menu_id int [not null, ref: > menus.id]
+  menu_item_id int [ref: > menu_items.id]
   post_id int [not null, ref: > posts.id]
   position int [not null]
 
   indexes {
     (menu_item_id, post_id) [unique]
   }
+}
+
+Table maps {
+  id int [pk, increment]
+  name varchar [not null]
+  type varchar
+  description varchar
+  width int [not null]
+  height int [not null]
+  thumbnail_image_id int [ref: > images.id]
+}
+
+Table locations {
+  id int [pk, increment]
+  name varchar [not null]
+  description varchar
+  post_id int [ref: > posts.id]
+  thumbnail_image_id int [ref: > images.id]
+}
+
+Table map_layers {
+  id int [pk, increment]
+  name varchar [not null]
+  map_id int [not null, ref: > maps.id]
+  image_id int [not null, ref: > images.id]
+  is_main bool [not null, default: false]
+  enabled bool [not null, default: true]
+  sublayer bool [not null, default: false]
+}
+
+Table map_pins {
+  id int [pk, increment]
+  name varchar [not null]
+  map_id int [not null, ref: > maps.id]
+  map_pin_type_id int [ref: > map_pin_types.id]
+  location_id int [ref: > locations.id]
+  map_layer_id int [ref: > map_layers.id]
+  x int [not null]
+  y int [not null]
+}
+
+Table map_pin_type_group {
+  id int [pk, increment]
+  name varchar [not null]
+}
+
+Table module_map_pin_type_groups {
+  module_id int [not null, ref: > modules.id]
+  map_pin_type_group_id int [not null, ref: > map_pin_type_group.id]
+
+  indexes {
+    (module_id, map_pin_type_group_id) [unique]
+  }
+}
+
+Table map_pin_types {
+  id int [pk, increment]
+  map_pin_type_group_id int [not null, ref: > map_pin_type_group.id]
+  shape pin_shape [not null, default: "pin"]
+  background_color varchar
+  border_color varchar
+  icon_color varchar
+  icon varchar
+  icon_size int
+  width int
+  section varchar [not null, default: "base"]
+}
+
+Table quests {
+  id int [pk, increment]
+}
+
+Table systems {
+  id int [pk, increment]
+}
+
+Table modules {
+  id int [pk, increment]
+  module_type module_type [not null]
+  menu_id int [not null, ref: > menus.id]
+
+  header_img_id int [ref: > images.id]
+  thumbnail_img_id int [ref: > images.id]
+  avatar_img_id int [ref: > images.id]
+
+  world_id int [ref: > worlds.id]
+  system_id int [ref: > systems.id]
+  character_id int [ref: > characters.id]
+  quest_id int [ref: > quests.id]
+
+  Note: 'Groups higher-level sections into one table. Contains worlds, quests, characters and play systems.'
+}
+
+Table module_type_tags_available {
+  id int [pk, increment]
+  module_type module_type [not null]
+  tag varchar [not null]
+
+  indexes {
+    (module_type, tag) [unique]
+  }
+
+  Note: 'Contains all tags, that are available for module TYPE - so, users can mark their worlds / quests / ... with these tags. These are NOT for marking entities.'
+}
+
+Table module_tags {
+  module_id int [not null, ref: > modules.id]
+  tag_id int [not null, ref: > module_type_tags_available.id]
+
+  indexes {
+    (module_id, tag_id) [unique]
+  }
+
+  Note: 'Tag assignments for modules. So, if you are looking for what tags are assigned to a world, you can look here.'
+}
+
+Table module_entity_tags_available {
+  id int [pk, increment]
+  module_id int [not null, ref: > modules.id]
+  tag varchar [not null]
+
+indexes {
+    (module_id, tag) [unique]
+  }
+
+  Note: 'Contains tags, that are possible to assign to ANY entity inside of a module. One module can only have one set of tags, that are usable for any entity type inside of that module.'
+}
+
+Table entity_tags {
+  entity_id int [not null, ref: > entities.id]
+  tag_id int [not null, ref: > module_entity_tags_available.id]
+
+  indexes {
+    (entity_id, tag_id) [unique]
+  }
+
+  Note: 'Assignments of module_entity_tags_available to entities'
+}
+
+Table entities {
+  id int [pk, increment]
+  module_id int [not null, ref: > modules.id]
+  type entity_type [not null]
+  post_id int [ref: > posts.id]
+  map_id int [ref: > maps.id]
+  location_id int [ref: > locations.id]
+  image_id int [ref: > images.id]
+
+  indexes {
+    (type)
+    (post_id, module_id) [unique]
+    (map_id, module_id) [unique]
+    (location_id, module_id) [unique]
+    (image_id, module_id) [unique]
+  }
+}
+
+Table entity_groups {
+  id int [pk, increment]
+  name varchar
+  description varchar
+  style varchar [default: "framed"]
+  direction varchar [default: "vertical"]
+}
+
+Table entity_group_content {
+  id int [pk, increment]
+  entity_group_id int [not null, ref: > entity_groups.id]
+  position int [not null]
+  content_entity_id int [ref: > entities.id]
+  content_entity_group_id int [ref: > entity_groups.id]
 }
 
 TableGroup Evaluations {
@@ -368,17 +540,10 @@ TableGroup UserStuff {
 
 TableGroup Worlds {
   worlds
-  world_images
-  world_activity
-  world_admins
-  world_tags_available
-  world_tags
-  world_menu
 }
 
 TableGroup Posts {
   posts
-  post_types
   post_history
 }
 
@@ -386,6 +551,12 @@ TableGroup Menus {
   menus
   menu_items
   menu_item_posts
+}
+
+TableGroup Entities {
+  entities
+  entity_groups
+  entity_group_content
 }
 
 

@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/users/user.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";;
+
+message UpdateUserRequest {
+  int32 id = 1;
+  optional string username = 2;
+  optional string email = 3;
+  optional string password = 4;
+  optional int32 imgId = 5;
+  optional int32 introductionPostId = 6;
+}
+
+message UpdateUserIntroductionRequest {
+  int32 userId = 1;
+  string content = 2;
+  optional bool saveAsDraft = 3;
+}
+
+message UpdateUserResponse {
+  User user = 1;
+}

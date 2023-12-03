@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "services/locations/rpc_location.proto";
+import "services/locations/location.proto";
+import "services/modules/module.proto";
+import "google/protobuf/empty.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Locations {
+
+  rpc GetLocationById(GetLocationByIdRequest) returns (Location) {
+    option (google.api.http) = {
+      get: "/locations/{locationId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get location by id";
+      summary: "Get location by id";
+    };
+  };
+
+  rpc UpdateLocation(UpdateLocationRequest) returns (Location) {
+    option (google.api.http) = {
+      patch: "/locations/{locationId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates location properties";
+      summary: "Update location";
+    };
+  };
+
+  rpc GetLocations(ModuleDefinition) returns (GetLocationsResponse) {
+    option (google.api.http) = {
+      get: "/locations"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "returns locations based on modules (world or quest)";
+      summary: "Get locations";
+    };
+  };
+
+  rpc CreateLocation(CreateLocationRequest) returns (Location) {
+    option (google.api.http) = {
+      post: "/locations"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates a new location in the world or a quest";
+      summary: "Create location";
+    };
+  };
+
+  rpc DeleteLocation(DeleteLocationRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/locations/{locationId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes location from the world or quest";
+      summary: "Delete location";
+    };
+  };
+
+  rpc DeleteBulkLocation(DeleteBulkLocationRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/locations"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes multiple locations from the world or quest";
+      summary: "Delete multiple locations";
+    };
+  };
+
+  rpc CreateLocationPost(CreateLocationPostRequest) returns (Location) {
+    option (google.api.http) = {
+      post: "/locations/{locationId}/posts"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates a new post and assigns it to location in the world or a quest";
+      summary: "Create post for location";
+    };
+  };
+}

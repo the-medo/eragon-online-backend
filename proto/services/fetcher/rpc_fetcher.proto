@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/modules/module.proto";
+import "services/worlds/world.proto";
+import "services/entities/entity.proto";
+import "services/posts/post.proto";
+import "services/images/image.proto";
+import "services/maps/map.proto";
+import "services/locations/location.proto";
+import "services/users/user.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message RunFetcherRequest {
+  repeated int32 moduleIds = 1;
+  repeated int32 worldIds = 2;
+  repeated int32 systemIds = 3;
+  repeated int32 questIds = 4;
+  repeated int32 characterIds = 5;
+  repeated int32 entityIds = 6;
+  repeated int32 postIds = 7;
+  repeated int32 imageIds = 8;
+  repeated int32 locationIds = 9;
+  repeated int32 mapIds = 10;
+  repeated int32 userIds = 11;
+}
+
+message RunFetcherResponse {
+  repeated ViewModule modules = 1;
+  repeated World worlds = 2;
+  repeated ViewEntity entities = 3;
+  repeated Post posts = 4;
+  repeated Image images = 5;
+  repeated Map maps = 6;
+  repeated Location locations = 7;
+  repeated User users = 8;
+}

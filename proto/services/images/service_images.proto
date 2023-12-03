@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "services/images/rpc_image.proto";
+import "services/images/rpc_upload_image.proto";
+import "services/images/image.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Images {
+  // ============= IMAGES ================
+
+  rpc GetImageById(GetImageByIdRequest) returns (Image) {
+    option (google.api.http) = {
+      get: "/images/{imageId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get image by id";
+      summary: "Get image by id";
+    };
+  };
+
+  rpc GetImages(GetImagesRequest) returns (GetImagesResponse) {
+    option (google.api.http) = {
+      get: "/images"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "get images - paginated, filterable by user and image type";
+      summary: "Get images";
+    };
+  };
+
+  rpc UploadDefaultImage(UploadImageRequest) returns (Image) {
+    option (google.api.http) = {
+      post: "/images"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "uploads an image file";
+      summary: "Upload image";
+    };
+  };
+}

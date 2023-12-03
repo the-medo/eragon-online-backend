@@ -15,40 +15,79 @@ type Querier interface {
 	AddChatMessage(ctx context.Context, arg AddChatMessageParams) (Chat, error)
 	AddUserPasswordReset(ctx context.Context, arg AddUserPasswordResetParams) (UserPasswordReset, error)
 	AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error)
+	CreateEntity(ctx context.Context, arg CreateEntityParams) (Entity, error)
+	CreateEntityGroup(ctx context.Context, arg CreateEntityGroupParams) (EntityGroup, error)
+	CreateEntityGroupContent(ctx context.Context, arg CreateEntityGroupContentParams) (EntityGroupContent, error)
+	CreateEntityTag(ctx context.Context, arg CreateEntityTagParams) (EntityTag, error)
 	CreateEvaluationVote(ctx context.Context, arg CreateEvaluationVoteParams) (EvaluationVote, error)
 	CreateImage(ctx context.Context, arg CreateImageParams) (Image, error)
+	CreateLocation(ctx context.Context, arg CreateLocationParams) (Location, error)
+	CreateMap(ctx context.Context, arg CreateMapParams) (Map, error)
+	CreateMapLayer(ctx context.Context, arg CreateMapLayerParams) (MapLayer, error)
+	CreateMapPin(ctx context.Context, arg CreateMapPinParams) (MapPin, error)
+	//------------------------------------
+	CreateMapPinType(ctx context.Context, arg CreateMapPinTypeParams) (MapPinType, error)
+	CreateMapPinTypeGroup(ctx context.Context, name string) (MapPinTypeGroup, error)
 	CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, error)
 	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)
 	CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error)
+	CreateModule(ctx context.Context, arg CreateModuleParams) (Module, error)
+	CreateModuleAdmin(ctx context.Context, arg CreateModuleAdminParams) (ModuleAdmin, error)
+	CreateModuleEntityTagAvailable(ctx context.Context, arg CreateModuleEntityTagAvailableParams) (ModuleEntityTagsAvailable, error)
+	CreateModuleMapPinTypeGroup(ctx context.Context, arg CreateModuleMapPinTypeGroupParams) (ModuleMapPinTypeGroup, error)
+	CreateModuleTag(ctx context.Context, arg CreateModuleTagParams) (ModuleTag, error)
+	CreateModuleTypeTagAvailable(ctx context.Context, arg CreateModuleTypeTagAvailableParams) (ModuleTypeTagsAvailable, error)
 	CreatePost(ctx context.Context, arg CreatePostParams) (Post, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
 	CreateWorld(ctx context.Context, arg CreateWorldParams) (World, error)
-	CreateWorldActivity(ctx context.Context, arg CreateWorldActivityParams) error
-	CreateWorldImages(ctx context.Context, worldID int32) error
-	CreateWorldMenu(ctx context.Context, arg CreateWorldMenuParams) (WorldMenu, error)
-	CreateWorldTag(ctx context.Context, arg CreateWorldTagParams) (WorldTag, error)
-	CreateWorldTagAvailable(ctx context.Context, tag string) (WorldTagsAvailable, error)
-	DeleteAllWorldActivity(ctx context.Context, worldID int32) error
 	DeleteChatMessage(ctx context.Context, id int64) error
+	DeleteEntity(ctx context.Context, id int32) error
+	DeleteEntityGroup(ctx context.Context, id int32) error
+	DeleteEntityGroupContent(ctx context.Context, id int32) error
+	DeleteEntityTag(ctx context.Context, arg DeleteEntityTagParams) error
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
 	DeleteImage(ctx context.Context, id int32) error
+	DeleteLocation(ctx context.Context, id int32) error
+	DeleteMap(ctx context.Context, id int32) error
+	DeleteMapLayer(ctx context.Context, id int32) error
+	DeleteMapLayersForMap(ctx context.Context, mapID int32) error
+	DeleteMapPin(ctx context.Context, id int32) error
+	DeleteMapPinType(ctx context.Context, id int32) error
+	DeleteMapPinTypeGroup(ctx context.Context, id int32) error
+	DeleteMapPinsForMap(ctx context.Context, mapID int32) error
+	DeleteMapPinsForMapLayer(ctx context.Context, mapLayerID sql.NullInt32) error
 	DeleteMenu(ctx context.Context, id int32) error
-	DeleteMenuItem(ctx context.Context, id int32) error
+	DeleteMenuItem(ctx context.Context, menuItemID int32) error
 	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
+	DeleteModule(ctx context.Context, id int32) error
+	DeleteModuleAdmin(ctx context.Context, arg DeleteModuleAdminParams) error
+	DeleteModuleEntityTagAvailable(ctx context.Context, id int32) error
+	DeleteModuleMapPinTypeGroup(ctx context.Context, arg DeleteModuleMapPinTypeGroupParams) error
+	DeleteModuleTag(ctx context.Context, arg DeleteModuleTagParams) error
+	DeleteModuleTypeTagAvailable(ctx context.Context, id int32) error
 	DeletePost(ctx context.Context, postID int32) error
+	DeleteUserModule(ctx context.Context, arg DeleteUserModuleParams) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
 	DeleteWorld(ctx context.Context, worldID int32) error
-	DeleteWorldActivityForDate(ctx context.Context, arg DeleteWorldActivityForDateParams) error
-	DeleteWorldAdmin(ctx context.Context, arg DeleteWorldAdminParams) error
-	DeleteWorldImages(ctx context.Context, worldID int32) error
-	DeleteWorldMenu(ctx context.Context, arg DeleteWorldMenuParams) error
-	DeleteWorldTag(ctx context.Context, arg DeleteWorldTagParams) error
-	DeleteWorldTagAvailable(ctx context.Context, id int32) error
+	EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
 	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
 	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
+	GetEntities(ctx context.Context, arg GetEntitiesParams) (ViewEntity, error)
+	GetEntitiesByIDs(ctx context.Context, entityIds []int32) ([]ViewEntity, error)
+	GetEntityByID(ctx context.Context, id int32) (ViewEntity, error)
+	GetEntityByImageId(ctx context.Context, imageID sql.NullInt32) (Entity, error)
+	GetEntityByLocationId(ctx context.Context, locationID sql.NullInt32) (Entity, error)
+	GetEntityByMapId(ctx context.Context, mapID sql.NullInt32) (Entity, error)
+	GetEntityByPostId(ctx context.Context, postID sql.NullInt32) (Entity, error)
+	GetEntityGroupByID(ctx context.Context, id int32) (EntityGroup, error)
+	GetEntityGroupContentByID(ctx context.Context, id int32) (EntityGroupContent, error)
+	GetEntityGroupContentCount(ctx context.Context, entityGroupID int32) (int64, error)
+	GetEntityGroupContents(ctx context.Context, entityGroupID int32) ([]GetEntityGroupContentsRow, error)
+	GetEntityIDsOfGroup(ctx context.Context, entityGroupID int32) (GetEntityIDsOfGroupRow, error)
+	GetEntityModuleAdmin(ctx context.Context, arg GetEntityModuleAdminParams) (ViewModuleAdmin, error)
 	GetEvaluationById(ctx context.Context, evaluationID int32) (Evaluation, error)
 	GetEvaluationVoteByEvaluationIdUserIdAndVoter(ctx context.Context, arg GetEvaluationVoteByEvaluationIdUserIdAndVoterParams) (EvaluationVote, error)
 	GetEvaluationVotesByUserId(ctx context.Context, userID int32) ([]EvaluationVote, error)
@@ -58,57 +97,92 @@ type Querier interface {
 	GetImageById(ctx context.Context, id int32) (Image, error)
 	GetImageTypeById(ctx context.Context, id int32) (ImageType, error)
 	GetImageTypeByName(ctx context.Context, name string) (ImageType, error)
-	GetImages(ctx context.Context, arg GetImagesParams) ([]Image, error)
+	GetImages(ctx context.Context, arg GetImagesParams) ([]GetImagesRow, error)
+	GetImagesByIDs(ctx context.Context, imageIds []int32) ([]Image, error)
 	GetImagesByImageTypeId(ctx context.Context, imgTypeID sql.NullInt32) ([]Image, error)
-	GetImagesCount(ctx context.Context, arg GetImagesCountParams) (int64, error)
-	GetMenu(ctx context.Context, id int32) (Menu, error)
-	GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams) (MenuItemPost, error)
+	GetLocationById(ctx context.Context, id int32) (Location, error)
+	GetLocations(ctx context.Context) ([]ViewLocation, error)
+	GetLocationsByIDs(ctx context.Context, locationIds []int32) ([]Location, error)
+	GetLocationsByModule(ctx context.Context, moduleID int32) ([]ViewLocation, error)
+	GetMapAssignments(ctx context.Context, mapID sql.NullInt32) (GetMapAssignmentsRow, error)
+	GetMapById(ctx context.Context, id int32) (Map, error)
+	GetMapLayerByID(ctx context.Context, mapLayerID int32) (ViewMapLayer, error)
+	GetMapLayers(ctx context.Context, mapID int32) ([]ViewMapLayer, error)
+	GetMapPinByID(ctx context.Context, id int32) (ViewMapPin, error)
+	GetMapPinTypeGroupIdForMap(ctx context.Context, mapID sql.NullInt32) (int32, error)
+	GetMapPinTypesForMap(ctx context.Context, mapID sql.NullInt32) ([]MapPinType, error)
+	GetMapPinTypesForWorld(ctx context.Context, worldID sql.NullInt32) ([]MapPinType, error)
+	GetMapPins(ctx context.Context, mapID int32) ([]ViewMapPin, error)
+	GetMaps(ctx context.Context, moduleID sql.NullInt32) ([]ViewMap, error)
+	GetMapsByIDs(ctx context.Context, mapIds []int32) ([]Map, error)
+	GetMenu(ctx context.Context, id int32) (ViewMenu, error)
+	GetMenuIdOfEntityGroup(ctx context.Context, entityGroupID int32) (int32, error)
+	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)
+	GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams) (ViewMenuItemPost, error)
+	GetMenuItemPosts(ctx context.Context, menuItemID sql.NullInt32) ([]ViewMenuItemPost, error)
+	GetMenuItemPostsByMenuId(ctx context.Context, menuID int32) ([]ViewMenuItemPost, error)
 	GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, error)
-	GetPostById(ctx context.Context, postID int32) (ViewPost, error)
+	GetModule(ctx context.Context, arg GetModuleParams) (Module, error)
+	GetModuleAdmin(ctx context.Context, arg GetModuleAdminParams) (ViewModuleAdmin, error)
+	GetModuleAdminByMenuId(ctx context.Context, arg GetModuleAdminByMenuIdParams) (ViewModuleAdmin, error)
+	GetModuleAdmins(ctx context.Context, moduleID int32) ([]GetModuleAdminsRow, error)
+	GetModuleById(ctx context.Context, moduleID int32) (ViewModule, error)
+	GetModuleEntityTagsAvailable(ctx context.Context, moduleID int32) ([]ModuleEntityTagsAvailable, error)
+	GetModuleTypeTagAvailable(ctx context.Context, tagID int32) (ViewModuleTypeTagsAvailable, error)
+	GetModuleTypeTagsAvailable(ctx context.Context, moduleType ModuleType) ([]ViewModuleTypeTagsAvailable, error)
+	GetModulesByIDs(ctx context.Context, moduleIds []int32) ([]ViewModule, error)
+	GetModulesOfAdmin(ctx context.Context, userID int32) ([]ViewModuleAdmin, error)
+	GetPostById(ctx context.Context, postID int32) (Post, error)
 	GetPostHistoryById(ctx context.Context, postHistoryID int32) (GetPostHistoryByIdRow, error)
 	GetPostHistoryByPostId(ctx context.Context, postID int32) ([]GetPostHistoryByPostIdRow, error)
-	GetPostTypeById(ctx context.Context, postTypeID int32) (PostType, error)
-	GetPostTypes(ctx context.Context) ([]PostType, error)
+	GetPosts(ctx context.Context, arg GetPostsParams) ([]GetPostsRow, error)
+	GetPostsByIDs(ctx context.Context, postIds []int32) ([]Post, error)
 	GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdParams) ([]ViewPost, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUserByEmail(ctx context.Context, email string) (ViewUser, error)
-	GetUserById(ctx context.Context, id int32) (ViewUser, error)
+	GetUserById(ctx context.Context, id int32) (User, error)
 	GetUserByUsername(ctx context.Context, username string) (ViewUser, error)
+	GetUserModules(ctx context.Context, userID int32) ([]GetUserModulesRow, error)
 	GetUserPasswordReset(ctx context.Context, code string) (UserPasswordReset, error)
 	GetUserRoles(ctx context.Context, userID int32) ([]GetUserRolesRow, error)
 	GetUsers(ctx context.Context, arg GetUsersParams) ([]GetUsersRow, error)
-	GetWorldAdmins(ctx context.Context, worldID int32) ([]GetWorldAdminsRow, error)
-	GetWorldByID(ctx context.Context, worldID int32) (ViewWorld, error)
-	GetWorldDailyActivity(ctx context.Context, arg GetWorldDailyActivityParams) ([]WorldActivity, error)
-	GetWorldImages(ctx context.Context, worldID int32) (WorldImage, error)
-	GetWorldMenu(ctx context.Context, arg GetWorldMenuParams) (WorldMenu, error)
-	GetWorldMonthlyActivity(ctx context.Context, arg GetWorldMonthlyActivityParams) ([]GetWorldMonthlyActivityRow, error)
-	GetWorldTag(ctx context.Context, arg GetWorldTagParams) (WorldTag, error)
-	GetWorldTagAvailable(ctx context.Context, tagID int32) (WorldTagsAvailable, error)
-	GetWorldTags(ctx context.Context) ([]WorldTag, error)
-	GetWorldTagsAvailable(ctx context.Context) ([]WorldTagsAvailable, error)
+	GetUsersByIDs(ctx context.Context, userIds []int32) ([]User, error)
+	GetViewLocationById(ctx context.Context, id int32) (ViewLocation, error)
+	GetWorldByID(ctx context.Context, worldID int32) (World, error)
 	GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWorld, error)
-	GetWorldsCount(ctx context.Context, isPublic bool) (int64, error)
-	GetWorldsOfUser(ctx context.Context, userID int32) ([]GetWorldsOfUserRow, error)
+	GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]World, error)
+	GetWorldsCount(ctx context.Context, arg GetWorldsCountParams) (int64, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
 	InsertPostHistory(ctx context.Context, postID int32) (PostHistory, error)
-	InsertWorldAdmin(ctx context.Context, arg InsertWorldAdminParams) (WorldAdmin, error)
-	IsWorldAdmin(ctx context.Context, arg IsWorldAdminParams) (WorldAdmin, error)
-	IsWorldSuperAdmin(ctx context.Context, arg IsWorldSuperAdminParams) (WorldAdmin, error)
+	MenuItemChangePositions(ctx context.Context, arg MenuItemChangePositionsParams) error
+	MenuItemMoveGroupUp(ctx context.Context, menuItemID int32) error
+	MenuItemPostChangePositions(ctx context.Context, arg MenuItemPostChangePositionsParams) error
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
+	UnassignMenuItemPost(ctx context.Context, arg UnassignMenuItemPostParams) (MenuItemPost, error)
+	UpdateEntity(ctx context.Context, arg UpdateEntityParams) (Entity, error)
+	UpdateEntityGroup(ctx context.Context, arg UpdateEntityGroupParams) (EntityGroup, error)
+	UpdateEntityGroupContent(ctx context.Context, arg UpdateEntityGroupContentParams) (EntityGroupContent, error)
 	UpdateEvaluationVote(ctx context.Context, arg UpdateEvaluationVoteParams) (EvaluationVote, error)
 	UpdateImage(ctx context.Context, arg UpdateImageParams) (Image, error)
+	UpdateLocation(ctx context.Context, arg UpdateLocationParams) (Location, error)
+	UpdateMap(ctx context.Context, arg UpdateMapParams) (Map, error)
+	UpdateMapLayer(ctx context.Context, arg UpdateMapLayerParams) (MapLayer, error)
+	UpdateMapLayerIsMain(ctx context.Context, mapLayerID int32) error
+	UpdateMapPin(ctx context.Context, arg UpdateMapPinParams) (MapPin, error)
+	UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypeParams) (MapPinType, error)
+	UpdateMapPinTypeGroup(ctx context.Context, arg UpdateMapPinTypeGroupParams) (MapPinTypeGroup, error)
 	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)
 	UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) (MenuItem, error)
 	UpdateMenuItemPost(ctx context.Context, arg UpdateMenuItemPostParams) (MenuItemPost, error)
+	UpdateModule(ctx context.Context, arg UpdateModuleParams) (Module, error)
+	UpdateModuleAdmin(ctx context.Context, arg UpdateModuleAdminParams) (ModuleAdmin, error)
+	UpdateModuleEntityTagAvailable(ctx context.Context, arg UpdateModuleEntityTagAvailableParams) (ModuleEntityTagsAvailable, error)
+	UpdateModuleTypeTagAvailable(ctx context.Context, arg UpdateModuleTypeTagAvailableParams) (ModuleTypeTagsAvailable, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)
 	UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World, error)
-	UpdateWorldActivity(ctx context.Context, arg UpdateWorldActivityParams) (WorldActivity, error)
-	UpdateWorldAdmin(ctx context.Context, arg UpdateWorldAdminParams) (WorldAdmin, error)
-	UpdateWorldImages(ctx context.Context, arg UpdateWorldImagesParams) (WorldImage, error)
-	UpdateWorldTagAvailable(ctx context.Context, arg UpdateWorldTagAvailableParams) (WorldTagsAvailable, error)
+	UpsertUserModule(ctx context.Context, arg UpsertUserModuleParams) (UserModule, error)
 }
 
 var _ Querier = (*Queries)(nil)

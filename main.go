@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -13,7 +14,7 @@ import (
 	"github.com/rs/cors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/the-medo/talebound-backend/api"
+	"github.com/the-medo/talebound-backend/api/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	_ "github.com/the-medo/talebound-backend/doc/statik"
 	"github.com/the-medo/talebound-backend/mail"
@@ -37,6 +38,14 @@ func main() {
 
 	if config.Environment == "development" {
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	}
+
+	err = sentry.Init(sentry.ClientOptions{
+		Dsn:              config.SentryDsn,
+		TracesSampleRate: config.SentryTracesSampleRate,
+	})
+	if err != nil {
+		log.Fatal().Msgf("sentry.Init: %s", err)
 	}
 
 	conn, err := sql.Open(config.DBDriver, config.DBSource)
@@ -84,14 +93,28 @@ func runTaskProcessor(config util.Config, redisOpt asynq.RedisClientOpt, store d
 }
 
 func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) {
-	server, err := api.NewServer(config, store, taskDistributor)
+	server, err := srv.NewServer(config, store, taskDistributor)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot create server:")
 	}
 
-	grpcLogger := grpc.UnaryInterceptor(api.GrpcLogger)
+	grpcLogger := grpc.UnaryInterceptor(util.GrpcLogger)
 	grpcServer := grpc.NewServer(grpcLogger)
-	pb.RegisterTaleboundServer(grpcServer, server)
+
+	pb.RegisterLocationsServer(grpcServer, server)
+	pb.RegisterMapsServer(grpcServer, server)
+	pb.RegisterModulesServer(grpcServer, server)
+	pb.RegisterEntitiesServer(grpcServer, server)
+	pb.RegisterTagsServer(grpcServer, server)
+	pb.RegisterUsersServer(grpcServer, server)
+	pb.RegisterMenusServer(grpcServer, server)
+	pb.RegisterPostsServer(grpcServer, server)
+	pb.RegisterEvaluationsServer(grpcServer, server)
+	pb.RegisterImagesServer(grpcServer, server)
+	pb.RegisterAuthServer(grpcServer, server)
+	pb.RegisterWorldsServer(grpcServer, server)
+	pb.RegisterFetcherServer(grpcServer, server)
+
 	reflection.Register(grpcServer)
 
 	listener, err := net.Listen("tcp", config.GRPCServerAddress)
@@ -107,10 +130,6 @@ func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.Ta
 }
 
 func runGatewayServer(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) {
-	server, err := api.NewServer(config, store, taskDistributor)
-	if err != nil {
-		log.Fatal().Err(err).Msg("Cannot create server:")
-	}
 
 	grpcMux := runtime.NewServeMux(
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
@@ -130,7 +149,25 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	err = pb.RegisterTaleboundHandlerServer(ctx, grpcMux, server)
+
+	server, err := srv.NewServer(config, store, taskDistributor)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Cannot create server:")
+	}
+
+	err = pb.RegisterLocationsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterMapsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterModulesHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterEntitiesHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterTagsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterUsersHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterMenusHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterPostsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterEvaluationsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterImagesHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterAuthHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterWorldsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterFetcherHandlerServer(ctx, grpcMux, server)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot register handler server")
 	}
@@ -140,15 +177,18 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 
 	var muxWithCORS http.Handler
 
+	//TODO - check Fetch-Ids header - should be in allowed or exposed?
 	if config.Environment == "development" {
 		corsMiddleware := cors.New(cors.Options{
 			AllowedOrigins:   []string{config.FullDomain},
 			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
-			AllowedHeaders:   []string{"Content-Type", "Set-Cookie"},
+			AllowedHeaders:   []string{"Content-Type", "Set-Cookie", "Fetch-Ids"},
+			ExposedHeaders:   []string{"Fetch-Ids"},
 			AllowCredentials: true,
 		})
 		muxWithCORS = corsMiddleware.Handler(mux)
 	} else {
+		//TODO PROD - check if everything works in production
 		muxWithCORS = cors.Default().Handler(mux)
 	}
 
@@ -166,7 +206,7 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	}
 
 	log.Info().Msgf("Starting HTTP gateway server at %s", listener.Addr().String())
-	handler := api.HttpLogger(muxWithCORS)
+	handler := util.HttpLogger(muxWithCORS)
 	err = http.Serve(listener, handler)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot start HTTP gateway server:")

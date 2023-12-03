@@ -11,7 +11,43 @@
   },
   "tags": [
     {
-      "name": "Talebound"
+      "name": "Auth"
+    },
+    {
+      "name": "Entities"
+    },
+    {
+      "name": "Evaluations"
+    },
+    {
+      "name": "Fetcher"
+    },
+    {
+      "name": "Images"
+    },
+    {
+      "name": "Locations"
+    },
+    {
+      "name": "Maps"
+    },
+    {
+      "name": "Menus"
+    },
+    {
+      "name": "Modules"
+    },
+    {
+      "name": "Posts"
+    },
+    {
+      "name": "Tags"
+    },
+    {
+      "name": "Users"
+    },
+    {
+      "name": "Worlds"
     }
   ],
   "consumes": [
@@ -21,54 +57,16 @@
     "application/json"
   ],
   "paths": {
-    "/chat": {
-      "get": {
-        "summary": "Get list of chat messages",
-        "description": "returns list of chat messages",
-        "operationId": "Talebound_GetChatMessages",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetChatMessagesResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      },
+    "/auth": {
       "post": {
-        "summary": "Add new chat message",
-        "description": "adds new chat message",
-        "operationId": "Talebound_AddChatMessage",
+        "summary": "Verify email",
+        "description": "auth user email",
+        "operationId": "Auth_VerifyEmail",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbAddChatMessageResponse"
+              "$ref": "#/definitions/pbVerifyEmailResponse"
             }
           },
           "default": {
@@ -84,25 +82,25 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbAddChatMessageRequest"
+              "$ref": "#/definitions/pbVerifyEmailRequest"
             }
           }
         ],
         "tags": [
-          "Talebound"
+          "Auth"
         ]
       }
     },
-    "/chat/{id}": {
-      "delete": {
-        "summary": "Delete chat message",
-        "description": "removes role from user",
-        "operationId": "Talebound_DeleteChatMessage",
+    "/auth/login": {
+      "post": {
+        "summary": "Login user",
+        "description": "login user - get user object and set HttpOnly cookies",
+        "operationId": "Auth_LoginUser",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbDeleteChatMessageResponse"
+              "$ref": "#/definitions/pbLoginUserResponse"
             }
           },
           "default": {
@@ -114,15 +112,462 @@
         },
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "string",
-            "format": "int64"
+            "schema": {
+              "$ref": "#/definitions/pbLoginUserRequest"
+            }
           }
         ],
         "tags": [
-          "Talebound"
+          "Auth"
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Logout user",
+        "description": "logout user - it clears HttpOnly cookies - no request data required",
+        "operationId": "Auth_LogoutUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/reset/auth-code": {
+      "post": {
+        "summary": "Confirm password reset",
+        "description": "in case a user forgot their password, they can confirm the password reset using this endpoint",
+        "operationId": "Auth_ResetPasswordVerifyCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordVerifyCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordVerifyCodeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/reset/auth-code-validity": {
+      "get": {
+        "summary": "Validate reset password secret code",
+        "description": "validate reset password secret code",
+        "operationId": "Auth_ResetPasswordVerifyCodeValidity",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordVerifyCodeValidityResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "secretCode",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/reset/send-code": {
+      "post": {
+        "summary": "Request password reset",
+        "description": "in case a user forgot their password, they can request a password reset using this endpoint",
+        "operationId": "Auth_ResetPasswordSendCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordSendCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbResetPasswordSendCodeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/entities/groups/create": {
+      "post": {
+        "summary": "Create entity group",
+        "description": "creates entity group",
+        "operationId": "Entities_CreateEntityGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbEntityGroup"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateEntityGroupRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/groups/{entityGroupId}": {
+      "delete": {
+        "summary": "Delete entity group",
+        "description": "deletes an entity group",
+        "operationId": "Entities_DeleteEntityGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityGroupId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      },
+      "patch": {
+        "summary": "Update entity group",
+        "description": "updates entity group properties",
+        "operationId": "Entities_UpdateEntityGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbEntityGroup"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityGroupId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "style": {
+                  "type": "string"
+                },
+                "direction": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/groups/{entityGroupId}/content": {
+      "post": {
+        "summary": "Create entity group content",
+        "description": "creates content for an entity group",
+        "operationId": "Entities_CreateEntityGroupContent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbEntityGroupContent"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityGroupId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "contentEntityId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "contentEntityGroupId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/groups/{entityGroupId}/content/{contentId}": {
+      "delete": {
+        "summary": "Delete entity group content",
+        "description": "deletes content from an entity group",
+        "operationId": "Entities_DeleteEntityGroupContent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityGroupId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      },
+      "patch": {
+        "summary": "Update entity group content",
+        "description": "updates content of an entity group",
+        "operationId": "Entities_UpdateEntityGroupContent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbEntityGroupContent"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityGroupId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "newEntityGroupId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "position": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "contentEntityId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "contentEntityGroupId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/{entityId}": {
+      "get": {
+        "summary": "Get entity by id",
+        "description": "gets entity by id",
+        "operationId": "Entities_GetEntityById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewEntity"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Entities"
         ]
       }
     },
@@ -130,7 +575,7 @@
       "get": {
         "summary": "Get evaluation by id",
         "description": "get evaluation by id",
-        "operationId": "Talebound_GetEvaluationById",
+        "operationId": "Evaluations_GetEvaluationById",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -155,7 +600,7 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Evaluations"
         ]
       }
     },
@@ -163,7 +608,7 @@
       "get": {
         "summary": "Get evaluations by type",
         "description": "get evaluations by type",
-        "operationId": "Talebound_GetEvaluationsByType",
+        "operationId": "Evaluations_GetEvaluationsByType",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -191,7 +636,41 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Evaluations"
+        ]
+      }
+    },
+    "/fetcher": {
+      "post": {
+        "summary": "Run fetcher - get modules and entities by ID",
+        "description": "Run fetcher - get modules and entities by their ID",
+        "operationId": "Fetcher_RunFetcher",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbRunFetcherResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbRunFetcherRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Fetcher"
         ]
       }
     },
@@ -199,7 +678,7 @@
       "get": {
         "summary": "Get images",
         "description": "get images - paginated, filterable by user and image type",
-        "operationId": "Talebound_GetImages",
+        "operationId": "Images_GetImages",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -216,6 +695,13 @@
         },
         "parameters": [
           {
+            "name": "moduleId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
             "name": "userId",
             "in": "query",
             "required": false,
@@ -223,7 +709,31 @@
             "format": "int32"
           },
           {
-            "name": "imageTypeId",
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "width",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "height",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -245,13 +755,13 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Images"
         ]
       },
       "post": {
         "summary": "Upload image",
         "description": "uploads an image file",
-        "operationId": "Talebound_UploadDefaultImage",
+        "operationId": "Images_UploadDefaultImage",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -277,7 +787,1139 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Images"
+        ]
+      }
+    },
+    "/images/{imageId}": {
+      "get": {
+        "summary": "Get image by id",
+        "description": "get image by id",
+        "operationId": "Images_GetImageById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbImage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Images"
+        ]
+      }
+    },
+    "/locations": {
+      "get": {
+        "summary": "Get locations",
+        "description": "returns locations based on modules (world or quest)",
+        "operationId": "Locations_GetLocations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetLocationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "questId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "characterId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "systemId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Locations"
+        ]
+      },
+      "delete": {
+        "summary": "Delete multiple locations",
+        "description": "deletes multiple locations from the world or quest",
+        "operationId": "Locations_DeleteBulkLocation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "locationIds",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "Locations"
+        ]
+      },
+      "post": {
+        "summary": "Create location",
+        "description": "creates a new location in the world or a quest",
+        "operationId": "Locations_CreateLocation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLocation"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateLocationRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Locations"
+        ]
+      }
+    },
+    "/locations/{locationId}": {
+      "get": {
+        "summary": "Get location by id",
+        "description": "get location by id",
+        "operationId": "Locations_GetLocationById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLocation"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Locations"
+        ]
+      },
+      "delete": {
+        "summary": "Delete location",
+        "description": "deletes location from the world or quest",
+        "operationId": "Locations_DeleteLocation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Locations"
+        ]
+      },
+      "patch": {
+        "summary": "Update location",
+        "description": "updates location properties",
+        "operationId": "Locations_UpdateLocation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLocation"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "postId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "thumbnailImageId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Locations"
+        ]
+      }
+    },
+    "/locations/{locationId}/posts": {
+      "post": {
+        "summary": "Create post for location",
+        "description": "creates a new post and assigns it to location in the world or a quest",
+        "operationId": "Locations_CreateLocationPost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLocation"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Locations"
+        ]
+      }
+    },
+    "/maps": {
+      "get": {
+        "summary": "Get maps",
+        "description": "returns maps based on modules (world or quest)",
+        "operationId": "Maps_GetMaps",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetMapsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "module.worldId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "module.questId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "module.characterId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "module.systemId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      },
+      "post": {
+        "summary": "Create map",
+        "description": "creates a new map for world or quest",
+        "operationId": "Maps_CreateMap",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateMapResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateMapRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      }
+    },
+    "/maps/{mapId}": {
+      "get": {
+        "summary": "Get map by id",
+        "description": "get map by id",
+        "operationId": "Maps_GetMapById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbMap"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      },
+      "delete": {
+        "summary": "Delete map",
+        "description": "deletes a map from the world or quest",
+        "operationId": "Maps_DeleteMap",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      },
+      "patch": {
+        "summary": "Update map",
+        "description": "updates map properties",
+        "operationId": "Maps_UpdateMap",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbMap"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "thumbnailImageId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      }
+    },
+    "/maps/{mapId}/layers": {
+      "get": {
+        "summary": "Get map layers",
+        "description": "returns layers of the map",
+        "operationId": "Maps_GetMapLayers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetMapLayersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      },
+      "post": {
+        "summary": "Create map layer",
+        "description": "creates a new layer for the map",
+        "operationId": "Maps_CreateMapLayer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewMapLayer"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "imageId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "isMain": {
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "sublayer": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      }
+    },
+    "/maps/{mapId}/layers/{layerId}": {
+      "delete": {
+        "summary": "Delete map layer",
+        "description": "deletes a layer from the map",
+        "operationId": "Maps_DeleteMapLayer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "layerId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      },
+      "patch": {
+        "summary": "Update map layer",
+        "description": "updates layer properties",
+        "operationId": "Maps_UpdateMapLayer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewMapLayer"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "layerId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "imageId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "isMain": {
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "sublayer": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      }
+    },
+    "/maps/{mapId}/pin_types": {
+      "get": {
+        "summary": "Get map pin types",
+        "description": "returns pin types of the map",
+        "operationId": "Maps_GetMapPinTypes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetMapPinTypesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      },
+      "post": {
+        "summary": "Create map pin type",
+        "description": "creates a new pin type for the map",
+        "operationId": "Maps_CreateMapPinType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbMapPinType"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "shape": {
+                  "$ref": "#/definitions/pbPinShape"
+                },
+                "backgroundColor": {
+                  "type": "string"
+                },
+                "borderColor": {
+                  "type": "string"
+                },
+                "iconColor": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "iconSize": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "width": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "section": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      }
+    },
+    "/maps/{mapId}/pin_types/{pinTypeId}": {
+      "delete": {
+        "summary": "Delete map pin type",
+        "description": "deletes a pin type from the map",
+        "operationId": "Maps_DeleteMapPinType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pinTypeId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      },
+      "patch": {
+        "summary": "Update map pin type",
+        "description": "updates pin type properties",
+        "operationId": "Maps_UpdateMapPinType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUpdateMapPinTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pinTypeId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "shape": {
+                  "$ref": "#/definitions/pbPinShape"
+                },
+                "backgroundColor": {
+                  "type": "string"
+                },
+                "borderColor": {
+                  "type": "string"
+                },
+                "iconColor": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "iconSize": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "width": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "section": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      }
+    },
+    "/maps/{mapId}/pins": {
+      "get": {
+        "summary": "Get map pins",
+        "description": "returns pins of the map",
+        "operationId": "Maps_GetMapPins",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetMapPinsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      },
+      "post": {
+        "summary": "Create map pin",
+        "description": "creates a new pin for the map",
+        "operationId": "Maps_CreateMapPin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewMapPin"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mapPinTypeId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "locationId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "mapLayerId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "x": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "y": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      }
+    },
+    "/maps/{mapId}/pins/{pinId}": {
+      "delete": {
+        "summary": "Delete map pin",
+        "description": "deletes a pin from the map",
+        "operationId": "Maps_DeleteMapPin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pinId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      },
+      "patch": {
+        "summary": "Update map pin",
+        "description": "updates pin properties",
+        "operationId": "Maps_UpdateMapPin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewMapPin"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pinId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mapPinTypeId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "locationId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "mapLayerId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "x": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "y": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Maps"
         ]
       }
     },
@@ -285,12 +1927,12 @@
       "get": {
         "summary": "Get menu by ID ",
         "description": "gets menu by ID",
-        "operationId": "Talebound_GetMenu",
+        "operationId": "Menus_GetMenu",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbMenu"
+              "$ref": "#/definitions/pbViewMenu"
             }
           },
           "default": {
@@ -310,18 +1952,18 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Menus"
         ]
       },
       "patch": {
         "summary": "Update Menu",
         "description": "updates menu (code or image)",
-        "operationId": "Talebound_UpdateMenu",
+        "operationId": "Menus_UpdateMenu",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbMenu"
+              "$ref": "#/definitions/pbViewMenu"
             }
           },
           "default": {
@@ -358,103 +2000,15 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Menus"
         ]
       }
     },
-    "/menus/{menuId}/items": {
-      "get": {
-        "summary": "Get menu items",
-        "description": "gets list of menu items",
-        "operationId": "Talebound_GetMenuItems",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetMenuItemsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "menuId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      },
-      "post": {
-        "summary": "Create menu item",
-        "description": "adds new menu item to the menu",
-        "operationId": "Talebound_CreateMenuItem",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbMenuItem"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "menuId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "position": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "parentItemId": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/menus/{menuId}/items/{menuItemId}": {
-      "delete": {
-        "summary": "Delete menu item",
-        "description": "deletes menu item",
-        "operationId": "Talebound_DeleteMenuItem",
+    "/menus/{menuId}/groups/{menuItemId}": {
+      "patch": {
+        "summary": "Move menu item group up",
+        "description": "move menu item group up",
+        "operationId": "Menus_UpdateMenuItemMoveGroupUp",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -487,13 +2041,179 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Menus"
+        ]
+      }
+    },
+    "/menus/{menuId}/items": {
+      "get": {
+        "summary": "Get menu items",
+        "description": "gets list of menu items",
+        "operationId": "Menus_GetMenuItems",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetMenuItemsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Menus"
+        ]
+      },
+      "post": {
+        "summary": "Create menu item",
+        "description": "adds new menu item to the menu",
+        "operationId": "Menus_CreateMenuItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbMenuItem"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "position": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "isMain": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Menus"
+        ]
+      }
+    },
+    "/menus/{menuId}/items/{menuItemId}": {
+      "get": {
+        "summary": "Get all entities for menu item",
+        "description": "gets list of entities for menu item - posts, maps, locations,...",
+        "operationId": "Menus_GetMenuItemContent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetMenuItemContentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "menuItemId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Menus"
+        ]
+      },
+      "delete": {
+        "summary": "Delete menu item",
+        "description": "deletes menu item",
+        "operationId": "Menus_DeleteMenuItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "menuItemId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Menus"
         ]
       },
       "patch": {
         "summary": "Update menu item",
         "description": "updates menu item",
-        "operationId": "Talebound_UpdateMenuItem",
+        "operationId": "Menus_UpdateMenuItem",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -540,9 +2260,8 @@
                   "type": "integer",
                   "format": "int32"
                 },
-                "parentItemId": {
-                  "type": "integer",
-                  "format": "int32"
+                "isMain": {
+                  "type": "boolean"
                 },
                 "descriptionPostId": {
                   "type": "integer",
@@ -553,7 +2272,7 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Menus"
         ]
       }
     },
@@ -561,7 +2280,7 @@
       "get": {
         "summary": "Get menu item posts",
         "description": "gets list of menu item posts",
-        "operationId": "Talebound_GetMenuItemPosts",
+        "operationId": "Menus_GetMenuItemPosts",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -593,13 +2312,13 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Menus"
         ]
       },
       "post": {
         "summary": "Create menu item post",
         "description": "adds new menu item post to the menu item",
-        "operationId": "Talebound_CreateMenuItemPost",
+        "operationId": "Menus_CreateMenuItemPost",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -643,13 +2362,26 @@
                 "position": {
                   "type": "integer",
                   "format": "int32"
+                },
+                "isMenuItemDescriptionPost": {
+                  "type": "boolean"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "shortDescription": {
+                  "type": "string"
+                },
+                "imageThumbnailId": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
           }
         ],
         "tags": [
-          "Talebound"
+          "Menus"
         ]
       }
     },
@@ -657,7 +2389,7 @@
       "delete": {
         "summary": "Delete menu item post",
         "description": "deletes menu item post",
-        "operationId": "Talebound_DeleteMenuItemPost",
+        "operationId": "Menus_DeleteMenuItemPost",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -697,18 +2429,19 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Menus"
         ]
       },
       "patch": {
         "summary": "Update menu item post",
         "description": "updates menu item post",
-        "operationId": "Talebound_UpdateMenuItemPost",
+        "operationId": "Menus_UpdateMenuItemPost",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbMenuItemPost"
+              "type": "object",
+              "properties": {}
             }
           },
           "default": {
@@ -747,6 +2480,10 @@
             "schema": {
               "type": "object",
               "properties": {
+                "newMenuItemId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
                 "position": {
                   "type": "integer",
                   "format": "int32"
@@ -756,20 +2493,20 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Menus"
         ]
       }
     },
-    "/post_types": {
+    "/menus/{menuId}/posts": {
       "get": {
-        "summary": "Get post types",
-        "description": "get post types with info (draftable, privatable)",
-        "operationId": "Talebound_GetPostTypes",
+        "summary": "Get menu item posts by menu id",
+        "description": "gets list of menu item posts for menu",
+        "operationId": "Menus_GetMenuItemPostsByMenuId",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbGetPostTypesResponse"
+              "$ref": "#/definitions/pbGetMenuItemPostsByMenuIdResponse"
             }
           },
           "default": {
@@ -779,16 +2516,416 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
         "tags": [
-          "Talebound"
+          "Menus"
+        ]
+      },
+      "patch": {
+        "summary": "Update menu posts",
+        "description": "change menu item id for multiple posts",
+        "operationId": "Menus_UpdateMenuPosts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUpdateMenuPostsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "menuItemId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "postIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Menus"
+        ]
+      }
+    },
+    "/modules/get/id": {
+      "get": {
+        "summary": "Get id of the module",
+        "description": "gets id of the module (based on world id, quest id,...)",
+        "operationId": "Modules_GetModuleId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetModuleIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "worldId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "questId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "characterId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "systemId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Modules"
+        ]
+      }
+    },
+    "/modules/{moduleId}": {
+      "get": {
+        "summary": "Get module by id",
+        "description": "gets module by id",
+        "operationId": "Modules_GetModuleById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewModule"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Modules"
+        ]
+      }
+    },
+    "/modules/{moduleId}/admin": {
+      "get": {
+        "summary": "Get module admins",
+        "description": "returns admins and admin requests for module",
+        "operationId": "Modules_GetModuleAdmins",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetModuleAdminsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Modules"
+        ]
+      },
+      "delete": {
+        "summary": "Delete module admin",
+        "description": "deletes module admin",
+        "operationId": "Modules_DeleteModuleAdmin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Modules"
+        ]
+      },
+      "post": {
+        "summary": "Create module admin",
+        "description": "adds request to become admin of the module",
+        "operationId": "Modules_CreateModuleAdmin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbModuleAdmin"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "motivationalLetter": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Modules"
+        ]
+      },
+      "patch": {
+        "summary": "Update module admin",
+        "description": "updates module admin request (approve / decline)",
+        "operationId": "Modules_UpdateModuleAdmin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbModuleAdmin"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "superAdmin": {
+                  "type": "boolean"
+                },
+                "approved": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "motivationalLetter": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Modules"
         ]
       }
     },
     "/posts": {
+      "get": {
+        "summary": "Get posts",
+        "description": "returns posts based on module",
+        "operationId": "Posts_GetPosts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetPostsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "isDraft",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "isPrivate",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Posts"
+        ]
+      },
       "post": {
         "summary": "Create post",
         "description": "create completely new post",
-        "operationId": "Talebound_CreatePost",
+        "operationId": "Posts_CreatePost",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -814,7 +2951,7 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Posts"
         ]
       }
     },
@@ -822,7 +2959,7 @@
       "get": {
         "summary": "Get post by id",
         "description": "get content of post by its ID",
-        "operationId": "Talebound_GetPostById",
+        "operationId": "Posts_GetPostById",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -847,13 +2984,13 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Posts"
         ]
       },
       "delete": {
         "summary": "Delete post",
         "description": "deletes post",
-        "operationId": "Talebound_DeletePost",
+        "operationId": "Posts_DeletePost",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -878,13 +3015,13 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Posts"
         ]
       },
       "patch": {
         "summary": "Update post",
         "description": "update title or content of the post",
-        "operationId": "Talebound_UpdatePost",
+        "operationId": "Posts_UpdatePost",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -920,22 +3057,25 @@
                 "content": {
                   "type": "string"
                 },
-                "postTypeId": {
-                  "type": "integer",
-                  "format": "int32"
+                "description": {
+                  "type": "string"
                 },
                 "isDraft": {
                   "type": "boolean"
                 },
                 "isPrivate": {
                   "type": "boolean"
+                },
+                "imageThumbnailId": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
           }
         ],
         "tags": [
-          "Talebound"
+          "Posts"
         ]
       }
     },
@@ -943,7 +3083,7 @@
       "get": {
         "summary": "Get post history",
         "description": "get list of history changes of post by its ID - without content",
-        "operationId": "Talebound_GetPostHistory",
+        "operationId": "Posts_GetPostHistory",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -968,7 +3108,7 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Posts"
         ]
       }
     },
@@ -976,12 +3116,12 @@
       "get": {
         "summary": "Get post history content",
         "description": "get content of single update iteration of post",
-        "operationId": "Talebound_GetPostHistoryById",
+        "operationId": "Posts_GetPostHistoryById",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbHistoryPost"
+              "$ref": "#/definitions/pbPostHistory"
             }
           },
           "default": {
@@ -1008,20 +3148,20 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Posts"
         ]
       }
     },
-    "/tags/worlds": {
+    "/tags/available/entity": {
       "get": {
-        "summary": "Get available world tags",
-        "description": "gets list of tags, that are usable for worlds",
-        "operationId": "Talebound_GetAvailableWorldTags",
+        "summary": "Get available tags for entities",
+        "description": "gets list of tags, that are usable for entities inside of module",
+        "operationId": "Tags_GetModuleEntityAvailableTags",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbGetAvailableWorldTagsResponse"
+              "$ref": "#/definitions/pbGetModuleEntityAvailableTagsResponse"
             }
           },
           "default": {
@@ -1031,19 +3171,28 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
         "tags": [
-          "Talebound"
+          "Tags"
         ]
       },
       "post": {
-        "summary": "Create available world tag",
-        "description": "creates new tag, that can be assigned to worlds",
-        "operationId": "Talebound_CreateAvailableWorldTag",
+        "summary": "Create entity-available tag",
+        "description": "creates new tag, that can be assigned to entities inside of given module",
+        "operationId": "Tags_CreateModuleEntityAvailableTag",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbTag"
+              "$ref": "#/definitions/pbEntityTagAvailable"
             }
           },
           "default": {
@@ -1059,20 +3208,20 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbCreateAvailableWorldTagRequest"
+              "$ref": "#/definitions/pbCreateModuleEntityAvailableTagRequest"
             }
           }
         ],
         "tags": [
-          "Talebound"
+          "Tags"
         ]
       }
     },
-    "/tags/worlds/{tagId}": {
+    "/tags/available/entity/{tagId}": {
       "delete": {
-        "summary": "Delete available world tag",
-        "description": "deletes available world tag and removes all its assignments",
-        "operationId": "Talebound_DeleteAvailableWorldTag",
+        "summary": "Delete entity-available tag",
+        "description": "deletes available tag and removes all its assignments",
+        "operationId": "Tags_DeleteModuleEntityAvailableTag",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1098,18 +3247,18 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Tags"
         ]
       },
       "patch": {
-        "summary": "Update available world tag",
-        "description": "updates world-assignable tag",
-        "operationId": "Talebound_UpdateAvailableWorldTag",
+        "summary": "Update entity-available tag",
+        "description": "updates entity-assignable tag",
+        "operationId": "Tags_UpdateModuleEntityAvailableTag",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbTag"
+              "$ref": "#/definitions/pbEntityTagAvailable"
             }
           },
           "default": {
@@ -1142,7 +3291,366 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Tags"
+        ]
+      }
+    },
+    "/tags/available/module_type": {
+      "get": {
+        "summary": "Get available tags for module type",
+        "description": "gets list of tags, that are usable for module type",
+        "operationId": "Tags_GetModuleTypeAvailableTags",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetModuleTypeAvailableTagsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleType",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "MODULE_TYPE_UNKNOWN",
+              "MODULE_TYPE_WORLD",
+              "MODULE_TYPE_QUEST",
+              "MODULE_TYPE_SYSTEM",
+              "MODULE_TYPE_CHARACTER"
+            ],
+            "default": "MODULE_TYPE_UNKNOWN"
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      },
+      "post": {
+        "summary": "Create module-available tag",
+        "description": "creates new tag, that can be assigned to modules of given type",
+        "operationId": "Tags_CreateModuleTypeAvailableTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewTag"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateModuleTypeAvailableTagRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/tags/available/module_type/{tagId}": {
+      "delete": {
+        "summary": "Delete available world tag",
+        "description": "deletes available world tag and removes all its assignments",
+        "operationId": "Tags_DeleteModuleTypeAvailableTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tagId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      },
+      "patch": {
+        "summary": "Update module-available tag",
+        "description": "updates module-assignable tag",
+        "operationId": "Tags_UpdateModuleTypeAvailableTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewTag"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tagId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "newTag": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/tags/entity/{entityId}": {
+      "post": {
+        "summary": "Create entity tag",
+        "description": "assigns one tag to the entity",
+        "operationId": "Tags_CreateEntityTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateEntityTagResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tagId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/tags/entity/{entityId}/tag/{tagId}": {
+      "delete": {
+        "summary": "Delete entity tag",
+        "description": "removes tag from the entity",
+        "operationId": "Tags_DeleteEntityTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "tagId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/tags/module/{moduleId}": {
+      "post": {
+        "summary": "Create module tag",
+        "description": "assigns one tag to the module",
+        "operationId": "Tags_CreateModuleTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateModuleTagResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tagId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/tags/module/{moduleId}/tag/{tagId}": {
+      "delete": {
+        "summary": "Delete module tag",
+        "description": "removes tag from the module",
+        "operationId": "Tags_DeleteModuleTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "tagId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/user_roles": {
+      "get": {
+        "summary": "Get user roles (admin, moderator, etc.)",
+        "description": "returns full list of user roles",
+        "operationId": "Users_GetUserRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetUserRolesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Users"
         ]
       }
     },
@@ -1150,7 +3658,7 @@
       "get": {
         "summary": "Get list of users",
         "description": "returns list of users",
-        "operationId": "Talebound_GetUsers",
+        "operationId": "Users_GetUsers",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1182,13 +3690,13 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Users"
         ]
       },
       "post": {
         "summary": "Create new user",
         "description": "use this API to create a new user",
-        "operationId": "Talebound_CreateUser",
+        "operationId": "Users_CreateUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1214,13 +3722,13 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Users"
         ]
       },
       "patch": {
         "summary": "Update user",
         "description": "use this API to update user",
-        "operationId": "Talebound_UpdateUser",
+        "operationId": "Users_UpdateUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1246,20 +3754,20 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Users"
         ]
       }
     },
-    "/users/id/{userId}": {
+    "/users/{userId}": {
       "get": {
         "summary": "Get user",
         "description": "returns information about one user",
-        "operationId": "Talebound_GetUserById",
+        "operationId": "Users_GetUserById",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbViewUser"
+              "$ref": "#/definitions/pbUser"
             }
           },
           "default": {
@@ -1279,242 +3787,7 @@
           }
         ],
         "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/users/login": {
-      "post": {
-        "summary": "Login user",
-        "description": "login user - get user object and set HttpOnly cookies",
-        "operationId": "Talebound_LoginUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbLoginUserResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbLoginUserRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/users/logout": {
-      "post": {
-        "summary": "Logout user",
-        "description": "logout user - it clears HttpOnly cookies - no request data required",
-        "operationId": "Talebound_LogoutUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/users/reset/send-code": {
-      "post": {
-        "summary": "Request password reset",
-        "description": "in case a user forgot their password, they can request a password reset using this endpoint",
-        "operationId": "Talebound_ResetPasswordSendCode",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbResetPasswordSendCodeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbResetPasswordSendCodeRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/users/reset/verify-code": {
-      "post": {
-        "summary": "Confirm password reset",
-        "description": "in case a user forgot their password, they can confirm the password reset using this endpoint",
-        "operationId": "Talebound_ResetPasswordVerifyCode",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbResetPasswordVerifyCodeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbResetPasswordVerifyCodeRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/users/reset/verify-code-validity": {
-      "get": {
-        "summary": "Validate reset password secret code",
-        "description": "validate reset password secret code",
-        "operationId": "Talebound_ResetPasswordVerifyCodeValidity",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbResetPasswordVerifyCodeValidityResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "secretCode",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/users/roles": {
-      "get": {
-        "summary": "Get user roles (admin, moderator, etc.)",
-        "description": "returns full list of user roles",
-        "operationId": "Talebound_GetUserRoles",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetUserRolesResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      },
-      "post": {
-        "summary": "Add role to user",
-        "description": "adds new role to user",
-        "operationId": "Talebound_AddRoleToUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbAddRoleToUserResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbAddRoleToUserRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Talebound"
+          "Users"
         ]
       }
     },
@@ -1522,7 +3795,7 @@
       "post": {
         "summary": "Upload user avatar",
         "description": "uploads an user avatar",
-        "operationId": "Talebound_UploadUserAvatar",
+        "operationId": "Users_UploadUserAvatar",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1561,7 +3834,7 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Users"
         ]
       }
     },
@@ -1569,7 +3842,7 @@
       "get": {
         "summary": "Get evaluation votes by user id",
         "description": "get evaluation votes by user id",
-        "operationId": "Talebound_GetEvaluationVotesByUserId",
+        "operationId": "Users_GetEvaluationVotesByUserId",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1594,13 +3867,13 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Users"
         ]
       },
       "post": {
         "summary": "Create or update evaluation vote",
         "description": "create or update evaluation vote",
-        "operationId": "Talebound_CreateOrUpdateEvaluationVote",
+        "operationId": "Users_CreateOrUpdateEvaluationVote",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1648,7 +3921,7 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Users"
         ]
       }
     },
@@ -1656,7 +3929,7 @@
       "get": {
         "summary": "Get average user evaluation",
         "description": "get average user evaluation by type",
-        "operationId": "Talebound_GetAverageUserEvaluationsByType",
+        "operationId": "Users_GetAverageUserEvaluationsByType",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1687,7 +3960,7 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Users"
         ]
       }
     },
@@ -1695,7 +3968,7 @@
       "get": {
         "summary": "Get evaluation votes by user id and voter",
         "description": "get evaluation votes by user id and voter",
-        "operationId": "Talebound_GetEvaluationVotesByUserIdAndVoter",
+        "operationId": "Users_GetEvaluationVotesByUserIdAndVoter",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1727,7 +4000,7 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Users"
         ]
       }
     },
@@ -1735,7 +4008,7 @@
       "delete": {
         "summary": "Delete evaluation vote",
         "description": "delete evaluation vote",
-        "operationId": "Talebound_DeleteEvaluationVote",
+        "operationId": "Users_DeleteEvaluationVote",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1774,61 +4047,7 @@
           }
         ],
         "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/users/{userId}/images": {
-      "get": {
-        "summary": "Get user images",
-        "description": "get images of user by userID - filterable by image type",
-        "operationId": "Talebound_GetUserImages",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetImagesResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "imageTypeId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
+          "Users"
         ]
       }
     },
@@ -1836,7 +4055,7 @@
       "patch": {
         "summary": "Update user introduction",
         "description": "use this API to update user introduction",
-        "operationId": "Talebound_UpdateUserIntroduction",
+        "operationId": "Users_UpdateUserIntroduction",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1877,7 +4096,40 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Users"
+        ]
+      }
+    },
+    "/users/{userId}/modules": {
+      "get": {
+        "summary": "Get creator's worlds",
+        "description": "gets list of worlds that the creator is part of",
+        "operationId": "Users_GetUserModules",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetUserModulesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Users"
         ]
       }
     },
@@ -1885,7 +4137,7 @@
       "get": {
         "summary": "Get user posts",
         "description": "get posts of user by userID",
-        "operationId": "Talebound_GetUserPosts",
+        "operationId": "Users_GetUserPosts",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1909,13 +4161,6 @@
             "format": "int32"
           },
           {
-            "name": "postTypeId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
             "name": "limit",
             "in": "query",
             "required": false,
@@ -1931,15 +4176,49 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Users"
         ]
       }
     },
-    "/users/{userId}/roles/{roleId}": {
+    "/users_roles": {
+      "post": {
+        "summary": "Add role to user",
+        "description": "adds new role to user",
+        "operationId": "Users_AddRoleToUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbAddRoleToUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbAddRoleToUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users_roles/{userId}/roles/{roleId}": {
       "delete": {
         "summary": "Remove role from user",
         "description": "removes role from user",
-        "operationId": "Talebound_RemoveRoleFromUser",
+        "operationId": "Users_RemoveRoleFromUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1971,74 +4250,7 @@
           }
         ],
         "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/users/{userId}/worlds": {
-      "get": {
-        "summary": "Get creator's worlds",
-        "description": "gets list of worlds that the creator is part of",
-        "operationId": "Talebound_GetWorldsOfCreator",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetWorldsOfCreatorResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/verify": {
-      "post": {
-        "summary": "Verify email",
-        "description": "verify user email",
-        "operationId": "Talebound_VerifyEmail",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbVerifyEmailResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbVerifyEmailRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Talebound"
+          "Users"
         ]
       }
     },
@@ -2046,7 +4258,7 @@
       "get": {
         "summary": "Get worlds ",
         "description": "gets list of worlds",
-        "operationId": "Talebound_GetWorlds",
+        "operationId": "Worlds_GetWorlds",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2067,6 +4279,17 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "collectionFormat": "multi"
           },
           {
             "name": "orderBy",
@@ -2090,18 +4313,18 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Worlds"
         ]
       },
       "post": {
         "summary": "Create world",
         "description": "creates completely new world",
-        "operationId": "Talebound_CreateWorld",
+        "operationId": "Worlds_CreateWorld",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbWorld"
+              "$ref": "#/definitions/pbCreateWorldResponse"
             }
           },
           "default": {
@@ -2122,87 +4345,7 @@
           }
         ],
         "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/worlds/activity/daily": {
-      "get": {
-        "summary": "Get world(s) daily activity",
-        "description": "gets activity by day",
-        "operationId": "Talebound_GetWorldDailyActivity",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetWorldDailyActivityResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "dateFrom",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/worlds/activity/monthly": {
-      "get": {
-        "summary": "Get world(s) monthly activity",
-        "description": "gets world activity grouped by month",
-        "operationId": "Talebound_GetWorldMonthlyActivity",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetWorldMonthlyActivityResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "dateFrom",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          }
-        ],
-        "tags": [
-          "Talebound"
+          "Worlds"
         ]
       }
     },
@@ -2210,7 +4353,7 @@
       "get": {
         "summary": "Get world by ID ",
         "description": "gets world by ID",
-        "operationId": "Talebound_GetWorldById",
+        "operationId": "Worlds_GetWorldById",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2235,13 +4378,13 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Worlds"
         ]
       },
       "patch": {
         "summary": "Update world",
         "description": "updates world properties (NO images or stats!)",
-        "operationId": "Talebound_UpdateWorld",
+        "operationId": "Worlds_UpdateWorld",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2286,196 +4429,13 @@
                 "descriptionPostId": {
                   "type": "integer",
                   "format": "int32"
-                },
-                "imageAvatarId": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "imageThumbnailId": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "imageHeaderId": {
-                  "type": "integer",
-                  "format": "int32"
                 }
               }
             }
           }
         ],
         "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/worlds/{worldId}/admin": {
-      "get": {
-        "summary": "Get world admins",
-        "description": "returns admins and admin requests for world",
-        "operationId": "Talebound_GetWorldAdmins",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetWorldAdminsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      },
-      "delete": {
-        "summary": "Delete world admin",
-        "description": "deletes world admin",
-        "operationId": "Talebound_DeleteWorldAdmin",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      },
-      "post": {
-        "summary": "Create world admin",
-        "description": "adds request to become admin of the world",
-        "operationId": "Talebound_CreateWorldAdmin",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbWorldAdmin"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "motivationalLetter": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      },
-      "patch": {
-        "summary": "Update world admin",
-        "description": "updates world admin request (approve / decline)",
-        "operationId": "Talebound_UpdateWorldAdmin",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbWorldAdmin"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userId": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "superAdmin": {
-                  "type": "boolean"
-                },
-                "approved": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "motivationalLetter": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Talebound"
+          "Worlds"
         ]
       }
     },
@@ -2483,7 +4443,7 @@
       "post": {
         "summary": "Upload image for world",
         "description": "uploads and sets new image for given world",
-        "operationId": "Talebound_UploadWorldImage",
+        "operationId": "Worlds_UploadWorldImage",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2526,7 +4486,7 @@
           }
         ],
         "tags": [
-          "Talebound"
+          "Worlds"
         ]
       }
     },
@@ -2534,7 +4494,7 @@
       "patch": {
         "summary": "Update world introduction",
         "description": "creates/updates world introduction",
-        "operationId": "Talebound_UpdateWorldIntroduction",
+        "operationId": "Worlds_UpdateWorldIntroduction",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2572,114 +4532,12 @@
           }
         ],
         "tags": [
-          "Talebound"
-        ]
-      }
-    },
-    "/worlds/{worldId}/tags": {
-      "delete": {
-        "summary": "Remove world tag",
-        "description": "removes tag from the world",
-        "operationId": "Talebound_RemoveWorldTag",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "tagId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Talebound"
-        ]
-      },
-      "post": {
-        "summary": "Add tag world",
-        "description": "assigns one tag to the world",
-        "operationId": "Talebound_AddWorldTag",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbTag"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "tagId": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Talebound"
+          "Worlds"
         ]
       }
     }
   },
   "definitions": {
-    "pbAddChatMessageRequest": {
-      "type": "object",
-      "properties": {
-        "text": {
-          "type": "string"
-        }
-      }
-    },
-    "pbAddChatMessageResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "$ref": "#/definitions/pbChatMessage"
-        }
-      }
-    },
     "pbAddRoleToUserRequest": {
       "type": "object",
       "properties": {
@@ -2730,32 +4588,127 @@
         }
       }
     },
-    "pbChatMessage": {
+    "pbCreateEntityGroupRequest": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
-        },
-        "userId": {
+        "parentEntityGroupId": {
           "type": "integer",
           "format": "int32"
         },
-        "username": {
+        "name": {
           "type": "string"
         },
-        "text": {
+        "description": {
           "type": "string"
         },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
+        "style": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "string"
         }
       }
     },
-    "pbCreateAvailableWorldTagRequest": {
+    "pbCreateEntityTagResponse": {
       "type": "object",
       "properties": {
+        "entityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tagId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateLocationRequest": {
+      "type": "object",
+      "properties": {
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "thumbnailImageId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateMapRequest": {
+      "type": "object",
+      "properties": {
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "thumbnailImageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "layerImageId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateMapResponse": {
+      "type": "object",
+      "properties": {
+        "map": {
+          "$ref": "#/definitions/pbMap"
+        },
+        "layer": {
+          "$ref": "#/definitions/pbViewMapLayer"
+        }
+      }
+    },
+    "pbCreateModuleEntityAvailableTagRequest": {
+      "type": "object",
+      "properties": {
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tag": {
+          "type": "string"
+        }
+      }
+    },
+    "pbCreateModuleTagResponse": {
+      "type": "object",
+      "properties": {
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tagId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateModuleTypeAvailableTagRequest": {
+      "type": "object",
+      "properties": {
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
         "tag": {
           "type": "string"
         }
@@ -2777,10 +4730,6 @@
         },
         "content": {
           "type": "string"
-        },
-        "postTypeId": {
-          "type": "integer",
-          "format": "int32"
         },
         "isDraft": {
           "type": "boolean"
@@ -2826,135 +4775,14 @@
         }
       }
     },
-    "pbDataHistoryPost": {
+    "pbCreateWorldResponse": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
+        "world": {
+          "$ref": "#/definitions/pbWorld"
         },
-        "postId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "postTypeId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "userId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "title": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "deletedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedUserId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "isDraft": {
-          "type": "boolean"
-        },
-        "isPrivate": {
-          "type": "boolean"
-        },
-        "postTypeName": {
-          "type": "string"
-        },
-        "postTypeDraftable": {
-          "type": "boolean"
-        },
-        "postTypePrivatable": {
-          "type": "boolean"
-        }
-      }
-    },
-    "pbDataPost": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "postTypeId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "userId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "title": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "deletedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedUserId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "isDraft": {
-          "type": "boolean"
-        },
-        "isPrivate": {
-          "type": "boolean"
-        }
-      }
-    },
-    "pbDataPostType": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "name": {
-          "type": "string"
-        },
-        "draftable": {
-          "type": "boolean"
-        },
-        "privatable": {
-          "type": "boolean"
-        }
-      }
-    },
-    "pbDeleteChatMessageResponse": {
-      "type": "object",
-      "properties": {
-        "success": {
-          "type": "boolean"
-        },
-        "message": {
-          "type": "string"
+        "module": {
+          "$ref": "#/definitions/pbViewModule"
         }
       }
     },
@@ -2979,6 +4807,146 @@
           "type": "string"
         }
       }
+    },
+    "pbEntity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "$ref": "#/definitions/pbEntityType"
+        },
+        "postId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "mapId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "locationId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "imageId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbEntityGroup": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "pbEntityGroupContent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "entityGroupId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "contentEntityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "contentEntityGroupId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbEntityList": {
+      "type": "object",
+      "properties": {
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbEntity"
+          }
+        },
+        "posts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewPost"
+          }
+        },
+        "maps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewMap"
+          }
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewLocation"
+          }
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbImage"
+          }
+        }
+      }
+    },
+    "pbEntityTagAvailable": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbEntityType": {
+      "type": "string",
+      "enum": [
+        "ENTITY_TYPE_UNKNOWN",
+        "ENTITY_TYPE_POST",
+        "ENTITY_TYPE_MAP",
+        "ENTITY_TYPE_LOCATION",
+        "ENTITY_TYPE_CHARACTER",
+        "ENTITY_TYPE_IMAGE"
+      ],
+      "default": "ENTITY_TYPE_UNKNOWN"
     },
     "pbEvaluation": {
       "type": "object",
@@ -3031,18 +4999,6 @@
         }
       }
     },
-    "pbGetAvailableWorldTagsResponse": {
-      "type": "object",
-      "properties": {
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbTag"
-          }
-        }
-      }
-    },
     "pbGetAverageUserEvaluationsByTypeResponse": {
       "type": "object",
       "properties": {
@@ -3051,18 +5007,6 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbAverageEvaluationVote"
-          }
-        }
-      }
-    },
-    "pbGetChatMessagesResponse": {
-      "type": "object",
-      "properties": {
-        "messages": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbChatMessage"
           }
         }
       }
@@ -3127,6 +5071,100 @@
         }
       }
     },
+    "pbGetLocationsResponse": {
+      "type": "object",
+      "properties": {
+        "locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewLocation"
+          }
+        }
+      }
+    },
+    "pbGetMapLayersResponse": {
+      "type": "object",
+      "properties": {
+        "layers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewMapLayer"
+          }
+        }
+      }
+    },
+    "pbGetMapPinTypesResponse": {
+      "type": "object",
+      "properties": {
+        "pinTypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbMapPinType"
+          }
+        }
+      }
+    },
+    "pbGetMapPinsResponse": {
+      "type": "object",
+      "properties": {
+        "pins": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewMapPin"
+          }
+        }
+      }
+    },
+    "pbGetMapsResponse": {
+      "type": "object",
+      "properties": {
+        "maps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewMap"
+          }
+        }
+      }
+    },
+    "pbGetMenuItemContentResponse": {
+      "type": "object",
+      "properties": {
+        "menuItemEntityGroups": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbEntityGroupContent"
+          }
+        },
+        "entityList": {
+          "$ref": "#/definitions/pbEntityList"
+        }
+      }
+    },
+    "pbGetMenuItemPostsByMenuIdResponse": {
+      "type": "object",
+      "properties": {
+        "menuItemPosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbMenuItemPost"
+          }
+        }
+      }
+    },
     "pbGetMenuItemPostsResponse": {
       "type": "object",
       "properties": {
@@ -3151,6 +5189,54 @@
         }
       }
     },
+    "pbGetModuleAdminsResponse": {
+      "type": "object",
+      "properties": {
+        "moduleAdmins": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbModuleAdmin"
+          }
+        }
+      }
+    },
+    "pbGetModuleEntityAvailableTagsResponse": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbTag"
+          }
+        }
+      }
+    },
+    "pbGetModuleIdResponse": {
+      "type": "object",
+      "properties": {
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        }
+      }
+    },
+    "pbGetModuleTypeAvailableTagsResponse": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewTag"
+          }
+        }
+      }
+    },
     "pbGetPostHistoryResponse": {
       "type": "object",
       "properties": {
@@ -3158,19 +5244,35 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbHistoryPost"
+            "$ref": "#/definitions/pbPostHistory"
           }
         }
       }
     },
-    "pbGetPostTypesResponse": {
+    "pbGetPostsResponse": {
       "type": "object",
       "properties": {
-        "postTypes": {
+        "posts": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbDataPostType"
+            "$ref": "#/definitions/pbPost"
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbGetUserModulesResponse": {
+      "type": "object",
+      "properties": {
+        "userModules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbUserModule"
           }
         }
       }
@@ -3182,7 +5284,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbPost"
+            "$ref": "#/definitions/pbViewPost"
           }
         }
       }
@@ -3211,78 +5313,19 @@
         }
       }
     },
-    "pbGetWorldAdminsResponse": {
-      "type": "object",
-      "properties": {
-        "worldAdmins": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbWorldAdmin"
-          }
-        }
-      }
-    },
-    "pbGetWorldDailyActivityResponse": {
-      "type": "object",
-      "properties": {
-        "activity": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbWorldActivity"
-          }
-        }
-      }
-    },
-    "pbGetWorldMonthlyActivityResponse": {
-      "type": "object",
-      "properties": {
-        "activity": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbWorldActivity"
-          }
-        }
-      }
-    },
-    "pbGetWorldsOfCreatorResponse": {
-      "type": "object",
-      "properties": {
-        "worlds": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbWorldOfCreatorResponse"
-          }
-        }
-      }
-    },
     "pbGetWorldsResponse": {
       "type": "object",
       "properties": {
-        "worlds": {
+        "worldIds": {
           "type": "array",
           "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbWorld"
+            "type": "integer",
+            "format": "int32"
           }
         },
         "totalCount": {
           "type": "integer",
           "format": "int32"
-        }
-      }
-    },
-    "pbHistoryPost": {
-      "type": "object",
-      "properties": {
-        "post": {
-          "$ref": "#/definitions/pbDataHistoryPost"
-        },
-        "postType": {
-          "$ref": "#/definitions/pbDataPostType"
         }
       }
     },
@@ -3314,6 +5357,37 @@
           "format": "date-time"
         },
         "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "width": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "height": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbLocation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "postId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "thumbnailImageId": {
           "type": "integer",
           "format": "int32"
         }
@@ -3349,19 +5423,72 @@
         }
       }
     },
-    "pbMenu": {
+    "pbMap": {
       "type": "object",
       "properties": {
         "id": {
           "type": "integer",
           "format": "int32"
         },
-        "code": {
+        "name": {
           "type": "string"
         },
-        "headerImageId": {
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "width": {
           "type": "integer",
           "format": "int32"
+        },
+        "height": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "thumbnailImageId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbMapPinType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "mapPinTypeGroupId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "shape": {
+          "$ref": "#/definitions/pbPinShape"
+        },
+        "backgroundColor": {
+          "type": "string"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "iconColor": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "iconSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "width": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "section": {
+          "type": "string"
         }
       }
     },
@@ -3386,11 +5513,14 @@
           "type": "integer",
           "format": "int32"
         },
-        "parentItemId": {
+        "isMain": {
+          "type": "boolean"
+        },
+        "descriptionPostId": {
           "type": "integer",
           "format": "int32"
         },
-        "descriptionPostId": {
+        "entityGroupId": {
           "type": "integer",
           "format": "int32"
         }
@@ -3407,19 +5537,200 @@
           "type": "integer",
           "format": "int32"
         },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
         "post": {
-          "$ref": "#/definitions/pbDataPost"
+          "$ref": "#/definitions/pbPost"
         }
       }
+    },
+    "pbModuleAdmin": {
+      "type": "object",
+      "properties": {
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user": {
+          "$ref": "#/definitions/pbUser"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "superAdmin": {
+          "type": "boolean"
+        },
+        "approved": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "motivationalLetter": {
+          "type": "string"
+        },
+        "allowedEntityTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbEntityType"
+          }
+        },
+        "allowedMenu": {
+          "type": "boolean"
+        }
+      }
+    },
+    "pbModuleDefinition": {
+      "type": "object",
+      "properties": {
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "questId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "characterId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "systemId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbModuleType": {
+      "type": "string",
+      "enum": [
+        "MODULE_TYPE_UNKNOWN",
+        "MODULE_TYPE_WORLD",
+        "MODULE_TYPE_QUEST",
+        "MODULE_TYPE_SYSTEM",
+        "MODULE_TYPE_CHARACTER"
+      ],
+      "default": "MODULE_TYPE_UNKNOWN"
+    },
+    "pbPinShape": {
+      "type": "string",
+      "enum": [
+        "SQUARE",
+        "TRIANGLE",
+        "PIN",
+        "CIRCLE",
+        "HEXAGON",
+        "OCTAGON",
+        "STAR",
+        "DIAMOND",
+        "PENTAGON",
+        "HEART",
+        "CLOUD"
+      ],
+      "default": "SQUARE"
     },
     "pbPost": {
       "type": "object",
       "properties": {
-        "post": {
-          "$ref": "#/definitions/pbDataPost"
+        "id": {
+          "type": "integer",
+          "format": "int32"
         },
-        "postType": {
-          "$ref": "#/definitions/pbDataPostType"
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deletedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isDraft": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "imageThumbnailId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbPostHistory": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "postId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deletedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isDraft": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "imageThumbnailId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -3501,6 +5812,149 @@
         }
       }
     },
+    "pbRunFetcherRequest": {
+      "type": "object",
+      "properties": {
+        "moduleIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "worldIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "systemIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "questIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "characterIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "entityIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "postIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "imageIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "locationIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "mapIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "userIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "pbRunFetcherResponse": {
+      "type": "object",
+      "properties": {
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewModule"
+          }
+        },
+        "worlds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbWorld"
+          }
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbViewEntity"
+          }
+        },
+        "posts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbPost"
+          }
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbImage"
+          }
+        },
+        "maps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbMap"
+          }
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbLocation"
+          }
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbUser"
+          }
+        }
+      }
+    },
     "pbTag": {
       "type": "object",
       "properties": {
@@ -3510,6 +5964,26 @@
         },
         "tag": {
           "type": "string"
+        }
+      }
+    },
+    "pbUpdateMapPinTypeResponse": {
+      "type": "object",
+      "properties": {
+        "pinType": {
+          "$ref": "#/definitions/pbMapPinType"
+        }
+      }
+    },
+    "pbUpdateMenuPostsResponse": {
+      "type": "object",
+      "properties": {
+        "menuItemPosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbMenuItemPost"
+          }
         }
       }
     },
@@ -3560,6 +6034,14 @@
         "imageTypeId": {
           "type": "integer",
           "format": "int32"
+        },
+        "width": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "height": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -3603,12 +6085,37 @@
         "isEmailVerified": {
           "type": "boolean"
         },
-        "img": {
-          "$ref": "#/definitions/pbImage"
-        },
         "introductionPostId": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "pbUserModule": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "admin": {
+          "type": "boolean"
+        },
+        "favorite": {
+          "type": "boolean"
+        },
+        "following": {
+          "type": "boolean"
+        },
+        "entityNotifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbEntityType"
+          }
         }
       }
     },
@@ -3632,47 +6139,402 @@
         }
       }
     },
-    "pbViewUser": {
+    "pbViewEntity": {
       "type": "object",
       "properties": {
         "id": {
           "type": "integer",
           "format": "int32"
         },
-        "username": {
-          "type": "string"
+        "type": {
+          "$ref": "#/definitions/pbEntityType"
         },
-        "email": {
-          "type": "string"
-        },
-        "imgId": {
+        "postId": {
           "type": "integer",
           "format": "int32"
         },
-        "passwordChangedAt": {
-          "type": "string",
-          "format": "date-time"
+        "mapId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "locationId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "imageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "moduleTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "pbViewLocation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "postId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "postTitle": {
+          "type": "string"
+        },
+        "thumbnailImageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "thumbnailImageUrl": {
+          "type": "string"
+        },
+        "entityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "moduleTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "pbViewMap": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "height": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "thumbnailImageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "thumbnailImageUrl": {
+          "type": "string"
+        },
+        "entityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "moduleTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "pbViewMapLayer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "mapId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "imageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "isMain": {
+          "type": "boolean"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "sublayer": {
+          "type": "boolean"
+        }
+      }
+    },
+    "pbViewMapPin": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "mapId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "mapPinTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "locationId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "mapLayerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "x": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "y": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "locationName": {
+          "type": "string"
+        },
+        "locationPostId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "locationDescription": {
+          "type": "string"
+        },
+        "locationThumbnailImageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "locationThumbnailImageUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "pbViewMenu": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "code": {
+          "type": "string"
+        },
+        "headerImageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "headerImageUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "pbViewModule": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "questId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "characterId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "systemId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "menuId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "headerImgId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "thumbnailImgId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "avatarImgId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "pbViewPost": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
         },
         "createdAt": {
           "type": "string",
           "format": "date-time"
         },
-        "isEmailVerified": {
-          "type": "boolean"
+        "deletedAt": {
+          "type": "string",
+          "format": "date-time"
         },
-        "avatarImageUrl": {
-          "type": "string"
+        "lastUpdatedAt": {
+          "type": "string",
+          "format": "date-time"
         },
-        "avatarImageGuid": {
-          "type": "string"
-        },
-        "introductionPostId": {
+        "lastUpdatedUserId": {
           "type": "integer",
           "format": "int32"
         },
-        "introductionPostDeletedAt": {
-          "type": "string",
-          "format": "date-time"
+        "isDraft": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "imageThumbnailId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "imageThumbnailUrl": {
+          "type": "string"
+        },
+        "entityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "moduleTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "pbViewTag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "moduleType": {
+          "$ref": "#/definitions/pbModuleType"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -3699,106 +6561,9 @@
         "shortDescription": {
           "type": "string"
         },
-        "imageAvatar": {
-          "type": "string"
-        },
-        "imageThumbnail": {
-          "type": "string"
-        },
-        "imageHeader": {
-          "type": "string"
-        },
         "descriptionPostId": {
           "type": "integer",
           "format": "int32"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "activityPostCount": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "activityQuestCount": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "activityResourceCount": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "worldMenuId": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
-    "pbWorldActivity": {
-      "type": "object",
-      "properties": {
-        "worldId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "date": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "activityPostCount": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "activityQuestCount": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "activityResourceCount": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
-    "pbWorldAdmin": {
-      "type": "object",
-      "properties": {
-        "worldId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "userId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "user": {
-          "$ref": "#/definitions/pbViewUser"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "superAdmin": {
-          "type": "boolean"
-        },
-        "approved": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "motivationalLetter": {
-          "type": "string"
-        }
-      }
-    },
-    "pbWorldOfCreatorResponse": {
-      "type": "object",
-      "properties": {
-        "world": {
-          "$ref": "#/definitions/pbWorld"
-        },
-        "superAdmin": {
-          "type": "boolean"
         }
       }
     },

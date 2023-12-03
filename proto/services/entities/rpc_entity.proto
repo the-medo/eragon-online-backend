@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+
+message GetEntityByIdRequest {
+  int32 entityId = 1;
+}
+
+message CreateEntityGroupRequest {
+  int32 parentEntityGroupId = 1;
+  optional string name = 2;
+  optional string description = 3;
+  optional string style = 4;
+  optional string direction = 5;
+}
+
+message UpdateEntityGroupRequest {
+  int32 entityGroupId = 1;
+  optional string name = 2;
+  optional string description = 3;
+  optional string style = 4;
+  optional string direction = 5;
+}
+
+
+message DeleteEntityGroupRequest {
+  int32 entityGroupId = 1;
+}
+
+message CreateEntityGroupContentRequest {
+  int32 entityGroupId = 1;
+  optional int32 contentEntityId = 2;
+  optional int32 contentEntityGroupId = 3;
+}
+
+message UpdateEntityGroupContentRequest {
+  int32 entityGroupId = 1;
+  int32 contentId = 2;
+  optional int32 newEntityGroupId = 3;
+  optional int32 position = 4;
+  optional int32 contentEntityId = 5;
+  optional int32 contentEntityGroupId = 6;
+}
+
+message DeleteEntityGroupContentRequest {
+  int32 entityGroupId = 1;
+  int32 contentId = 2;
+}
+

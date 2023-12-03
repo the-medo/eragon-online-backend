@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/worlds/world.proto";
+import "services/modules/module.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+
+message CreateWorldRequest {
+  string name = 1;
+  string shortDescription = 2;
+  string basedOn = 3;
+}
+
+message CreateWorldResponse {
+  World world = 1;
+  ViewModule module = 2;
+}
+
+message UpdateWorldRequest {
+  int32 worldId = 1;
+  optional string name = 2;
+  optional string shortDescription = 3;
+  optional bool public = 4;
+  optional string basedOn = 5;
+  optional int32 descriptionPostId = 6;
+}
+
+message UploadWorldImageRequest {
+  int32 worldId = 1;
+  bytes data = 2;
+  int32 imageTypeId = 3;
+}
+
+message TagUsage {
+  int32 tagId = 1;
+  int32 count = 2;
+}
+
+message GetWorldsRequest {
+  optional bool public = 1;
+  repeated int32 tags = 2;
+  optional string orderBy = 3;
+  optional int32 limit = 4;
+  optional int32 offset = 5;
+}
+
+message GetWorldsResponse {
+  repeated int32 worldIds = 1;
+  int32 totalCount = 2;
+}
+
+message GetWorldByIdRequest {
+  int32 worldId = 1;
+}
+
+message UpdateWorldIntroductionRequest {
+  int32 worldId = 1;
+  string content = 2;
+}
