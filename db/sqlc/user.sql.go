@@ -182,7 +182,7 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (ViewU
 
 const getUserModules = `-- name: GetUserModules :many
 SELECT
-    m.id, m.module_type, m.menu_id, m.header_img_id, m.thumbnail_img_id, m.avatar_img_id, m.world_id, m.system_id, m.character_id, m.quest_id,
+    m.id, m.module_type, m.menu_id, m.header_img_id, m.thumbnail_img_id, m.avatar_img_id, m.world_id, m.system_id, m.character_id, m.quest_id, m.description_post_id,
     um.user_id,
     um.admin,
     um.favorite,
@@ -206,6 +206,7 @@ type GetUserModulesRow struct {
 	SystemID            sql.NullInt32 `json:"system_id"`
 	CharacterID         sql.NullInt32 `json:"character_id"`
 	QuestID             sql.NullInt32 `json:"quest_id"`
+	DescriptionPostID   int32         `json:"description_post_id"`
 	UserID              int32         `json:"user_id"`
 	Admin               bool          `json:"admin"`
 	Favorite            bool          `json:"favorite"`
@@ -233,6 +234,7 @@ func (q *Queries) GetUserModules(ctx context.Context, userID int32) ([]GetUserMo
 			&i.SystemID,
 			&i.CharacterID,
 			&i.QuestID,
+			&i.DescriptionPostID,
 			&i.UserID,
 			&i.Admin,
 			&i.Favorite,

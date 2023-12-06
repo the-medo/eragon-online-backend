@@ -16,9 +16,5 @@ func ConvertWorld(world db.World) *pb.World {
 		BasedOn:          world.BasedOn,
 	}
 
-	if world.DescriptionPostID.Valid == true {
-		pbWorld.DescriptionPostId = &world.DescriptionPostID.Int32
-	}
-
 	return pbWorld
 }

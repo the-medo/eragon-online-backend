@@ -25,7 +25,6 @@ message UpdateWorldRequest {
   optional string shortDescription = 3;
   optional bool public = 4;
   optional string basedOn = 5;
-  optional int32 descriptionPostId = 6;
 }
 
 message UploadWorldImageRequest {
@@ -54,9 +53,4 @@ message GetWorldsResponse {
 
 message GetWorldByIdRequest {
   int32 worldId = 1;
-}
-
-message UpdateWorldIntroductionRequest {
-  int32 worldId = 1;
-  string content = 2;
 }

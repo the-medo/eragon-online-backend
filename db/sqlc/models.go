@@ -435,16 +435,17 @@ type MenuItemPost struct {
 
 // Groups higher-level sections into one table. Contains worlds, quests, characters and play systems.
 type Module struct {
-	ID             int32         `json:"id"`
-	ModuleType     ModuleType    `json:"module_type"`
-	MenuID         int32         `json:"menu_id"`
-	HeaderImgID    sql.NullInt32 `json:"header_img_id"`
-	ThumbnailImgID sql.NullInt32 `json:"thumbnail_img_id"`
-	AvatarImgID    sql.NullInt32 `json:"avatar_img_id"`
-	WorldID        sql.NullInt32 `json:"world_id"`
-	SystemID       sql.NullInt32 `json:"system_id"`
-	CharacterID    sql.NullInt32 `json:"character_id"`
-	QuestID        sql.NullInt32 `json:"quest_id"`
+	ID                int32         `json:"id"`
+	ModuleType        ModuleType    `json:"module_type"`
+	MenuID            int32         `json:"menu_id"`
+	HeaderImgID       sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID    sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID       sql.NullInt32 `json:"avatar_img_id"`
+	WorldID           sql.NullInt32 `json:"world_id"`
+	SystemID          sql.NullInt32 `json:"system_id"`
+	CharacterID       sql.NullInt32 `json:"character_id"`
+	QuestID           sql.NullInt32 `json:"quest_id"`
+	DescriptionPostID int32         `json:"description_post_id"`
 }
 
 type ModuleAdmin struct {
@@ -761,17 +762,18 @@ type ViewMenuItemPost struct {
 }
 
 type ViewModule struct {
-	ID             int32         `json:"id"`
-	WorldID        sql.NullInt32 `json:"world_id"`
-	SystemID       sql.NullInt32 `json:"system_id"`
-	CharacterID    sql.NullInt32 `json:"character_id"`
-	QuestID        sql.NullInt32 `json:"quest_id"`
-	ModuleType     ModuleType    `json:"module_type"`
-	MenuID         int32         `json:"menu_id"`
-	HeaderImgID    sql.NullInt32 `json:"header_img_id"`
-	ThumbnailImgID sql.NullInt32 `json:"thumbnail_img_id"`
-	AvatarImgID    sql.NullInt32 `json:"avatar_img_id"`
-	Tags           []int32       `json:"tags"`
+	ID                int32         `json:"id"`
+	WorldID           sql.NullInt32 `json:"world_id"`
+	SystemID          sql.NullInt32 `json:"system_id"`
+	CharacterID       sql.NullInt32 `json:"character_id"`
+	QuestID           sql.NullInt32 `json:"quest_id"`
+	ModuleType        ModuleType    `json:"module_type"`
+	MenuID            int32         `json:"menu_id"`
+	HeaderImgID       sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID    sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID       sql.NullInt32 `json:"avatar_img_id"`
+	DescriptionPostID int32         `json:"description_post_id"`
+	Tags              []int32       `json:"tags"`
 }
 
 type ViewModuleAdmin struct {
@@ -785,6 +787,7 @@ type ViewModuleAdmin struct {
 	SystemID           sql.NullInt32 `json:"system_id"`
 	CharacterID        sql.NullInt32 `json:"character_id"`
 	QuestID            sql.NullInt32 `json:"quest_id"`
+	DescriptionPostID  int32         `json:"description_post_id"`
 	UserID             int32         `json:"user_id"`
 	Approved           int32         `json:"approved"`
 	SuperAdmin         bool          `json:"super_admin"`
@@ -837,27 +840,25 @@ type ViewUser struct {
 }
 
 type ViewWorld struct {
-	ID                int32         `json:"id"`
-	Name              string        `json:"name"`
-	BasedOn           string        `json:"based_on"`
-	Public            bool          `json:"public"`
-	CreatedAt         time.Time     `json:"created_at"`
-	ShortDescription  string        `json:"short_description"`
-	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
-	ModuleID          int32         `json:"module_id"`
-	MenuID            int32         `json:"menu_id"`
-	HeaderImgID       sql.NullInt32 `json:"header_img_id"`
-	ThumbnailImgID    sql.NullInt32 `json:"thumbnail_img_id"`
-	AvatarImgID       sql.NullInt32 `json:"avatar_img_id"`
-	Tags              []int32       `json:"tags"`
+	ID               int32         `json:"id"`
+	Name             string        `json:"name"`
+	BasedOn          string        `json:"based_on"`
+	Public           bool          `json:"public"`
+	CreatedAt        time.Time     `json:"created_at"`
+	ShortDescription string        `json:"short_description"`
+	ModuleID         int32         `json:"module_id"`
+	MenuID           int32         `json:"menu_id"`
+	HeaderImgID      sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID   sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID      sql.NullInt32 `json:"avatar_img_id"`
+	Tags             []int32       `json:"tags"`
 }
 
 type World struct {
-	ID                int32         `json:"id"`
-	Name              string        `json:"name"`
-	BasedOn           string        `json:"based_on"`
-	Public            bool          `json:"public"`
-	CreatedAt         time.Time     `json:"created_at"`
-	ShortDescription  string        `json:"short_description"`
-	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
+	ID               int32     `json:"id"`
+	Name             string    `json:"name"`
+	BasedOn          string    `json:"based_on"`
+	Public           bool      `json:"public"`
+	CreatedAt        time.Time `json:"created_at"`
+	ShortDescription string    `json:"short_description"`
 }

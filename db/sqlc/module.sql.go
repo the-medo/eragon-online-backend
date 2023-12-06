@@ -13,18 +13,19 @@ import (
 )
 
 const createModule = `-- name: CreateModule :one
-INSERT INTO modules (module_type, menu_id, world_id, quest_id, character_id, system_id)
-VALUES ($1, $2, $3, $4, $5, $6)
-RETURNING id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, world_id, system_id, character_id, quest_id
+INSERT INTO modules (module_type, menu_id, world_id, quest_id, character_id, system_id, description_post_id)
+VALUES ($1, $2, $3, $4, $5, $6, $7)
+RETURNING id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, world_id, system_id, character_id, quest_id, description_post_id
 `
 
 type CreateModuleParams struct {
-	ModuleType  ModuleType    `json:"module_type"`
-	MenuID      int32         `json:"menu_id"`
-	WorldID     sql.NullInt32 `json:"world_id"`
-	QuestID     sql.NullInt32 `json:"quest_id"`
-	CharacterID sql.NullInt32 `json:"character_id"`
-	SystemID    sql.NullInt32 `json:"system_id"`
+	ModuleType        ModuleType    `json:"module_type"`
+	MenuID            int32         `json:"menu_id"`
+	WorldID           sql.NullInt32 `json:"world_id"`
+	QuestID           sql.NullInt32 `json:"quest_id"`
+	CharacterID       sql.NullInt32 `json:"character_id"`
+	SystemID          sql.NullInt32 `json:"system_id"`
+	DescriptionPostID int32         `json:"description_post_id"`
 }
 
 func (q *Queries) CreateModule(ctx context.Context, arg CreateModuleParams) (Module, error) {
@@ -35,6 +36,7 @@ func (q *Queries) CreateModule(ctx context.Context, arg CreateModuleParams) (Mod
 		arg.QuestID,
 		arg.CharacterID,
 		arg.SystemID,
+		arg.DescriptionPostID,
 	)
 	var i Module
 	err := row.Scan(
@@ -48,6 +50,7 @@ func (q *Queries) CreateModule(ctx context.Context, arg CreateModuleParams) (Mod
 		&i.SystemID,
 		&i.CharacterID,
 		&i.QuestID,
+		&i.DescriptionPostID,
 	)
 	return i, err
 }
@@ -62,7 +65,7 @@ func (q *Queries) DeleteModule(ctx context.Context, id int32) error {
 }
 
 const getModule = `-- name: GetModule :one
-SELECT id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, world_id, system_id, character_id, quest_id FROM modules
+SELECT id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, world_id, system_id, character_id, quest_id, description_post_id FROM modules
 WHERE
     world_id = COALESCE($1, world_id) OR
     quest_id = COALESCE($2, quest_id) OR
@@ -96,12 +99,13 @@ func (q *Queries) GetModule(ctx context.Context, arg GetModuleParams) (Module, e
 		&i.SystemID,
 		&i.CharacterID,
 		&i.QuestID,
+		&i.DescriptionPostID,
 	)
 	return i, err
 }
 
 const getModuleById = `-- name: GetModuleById :one
-SELECT id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM view_modules WHERE id = $1
+SELECT id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, description_post_id, tags FROM view_modules WHERE id = $1
 `
 
 func (q *Queries) GetModuleById(ctx context.Context, moduleID int32) (ViewModule, error) {
@@ -118,13 +122,14 @@ func (q *Queries) GetModuleById(ctx context.Context, moduleID int32) (ViewModule
 		&i.HeaderImgID,
 		&i.ThumbnailImgID,
 		&i.AvatarImgID,
+		&i.DescriptionPostID,
 		pq.Array(&i.Tags),
 	)
 	return i, err
 }
 
 const getModulesByIDs = `-- name: GetModulesByIDs :many
-SELECT id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM view_modules WHERE id = ANY($1::int[])
+SELECT id, world_id, system_id, character_id, quest_id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, description_post_id, tags FROM view_modules WHERE id = ANY($1::int[])
 `
 
 func (q *Queries) GetModulesByIDs(ctx context.Context, moduleIds []int32) ([]ViewModule, error) {
@@ -147,6 +152,7 @@ func (q *Queries) GetModulesByIDs(ctx context.Context, moduleIds []int32) ([]Vie
 			&i.HeaderImgID,
 			&i.ThumbnailImgID,
 			&i.AvatarImgID,
+			&i.DescriptionPostID,
 			pq.Array(&i.Tags),
 		); err != nil {
 			return nil, err
@@ -166,16 +172,18 @@ const updateModule = `-- name: UpdateModule :one
 UPDATE modules SET
     header_img_id = COALESCE($1, header_img_id),
     thumbnail_img_id = COALESCE($2, thumbnail_img_id),
-    avatar_img_id = COALESCE($3, avatar_img_id)
-WHERE id = $4
-RETURNING id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, world_id, system_id, character_id, quest_id
+    avatar_img_id = COALESCE($3, avatar_img_id),
+    description_post_id = COALESCE($4, description_post_id)
+WHERE id = $5
+RETURNING id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, world_id, system_id, character_id, quest_id, description_post_id
 `
 
 type UpdateModuleParams struct {
-	HeaderImgID    sql.NullInt32 `json:"header_img_id"`
-	ThumbnailImgID sql.NullInt32 `json:"thumbnail_img_id"`
-	AvatarImgID    sql.NullInt32 `json:"avatar_img_id"`
-	ID             int32         `json:"id"`
+	HeaderImgID       sql.NullInt32 `json:"header_img_id"`
+	ThumbnailImgID    sql.NullInt32 `json:"thumbnail_img_id"`
+	AvatarImgID       sql.NullInt32 `json:"avatar_img_id"`
+	DescriptionPostID sql.NullInt32 `json:"description_post_id"`
+	ID                int32         `json:"id"`
 }
 
 func (q *Queries) UpdateModule(ctx context.Context, arg UpdateModuleParams) (Module, error) {
@@ -183,6 +191,7 @@ func (q *Queries) UpdateModule(ctx context.Context, arg UpdateModuleParams) (Mod
 		arg.HeaderImgID,
 		arg.ThumbnailImgID,
 		arg.AvatarImgID,
+		arg.DescriptionPostID,
 		arg.ID,
 	)
 	var i Module
@@ -197,6 +206,7 @@ func (q *Queries) UpdateModule(ctx context.Context, arg UpdateModuleParams) (Mod
 		&i.SystemID,
 		&i.CharacterID,
 		&i.QuestID,
+		&i.DescriptionPostID,
 	)
 	return i, err
 }

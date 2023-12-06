@@ -259,7 +259,7 @@ func (q *Queries) DeleteMapPinsForMapLayer(ctx context.Context, mapLayerID sql.N
 
 const getMapAssignments = `-- name: GetMapAssignments :one
 SELECT
-    m.id, m.module_type, m.menu_id, m.header_img_id, m.thumbnail_img_id, m.avatar_img_id, m.world_id, m.system_id, m.character_id, m.quest_id
+    m.id, m.module_type, m.menu_id, m.header_img_id, m.thumbnail_img_id, m.avatar_img_id, m.world_id, m.system_id, m.character_id, m.quest_id, m.description_post_id
 FROM
     entities e
     LEFT JOIN modules m ON e.module_id = m.id
@@ -267,16 +267,17 @@ WHERE e.map_id = $1
 `
 
 type GetMapAssignmentsRow struct {
-	ID             sql.NullInt32  `json:"id"`
-	ModuleType     NullModuleType `json:"module_type"`
-	MenuID         sql.NullInt32  `json:"menu_id"`
-	HeaderImgID    sql.NullInt32  `json:"header_img_id"`
-	ThumbnailImgID sql.NullInt32  `json:"thumbnail_img_id"`
-	AvatarImgID    sql.NullInt32  `json:"avatar_img_id"`
-	WorldID        sql.NullInt32  `json:"world_id"`
-	SystemID       sql.NullInt32  `json:"system_id"`
-	CharacterID    sql.NullInt32  `json:"character_id"`
-	QuestID        sql.NullInt32  `json:"quest_id"`
+	ID                sql.NullInt32  `json:"id"`
+	ModuleType        NullModuleType `json:"module_type"`
+	MenuID            sql.NullInt32  `json:"menu_id"`
+	HeaderImgID       sql.NullInt32  `json:"header_img_id"`
+	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
+	AvatarImgID       sql.NullInt32  `json:"avatar_img_id"`
+	WorldID           sql.NullInt32  `json:"world_id"`
+	SystemID          sql.NullInt32  `json:"system_id"`
+	CharacterID       sql.NullInt32  `json:"character_id"`
+	QuestID           sql.NullInt32  `json:"quest_id"`
+	DescriptionPostID sql.NullInt32  `json:"description_post_id"`
 }
 
 func (q *Queries) GetMapAssignments(ctx context.Context, mapID sql.NullInt32) (GetMapAssignmentsRow, error) {
@@ -293,6 +294,7 @@ func (q *Queries) GetMapAssignments(ctx context.Context, mapID sql.NullInt32) (G
 		&i.SystemID,
 		&i.CharacterID,
 		&i.QuestID,
+		&i.DescriptionPostID,
 	)
 	return i, err
 }

@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-11-05T13:13:59.478Z
+-- Generated at: 2023-12-06T17:56:49.522Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -164,8 +164,7 @@ CREATE TABLE "worlds" (
   "based_on" varchar NOT NULL,
   "public" boolean NOT NULL DEFAULT false,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
-  "short_description" varchar NOT NULL DEFAULT '',
-  "description_post_id" int
+  "short_description" varchar NOT NULL DEFAULT ''
 );
 
 CREATE TABLE "module_admins" (
@@ -388,7 +387,8 @@ CREATE TABLE "modules" (
   "world_id" int,
   "system_id" int,
   "character_id" int,
-  "quest_id" int
+  "quest_id" int,
+  "description_post_id" int NOT NULL
 );
 
 CREATE TABLE "module_type_tags_available" (
@@ -523,8 +523,6 @@ ALTER TABLE "user_roles" ADD FOREIGN KEY ("role_id") REFERENCES "roles" ("id");
 
 ALTER TABLE "chat" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
-ALTER TABLE "worlds" ADD FOREIGN KEY ("description_post_id") REFERENCES "posts" ("id");
-
 ALTER TABLE "module_admins" ADD FOREIGN KEY ("module_id") REFERENCES "modules" ("id");
 
 ALTER TABLE "module_admins" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
@@ -638,6 +636,8 @@ ALTER TABLE "modules" ADD FOREIGN KEY ("system_id") REFERENCES "systems" ("id");
 ALTER TABLE "modules" ADD FOREIGN KEY ("character_id") REFERENCES "characters" ("id");
 
 ALTER TABLE "modules" ADD FOREIGN KEY ("quest_id") REFERENCES "quests" ("id");
+
+ALTER TABLE "modules" ADD FOREIGN KEY ("description_post_id") REFERENCES "posts" ("id");
 
 ALTER TABLE "module_tags" ADD FOREIGN KEY ("module_id") REFERENCES "modules" ("id");
 

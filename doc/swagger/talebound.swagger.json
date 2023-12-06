@@ -4425,10 +4425,6 @@
                 },
                 "basedOn": {
                   "type": "string"
-                },
-                "descriptionPostId": {
-                  "type": "integer",
-                  "format": "int32"
                 }
               }
             }
@@ -4480,52 +4476,6 @@
                 "imageTypeId": {
                   "type": "integer",
                   "format": "int32"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Worlds"
-        ]
-      }
-    },
-    "/worlds/{worldId}/introduction": {
-      "patch": {
-        "summary": "Update world introduction",
-        "description": "creates/updates world introduction",
-        "operationId": "Worlds_UpdateWorldIntroduction",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbPost"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "worldId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "content": {
-                  "type": "string"
                 }
               }
             }
@@ -6437,6 +6387,10 @@
           "type": "integer",
           "format": "int32"
         },
+        "descriptionPostId": {
+          "type": "integer",
+          "format": "int32"
+        },
         "tags": {
           "type": "array",
           "items": {
@@ -6560,10 +6514,6 @@
         },
         "shortDescription": {
           "type": "string"
-        },
-        "descriptionPostId": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     },

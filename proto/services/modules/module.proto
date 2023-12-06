@@ -27,6 +27,7 @@ message Module {
   int32 headerImgId = 8;
   int32 thumbnailImgId = 9;
   int32 avatarImgId = 10;
+  int32 descriptionPostId = 11;
 }
 
 message ViewModule {
@@ -40,7 +41,8 @@ message ViewModule {
   int32 headerImgId = 8;
   int32 thumbnailImgId = 9;
   int32 avatarImgId = 10;
-  repeated int32 tags = 11;
+  int32 descriptionPostId = 11;
+  repeated int32 tags = 12;
 }
 
 message ModuleAdmin {

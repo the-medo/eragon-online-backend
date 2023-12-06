@@ -19,10 +19,6 @@ func ConvertViewWorld(world db.ViewWorld) *pb.ViewWorld {
 		MenuId:           world.MenuID,
 	}
 
-	if world.DescriptionPostID.Valid == true {
-		pbViewWorld.DescriptionPostId = &world.DescriptionPostID.Int32
-	}
-
 	if world.HeaderImgID.Valid {
 		pbViewWorld.HeaderImgId = world.HeaderImgID.Int32
 	}

@@ -176,7 +176,6 @@ Table worlds {
   public boolean [not null, default: false]
   created_at timestamptz [not null, default: `now()`]
   short_description varchar [not null, default: '']
-  description_post_id int [null, ref: > posts.id]
 }
 
 Table module_admins {
@@ -435,6 +434,8 @@ Table modules {
   system_id int [ref: > systems.id]
   character_id int [ref: > characters.id]
   quest_id int [ref: > quests.id]
+
+  description_post_id int [not null, ref: > posts.id]
 
   Note: 'Groups higher-level sections into one table. Contains worlds, quests, characters and play systems.'
 }

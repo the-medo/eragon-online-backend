@@ -30,6 +30,7 @@ func (server *ServiceModules) GetModuleById(ctx context.Context, req *pb.GetModu
 	fetchInterface := &apihelpers.FetchInterface{
 		WorldIds: []int32{},
 		ImageIds: []int32{},
+		PostIds:  []int32{module.DescriptionPostID},
 	}
 
 	if module.WorldID.Valid {

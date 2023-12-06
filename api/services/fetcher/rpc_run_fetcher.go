@@ -34,6 +34,8 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 		for i, item := range data {
 			rsp.Modules[i] = converters.ConvertViewModule(item)
 
+			fetchInterface.PostIds = util.Upsert(fetchInterface.PostIds, item.DescriptionPostID)
+
 			if item.WorldID.Valid {
 				fetchInterface.WorldIds = util.Upsert(fetchInterface.WorldIds, item.WorldID.Int32)
 			}
@@ -74,10 +76,6 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 		rsp.Worlds = make([]*pb.World, len(data))
 		for i, item := range data {
 			rsp.Worlds[i] = converters.ConvertWorld(item)
-
-			if item.DescriptionPostID.Valid {
-				fetchInterface.PostIds = util.Upsert(fetchInterface.PostIds, item.DescriptionPostID.Int32)
-			}
 		}
 	}
 

@@ -251,12 +251,10 @@ UNION ALL
 SELECT
     m.id,
     description_post_id,
-    'worlds.id',
-    w.id
+    'modules.id',
+    m.id
 FROM
-    worlds w
-        JOIN modules m ON m.world_id = w.id AND m.module_type = 'world'
-WHERE description_post_id IS NOT NULL
+    modules m
 
 UNION ALL
 
@@ -286,6 +284,7 @@ SELECT m.id as id,
        m.header_img_id as header_img_id,
        m.thumbnail_img_id as thumbnail_img_id,
        m.avatar_img_id as avatar_img_id,
+       m.description_post_id as description_post_id,
        cast(array_agg(tags.tag_id) as integer[]) AS tags
 FROM
     modules m

@@ -22,10 +22,6 @@ func (server *ServiceWorlds) UpdateWorld(ctx context.Context, req *pb.UpdateWorl
 
 	var needsEntityPermission []db.EntityType
 
-	if req.DescriptionPostId != nil {
-		needsEntityPermission = append(needsEntityPermission, db.EntityTypePost)
-	}
-
 	_, _, err := server.CheckModuleTypePermissions(ctx, db.ModuleTypeWorld, req.GetWorldId(), &servicecore.ModulePermission{
 		NeedsSuperAdmin:       true,
 		NeedsEntityPermission: &needsEntityPermission,
@@ -52,10 +48,6 @@ func (server *ServiceWorlds) UpdateWorld(ctx context.Context, req *pb.UpdateWorl
 		Public: sql.NullBool{
 			Bool:  req.GetPublic(),
 			Valid: req.Public != nil,
-		},
-		DescriptionPostID: sql.NullInt32{
-			Int32: req.GetDescriptionPostId(),
-			Valid: req.DescriptionPostId != nil,
 		},
 	}
 
@@ -95,12 +87,6 @@ func validateUpdateWorldRequest(req *pb.UpdateWorldRequest) (violations []*errde
 	if req.BasedOn != nil {
 		if err := validator.ValidateWorldBasedOn(req.GetBasedOn()); err != nil {
 			violations = append(violations, e.FieldViolation("based_on", err))
-		}
-	}
-
-	if req.DescriptionPostId != nil {
-		if err := validator.ValidatePostId(req.GetDescriptionPostId()); err != nil {
-			violations = append(violations, e.FieldViolation("description_post_id", err))
 		}
 	}
 

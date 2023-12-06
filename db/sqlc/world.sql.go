@@ -38,7 +38,7 @@ INSERT INTO worlds (
     short_description
 ) VALUES (
      $1, $2, $3
- ) RETURNING id, name, based_on, public, created_at, short_description, description_post_id
+ ) RETURNING id, name, based_on, public, created_at, short_description
 `
 
 type CreateWorldParams struct {
@@ -57,7 +57,6 @@ func (q *Queries) CreateWorld(ctx context.Context, arg CreateWorldParams) (World
 		&i.Public,
 		&i.CreatedAt,
 		&i.ShortDescription,
-		&i.DescriptionPostID,
 	)
 	return i, err
 }
@@ -86,7 +85,7 @@ func (q *Queries) DeleteWorld(ctx context.Context, worldID int32) error {
 }
 
 const getWorldByID = `-- name: GetWorldByID :one
-SELECT id, name, based_on, public, created_at, short_description, description_post_id FROM worlds WHERE id = $1 LIMIT 1
+SELECT id, name, based_on, public, created_at, short_description FROM worlds WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (World, error) {
@@ -99,13 +98,12 @@ func (q *Queries) GetWorldByID(ctx context.Context, worldID int32) (World, error
 		&i.Public,
 		&i.CreatedAt,
 		&i.ShortDescription,
-		&i.DescriptionPostID,
 	)
 	return i, err
 }
 
 const getWorlds = `-- name: GetWorlds :many
-SELECT id, name, based_on, public, created_at, short_description, description_post_id, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM get_worlds($1::boolean, $2::integer[], $3::VARCHAR, 'DESC', $4, $5)
+SELECT id, name, based_on, public, created_at, short_description, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM get_worlds($1::boolean, $2::integer[], $3::VARCHAR, 'DESC', $4, $5)
 `
 
 type GetWorldsParams struct {
@@ -138,7 +136,6 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 			&i.Public,
 			&i.CreatedAt,
 			&i.ShortDescription,
-			&i.DescriptionPostID,
 			&i.ModuleID,
 			&i.MenuID,
 			&i.HeaderImgID,
@@ -160,7 +157,7 @@ func (q *Queries) GetWorlds(ctx context.Context, arg GetWorldsParams) ([]ViewWor
 }
 
 const getWorldsByIDs = `-- name: GetWorldsByIDs :many
-SELECT id, name, based_on, public, created_at, short_description, description_post_id FROM worlds WHERE id = ANY($1::int[])
+SELECT id, name, based_on, public, created_at, short_description FROM worlds WHERE id = ANY($1::int[])
 `
 
 func (q *Queries) GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]World, error) {
@@ -179,7 +176,6 @@ func (q *Queries) GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]World
 			&i.Public,
 			&i.CreatedAt,
 			&i.ShortDescription,
-			&i.DescriptionPostID,
 		); err != nil {
 			return nil, err
 		}
@@ -218,20 +214,18 @@ SET
     name = COALESCE($1, name),
     based_on = COALESCE($2, based_on),
     public = COALESCE($3, public),
-    short_description = COALESCE($4, short_description),
-    description_post_id = COALESCE($5, description_post_id)
+    short_description = COALESCE($4, short_description)
 WHERE
-    id = $6
-RETURNING id, name, based_on, public, created_at, short_description, description_post_id
+    id = $5
+RETURNING id, name, based_on, public, created_at, short_description
 `
 
 type UpdateWorldParams struct {
-	Name              sql.NullString `json:"name"`
-	BasedOn           sql.NullString `json:"based_on"`
-	Public            sql.NullBool   `json:"public"`
-	ShortDescription  sql.NullString `json:"short_description"`
-	DescriptionPostID sql.NullInt32  `json:"description_post_id"`
-	WorldID           int32          `json:"world_id"`
+	Name             sql.NullString `json:"name"`
+	BasedOn          sql.NullString `json:"based_on"`
+	Public           sql.NullBool   `json:"public"`
+	ShortDescription sql.NullString `json:"short_description"`
+	WorldID          int32          `json:"world_id"`
 }
 
 func (q *Queries) UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World, error) {
@@ -240,7 +234,6 @@ func (q *Queries) UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World
 		arg.BasedOn,
 		arg.Public,
 		arg.ShortDescription,
-		arg.DescriptionPostID,
 		arg.WorldID,
 	)
 	var i World
@@ -251,7 +244,6 @@ func (q *Queries) UpdateWorld(ctx context.Context, arg UpdateWorldParams) (World
 		&i.Public,
 		&i.CreatedAt,
 		&i.ShortDescription,
-		&i.DescriptionPostID,
 	)
 	return i, err
 }

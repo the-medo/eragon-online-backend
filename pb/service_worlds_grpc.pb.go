@@ -19,12 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Worlds_CreateWorld_FullMethodName             = "/pb.Worlds/CreateWorld"
-	Worlds_UpdateWorld_FullMethodName             = "/pb.Worlds/UpdateWorld"
-	Worlds_UploadWorldImage_FullMethodName        = "/pb.Worlds/UploadWorldImage"
-	Worlds_GetWorlds_FullMethodName               = "/pb.Worlds/GetWorlds"
-	Worlds_GetWorldById_FullMethodName            = "/pb.Worlds/GetWorldById"
-	Worlds_UpdateWorldIntroduction_FullMethodName = "/pb.Worlds/UpdateWorldIntroduction"
+	Worlds_CreateWorld_FullMethodName      = "/pb.Worlds/CreateWorld"
+	Worlds_UpdateWorld_FullMethodName      = "/pb.Worlds/UpdateWorld"
+	Worlds_UploadWorldImage_FullMethodName = "/pb.Worlds/UploadWorldImage"
+	Worlds_GetWorlds_FullMethodName        = "/pb.Worlds/GetWorlds"
+	Worlds_GetWorldById_FullMethodName     = "/pb.Worlds/GetWorldById"
 )
 
 // WorldsClient is the client API for Worlds service.
@@ -36,7 +35,6 @@ type WorldsClient interface {
 	UploadWorldImage(ctx context.Context, in *UploadWorldImageRequest, opts ...grpc.CallOption) (*Image, error)
 	GetWorlds(ctx context.Context, in *GetWorldsRequest, opts ...grpc.CallOption) (*GetWorldsResponse, error)
 	GetWorldById(ctx context.Context, in *GetWorldByIdRequest, opts ...grpc.CallOption) (*World, error)
-	UpdateWorldIntroduction(ctx context.Context, in *UpdateWorldIntroductionRequest, opts ...grpc.CallOption) (*Post, error)
 }
 
 type worldsClient struct {
@@ -92,15 +90,6 @@ func (c *worldsClient) GetWorldById(ctx context.Context, in *GetWorldByIdRequest
 	return out, nil
 }
 
-func (c *worldsClient) UpdateWorldIntroduction(ctx context.Context, in *UpdateWorldIntroductionRequest, opts ...grpc.CallOption) (*Post, error) {
-	out := new(Post)
-	err := c.cc.Invoke(ctx, Worlds_UpdateWorldIntroduction_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // WorldsServer is the server API for Worlds service.
 // All implementations must embed UnimplementedWorldsServer
 // for forward compatibility
@@ -110,7 +99,6 @@ type WorldsServer interface {
 	UploadWorldImage(context.Context, *UploadWorldImageRequest) (*Image, error)
 	GetWorlds(context.Context, *GetWorldsRequest) (*GetWorldsResponse, error)
 	GetWorldById(context.Context, *GetWorldByIdRequest) (*World, error)
-	UpdateWorldIntroduction(context.Context, *UpdateWorldIntroductionRequest) (*Post, error)
 	mustEmbedUnimplementedWorldsServer()
 }
 
@@ -132,9 +120,6 @@ func (UnimplementedWorldsServer) GetWorlds(context.Context, *GetWorldsRequest) (
 }
 func (UnimplementedWorldsServer) GetWorldById(context.Context, *GetWorldByIdRequest) (*World, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWorldById not implemented")
-}
-func (UnimplementedWorldsServer) UpdateWorldIntroduction(context.Context, *UpdateWorldIntroductionRequest) (*Post, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateWorldIntroduction not implemented")
 }
 func (UnimplementedWorldsServer) mustEmbedUnimplementedWorldsServer() {}
 
@@ -239,24 +224,6 @@ func _Worlds_GetWorldById_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Worlds_UpdateWorldIntroduction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateWorldIntroductionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WorldsServer).UpdateWorldIntroduction(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Worlds_UpdateWorldIntroduction_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorldsServer).UpdateWorldIntroduction(ctx, req.(*UpdateWorldIntroductionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Worlds_ServiceDesc is the grpc.ServiceDesc for Worlds service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -283,10 +250,6 @@ var Worlds_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetWorldById",
 			Handler:    _Worlds_GetWorldById_Handler,
-		},
-		{
-			MethodName: "UpdateWorldIntroduction",
-			Handler:    _Worlds_UpdateWorldIntroduction_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

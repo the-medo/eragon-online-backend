@@ -7,9 +7,10 @@ import (
 
 func ConvertModule(dbModule db.Module) *pb.Module {
 	pbModule := &pb.Module{
-		Id:         dbModule.ID,
-		ModuleType: ConvertModuleTypeToPB(dbModule.ModuleType),
-		MenuId:     dbModule.MenuID,
+		Id:                dbModule.ID,
+		ModuleType:        ConvertModuleTypeToPB(dbModule.ModuleType),
+		MenuId:            dbModule.MenuID,
+		DescriptionPostId: dbModule.DescriptionPostID,
 	}
 
 	if dbModule.HeaderImgID.Valid {

@@ -22,7 +22,12 @@ func (core *ServiceCore) CheckModuleIdPermissions(ctx context.Context, moduleId 
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("user is not an admin of this module")
+			err = core.CheckModuleAdmin(ctx, &moduleAdmin, modulePermissions)
+			if err != nil {
+				return nil, fmt.Errorf("user is not an admin of this module")
+			} else {
+				return authPayload, nil
+			}
 		}
 		return nil, fmt.Errorf("failed to authorize module admin: %w", err)
 	}

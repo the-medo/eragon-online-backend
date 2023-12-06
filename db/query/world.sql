@@ -13,8 +13,7 @@ SET
     name = COALESCE(sqlc.narg(name), name),
     based_on = COALESCE(sqlc.narg(based_on), based_on),
     public = COALESCE(sqlc.narg(public), public),
-    short_description = COALESCE(sqlc.narg(short_description), short_description),
-    description_post_id = COALESCE(sqlc.narg(description_post_id), description_post_id)
+    short_description = COALESCE(sqlc.narg(short_description), short_description)
 WHERE
     id = sqlc.arg(world_id)
 RETURNING *;

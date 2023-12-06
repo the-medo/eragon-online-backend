@@ -57,11 +57,35 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
+		post, err := q.CreatePost(ctx, CreatePostParams{
+			UserID:    arg.UserId,
+			Title:     fmt.Sprintf("%s - introduction", arg.Name),
+			IsDraft:   false,
+			IsPrivate: false,
+			Content:   "",
+		})
+		if err != nil {
+			return err
+		}
+
 		module, err := q.CreateModule(ctx, CreateModuleParams{
 			ModuleType: ModuleTypeWorld,
 			MenuID:     menu.ID,
 			WorldID: sql.NullInt32{
 				Int32: world.ID,
+				Valid: true,
+			},
+			DescriptionPostID: post.ID,
+		})
+		if err != nil {
+			return err
+		}
+
+		_, err = q.CreateEntity(ctx, CreateEntityParams{
+			Type:     EntityTypePost,
+			ModuleID: module.ID,
+			PostID: sql.NullInt32{
+				Int32: post.ID,
 				Valid: true,
 			},
 		})
