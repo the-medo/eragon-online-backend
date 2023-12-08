@@ -1,5 +1,4 @@
 DROP PROCEDURE IF EXISTS update_map_layer_is_main(map_layer_id integer);
-DROP PROCEDURE IF EXISTS move_menu_item_post(mi_id integer, p_id integer, p_target_position integer);
 DROP PROCEDURE IF EXISTS move_menu_item(p_id integer, p_target_position integer);
 DROP PROCEDURE IF EXISTS move_group_up(p_id integer);
 DROP PROCEDURE IF EXISTS move_entity_group_content(p_id integer, p_target_position integer);
@@ -21,7 +20,6 @@ DROP VIEW IF EXISTS view_modules;
 DROP VIEW IF EXISTS view_locations; -- depends on view_entities
 DROP VIEW IF EXISTS view_images; -- depends on view_entities
 DROP VIEW IF EXISTS view_maps;-- depends on view_entities
-DROP VIEW IF EXISTS view_menu_item_posts; -- depends on view_posts
 DROP VIEW IF EXISTS view_posts; -- depends on view_entities
 DROP VIEW IF EXISTS view_entities;
 DROP VIEW IF EXISTS view_map_layers;

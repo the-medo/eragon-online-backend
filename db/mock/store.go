@@ -277,21 +277,6 @@ func (mr *MockStoreMockRecorder) CreateMenuItem(arg0, arg1 interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMenuItem", reflect.TypeOf((*MockStore)(nil).CreateMenuItem), arg0, arg1)
 }
 
-// CreateMenuItemPost mocks base method.
-func (m *MockStore) CreateMenuItemPost(arg0 context.Context, arg1 db.CreateMenuItemPostParams) (db.MenuItemPost, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateMenuItemPost", arg0, arg1)
-	ret0, _ := ret[0].(db.MenuItemPost)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CreateMenuItemPost indicates an expected call of CreateMenuItemPost.
-func (mr *MockStoreMockRecorder) CreateMenuItemPost(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMenuItemPost", reflect.TypeOf((*MockStore)(nil).CreateMenuItemPost), arg0, arg1)
-}
-
 // CreateModule mocks base method.
 func (m *MockStore) CreateModule(arg0 context.Context, arg1 db.CreateModuleParams) (db.Module, error) {
 	m.ctrl.T.Helper()
@@ -723,20 +708,6 @@ func (m *MockStore) DeleteMenuItem(arg0 context.Context, arg1 int32) error {
 func (mr *MockStoreMockRecorder) DeleteMenuItem(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMenuItem", reflect.TypeOf((*MockStore)(nil).DeleteMenuItem), arg0, arg1)
-}
-
-// DeleteMenuItemPost mocks base method.
-func (m *MockStore) DeleteMenuItemPost(arg0 context.Context, arg1 db.DeleteMenuItemPostParams) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteMenuItemPost", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteMenuItemPost indicates an expected call of DeleteMenuItemPost.
-func (mr *MockStoreMockRecorder) DeleteMenuItemPost(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMenuItemPost", reflect.TypeOf((*MockStore)(nil).DeleteMenuItemPost), arg0, arg1)
 }
 
 // DeleteModule mocks base method.
@@ -1553,51 +1524,6 @@ func (mr *MockStoreMockRecorder) GetMenuItemById(arg0, arg1 interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenuItemById", reflect.TypeOf((*MockStore)(nil).GetMenuItemById), arg0, arg1)
 }
 
-// GetMenuItemPost mocks base method.
-func (m *MockStore) GetMenuItemPost(arg0 context.Context, arg1 db.GetMenuItemPostParams) (db.ViewMenuItemPost, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMenuItemPost", arg0, arg1)
-	ret0, _ := ret[0].(db.ViewMenuItemPost)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetMenuItemPost indicates an expected call of GetMenuItemPost.
-func (mr *MockStoreMockRecorder) GetMenuItemPost(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenuItemPost", reflect.TypeOf((*MockStore)(nil).GetMenuItemPost), arg0, arg1)
-}
-
-// GetMenuItemPosts mocks base method.
-func (m *MockStore) GetMenuItemPosts(arg0 context.Context, arg1 sql.NullInt32) ([]db.ViewMenuItemPost, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMenuItemPosts", arg0, arg1)
-	ret0, _ := ret[0].([]db.ViewMenuItemPost)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetMenuItemPosts indicates an expected call of GetMenuItemPosts.
-func (mr *MockStoreMockRecorder) GetMenuItemPosts(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenuItemPosts", reflect.TypeOf((*MockStore)(nil).GetMenuItemPosts), arg0, arg1)
-}
-
-// GetMenuItemPostsByMenuId mocks base method.
-func (m *MockStore) GetMenuItemPostsByMenuId(arg0 context.Context, arg1 int32) ([]db.ViewMenuItemPost, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMenuItemPostsByMenuId", arg0, arg1)
-	ret0, _ := ret[0].([]db.ViewMenuItemPost)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetMenuItemPostsByMenuId indicates an expected call of GetMenuItemPostsByMenuId.
-func (mr *MockStoreMockRecorder) GetMenuItemPostsByMenuId(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenuItemPostsByMenuId", reflect.TypeOf((*MockStore)(nil).GetMenuItemPostsByMenuId), arg0, arg1)
-}
-
 // GetMenuItems mocks base method.
 func (m *MockStore) GetMenuItems(arg0 context.Context, arg1 int32) ([]db.MenuItem, error) {
 	m.ctrl.T.Helper()
@@ -2121,20 +2047,6 @@ func (mr *MockStoreMockRecorder) MenuItemMoveGroupUp(arg0, arg1 interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MenuItemMoveGroupUp", reflect.TypeOf((*MockStore)(nil).MenuItemMoveGroupUp), arg0, arg1)
 }
 
-// MenuItemPostChangePositions mocks base method.
-func (m *MockStore) MenuItemPostChangePositions(arg0 context.Context, arg1 db.MenuItemPostChangePositionsParams) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MenuItemPostChangePositions", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// MenuItemPostChangePositions indicates an expected call of MenuItemPostChangePositions.
-func (mr *MockStoreMockRecorder) MenuItemPostChangePositions(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MenuItemPostChangePositions", reflect.TypeOf((*MockStore)(nil).MenuItemPostChangePositions), arg0, arg1)
-}
-
 // RemoveUserRole mocks base method.
 func (m *MockStore) RemoveUserRole(arg0 context.Context, arg1 db.RemoveUserRoleParams) error {
 	m.ctrl.T.Helper()
@@ -2177,21 +2089,6 @@ func (m *MockStore) ResetPasswordVerifyTx(arg0 context.Context, arg1 db.ResetPas
 func (mr *MockStoreMockRecorder) ResetPasswordVerifyTx(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ResetPasswordVerifyTx", reflect.TypeOf((*MockStore)(nil).ResetPasswordVerifyTx), arg0, arg1)
-}
-
-// UnassignMenuItemPost mocks base method.
-func (m *MockStore) UnassignMenuItemPost(arg0 context.Context, arg1 db.UnassignMenuItemPostParams) (db.MenuItemPost, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UnassignMenuItemPost", arg0, arg1)
-	ret0, _ := ret[0].(db.MenuItemPost)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UnassignMenuItemPost indicates an expected call of UnassignMenuItemPost.
-func (mr *MockStoreMockRecorder) UnassignMenuItemPost(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnassignMenuItemPost", reflect.TypeOf((*MockStore)(nil).UnassignMenuItemPost), arg0, arg1)
 }
 
 // UpdateEntity mocks base method.
@@ -2401,21 +2298,6 @@ func (m *MockStore) UpdateMenuItem(arg0 context.Context, arg1 db.UpdateMenuItemP
 func (mr *MockStoreMockRecorder) UpdateMenuItem(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMenuItem", reflect.TypeOf((*MockStore)(nil).UpdateMenuItem), arg0, arg1)
-}
-
-// UpdateMenuItemPost mocks base method.
-func (m *MockStore) UpdateMenuItemPost(arg0 context.Context, arg1 db.UpdateMenuItemPostParams) (db.MenuItemPost, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateMenuItemPost", arg0, arg1)
-	ret0, _ := ret[0].(db.MenuItemPost)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateMenuItemPost indicates an expected call of UpdateMenuItemPost.
-func (mr *MockStoreMockRecorder) UpdateMenuItemPost(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMenuItemPost", reflect.TypeOf((*MockStore)(nil).UpdateMenuItemPost), arg0, arg1)
 }
 
 // UpdateModule mocks base method.

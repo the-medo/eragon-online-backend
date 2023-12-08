@@ -27,12 +27,6 @@ const (
 	Menus_UpdateMenuItemMoveGroupUp_FullMethodName = "/pb.Menus/UpdateMenuItemMoveGroupUp"
 	Menus_DeleteMenuItem_FullMethodName            = "/pb.Menus/DeleteMenuItem"
 	Menus_GetMenuItems_FullMethodName              = "/pb.Menus/GetMenuItems"
-	Menus_CreateMenuItemPost_FullMethodName        = "/pb.Menus/CreateMenuItemPost"
-	Menus_UpdateMenuItemPost_FullMethodName        = "/pb.Menus/UpdateMenuItemPost"
-	Menus_DeleteMenuItemPost_FullMethodName        = "/pb.Menus/DeleteMenuItemPost"
-	Menus_GetMenuItemPosts_FullMethodName          = "/pb.Menus/GetMenuItemPosts"
-	Menus_GetMenuItemPostsByMenuId_FullMethodName  = "/pb.Menus/GetMenuItemPostsByMenuId"
-	Menus_UpdateMenuPosts_FullMethodName           = "/pb.Menus/UpdateMenuPosts"
 	Menus_GetMenuItemContent_FullMethodName        = "/pb.Menus/GetMenuItemContent"
 )
 
@@ -47,12 +41,6 @@ type MenusClient interface {
 	UpdateMenuItemMoveGroupUp(ctx context.Context, in *UpdateMenuItemMoveGroupUpRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteMenuItem(ctx context.Context, in *DeleteMenuItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetMenuItems(ctx context.Context, in *GetMenuItemsRequest, opts ...grpc.CallOption) (*GetMenuItemsResponse, error)
-	CreateMenuItemPost(ctx context.Context, in *CreateMenuItemPostRequest, opts ...grpc.CallOption) (*MenuItemPost, error)
-	UpdateMenuItemPost(ctx context.Context, in *UpdateMenuItemPostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	DeleteMenuItemPost(ctx context.Context, in *DeleteMenuItemPostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetMenuItemPosts(ctx context.Context, in *GetMenuItemPostsRequest, opts ...grpc.CallOption) (*GetMenuItemPostsResponse, error)
-	GetMenuItemPostsByMenuId(ctx context.Context, in *GetMenuItemPostsByMenuIdRequest, opts ...grpc.CallOption) (*GetMenuItemPostsByMenuIdResponse, error)
-	UpdateMenuPosts(ctx context.Context, in *UpdateMenuPostsRequest, opts ...grpc.CallOption) (*UpdateMenuPostsResponse, error)
 	GetMenuItemContent(ctx context.Context, in *GetMenuItemContentRequest, opts ...grpc.CallOption) (*GetMenuItemContentResponse, error)
 }
 
@@ -127,60 +115,6 @@ func (c *menusClient) GetMenuItems(ctx context.Context, in *GetMenuItemsRequest,
 	return out, nil
 }
 
-func (c *menusClient) CreateMenuItemPost(ctx context.Context, in *CreateMenuItemPostRequest, opts ...grpc.CallOption) (*MenuItemPost, error) {
-	out := new(MenuItemPost)
-	err := c.cc.Invoke(ctx, Menus_CreateMenuItemPost_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *menusClient) UpdateMenuItemPost(ctx context.Context, in *UpdateMenuItemPostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Menus_UpdateMenuItemPost_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *menusClient) DeleteMenuItemPost(ctx context.Context, in *DeleteMenuItemPostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Menus_DeleteMenuItemPost_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *menusClient) GetMenuItemPosts(ctx context.Context, in *GetMenuItemPostsRequest, opts ...grpc.CallOption) (*GetMenuItemPostsResponse, error) {
-	out := new(GetMenuItemPostsResponse)
-	err := c.cc.Invoke(ctx, Menus_GetMenuItemPosts_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *menusClient) GetMenuItemPostsByMenuId(ctx context.Context, in *GetMenuItemPostsByMenuIdRequest, opts ...grpc.CallOption) (*GetMenuItemPostsByMenuIdResponse, error) {
-	out := new(GetMenuItemPostsByMenuIdResponse)
-	err := c.cc.Invoke(ctx, Menus_GetMenuItemPostsByMenuId_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *menusClient) UpdateMenuPosts(ctx context.Context, in *UpdateMenuPostsRequest, opts ...grpc.CallOption) (*UpdateMenuPostsResponse, error) {
-	out := new(UpdateMenuPostsResponse)
-	err := c.cc.Invoke(ctx, Menus_UpdateMenuPosts_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *menusClient) GetMenuItemContent(ctx context.Context, in *GetMenuItemContentRequest, opts ...grpc.CallOption) (*GetMenuItemContentResponse, error) {
 	out := new(GetMenuItemContentResponse)
 	err := c.cc.Invoke(ctx, Menus_GetMenuItemContent_FullMethodName, in, out, opts...)
@@ -201,12 +135,6 @@ type MenusServer interface {
 	UpdateMenuItemMoveGroupUp(context.Context, *UpdateMenuItemMoveGroupUpRequest) (*emptypb.Empty, error)
 	DeleteMenuItem(context.Context, *DeleteMenuItemRequest) (*emptypb.Empty, error)
 	GetMenuItems(context.Context, *GetMenuItemsRequest) (*GetMenuItemsResponse, error)
-	CreateMenuItemPost(context.Context, *CreateMenuItemPostRequest) (*MenuItemPost, error)
-	UpdateMenuItemPost(context.Context, *UpdateMenuItemPostRequest) (*emptypb.Empty, error)
-	DeleteMenuItemPost(context.Context, *DeleteMenuItemPostRequest) (*emptypb.Empty, error)
-	GetMenuItemPosts(context.Context, *GetMenuItemPostsRequest) (*GetMenuItemPostsResponse, error)
-	GetMenuItemPostsByMenuId(context.Context, *GetMenuItemPostsByMenuIdRequest) (*GetMenuItemPostsByMenuIdResponse, error)
-	UpdateMenuPosts(context.Context, *UpdateMenuPostsRequest) (*UpdateMenuPostsResponse, error)
 	GetMenuItemContent(context.Context, *GetMenuItemContentRequest) (*GetMenuItemContentResponse, error)
 	mustEmbedUnimplementedMenusServer()
 }
@@ -235,24 +163,6 @@ func (UnimplementedMenusServer) DeleteMenuItem(context.Context, *DeleteMenuItemR
 }
 func (UnimplementedMenusServer) GetMenuItems(context.Context, *GetMenuItemsRequest) (*GetMenuItemsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMenuItems not implemented")
-}
-func (UnimplementedMenusServer) CreateMenuItemPost(context.Context, *CreateMenuItemPostRequest) (*MenuItemPost, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateMenuItemPost not implemented")
-}
-func (UnimplementedMenusServer) UpdateMenuItemPost(context.Context, *UpdateMenuItemPostRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenuItemPost not implemented")
-}
-func (UnimplementedMenusServer) DeleteMenuItemPost(context.Context, *DeleteMenuItemPostRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteMenuItemPost not implemented")
-}
-func (UnimplementedMenusServer) GetMenuItemPosts(context.Context, *GetMenuItemPostsRequest) (*GetMenuItemPostsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMenuItemPosts not implemented")
-}
-func (UnimplementedMenusServer) GetMenuItemPostsByMenuId(context.Context, *GetMenuItemPostsByMenuIdRequest) (*GetMenuItemPostsByMenuIdResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMenuItemPostsByMenuId not implemented")
-}
-func (UnimplementedMenusServer) UpdateMenuPosts(context.Context, *UpdateMenuPostsRequest) (*UpdateMenuPostsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenuPosts not implemented")
 }
 func (UnimplementedMenusServer) GetMenuItemContent(context.Context, *GetMenuItemContentRequest) (*GetMenuItemContentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMenuItemContent not implemented")
@@ -396,114 +306,6 @@ func _Menus_GetMenuItems_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Menus_CreateMenuItemPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateMenuItemPostRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MenusServer).CreateMenuItemPost(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Menus_CreateMenuItemPost_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MenusServer).CreateMenuItemPost(ctx, req.(*CreateMenuItemPostRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Menus_UpdateMenuItemPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateMenuItemPostRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MenusServer).UpdateMenuItemPost(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Menus_UpdateMenuItemPost_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MenusServer).UpdateMenuItemPost(ctx, req.(*UpdateMenuItemPostRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Menus_DeleteMenuItemPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteMenuItemPostRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MenusServer).DeleteMenuItemPost(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Menus_DeleteMenuItemPost_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MenusServer).DeleteMenuItemPost(ctx, req.(*DeleteMenuItemPostRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Menus_GetMenuItemPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMenuItemPostsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MenusServer).GetMenuItemPosts(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Menus_GetMenuItemPosts_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MenusServer).GetMenuItemPosts(ctx, req.(*GetMenuItemPostsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Menus_GetMenuItemPostsByMenuId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMenuItemPostsByMenuIdRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MenusServer).GetMenuItemPostsByMenuId(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Menus_GetMenuItemPostsByMenuId_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MenusServer).GetMenuItemPostsByMenuId(ctx, req.(*GetMenuItemPostsByMenuIdRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Menus_UpdateMenuPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateMenuPostsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MenusServer).UpdateMenuPosts(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Menus_UpdateMenuPosts_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MenusServer).UpdateMenuPosts(ctx, req.(*UpdateMenuPostsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Menus_GetMenuItemContent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetMenuItemContentRequest)
 	if err := dec(in); err != nil {
@@ -556,30 +358,6 @@ var Menus_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMenuItems",
 			Handler:    _Menus_GetMenuItems_Handler,
-		},
-		{
-			MethodName: "CreateMenuItemPost",
-			Handler:    _Menus_CreateMenuItemPost_Handler,
-		},
-		{
-			MethodName: "UpdateMenuItemPost",
-			Handler:    _Menus_UpdateMenuItemPost_Handler,
-		},
-		{
-			MethodName: "DeleteMenuItemPost",
-			Handler:    _Menus_DeleteMenuItemPost_Handler,
-		},
-		{
-			MethodName: "GetMenuItemPosts",
-			Handler:    _Menus_GetMenuItemPosts_Handler,
-		},
-		{
-			MethodName: "GetMenuItemPostsByMenuId",
-			Handler:    _Menus_GetMenuItemPostsByMenuId_Handler,
-		},
-		{
-			MethodName: "UpdateMenuPosts",
-			Handler:    _Menus_UpdateMenuPosts_Handler,
 		},
 		{
 			MethodName: "GetMenuItemContent",

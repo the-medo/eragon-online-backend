@@ -57,60 +57,6 @@ message GetMenuItemsResponse {
     repeated MenuItem menuItems = 1;
 }
 
-//========== Menu Item Posts ==========
-
-message CreateMenuItemPostRequest {
-  int32 menuId = 1;
-  int32 menuItemId = 2;
-  optional int32 postId = 3;
-  optional int32 position = 4;
-  optional bool isMenuItemDescriptionPost = 5;
-  optional string title = 6;
-  optional string shortDescription = 7;
-  optional int32 imageThumbnailId = 8;
-}
-
-message UpdateMenuItemPostRequest {
-  int32 menuId = 1;
-  int32 menuItemId = 2;
-  int32 postId = 3;
-  optional int32 newMenuItemId = 4;
-  optional int32 position = 5;
-}
-
-message DeleteMenuItemPostRequest {
-  int32 menuId = 1;
-  int32 menuItemId = 2;
-  int32 postId = 3;
-}
-
-message GetMenuItemPostsRequest {
-  int32 menuId = 1;
-  int32 menuItemId = 2;
-}
-
-message GetMenuItemPostsResponse {
-  repeated MenuItemPost menuItemPosts = 1;
-}
-
-message GetMenuItemPostsByMenuIdRequest {
-  int32 menuId = 1;
-}
-
-message GetMenuItemPostsByMenuIdResponse {
-  repeated MenuItemPost menuItemPosts = 1;
-}
-
-message UpdateMenuPostsRequest {
-  int32 menuId = 1;
-  optional int32 menuItemId = 2;
-  repeated int32 postIds = 3;
-}
-
-message UpdateMenuPostsResponse {
-  repeated MenuItemPost menuItemPosts = 1;
-}
-
 message GetMenuItemContentRequest {
   int32 menuId = 1;
   int32 menuItemId = 2;

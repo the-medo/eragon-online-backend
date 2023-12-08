@@ -29,7 +29,6 @@ type Querier interface {
 	CreateMapPinTypeGroup(ctx context.Context, name string) (MapPinTypeGroup, error)
 	CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, error)
 	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)
-	CreateMenuItemPost(ctx context.Context, arg CreateMenuItemPostParams) (MenuItemPost, error)
 	CreateModule(ctx context.Context, arg CreateModuleParams) (Module, error)
 	CreateModuleAdmin(ctx context.Context, arg CreateModuleAdminParams) (ModuleAdmin, error)
 	CreateModuleEntityTagAvailable(ctx context.Context, arg CreateModuleEntityTagAvailableParams) (ModuleEntityTagsAvailable, error)
@@ -58,7 +57,6 @@ type Querier interface {
 	DeleteMapPinsForMapLayer(ctx context.Context, mapLayerID sql.NullInt32) error
 	DeleteMenu(ctx context.Context, id int32) error
 	DeleteMenuItem(ctx context.Context, menuItemID int32) error
-	DeleteMenuItemPost(ctx context.Context, arg DeleteMenuItemPostParams) error
 	DeleteModule(ctx context.Context, id int32) error
 	DeleteModuleAdmin(ctx context.Context, arg DeleteModuleAdminParams) error
 	DeleteModuleEntityTagAvailable(ctx context.Context, id int32) error
@@ -114,9 +112,6 @@ type Querier interface {
 	GetMenu(ctx context.Context, id int32) (ViewMenu, error)
 	GetMenuIdOfEntityGroup(ctx context.Context, entityGroupID int32) (int32, error)
 	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)
-	GetMenuItemPost(ctx context.Context, arg GetMenuItemPostParams) (ViewMenuItemPost, error)
-	GetMenuItemPosts(ctx context.Context, menuItemID sql.NullInt32) ([]ViewMenuItemPost, error)
-	GetMenuItemPostsByMenuId(ctx context.Context, menuID int32) ([]ViewMenuItemPost, error)
 	GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, error)
 	GetModule(ctx context.Context, arg GetModuleParams) (Module, error)
 	GetModuleAdmin(ctx context.Context, arg GetModuleAdminParams) (ViewModuleAdmin, error)
@@ -152,9 +147,7 @@ type Querier interface {
 	InsertPostHistory(ctx context.Context, postID int32) (PostHistory, error)
 	MenuItemChangePositions(ctx context.Context, arg MenuItemChangePositionsParams) error
 	MenuItemMoveGroupUp(ctx context.Context, menuItemID int32) error
-	MenuItemPostChangePositions(ctx context.Context, arg MenuItemPostChangePositionsParams) error
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
-	UnassignMenuItemPost(ctx context.Context, arg UnassignMenuItemPostParams) (MenuItemPost, error)
 	UpdateEntity(ctx context.Context, arg UpdateEntityParams) (Entity, error)
 	UpdateEntityGroup(ctx context.Context, arg UpdateEntityGroupParams) (EntityGroup, error)
 	UpdateEntityGroupContent(ctx context.Context, arg UpdateEntityGroupContentParams) (EntityGroupContent, error)
@@ -169,7 +162,6 @@ type Querier interface {
 	UpdateMapPinTypeGroup(ctx context.Context, arg UpdateMapPinTypeGroupParams) (MapPinTypeGroup, error)
 	UpdateMenu(ctx context.Context, arg UpdateMenuParams) (Menu, error)
 	UpdateMenuItem(ctx context.Context, arg UpdateMenuItemParams) (MenuItem, error)
-	UpdateMenuItemPost(ctx context.Context, arg UpdateMenuItemPostParams) (MenuItemPost, error)
 	UpdateModule(ctx context.Context, arg UpdateModuleParams) (Module, error)
 	UpdateModuleAdmin(ctx context.Context, arg UpdateModuleAdminParams) (ModuleAdmin, error)
 	UpdateModuleEntityTagAvailable(ctx context.Context, arg UpdateModuleEntityTagAvailableParams) (ModuleEntityTagsAvailable, error)

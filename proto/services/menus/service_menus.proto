@@ -88,69 +88,6 @@ service Menus {
     };
   };
 
-  rpc CreateMenuItemPost(CreateMenuItemPostRequest) returns (MenuItemPost) {
-    option (google.api.http) = {
-      post: "/menus/{menuId}/items/{menuItemId}/posts"
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "adds new menu item post to the menu item";
-      summary: "Create menu item post";
-    };
-  };
-
-  rpc UpdateMenuItemPost(UpdateMenuItemPostRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      patch: "/menus/{menuId}/items/{menuItemId}/posts/{postId}"
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "updates menu item post";
-      summary: "Update menu item post";
-    };
-  };
-
-  rpc DeleteMenuItemPost(DeleteMenuItemPostRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/menus/{menuId}/items/{menuItemId}/posts/{postId}"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "deletes menu item post";
-      summary: "Delete menu item post";
-    };
-  };
-
-  rpc GetMenuItemPosts(GetMenuItemPostsRequest) returns (GetMenuItemPostsResponse) {
-    option (google.api.http) = {
-      get: "/menus/{menuId}/items/{menuItemId}/posts"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "gets list of menu item posts";
-      summary: "Get menu item posts";
-    };
-  };
-
-  rpc GetMenuItemPostsByMenuId(GetMenuItemPostsByMenuIdRequest) returns (GetMenuItemPostsByMenuIdResponse) {
-    option (google.api.http) = {
-      get: "/menus/{menuId}/posts"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "gets list of menu item posts for menu";
-      summary: "Get menu item posts by menu id";
-    };
-  };
-
-  rpc UpdateMenuPosts(UpdateMenuPostsRequest) returns (UpdateMenuPostsResponse) {
-    option (google.api.http) = {
-      patch: "/menus/{menuId}/posts",
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "change menu item id for multiple posts";
-      summary: "Update menu posts";
-    };
-  };
-
   rpc GetMenuItemContent(GetMenuItemContentRequest) returns (GetMenuItemContentResponse) {
     option (google.api.http) = {
       get: "/menus/{menuId}/items/{menuItemId}"

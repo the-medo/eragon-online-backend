@@ -189,10 +189,6 @@ FROM
 ;
 
 --====================================
-CREATE VIEW view_menu_item_posts AS
-SELECT * FROM menu_item_posts mip JOIN view_posts vp ON mip.post_id = vp.id;
-
---====================================
 
 
 CREATE VIEW view_map_layers AS
@@ -438,55 +434,6 @@ BEGIN
     UPDATE map_layers
     SET is_main = true
     WHERE id = map_layer_id;
-END;
-$$;
-
---====================================
-
-
-CREATE OR REPLACE PROCEDURE move_menu_item_post(mi_id INT, p_id INT, p_target_position INT)
-    LANGUAGE plpgsql AS $$
-DECLARE
-    v_old_position INT;
-    v_menu_item_id INT;
-    v_max_position INT;
-BEGIN
-    -- Get the current position and menu_item_id of the menu item post
-    SELECT "position", "menu_item_id" INTO v_old_position, v_menu_item_id
-    FROM "menu_item_posts"
-    WHERE "menu_item_id" = mi_id AND "post_id" = p_id;
-
-    -- Get the maximum position within the menu
-    SELECT MAX("position") INTO v_max_position
-    FROM "menu_item_posts"
-    WHERE "menu_item_id" = v_menu_item_id;
-
-    -- Check if the target position is valid
-    IF p_target_position < 1 OR p_target_position > v_max_position THEN
-        RAISE EXCEPTION 'Invalid target position';
-    END IF;
-
-    -- Update positions based on the move direction
-    IF v_old_position < p_target_position THEN
-        -- Move down
-        UPDATE "menu_item_posts"
-        SET "position" = "position" - 1
-        WHERE "menu_item_id" = v_menu_item_id
-          AND "position" BETWEEN v_old_position + 1 AND p_target_position;
-
-    ELSIF v_old_position > p_target_position THEN
-        -- Move up
-        UPDATE "menu_item_posts"
-        SET "position" = "position" + 1
-        WHERE "menu_item_id" = v_menu_item_id
-          AND "position" BETWEEN p_target_position AND v_old_position - 1;
-    END IF;
-
-    -- Set the new position of the menu item
-    UPDATE "menu_item_posts"
-    SET "position" = p_target_position
-    WHERE "menu_item_id" = mi_id AND "post_id" = p_id;
-
 END;
 $$;
 
@@ -824,7 +771,7 @@ BEGIN
             CALL delete_entity_group_content(_egc.entity_group_content_id, _egc.entity_id, NULL);
         END LOOP;
 
-    DELETE FROM world_locations WHERE location_id = p_location_id;
+    DELETE FROM entities WHERE location_id = p_location_id;
 
     DELETE FROM locations WHERE id = p_location_id;
 END;
@@ -856,7 +803,7 @@ BEGIN
             CALL delete_entity_group_content(_egc.entity_group_content_id, _egc.entity_id, NULL);
         END LOOP;
 
-    DELETE FROM world_maps WHERE map_id = p_map_id;
+    DELETE FROM entities WHERE map_id = p_map_id;
 
     DELETE FROM maps WHERE id = p_map_id;
 END;

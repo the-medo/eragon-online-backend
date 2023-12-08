@@ -397,13 +397,6 @@ type MenuItem struct {
 	EntityGroupID     sql.NullInt32 `json:"entity_group_id"`
 }
 
-type MenuItemPost struct {
-	MenuID     int32         `json:"menu_id"`
-	MenuItemID sql.NullInt32 `json:"menu_item_id"`
-	PostID     int32         `json:"post_id"`
-	Position   int32         `json:"position"`
-}
-
 // Groups higher-level sections into one table. Contains worlds, quests, characters and play systems.
 type Module struct {
 	ID                int32         `json:"id"`
@@ -657,31 +650,6 @@ type ViewMenu struct {
 	MenuCode        string         `json:"menu_code"`
 	MenuHeaderImgID sql.NullInt32  `json:"menu_header_img_id"`
 	HeaderImageUrl  sql.NullString `json:"header_image_url"`
-}
-
-type ViewMenuItemPost struct {
-	MenuID            int32          `json:"menu_id"`
-	MenuItemID        sql.NullInt32  `json:"menu_item_id"`
-	PostID            int32          `json:"post_id"`
-	Position          int32          `json:"position"`
-	ID                int32          `json:"id"`
-	UserID            int32          `json:"user_id"`
-	Title             string         `json:"title"`
-	Description       sql.NullString `json:"description"`
-	Content           string         `json:"content"`
-	CreatedAt         time.Time      `json:"created_at"`
-	DeletedAt         sql.NullTime   `json:"deleted_at"`
-	LastUpdatedAt     sql.NullTime   `json:"last_updated_at"`
-	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
-	IsDraft           bool           `json:"is_draft"`
-	IsPrivate         bool           `json:"is_private"`
-	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
-	ThumbnailImgUrl   sql.NullString `json:"thumbnail_img_url"`
-	EntityID          sql.NullInt32  `json:"entity_id"`
-	ModuleID          sql.NullInt32  `json:"module_id"`
-	ModuleType        NullModuleType `json:"module_type"`
-	ModuleTypeID      sql.NullInt32  `json:"module_type_id"`
-	Tags              []int32        `json:"tags"`
 }
 
 type ViewModule struct {
