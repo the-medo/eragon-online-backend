@@ -2361,6 +2361,63 @@
         "tags": [
           "Modules"
         ]
+      },
+      "patch": {
+        "summary": "Update module",
+        "description": "updates module (images and description post id)",
+        "operationId": "Modules_UpdateModule",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbViewModule"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "headerImgId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "thumbnailImgId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "avatarImgId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "descriptionPostId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Modules"
+        ]
       }
     },
     "/modules/{moduleId}/admin": {

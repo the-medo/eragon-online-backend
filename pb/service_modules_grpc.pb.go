@@ -26,6 +26,7 @@ const (
 	Modules_CreateModuleAdmin_FullMethodName = "/pb.Modules/CreateModuleAdmin"
 	Modules_UpdateModuleAdmin_FullMethodName = "/pb.Modules/UpdateModuleAdmin"
 	Modules_DeleteModuleAdmin_FullMethodName = "/pb.Modules/DeleteModuleAdmin"
+	Modules_UpdateModule_FullMethodName      = "/pb.Modules/UpdateModule"
 )
 
 // ModulesClient is the client API for Modules service.
@@ -38,6 +39,7 @@ type ModulesClient interface {
 	CreateModuleAdmin(ctx context.Context, in *CreateModuleAdminRequest, opts ...grpc.CallOption) (*ModuleAdmin, error)
 	UpdateModuleAdmin(ctx context.Context, in *UpdateModuleAdminRequest, opts ...grpc.CallOption) (*ModuleAdmin, error)
 	DeleteModuleAdmin(ctx context.Context, in *DeleteModuleAdminRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UpdateModule(ctx context.Context, in *UpdateModuleRequest, opts ...grpc.CallOption) (*ViewModule, error)
 }
 
 type modulesClient struct {
@@ -102,6 +104,15 @@ func (c *modulesClient) DeleteModuleAdmin(ctx context.Context, in *DeleteModuleA
 	return out, nil
 }
 
+func (c *modulesClient) UpdateModule(ctx context.Context, in *UpdateModuleRequest, opts ...grpc.CallOption) (*ViewModule, error) {
+	out := new(ViewModule)
+	err := c.cc.Invoke(ctx, Modules_UpdateModule_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ModulesServer is the server API for Modules service.
 // All implementations must embed UnimplementedModulesServer
 // for forward compatibility
@@ -112,6 +123,7 @@ type ModulesServer interface {
 	CreateModuleAdmin(context.Context, *CreateModuleAdminRequest) (*ModuleAdmin, error)
 	UpdateModuleAdmin(context.Context, *UpdateModuleAdminRequest) (*ModuleAdmin, error)
 	DeleteModuleAdmin(context.Context, *DeleteModuleAdminRequest) (*emptypb.Empty, error)
+	UpdateModule(context.Context, *UpdateModuleRequest) (*ViewModule, error)
 	mustEmbedUnimplementedModulesServer()
 }
 
@@ -136,6 +148,9 @@ func (UnimplementedModulesServer) UpdateModuleAdmin(context.Context, *UpdateModu
 }
 func (UnimplementedModulesServer) DeleteModuleAdmin(context.Context, *DeleteModuleAdminRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteModuleAdmin not implemented")
+}
+func (UnimplementedModulesServer) UpdateModule(context.Context, *UpdateModuleRequest) (*ViewModule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateModule not implemented")
 }
 func (UnimplementedModulesServer) mustEmbedUnimplementedModulesServer() {}
 
@@ -258,6 +273,24 @@ func _Modules_DeleteModuleAdmin_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Modules_UpdateModule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateModuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModulesServer).UpdateModule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Modules_UpdateModule_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModulesServer).UpdateModule(ctx, req.(*UpdateModuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Modules_ServiceDesc is the grpc.ServiceDesc for Modules service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -288,6 +321,10 @@ var Modules_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteModuleAdmin",
 			Handler:    _Modules_DeleteModuleAdmin_Handler,
+		},
+		{
+			MethodName: "UpdateModule",
+			Handler:    _Modules_UpdateModule_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

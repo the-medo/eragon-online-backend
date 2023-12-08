@@ -73,4 +73,15 @@ service Modules {
     };
   };
 
+  rpc UpdateModule(UpdateModuleRequest) returns (ViewModule) {
+    option (google.api.http) = {
+      patch: "/modules/{moduleId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates module (images and description post id)";
+      summary: "Update module";
+    };
+  };
+
 }

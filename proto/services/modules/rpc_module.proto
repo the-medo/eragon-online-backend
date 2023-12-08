@@ -48,3 +48,11 @@ message DeleteModuleAdminRequest {
   int32 moduleId = 1;
   int32 userId = 2;
 }
+
+message UpdateModuleRequest {
+  int32 moduleId = 1;
+  optional int32 headerImgId = 2;
+  optional int32 thumbnailImgId = 3;
+  optional int32 avatarImgId = 4;
+  optional int32 descriptionPostId = 5;
+}
