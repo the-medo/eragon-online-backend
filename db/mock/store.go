@@ -37,21 +37,6 @@ func (m *MockStore) EXPECT() *MockStoreMockRecorder {
 	return m.recorder
 }
 
-// AddChatMessage mocks base method.
-func (m *MockStore) AddChatMessage(arg0 context.Context, arg1 db.AddChatMessageParams) (db.Chat, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AddChatMessage", arg0, arg1)
-	ret0, _ := ret[0].(db.Chat)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// AddChatMessage indicates an expected call of AddChatMessage.
-func (mr *MockStoreMockRecorder) AddChatMessage(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddChatMessage", reflect.TypeOf((*MockStore)(nil).AddChatMessage), arg0, arg1)
-}
-
 // AddUserPasswordReset mocks base method.
 func (m *MockStore) AddUserPasswordReset(arg0 context.Context, arg1 db.AddUserPasswordResetParams) (db.UserPasswordReset, error) {
 	m.ctrl.T.Helper()
@@ -502,20 +487,6 @@ func (mr *MockStoreMockRecorder) CreateWorldTx(arg0, arg1 interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorldTx", reflect.TypeOf((*MockStore)(nil).CreateWorldTx), arg0, arg1)
 }
 
-// DeleteChatMessage mocks base method.
-func (m *MockStore) DeleteChatMessage(arg0 context.Context, arg1 int64) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteChatMessage", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteChatMessage indicates an expected call of DeleteChatMessage.
-func (mr *MockStoreMockRecorder) DeleteChatMessage(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteChatMessage", reflect.TypeOf((*MockStore)(nil).DeleteChatMessage), arg0, arg1)
-}
-
 // DeleteEntity mocks base method.
 func (m *MockStore) DeleteEntity(arg0 context.Context, arg1 int32) error {
 	m.ctrl.T.Helper()
@@ -935,36 +906,6 @@ func (m *MockStore) GetAverageUserEvaluationsByType(arg0 context.Context, arg1 d
 func (mr *MockStoreMockRecorder) GetAverageUserEvaluationsByType(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAverageUserEvaluationsByType", reflect.TypeOf((*MockStore)(nil).GetAverageUserEvaluationsByType), arg0, arg1)
-}
-
-// GetChatMessage mocks base method.
-func (m *MockStore) GetChatMessage(arg0 context.Context, arg1 int64) (db.GetChatMessageRow, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetChatMessage", arg0, arg1)
-	ret0, _ := ret[0].(db.GetChatMessageRow)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetChatMessage indicates an expected call of GetChatMessage.
-func (mr *MockStoreMockRecorder) GetChatMessage(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetChatMessage", reflect.TypeOf((*MockStore)(nil).GetChatMessage), arg0, arg1)
-}
-
-// GetChatMessages mocks base method.
-func (m *MockStore) GetChatMessages(arg0 context.Context, arg1 db.GetChatMessagesParams) ([]db.GetChatMessagesRow, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetChatMessages", arg0, arg1)
-	ret0, _ := ret[0].([]db.GetChatMessagesRow)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetChatMessages indicates an expected call of GetChatMessages.
-func (mr *MockStoreMockRecorder) GetChatMessages(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetChatMessages", reflect.TypeOf((*MockStore)(nil).GetChatMessages), arg0, arg1)
 }
 
 // GetEntities mocks base method.

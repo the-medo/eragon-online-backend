@@ -12,7 +12,6 @@ import (
 )
 
 type Querier interface {
-	AddChatMessage(ctx context.Context, arg AddChatMessageParams) (Chat, error)
 	AddUserPasswordReset(ctx context.Context, arg AddUserPasswordResetParams) (UserPasswordReset, error)
 	AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error)
 	CreateEntity(ctx context.Context, arg CreateEntityParams) (Entity, error)
@@ -42,7 +41,6 @@ type Querier interface {
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
 	CreateWorld(ctx context.Context, arg CreateWorldParams) (World, error)
-	DeleteChatMessage(ctx context.Context, id int64) error
 	DeleteEntity(ctx context.Context, id int32) error
 	DeleteEntityGroup(ctx context.Context, id int32) error
 	DeleteEntityGroupContent(ctx context.Context, id int32) error
@@ -73,8 +71,6 @@ type Querier interface {
 	DeleteWorld(ctx context.Context, worldID int32) error
 	EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
-	GetChatMessage(ctx context.Context, id int64) (GetChatMessageRow, error)
-	GetChatMessages(ctx context.Context, arg GetChatMessagesParams) ([]GetChatMessagesRow, error)
 	GetEntities(ctx context.Context, arg GetEntitiesParams) (ViewEntity, error)
 	GetEntitiesByIDs(ctx context.Context, entityIds []int32) ([]ViewEntity, error)
 	GetEntityByID(ctx context.Context, id int32) (ViewEntity, error)

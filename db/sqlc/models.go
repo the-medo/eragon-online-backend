@@ -252,36 +252,7 @@ func (ns NullPinShape) Value() (driver.Value, error) {
 }
 
 type Character struct {
-	ID             int32         `json:"id"`
-	UserID         int32         `json:"user_id"`
-	WorldID        int32         `json:"world_id"`
-	RaceID         int32         `json:"race_id"`
-	ImgID          sql.NullInt32 `json:"img_id"`
-	Name           string        `json:"name"`
-	Level          int32         `json:"level"`
-	Experience     int32         `json:"experience"`
-	SkillPoints    int32         `json:"skill_points"`
-	PropertyPoints int32         `json:"property_points"`
-	CreatedAt      time.Time     `json:"created_at"`
-}
-
-type CharacterProperty struct {
-	CharacterID int32 `json:"character_id"`
-	PropertyID  int32 `json:"property_id"`
-	Value       int32 `json:"value"`
-}
-
-type CharacterSkill struct {
-	CharacterID int32 `json:"character_id"`
-	SkillID     int32 `json:"skill_id"`
-	SkillLevel  int32 `json:"skill_level"`
-}
-
-type Chat struct {
-	ID        int64     `json:"id"`
-	UserID    int32     `json:"user_id"`
-	Text      string    `json:"text"`
-	CreatedAt time.Time `json:"created_at"`
+	ID int32 `json:"id"`
 }
 
 type Entity struct {
@@ -516,29 +487,8 @@ type PostHistory struct {
 	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
 }
 
-type Property struct {
-	ID      int32  `json:"id"`
-	WorldID int32  `json:"world_id"`
-	Name    string `json:"name"`
-}
-
 type Quest struct {
 	ID int32 `json:"id"`
-}
-
-type Race struct {
-	ID         int32         `json:"id"`
-	WorldID    int32         `json:"world_id"`
-	Name       string        `json:"name"`
-	ImgID      sql.NullInt32 `json:"img_id"`
-	IsPlayable bool          `json:"is_playable"`
-}
-
-type RaceProperty struct {
-	RaceID     int32 `json:"race_id"`
-	PropertyID int32 `json:"property_id"`
-	MinValue   int32 `json:"min_value"`
-	MaxValue   int32 `json:"max_value"`
 }
 
 type Role struct {
@@ -557,33 +507,6 @@ type Session struct {
 	IsBlocked    bool      `json:"is_blocked"`
 	CreatedAt    time.Time `json:"created_at"`
 	ExpiredAt    time.Time `json:"expired_at"`
-}
-
-type Skill struct {
-	ID       int32         `json:"id"`
-	WorldID  int32         `json:"world_id"`
-	ImgID    sql.NullInt32 `json:"img_id"`
-	Name     string        `json:"name"`
-	MaxLevel int32         `json:"max_level"`
-}
-
-type SkillRequirement struct {
-	ID      int32         `json:"id"`
-	SkillID int32         `json:"skill_id"`
-	Level   sql.NullInt32 `json:"level"`
-	RaceID  sql.NullInt32 `json:"race_id"`
-}
-
-type SkillRequirementProperty struct {
-	SkillRequirementID int32 `json:"skill_requirement_id"`
-	PropertyID         int32 `json:"property_id"`
-	Value              int32 `json:"value"`
-}
-
-type SkillRequirementSkill struct {
-	SkillRequirementID int32 `json:"skill_requirement_id"`
-	SkillID            int32 `json:"skill_id"`
-	Level              int32 `json:"level"`
 }
 
 type System struct {

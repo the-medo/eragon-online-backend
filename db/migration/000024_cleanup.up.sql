@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS chat;
+DROP TABLE IF EXISTS character_skills;
+DROP TABLE IF EXISTS skill_requirement_properties;
+DROP TABLE IF EXISTS skill_requirement_skills;
+DROP TABLE IF EXISTS skill_requirements;
+DROP TABLE IF EXISTS skills;
+DROP TABLE IF EXISTS character_properties;
+ALTER TABLE characters DROP COLUMN user_id, DROP COLUMN world_id, DROP COLUMN race_id, DROP COLUMN img_id, DROP COLUMN name, DROP COLUMN level, DROP COLUMN experience, DROP COLUMN skill_points, DROP COLUMN property_points, DROP COLUMN created_at;
+DROP TABLE IF EXISTS race_properties;
+DROP TABLE IF EXISTS properties;
+DROP TABLE IF EXISTS races;
