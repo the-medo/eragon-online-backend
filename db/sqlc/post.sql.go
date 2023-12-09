@@ -503,7 +503,7 @@ SET
     is_private = COALESCE($5, is_private),
     last_updated_user_id = $6,
     last_updated_at = now(),
-    thumbnail_img_id = COALESCE($7, thumbnail_img_id)
+    thumbnail_img_id = CASE WHEN $7 = 0 THEN NULL ELSE COALESCE($7, thumbnail_img_id) END
 WHERE
     posts.id = $8
 RETURNING id, user_id, title, description, content, created_at, deleted_at, last_updated_at, last_updated_user_id, is_draft, is_private, thumbnail_img_id
@@ -516,7 +516,7 @@ type UpdatePostParams struct {
 	IsDraft           sql.NullBool   `json:"is_draft"`
 	IsPrivate         sql.NullBool   `json:"is_private"`
 	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
-	ThumbnailImgID    sql.NullInt32  `json:"thumbnail_img_id"`
+	ThumbnailImgID    interface{}    `json:"thumbnail_img_id"`
 	PostID            int32          `json:"post_id"`
 }
 

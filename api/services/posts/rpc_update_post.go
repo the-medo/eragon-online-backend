@@ -94,7 +94,7 @@ func validateUpdatePostRequest(req *pb.UpdatePostRequest) (violations []*errdeta
 	}
 
 	if req.ImageThumbnailId != nil {
-		if err := validator.ValidateImageId(req.GetImageThumbnailId()); err != nil {
+		if err := validator.ValidateNullableImageId(req.GetImageThumbnailId()); err != nil {
 			violations = append(violations, e.FieldViolation("image_thumbnail_id", err))
 		}
 	}

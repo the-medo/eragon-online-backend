@@ -10,7 +10,7 @@ func ValidateInt(value int32, minValue int32, maxValueArgs ...int32) error {
 	}
 
 	if value < minValue {
-		return fmt.Errorf("must be higher than %d", minValue)
+		return fmt.Errorf("must be higher or equal than %d", minValue)
 	}
 
 	if value > maxValue && len(maxValueArgs) > 0 {

@@ -60,7 +60,7 @@ SET
     is_private = COALESCE(sqlc.narg(is_private), is_private),
     last_updated_user_id = sqlc.arg(last_updated_user_id),
     last_updated_at = now(),
-    thumbnail_img_id = COALESCE(sqlc.narg(thumbnail_img_id), thumbnail_img_id)
+    thumbnail_img_id = CASE WHEN sqlc.narg(thumbnail_img_id) = 0 THEN NULL ELSE COALESCE(sqlc.narg(thumbnail_img_id), thumbnail_img_id) END
 WHERE
     posts.id = sqlc.arg(post_id)
 RETURNING *;
