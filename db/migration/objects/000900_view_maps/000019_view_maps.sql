@@ -9,6 +9,6 @@ SELECT
     e.tags as tags
 FROM
     maps m
-        LEFT JOIN images i ON m.thumbnail_image_id = i.id
-        LEFT JOIN view_entities e ON e.map_id = m.id
+    LEFT JOIN images i ON m.thumbnail_image_id = i.id
+    LEFT JOIN view_entities e ON e.map_id = m.id
 ;

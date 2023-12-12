@@ -9,5 +9,5 @@ SELECT
     vm.tags
 FROM
     worlds w
-        JOIN view_modules vm ON w.id = vm.world_id
+    JOIN view_modules vm ON w.id = vm.world_id
 ;

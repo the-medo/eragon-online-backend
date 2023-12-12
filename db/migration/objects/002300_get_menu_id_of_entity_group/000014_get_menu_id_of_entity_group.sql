@@ -24,3 +24,4 @@ BEGIN
         SELECT * FROM entity_group_hierarchy egh2 WHERE egh2.entity_group_id = _entity_group_id;
 END;
 $$;
+alter function get_menu_id_of_entity_group(integer) owner to root;

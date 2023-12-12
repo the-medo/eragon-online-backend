@@ -1,4 +1,3 @@
-
 CREATE OR REPLACE PROCEDURE delete_map(p_map_id INT)
     LANGUAGE plpgsql
 AS $$

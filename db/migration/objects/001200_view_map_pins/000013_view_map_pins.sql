@@ -8,6 +8,6 @@ SELECT
     i.url as location_thumbnail_image_url
 FROM
     map_pins mp
-        LEFT JOIN locations l ON mp.location_id = l.id
-        LEFT JOIN images i ON l.thumbnail_image_id = i.id
+    LEFT JOIN locations l ON mp.location_id = l.id
+    LEFT JOIN images i ON l.thumbnail_image_id = i.id
 ;
