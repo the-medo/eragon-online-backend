@@ -44,6 +44,29 @@ func (m *Migrator) GetObjectList() (*[]DbObject, error) {
 	return &dbObjects, nil
 }
 
+func (m *Migrator) GetObjectsForStep(step int) (*[]DbObject, error) {
+	entries, err := os.ReadDir(m.config.DbObjectPath)
+	if err != nil {
+		return nil, err
+	}
+
+	orderDirEntries(entries)
+
+	dbObjects := make([]DbObject, 0, len(entries))
+	for _, entry := range entries {
+		if entry.IsDir() {
+			dbObject, err := parseDir(entry, m.config)
+			if err != nil {
+				return nil, err
+			}
+
+			dbObjects = append(dbObjects, *dbObject)
+		}
+	}
+
+	return &dbObjects, nil
+}
+
 func parseDir(dir os.DirEntry, config *Config) (*DbObject, error) {
 	splitEntry := strings.Split(dir.Name(), "_")
 	if config.PriorityLpad == 0 {
