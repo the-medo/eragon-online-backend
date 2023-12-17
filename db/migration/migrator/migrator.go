@@ -27,12 +27,12 @@ const (
 )
 
 type Migrator struct {
-	migrate *migrate.Migrate
-	config  *Config
+	Migrate *migrate.Migrate
+	Config  *Config
 }
 
 func (m *Migrator) GetObjectList() ([]*DbObject, error) {
-	entries, err := os.ReadDir(m.config.DbObjectPath)
+	entries, err := os.ReadDir(m.Config.DbObjectPath)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (m *Migrator) GetObjectList() ([]*DbObject, error) {
 	dbObjects := make([]*DbObject, 0, len(entries))
 	for _, entry := range entries {
 		if entry.IsDir() {
-			dbObject, err := parseDir(entry, m.config)
+			dbObject, err := parseDir(entry, m.Config)
 			if err != nil {
 				return nil, err
 			}
@@ -85,17 +85,16 @@ func (m *Migrator) GetObjectsForStep(step int, upOrDown Direction) (result []*Db
 	return
 }
 
-func (m *Migrator) CreateObjectsForStep(step int) error {
+func (m *Migrator) CreateObjectsForStep(step int, direction Direction) error {
 	fmt.Println("========= Starting step ", step, " =========")
 
-	objectVersions, err := m.GetObjectsForStep(step, DirectionDown)
+	objectVersions, err := m.GetObjectsForStep(step, direction)
 	if err != nil {
 		return err
 	}
 
 	for _, ov := range objectVersions {
 		path := m.GetDbObjectVersionPath(ov)
-		fmt.Println(ov.DbObject.Name, " version: ", ov.Version, "; Filename: ", path)
 		err = m.RunFile(path)
 		if err != nil {
 			return err
@@ -107,7 +106,7 @@ func (m *Migrator) CreateObjectsForStep(step int) error {
 }
 
 func (m *Migrator) CreateObjectsFile() error {
-	filename := m.config.DbObjectPath + "/" + m.config.CreateObjectsFilename
+	filename := m.Config.DbObjectPath + "/" + m.Config.CreateObjectsFilename
 
 	version, err := m.GetHighestAvailableVersion()
 	if err != nil {
@@ -143,7 +142,7 @@ func (m *Migrator) CreateObjectsFile() error {
 }
 
 func (m *Migrator) DropObjects() error {
-	return m.RunFile(m.config.DbObjectPath + "/" + m.config.DropObjectsFilename)
+	return m.RunFile(m.Config.DbObjectPath + "/" + m.Config.DropObjectsFilename)
 }
 
 func (m *Migrator) RunFile(path string) error {
@@ -152,7 +151,7 @@ func (m *Migrator) RunFile(path string) error {
 		return err
 	}
 
-	_, err = m.config.DB.Exec(string(sqlFileContents))
+	_, err = m.Config.DB.Exec(string(sqlFileContents))
 	if err != nil {
 		return err
 	}
@@ -163,14 +162,14 @@ func (m *Migrator) RunFile(path string) error {
 }
 
 func (m *Migrator) GetDbObjectVersionPath(dov *DbObjectVersion) string {
-	folder := m.config.DbObjectPath
-	objectFolder := LPAD(dov.DbObject.Priority, m.config.PriorityLpad) + "_" + dov.DbObject.Name
-	filename := LPAD(dov.Version, m.config.VersionLpad) + "_" + dov.DbObject.Name + ".sql"
+	folder := m.Config.DbObjectPath
+	objectFolder := LPAD(dov.DbObject.Priority, m.Config.PriorityLpad) + "_" + dov.DbObject.Name
+	filename := LPAD(dov.Version, m.Config.VersionLpad) + "_" + dov.DbObject.Name + ".sql"
 	return folder + "/" + objectFolder + "/" + filename
 }
 
 func (m *Migrator) GetHighestAvailableVersion() (int, error) {
-	entries, err := os.ReadDir(m.config.MigrationFilesPath)
+	entries, err := os.ReadDir(m.Config.MigrationFilesPath)
 	if err != nil {
 		return 0, err
 	}
@@ -195,6 +194,50 @@ func (m *Migrator) GetHighestAvailableVersion() (int, error) {
 	}
 
 	return highestAvailableVersion, nil
+}
+
+func (m *Migrator) RunStep(step int, direction Direction) (int, error) {
+	stepIncrease := 1
+	if direction == DirectionDown {
+		stepIncrease = -1
+	}
+
+	cv, dirty, _ := m.Migrate.Version()
+	currentVersion := int(cv)
+	if dirty {
+		return currentVersion, errors.New("migration failed, database in dirty state")
+	} else if currentVersion+stepIncrease != step {
+		return currentVersion, errors.New(fmt.Sprintf("currentVersion vs step mismatch: current version %d ; new version: %d; change: %d ", currentVersion, step, stepIncrease))
+	}
+
+	// Execute script before migration
+	err := m.DropObjects()
+	if err != nil {
+		return currentVersion, err
+	}
+
+	// Run step
+	err = m.Migrate.Steps(stepIncrease)
+	if errors.Is(err, migrate.ErrNoChange) {
+		fmt.Println("No migration to run!")
+		err = m.CreateObjectsForStep(step, direction)
+		if err != nil {
+			return currentVersion, err
+		}
+		return currentVersion + stepIncrease, nil
+	} else if err != nil {
+		return currentVersion, err
+	}
+
+	// Execute script after migration
+	cv, dirty, _ = m.Migrate.Version()
+	currentVersion = int(cv)
+	err = m.CreateObjectsForStep(step, direction)
+	if err != nil {
+		return currentVersion, err
+	}
+
+	return currentVersion + stepIncrease, nil
 }
 
 func parseDir(entry os.DirEntry, config *Config) (*DbObject, error) {
@@ -256,18 +299,18 @@ func orderDirEntries(entries []os.DirEntry) {
 
 func New(migratorConfig *Config, migrateInstance *migrate.Migrate) (*Migrator, error) {
 	return &Migrator{
-		migrate: migrateInstance,
-		config:  migratorConfig,
+		Migrate: migrateInstance,
+		Config:  migratorConfig,
 	}, nil
 }
 
 //
 //import (
 //	"fmt"
-//	"github.com/golang-migrate/migrate/v4"
-//	database "github.com/golang-migrate/migrate/v4/database"
-//	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-//	_ "github.com/golang-migrate/migrate/v4/source/file"
+//	"github.com/golang-Migrate/Migrate/v4"
+//	database "github.com/golang-Migrate/Migrate/v4/database"
+//	_ "github.com/golang-Migrate/Migrate/v4/database/postgres"
+//	_ "github.com/golang-Migrate/Migrate/v4/source/file"
 //)
 //
 //func runBeforeMigrationScripts(db database.Driver, version uint) {
@@ -281,13 +324,13 @@ func New(migratorConfig *Config, migrateInstance *migrate.Migrate) (*Migrator, e
 //}
 //
 //func runDBMigration(migrationURL string, dbSource string) {
-//	m, err := migrate.New(migrationURL, dbSource)
+//	m, err := Migrate.New(migrationURL, dbSource)
 //	if err != nil {
-//		log.Fatal().Err(err).Msg("Cannot create new migrate instance.")
+//		log.Fatal().Err(err).Msg("Cannot create new Migrate instance.")
 //		return
 //	}
 //
-//	steps := 1 // Number of steps you'd like to migrate at a time
+//	steps := 1 // Number of steps you'd like to Migrate at a time
 //	currentVersion, dirty, _ := m.Version()
 //
 //	for {
@@ -301,7 +344,7 @@ func New(migratorConfig *Config, migrateInstance *migrate.Migrate) (*Migrator, e
 //		// Migrate steps forward
 //		err := m.Steps(steps)
 //
-//		if err == migrate.ErrNoChange {
+//		if err == Migrate.ErrNoChange {
 //			log.Info().Msg("No migrations left to apply.")
 //			break
 //		} else if err != nil {
