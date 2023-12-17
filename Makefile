@@ -34,6 +34,7 @@ migratedown1:
 	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
 
 sqlc-generate:
+	go run migrator.go --sumfile
 	docker run --rm -v "$(CURDIR):/src" -w /src kjconroy/sqlc generate
 
 test:

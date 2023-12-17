@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"flag"
 	"fmt"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
@@ -28,14 +29,28 @@ func main() {
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 	}
 
-	runMigrator(config.MigrationURL, config.MigrationObjectsURL, config.DBSource)
+	createObjectFile := flag.Bool("sumfile", false, "Merge newest versions into single file ")
+	flag.Parse()
+
+	mg := getMigratorInstance(config.MigrationURL, config.MigrationObjectsURL, config.DBSource, config.MigrationCreateObjectsFilename, config.MigrationDropObjectsFilename)
+
+	fmt.Println(mg)
+
+	if *createObjectFile {
+		err = mg.CreateObjectsFile()
+		if err != nil {
+			log.Fatal().Err(err).Msg("Creating sumfile failed! ")
+		}
+	}
+
+	fmt.Println(*createObjectFile)
 
 }
 
-func runMigrator(migrationURL string, migrationObjectsURL string, dbSource string) {
+func getMigratorInstance(migrationURL string, migrationObjectsURL string, dbSource string, createObjectsFilename string, dropObjectsFilename string) *migrator.Migrator {
 	db, err := sql.Open("postgres", dbSource)
 	if err != nil {
-		//log.Fatal(err)
+		log.Fatal().Err(err).Msg("Cannot connect! ")
 	}
 
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
@@ -43,36 +58,34 @@ func runMigrator(migrationURL string, migrationObjectsURL string, dbSource strin
 		migrationURL,
 		"talebound", driver)
 	if err != nil {
-		//log.Fatal(err)
+		log.Fatal().Err(err).Msg("Cannot create new migrate instance! ")
 	}
-
-	//migration, err := migrate.New(migrationURL, dbSource)
-	//if err != nil {
-	//	log.Fatal().Err(err).Msg("Cannot create new migrate instance: ")
-	//	return
-	//}
 
 	path := strings.TrimPrefix(migrationObjectsURL, "file://")
 	log.Info().Msgf("Path: %s", path)
 
 	mg, err := migrator.New(&migrator.Config{
-		DB:           db,
-		DbObjectPath: path,
+		DB:                    db,
+		DbObjectPath:          path,
+		MigrationFilesPath:    strings.TrimPrefix(migrationURL, "file://"),
+		CreateObjectsFilename: createObjectsFilename,
+		DropObjectsFilename:   dropObjectsFilename,
 	}, migration)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot create new mg instance! ")
-		return
+		return nil
 	}
 
-	fmt.Println(mg.RunFile("db/migration/objects/migrations_drop_objects.sql"))
-	fmt.Println(mg.GetObjectList())
-	fmt.Println("==============")
-	objectVersions, err := mg.GetObjectsForStep(25, migrator.DirectionDown)
-	for _, ov := range objectVersions {
-		path := mg.GetDbObjectVersionPath(ov)
-		fmt.Println(ov.DbObject.Name, " => ", ov.Version, "; ", path)
-		fmt.Println(mg.RunFile(path))
-		fmt.Println("==============")
-	}
+	return mg
+}
+
+func runMigrator() {
+
+	//fmt.Println(mg.GetHighestAvailableVersion())
+	//
+	//err = mg.CreateObjectsFile()
+	//if err != nil {
+	//	fmt.Println("OOOPS")
+	//}
 
 }

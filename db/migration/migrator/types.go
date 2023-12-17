@@ -7,10 +7,13 @@ import (
 )
 
 type Config struct {
-	DB           *sql.DB
-	DbObjectPath string
-	PriorityLpad int
-	VersionLpad  int
+	DB                    *sql.DB
+	PriorityLpad          int
+	VersionLpad           int
+	MigrationFilesPath    string
+	DbObjectPath          string
+	CreateObjectsFilename string
+	DropObjectsFilename   string
 }
 
 type DbObject struct {
