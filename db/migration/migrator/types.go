@@ -1,11 +1,13 @@
 package migrator
 
 import (
+	"database/sql"
 	"fmt"
 	"strings"
 )
 
 type Config struct {
+	DB           *sql.DB
 	DbObjectPath string
 	PriorityLpad int
 	VersionLpad  int
@@ -15,6 +17,11 @@ type DbObject struct {
 	Name     string
 	Priority int
 	Versions []int
+}
+
+type DbObjectVersion struct {
+	DbObject *DbObject
+	Version  int
 }
 
 func (o *DbObject) FileNameForStep(step int, config *Config) string {

@@ -1,8 +1,10 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/lib/pq"
@@ -31,16 +33,30 @@ func main() {
 }
 
 func runMigrator(migrationURL string, migrationObjectsURL string, dbSource string) {
-	migration, err := migrate.New(migrationURL, dbSource)
+	db, err := sql.Open("postgres", dbSource)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Cannot create new migrate instance: ")
-		return
+		//log.Fatal(err)
 	}
+
+	driver, err := postgres.WithInstance(db, &postgres.Config{})
+	migration, err := migrate.NewWithDatabaseInstance(
+		migrationURL,
+		"talebound", driver)
+	if err != nil {
+		//log.Fatal(err)
+	}
+
+	//migration, err := migrate.New(migrationURL, dbSource)
+	//if err != nil {
+	//	log.Fatal().Err(err).Msg("Cannot create new migrate instance: ")
+	//	return
+	//}
 
 	path := strings.TrimPrefix(migrationObjectsURL, "file://")
 	log.Info().Msgf("Path: %s", path)
 
 	mg, err := migrator.New(&migrator.Config{
+		DB:           db,
 		DbObjectPath: path,
 	}, migration)
 	if err != nil {
@@ -48,6 +64,15 @@ func runMigrator(migrationURL string, migrationObjectsURL string, dbSource strin
 		return
 	}
 
+	fmt.Println(mg.RunFile("db/migration/objects/migrations_drop_objects.sql"))
 	fmt.Println(mg.GetObjectList())
+	fmt.Println("==============")
+	objectVersions, err := mg.GetObjectsForStep(25, migrator.DirectionDown)
+	for _, ov := range objectVersions {
+		path := mg.GetDbObjectVersionPath(ov)
+		fmt.Println(ov.DbObject.Name, " => ", ov.Version, "; ", path)
+		fmt.Println(mg.RunFile(path))
+		fmt.Println("==============")
+	}
 
 }

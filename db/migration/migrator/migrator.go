@@ -2,6 +2,7 @@ package migrator
 
 import (
 	"errors"
+	"fmt"
 	"github.com/golang-migrate/migrate/v4"
 	"os"
 	"path/filepath"
@@ -16,12 +17,19 @@ var (
 	ErrInvalidPriority         = errors.New("priority should be a number")
 )
 
+type Direction string
+
+const (
+	DirectionUp   Direction = "up"
+	DirectionDown Direction = "down"
+)
+
 type Migrator struct {
 	migrate *migrate.Migrate
 	config  *Config
 }
 
-func (m *Migrator) GetObjectList() (*[]DbObject, error) {
+func (m *Migrator) GetObjectList() ([]*DbObject, error) {
 	entries, err := os.ReadDir(m.config.DbObjectPath)
 	if err != nil {
 		return nil, err
@@ -29,7 +37,7 @@ func (m *Migrator) GetObjectList() (*[]DbObject, error) {
 
 	orderDirEntries(entries)
 
-	dbObjects := make([]DbObject, 0, len(entries))
+	dbObjects := make([]*DbObject, 0, len(entries))
 	for _, entry := range entries {
 		if entry.IsDir() {
 			dbObject, err := parseDir(entry, m.config)
@@ -37,34 +45,65 @@ func (m *Migrator) GetObjectList() (*[]DbObject, error) {
 				return nil, err
 			}
 
-			dbObjects = append(dbObjects, *dbObject)
+			dbObjects = append(dbObjects, dbObject)
 		}
 	}
 
-	return &dbObjects, nil
+	return dbObjects, nil
 }
 
-func (m *Migrator) GetObjectsForStep(step int) (*[]DbObject, error) {
-	entries, err := os.ReadDir(m.config.DbObjectPath)
+func (m *Migrator) GetObjectsForStep(step int, upOrDown Direction) (result []*DbObjectVersion, err error) {
+	entries, err := m.GetObjectList()
 	if err != nil {
 		return nil, err
 	}
 
-	orderDirEntries(entries)
+	//result := make([]*DbObjectVersion, 0, len(*entries))
 
-	dbObjects := make([]DbObject, 0, len(entries))
-	for _, entry := range entries {
-		if entry.IsDir() {
-			dbObject, err := parseDir(entry, m.config)
-			if err != nil {
-				return nil, err
+	for _, dbObject := range entries {
+		fmt.Print(dbObject.Name, ":")
+		correctVersion := 0
+		for _, version := range dbObject.Versions {
+			if version > correctVersion && ((upOrDown == DirectionUp && step >= version) || (upOrDown == DirectionDown && step > version)) {
+				correctVersion = version
+			} else {
+				break
 			}
-
-			dbObjects = append(dbObjects, *dbObject)
 		}
+		if correctVersion > 0 {
+			result = append(result, &DbObjectVersion{
+				DbObject: dbObject,
+				Version:  correctVersion,
+			})
+
+		}
+		fmt.Println(correctVersion)
 	}
 
-	return &dbObjects, nil
+	return
+}
+
+func (m *Migrator) GetDbObjectVersionPath(dov *DbObjectVersion) string {
+	folder := m.config.DbObjectPath
+	objectFolder := LPAD(dov.DbObject.Priority, m.config.PriorityLpad) + "_" + dov.DbObject.Name
+	filename := LPAD(dov.Version, m.config.VersionLpad) + "_" + dov.DbObject.Name + ".sql"
+	return folder + "/" + objectFolder + "/" + filename
+}
+
+func (m *Migrator) RunFile(path string) error {
+	sqlFileContents, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	_, err = m.config.DB.Exec(string(sqlFileContents))
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Success!")
+
+	return nil
 }
 
 func parseDir(dir os.DirEntry, config *Config) (*DbObject, error) {
