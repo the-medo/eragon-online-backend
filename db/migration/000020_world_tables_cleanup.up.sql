@@ -53,11 +53,6 @@ UPDATE modules
     WHERE module_menus.module_id = modules.id
 ;
 
-DROP VIEW view_connections_world_posts;
-DROP VIEW view_connections_menus;
-DROP FUNCTION get_worlds(boolean, integer[], varchar, varchar, int, int);
-DROP VIEW view_worlds;
-
 DROP TABLE world_menu;
 DROP TABLE world_images;
 DROP TABLE world_maps;

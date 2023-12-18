@@ -1,5 +1,3 @@
-DROP VIEW view_module_admins;
-
 CREATE TABLE "world_admins" (
     "world_id" int NOT NULL,
     "user_id" int NOT NULL,
