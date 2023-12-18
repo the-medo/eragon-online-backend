@@ -66,7 +66,6 @@ DROP TABLE world_posts;
 DROP TABLE world_map_pin_type_groups;
 DROP TABLE world_activity;
 
-
 CREATE TABLE "module_admins" (
     "module_id" int NOT NULL,
     "user_id" int NOT NULL,
