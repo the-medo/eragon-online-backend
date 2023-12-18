@@ -1,4 +1,3 @@
-
 CREATE VIEW view_connections_posts AS
 SELECT
     e.module_id as module_id,
@@ -27,12 +26,10 @@ UNION ALL
 SELECT
     m.id,
     description_post_id,
-    'worlds.id',
-    w.id
+    'modules.id',
+    m.id
 FROM
-    worlds w
-    JOIN modules m ON m.world_id = w.id AND m.module_type = 'world'
-WHERE description_post_id IS NOT NULL
+    modules m
 
 UNION ALL
 
