@@ -55,18 +55,6 @@ ALTER TABLE "module_tags" ADD FOREIGN KEY ("module_id") REFERENCES "modules" ("i
 
 ALTER TABLE "module_tags" ADD FOREIGN KEY ("tag_id") REFERENCES "module_type_tags_available" ("id");
 
-/*create view view_module_tags_available(id, tag, count) as
-SELECT wta.id,
-       wta.tag,
-       count(wt.world_id)::integer AS count
-FROM world_tags_available wta
-         LEFT JOIN world_tags wt ON wt.tag_id = wta.id
-GROUP BY wta.id;
-
-alter table view_world_tags_available
-    owner to root;
-*/
-
 --this has no "down" migration - unique key should always been on combination of module_id and tag
 ALTER TABLE "module_tags_available" DROP CONSTRAINT IF EXISTS module_tags_available_tag_key;
 
@@ -84,86 +72,7 @@ COMMENT ON TABLE "module_entity_tags_available" IS 'Contains tags, that are poss
 
 COMMENT ON TABLE "entity_tags" IS 'Assignments of module_entity_tags_available to entities';
 
-DROP VIEW view_worlds;
-CREATE VIEW view_worlds AS
-SELECT
-    w.*,
-    i_header.url as image_header,
-    i_thumbnail.url as image_thumbnail,
-    i_avatar.url as image_avatar,
-    tags.tags AS tags,
-    COALESCE(activity.activity_post_count, 0) AS activity_post_count,
-    COALESCE(activity.activity_quest_count, 0) AS activity_quest_count,
-    COALESCE(activity.activity_resource_count, 0) AS activity_resource_count,
-    wm.menu_id as world_menu_id
-FROM
-    worlds w
-        JOIN world_images wi ON w.id = wi.world_id
-        JOIN world_menu wm ON w.id = wm.world_id
-        LEFT JOIN (
-        SELECT
-            wa.world_id,
-            cast(sum(wa.post_count) as integer) AS activity_post_count,
-            cast(sum(wa.quest_count) as integer) AS activity_quest_count,
-            cast(sum(wa.resource_count) as integer) AS activity_resource_count
-        FROM
-            world_activity wa
-        WHERE
-                wa.date >= (now() - interval '30 days')
-        GROUP BY wa.world_id
-    ) activity ON activity.world_id = w.id
-        LEFT JOIN (
-        SELECT
-            m.world_id,
-            cast(array_agg(t.id) as integer[]) AS tags
-        FROM
-            modules m
-            JOIN module_tags mt ON m.id = mt.module_id
-            LEFT JOIN module_type_tags_available t ON t.id = mt.tag_id
-        WHERE world_id IS NOT NULL
-        GROUP BY m.world_id
-    ) tags ON tags.world_id = w.id
-        LEFT JOIN images i_header on wi.header_img_id = i_header.id
-        LEFT JOIN images i_thumbnail on wi.thumbnail_img_id = i_thumbnail.id
-        LEFT JOIN images i_avatar on wi.avatar_img_id = i_avatar.id
-;
-
-DROP VIEW view_world_tags_available;
-CREATE VIEW view_module_type_tags_available AS
-SELECT
-    mtta.*,
-    cast(COUNT(mt.module_id) as integer) as count
-FROM
-    module_type_tags_available mtta
-    LEFT JOIN module_tags mt ON mt.tag_id = mtta.id
-GROUP BY
-    mtta.id
-;
 
 DROP TABLE world_tags;
 DROP TABLE world_tags_available;
 
-
-CREATE OR REPLACE FUNCTION get_worlds(_is_public boolean, _tags integer[], _order_by varchar, _order_direction varchar, _limit int, _offset int)
-    RETURNS SETOF view_worlds AS
-$func$
-BEGIN
-    IF _order_by IS NULL THEN
-        _order_by := 'created_at';
-    END IF;
-
-    IF _order_direction IS NULL OR (_order_direction <> 'ASC' AND _order_direction <> 'DESC') THEN
-        _order_direction := 'DESC';
-    END IF;
-
-    RETURN QUERY EXECUTE format('
-        SELECT * FROM view_worlds
-        WHERE
-            ($1 IS NULL OR public = $1) AND
-            (array_length($2, 1) IS NULL OR tags @> $2)
-        ORDER BY %I ' || _order_direction || '
-        LIMIT $3
-        OFFSET $4', _order_by)
-        USING _is_public, _tags, _limit, _offset;
-END
-$func$  LANGUAGE plpgsql;

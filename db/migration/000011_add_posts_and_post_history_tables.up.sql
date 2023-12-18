@@ -69,30 +69,4 @@ VALUES
     (800, 'User introduction', true, false)
 ;
 
-DROP VIEW IF EXISTS "view_users";
-
-CREATE VIEW view_users AS
-SELECT
-    u.*,
-    i.id as avatar_image_id,
-    i.url as avatar_image_url,
-    i.img_guid as avatar_image_guid,
-    p.deleted_at as introduction_post_deleted_at
-FROM
-    users AS u
-    LEFT JOIN images i ON u.img_id = i.id
-    LEFT JOIN posts p ON u.introduction_post_id = p.id
-;
-
-CREATE VIEW view_posts AS
-SELECT
-    p.*,
-    pt.name as post_type_name,
-    pt.draftable as post_type_draftable,
-    pt.privatable as post_type_privatable
-FROM
-    posts p
-    JOIN post_types pt ON p.post_type_id = pt.id
-;
-
 ALTER TYPE "image_variant" ADD VALUE 'original';
