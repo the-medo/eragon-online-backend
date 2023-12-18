@@ -63,7 +63,6 @@ func (m *Migrator) GetObjectsForStep(step int, upOrDown Direction) (result []*Db
 	//result := make([]*DbObjectVersion, 0, len(*entries))
 
 	for _, dbObject := range entries {
-		fmt.Print(dbObject.Name, ":")
 		correctVersion := 0
 		for _, version := range dbObject.Versions {
 			if version > correctVersion && ((upOrDown == DirectionUp && step >= version) || (upOrDown == DirectionDown && step > version)) {
@@ -79,14 +78,13 @@ func (m *Migrator) GetObjectsForStep(step int, upOrDown Direction) (result []*Db
 			})
 
 		}
-		fmt.Println(correctVersion)
 	}
 
 	return
 }
 
 func (m *Migrator) CreateObjectsForStep(step int, direction Direction) error {
-	fmt.Println("========= Starting step ", step, " =========")
+	fmt.Println(" - Creating DB objects for step ", step, " started")
 
 	objectVersions, err := m.GetObjectsForStep(step, direction)
 	if err != nil {
@@ -94,14 +92,15 @@ func (m *Migrator) CreateObjectsForStep(step int, direction Direction) error {
 	}
 
 	for _, ov := range objectVersions {
+		//fmt.Println("Doing ", ov.DbObject.Name, " version ", ov.Version)
 		path := m.GetDbObjectVersionPath(ov)
 		err = m.RunFile(path)
 		if err != nil {
-			return err
+			return fmt.Errorf("while running file %s [version %d]: %v", ov.DbObject.Name, ov.Version, err)
 		}
 	}
 
-	fmt.Println("========= Step ", step, " finished =========")
+	fmt.Println(" -- Done.")
 	return nil
 }
 
@@ -142,7 +141,13 @@ func (m *Migrator) CreateObjectsFile() error {
 }
 
 func (m *Migrator) DropObjects() error {
-	return m.RunFile(m.Config.DbObjectPath + "/" + m.Config.DropObjectsFilename)
+	fmt.Println(" - Dropping DB objects started")
+	err := m.RunFile(m.Config.DbObjectPath + "/" + m.Config.DropObjectsFilename)
+	if err != nil {
+		return err
+	}
+	fmt.Println(" -- Done.")
+	return nil
 }
 
 func (m *Migrator) RunFile(path string) error {
@@ -155,8 +160,6 @@ func (m *Migrator) RunFile(path string) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("Success!")
 
 	return nil
 }
@@ -196,7 +199,7 @@ func (m *Migrator) GetHighestAvailableVersion() (int, error) {
 	return highestAvailableVersion, nil
 }
 
-func (m *Migrator) RunStep(step int, direction Direction) (int, error) {
+func (m *Migrator) RunStep(direction Direction, drop bool, create bool) (int, error) {
 	stepIncrease := 1
 	if direction == DirectionDown {
 		stepIncrease = -1
@@ -204,27 +207,30 @@ func (m *Migrator) RunStep(step int, direction Direction) (int, error) {
 
 	cv, dirty, _ := m.Migrate.Version()
 	currentVersion := int(cv)
+	finalVersion := currentVersion + stepIncrease
 	if dirty {
+		fmt.Println("Dirty")
 		return currentVersion, errors.New("migration failed, database in dirty state")
-	} else if currentVersion+stepIncrease != step {
-		return currentVersion, errors.New(fmt.Sprintf("currentVersion vs step mismatch: current version %d ; new version: %d; change: %d ", currentVersion, step, stepIncrease))
 	}
 
 	// Execute script before migration
-	err := m.DropObjects()
-	if err != nil {
-		return currentVersion, err
-	}
-
-	// Run step
-	err = m.Migrate.Steps(stepIncrease)
-	if errors.Is(err, migrate.ErrNoChange) {
-		fmt.Println("No migration to run!")
-		err = m.CreateObjectsForStep(step, direction)
+	if drop {
+		err := m.DropObjects()
 		if err != nil {
 			return currentVersion, err
 		}
-		return currentVersion + stepIncrease, nil
+	}
+
+	// Run step
+	fmt.Println("Running step ", finalVersion, currentVersion)
+	err := m.Migrate.Steps(stepIncrease)
+	if errors.Is(err, migrate.ErrNoChange) {
+		fmt.Println("No migration to run!")
+		err = m.CreateObjectsForStep(finalVersion, direction)
+		if err != nil {
+			return currentVersion, err
+		}
+		return currentVersion, nil
 	} else if err != nil {
 		return currentVersion, err
 	}
@@ -232,12 +238,15 @@ func (m *Migrator) RunStep(step int, direction Direction) (int, error) {
 	// Execute script after migration
 	cv, dirty, _ = m.Migrate.Version()
 	currentVersion = int(cv)
-	err = m.CreateObjectsForStep(step, direction)
-	if err != nil {
-		return currentVersion, err
+
+	if create {
+		err = m.CreateObjectsForStep(finalVersion, direction)
+		if err != nil {
+			return currentVersion, err
+		}
 	}
 
-	return currentVersion + stepIncrease, nil
+	return currentVersion, nil
 }
 
 func parseDir(entry os.DirEntry, config *Config) (*DbObject, error) {

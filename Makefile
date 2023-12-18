@@ -22,16 +22,16 @@ dropdb:
 	docker exec -it postgres15 dropdb talebound
 
 migrateup:
-	migrate -path db/migration -database "$(DB_URL)" -verbose up
+	go run migrator.go --up
 
 migrateup1:
-	migrate -path db/migration -database "$(DB_URL)" -verbose up 1
+	go run migrator.go --up --step=1
 
 migratedown:
-	migrate -path db/migration -database "$(DB_URL)" -verbose down
+	go run migrator.go --down
 
 migratedown1:
-	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
+	go run migrator.go --down --step=1
 
 sqlc-generate:
 	go run migrator.go --sumfile

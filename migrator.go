@@ -32,23 +32,48 @@ func main() {
 
 	mg := getMigratorInstance(config.MigrationURL, config.MigrationObjectsURL, config.DBSource, config.MigrationCreateObjectsFilename, config.MigrationDropObjectsFilename)
 
-	createObjectFile := flag.Bool("sumfile", false, "merge newest versions into single file ")
+	sumfile := flag.Bool("sumfile", false, "merge newest versions into single file ")
 	migrateUp := flag.Bool("up", false, "migrate files up ")
-	migrateDown := flag.Bool("down", false, "migrate files down - \"step\" parameter must be provided.")
-	step := flag.Int("step", 1, "how much steps should be migrated? If not provided, all ")
+	migrateDown := flag.Bool("down", false, "migrate files down")
+	step := flag.Int("step", 0, "number of migration steps... if 0 or not provided, runs all migrations ")
 	flag.Parse()
 
-	if *createObjectFile {
+	// ============== Create sumfile
+	if *sumfile {
 		err = mg.CreateObjectsFile()
 		if err != nil {
 			log.Fatal().Err(err).Msg("Creating sumfile failed! ")
 		}
+		return
 	}
 
+	// =============== Run migrations
+	//fmt.Println("Parsed:", *sumfile, *migrateUp, *migrateDown, *step)
 	if *migrateUp && *migrateDown {
-		log.Fatal().Err(err).Msg("Can not do migrate UP and DOWN at the same time! ")
+		log.Fatal().Err(nil).Msg("Can not do migrate UP and DOWN at the same time! ")
 	} else if *migrateDown && step == nil {
-		log.Fatal().Err(err).Msg("Step argument must be provided when doing down migration! ")
+		log.Fatal().Err(nil).Msg("Step argument must be provided when doing down migration! ")
+	} else if *step < 0 {
+		log.Fatal().Err(nil).Msg("Step cannot be negative!")
+	}
+
+	// === Down migration check - running all down migrations is often not wanted
+	if *migrateDown {
+		*step *= -1
+		if *step == 0 {
+			fmt.Println("You set the 'step' parameter to 0, this resets all migrations. Do you want to continue? (y/n)")
+
+			var response string
+			_, err := fmt.Scanln(&response)
+			if err != nil {
+				fmt.Println("Please enter 'y' or 'n'")
+			}
+
+			if strings.ToLower(response) != "y" {
+				fmt.Println("Operation cancelled")
+				return
+			}
+		}
 	}
 
 	cv, dirty, _ := mg.Migrate.Version()
@@ -62,20 +87,28 @@ func main() {
 		log.Fatal().Err(err).Msg("unable to get highest available version")
 	}
 
-	if finalVersion > highestVersion {
+	if finalVersion > highestVersion || *step == 0 && *migrateUp {
 		finalVersion = highestVersion
 	} else if finalVersion < 0 {
 		finalVersion = 0
 	}
 
+	drop := true
 	for currentVersion != finalVersion {
-		fmt.Println("Current version: ", currentVersion)
+		//fmt.Println("Current version: ", currentVersion, "Final version: ", finalVersion)
 		if *migrateUp {
-			currentVersion, err = mg.RunStep(currentVersion, migrator.DirectionUp)
+			currentVersion, err = mg.RunStep(migrator.DirectionUp, drop, currentVersion+1 == finalVersion)
+
 		} else if *migrateDown {
-			currentVersion, err = mg.RunStep(currentVersion, migrator.DirectionDown)
+			currentVersion, err = mg.RunStep(migrator.DirectionDown, drop, currentVersion-1 == finalVersion)
 		}
+
+		drop = false
+
 		if err != nil {
+			if err != nil {
+				log.Fatal().Err(err).Msg("step failed")
+			}
 			break
 		}
 	}
