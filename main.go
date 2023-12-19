@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
@@ -16,8 +15,8 @@ import (
 	"github.com/rs/cors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/the-medo/golang-migrate-objects/migrator"
 	"github.com/the-medo/talebound-backend/api/srv"
-	"github.com/the-medo/talebound-backend/db/migration/migrator"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	_ "github.com/the-medo/talebound-backend/doc/statik"
 	"github.com/the-medo/talebound-backend/mail"
@@ -74,12 +73,12 @@ func main() {
 
 func runDBMigration(migrationURL string, dbSource string, migrationObjectsURL string, createObjectsFilename string, dropObjectsFilename string) {
 
-	db, err := sql.Open("postgres", dbSource)
+	dbConn, err := sql.Open("postgres", dbSource)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot connect! ")
 	}
 
-	driver, err := postgres.WithInstance(db, &postgres.Config{})
+	driver, err := postgres.WithInstance(dbConn, &postgres.Config{})
 	migration, err := migrate.NewWithDatabaseInstance(
 		migrationURL,
 		"talebound", driver)
@@ -91,7 +90,7 @@ func runDBMigration(migrationURL string, dbSource string, migrationObjectsURL st
 	log.Info().Msgf("Path: %s", path)
 
 	mg, err := migrator.New(&migrator.Config{
-		DB:                    db,
+		DB:                    dbConn,
 		DbObjectPath:          path,
 		MigrationFilesPath:    strings.TrimPrefix(migrationURL, "file://"),
 		CreateObjectsFilename: createObjectsFilename,
@@ -102,24 +101,9 @@ func runDBMigration(migrationURL string, dbSource string, migrationObjectsURL st
 		return
 	}
 
-	cv, dirty, _ := mg.Migrate.Version()
-	currentVersion := int(cv)
-	if dirty {
-		log.Fatal().Err(errors.New("starting from dirty database")).Msg("Fix errors manually")
-	}
-	highestVersion, err := mg.GetHighestAvailableVersion()
-
-	drop := true
-	for currentVersion != highestVersion {
-		currentVersion, err = mg.RunStep(migrator.DirectionUp, drop, currentVersion+1 == highestVersion)
-		drop = false
-
-		if err != nil {
-			if err != nil {
-				log.Fatal().Err(err).Msg("step failed")
-			}
-			break
-		}
+	err = mg.RunAll()
+	if err != nil {
+		return
 	}
 
 	log.Info().Msg("Migration successful")
