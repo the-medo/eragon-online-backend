@@ -1,3 +1,7 @@
+-include app.env
+-include app.env.local
+export
+
 DB_URL=postgresql://root:secret@localhost:5432/talebound?sslmode=disable
 PROTO_SERVICES := $(shell find proto/services -mindepth 1 -maxdepth 1 -type d | sort | awk -F/ '{print "proto/services/" $$NF "/*.proto"}' | tr '\n' ' ')
 
@@ -22,18 +26,19 @@ dropdb:
 	docker exec -it postgres15 dropdb talebound
 
 migrateup:
-	migrate -path db/migration -database "$(DB_URL)" -verbose up
+	go run github.com/the-medo/golang-migrate-objects -mpath=$(MIGRATION_URL) -obj_path=$(MIGRATION_OBJECTS_URL) -db_source=$(DB_SOURCE) -co_filename=$(MIGRATION_CREATE_OBJECTS_FILENAME) -do_filename=$(MIGRATION_DROP_OBJECTS_FILENAME) -up
 
 migrateup1:
-	migrate -path db/migration -database "$(DB_URL)" -verbose up 1
+	go run github.com/the-medo/golang-migrate-objects -mpath=$(MIGRATION_URL) -obj_path=$(MIGRATION_OBJECTS_URL) -db_source=$(DB_SOURCE) -co_filename=$(MIGRATION_CREATE_OBJECTS_FILENAME) -do_filename=$(MIGRATION_DROP_OBJECTS_FILENAME) -up -step=1
 
 migratedown:
-	migrate -path db/migration -database "$(DB_URL)" -verbose down
+	go run github.com/the-medo/golang-migrate-objects -mpath=$(MIGRATION_URL) -obj_path=$(MIGRATION_OBJECTS_URL) -db_source=$(DB_SOURCE) -co_filename=$(MIGRATION_CREATE_OBJECTS_FILENAME) -do_filename=$(MIGRATION_DROP_OBJECTS_FILENAME) -down
 
 migratedown1:
-	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
+	go run github.com/the-medo/golang-migrate-objects -mpath=$(MIGRATION_URL) -obj_path=$(MIGRATION_OBJECTS_URL) -db_source=$(DB_SOURCE) -co_filename=$(MIGRATION_CREATE_OBJECTS_FILENAME) -do_filename=$(MIGRATION_DROP_OBJECTS_FILENAME) -down -step=1
 
 sqlc-generate:
+	go run github.com/the-medo/golang-migrate-objects -mpath=$(MIGRATION_URL) -obj_path=$(MIGRATION_OBJECTS_URL) -db_source=$(DB_SOURCE) -co_filename=$(MIGRATION_CREATE_OBJECTS_FILENAME) -do_filename=$(MIGRATION_DROP_OBJECTS_FILENAME) -sumfile
 	docker run --rm -v "$(CURDIR):/src" -w /src kjconroy/sqlc generate
 
 test:

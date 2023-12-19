@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -14,6 +15,7 @@ import (
 	"github.com/rs/cors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/the-medo/golang-migrate-objects/migrator"
 	"github.com/the-medo/talebound-backend/api/srv"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	_ "github.com/the-medo/talebound-backend/doc/statik"
@@ -27,6 +29,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -53,7 +56,7 @@ func main() {
 		log.Fatal().Err(err).Msg("Cannot connect to db:")
 	}
 
-	runDBMigration(config.MigrationURL, config.DBSource)
+	runDBMigration(config.MigrationURL, config.DBSource, config.MigrationObjectsURL, config.MigrationCreateObjectsFilename, config.MigrationDropObjectsFilename)
 
 	store := db.NewStore(conn)
 
@@ -68,16 +71,39 @@ func main() {
 	runGrpcServer(config, store, taskDistributor)
 }
 
-func runDBMigration(migrationURL string, dbSource string) {
-	migration, err := migrate.New(migrationURL, dbSource)
+func runDBMigration(migrationURL string, dbSource string, migrationObjectsURL string, createObjectsFilename string, dropObjectsFilename string) {
 
+	dbConn, err := sql.Open("postgres", dbSource)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Cannot create new migrate instance: ")
+		log.Fatal().Err(err).Msg("Cannot connect! ")
+	}
+
+	driver, err := postgres.WithInstance(dbConn, &postgres.Config{})
+	migration, err := migrate.NewWithDatabaseInstance(
+		migrationURL,
+		"talebound", driver)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Cannot create new migrate instance! ")
+	}
+
+	path := strings.TrimPrefix(migrationObjectsURL, "file://")
+	log.Info().Msgf("Path: %s", path)
+
+	mg, err := migrator.New(&migrator.Config{
+		DB:                    dbConn,
+		DbObjectPath:          path,
+		MigrationFilesPath:    strings.TrimPrefix(migrationURL, "file://"),
+		CreateObjectsFilename: createObjectsFilename,
+		DropObjectsFilename:   dropObjectsFilename,
+	}, migration)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Cannot create new mg instance! ")
 		return
 	}
 
-	if err = migration.Up(); err != nil && err != migrate.ErrNoChange {
-		log.Fatal().Err(err).Msg("failed to run migrate up:")
+	err = mg.RunAll()
+	if err != nil {
+		return
 	}
 
 	log.Info().Msg("Migration successful")

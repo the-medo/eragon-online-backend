@@ -1,6 +1,3 @@
-DROP VIEW IF EXISTS view_users;
-DROP VIEW IF EXISTS view_worlds;
-
 DROP TABLE "world_stats_history";
 DROP TABLE "world_stats";
 DROP TABLE "world_images";

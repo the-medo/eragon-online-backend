@@ -1,18 +1,3 @@
-DROP VIEW view_menu_item_posts;
-DROP PROCEDURE IF EXISTS move_menu_item_post(INT, INT, INT);
-DROP VIEW view_world_tags_available;
-
-DROP VIEW view_posts;
-CREATE VIEW view_posts AS
-SELECT
-    p.*,
-    pt.name as post_type_name,
-    pt.draftable as post_type_draftable,
-    pt.privatable as post_type_privatable
-FROM
-    posts p
-    JOIN post_types pt ON p.post_type_id = pt.id
-;
 
 -- Alter the `post_history` table
 ALTER TABLE "post_history"
@@ -23,10 +8,6 @@ ALTER TABLE "post_history"
 ALTER TABLE "posts"
     DROP COLUMN "description",
     DROP COLUMN "thumbnail_img_id";
-
-DROP VIEW IF EXISTS view_menus;
-DROP PROCEDURE IF EXISTS move_menu_item(INT, INT);
-DROP PROCEDURE IF EXISTS move_group_up(INT);
 
 DELETE FROM "image_types" WHERE id IN (1200, 1300);
 
@@ -71,9 +52,6 @@ DROP TYPE image_variant;
 ALTER TYPE image_variant_new RENAME TO image_variant;
 
 -- =======================================================================
-
-
-DROP VIEW IF EXISTS view_worlds;
 
 -- Drop `menu_item_posts` table
 DROP TABLE menu_item_posts;
@@ -132,18 +110,3 @@ CREATE INDEX ON "world_stats" USING BTREE ("final_activity");
 CREATE INDEX ON "world_stats_history" USING BTREE ("created_at");
 ALTER TABLE "world_stats" ADD FOREIGN KEY ("world_id") REFERENCES "worlds" ("id");
 ALTER TABLE "world_stats_history" ADD FOREIGN KEY ("world_id") REFERENCES "worlds" ("id");
-
-CREATE VIEW view_worlds AS
-SELECT
-    w.*,
-    i_avatar.url as image_avatar,
-    i_header.url as image_header,
-    ws.final_content_rating as rating,
-    ws.final_activity as activity
-FROM
-    worlds w
-    JOIN world_images wi ON w.id = wi.world_id
-    JOIN world_stats ws ON w.id = wi.world_id
-    LEFT JOIN images i_avatar on wi.image_avatar = i_avatar.id
-    LEFT JOIN images i_header on wi.image_header = i_header.id
-;

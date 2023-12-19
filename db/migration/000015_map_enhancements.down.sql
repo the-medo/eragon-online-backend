@@ -54,4 +54,3 @@ ALTER TABLE "map_pin_types" ADD FOREIGN KEY ("map_id") REFERENCES "maps" ("id");
 DROP TABLE world_map_pin_type_groups;
 DROP TABLE map_pin_type_group;
 
-DROP PROCEDURE IF EXISTS update_map_layer_is_main(INT);
