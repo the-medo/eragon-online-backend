@@ -42,6 +42,18 @@ func (server *ServiceModules) UpdateModuleAdmin(ctx context.Context, req *pb.Upd
 			String: req.GetMotivationalLetter(),
 			Valid:  req.MotivationalLetter != nil,
 		},
+		AllowedEntityTypesPresent: req.GetAllowedEntityTypes() != nil,
+		AllowedEntityTypes:        make([]db.EntityType, 0),
+		AllowedMenu: sql.NullBool{
+			Bool:  req.GetSuperAdmin(),
+			Valid: req.SuperAdmin != nil,
+		},
+	}
+
+	if req.GetAllowedEntityTypes() != nil {
+		for _, et := range req.AllowedEntityTypes.EntityTypes {
+			arg.AllowedEntityTypes = append(arg.AllowedEntityTypes, converters.ConvertEntityTypeToDB(et))
+		}
 	}
 
 	moduleAdmin, err := server.Store.UpdateModuleAdmin(ctx, arg)

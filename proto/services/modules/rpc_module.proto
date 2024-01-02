@@ -2,6 +2,7 @@ syntax = "proto3";
 
 import "services/modules/module.proto";
 import "services/modules/module_type.proto";
+import "services/entities/entity.proto";
 
 package pb;
 
@@ -36,12 +37,18 @@ message CreateModuleAdminRequest {
   string motivationalLetter = 2;
 }
 
+message EntityTypeList {
+  repeated EntityType entityTypes = 1;
+}
+
 message UpdateModuleAdminRequest {
   int32 moduleId = 1;
   int32 userId = 2;
   optional bool superAdmin = 3;
   optional int32 approved = 4;
   optional string motivationalLetter = 5;
+  optional EntityTypeList allowedEntityTypes = 6;
+  optional bool allowedMenu = 7;
 }
 
 message DeleteModuleAdminRequest {

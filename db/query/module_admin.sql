@@ -17,7 +17,10 @@ SET
     super_admin = COALESCE(sqlc.narg(super_admin), super_admin),
     approved = COALESCE(sqlc.narg(approved), approved),
     motivational_letter = COALESCE(sqlc.narg(motivational_letter), motivational_letter),
-    allowed_entity_types = COALESCE(sqlc.narg(allowed_entity_types), allowed_entity_types),
+    allowed_entity_types = CASE
+        WHEN sqlc.narg(allowed_entity_types_present) = true
+            THEN COALESCE(sqlc.narg(allowed_entity_types), allowed_entity_types)
+        ELSE allowed_entity_types END,
     allowed_menu = COALESCE(sqlc.narg(allowed_menu), allowed_menu)
 WHERE
     module_id = sqlc.arg(module_id) AND user_id = sqlc.arg(user_id)
