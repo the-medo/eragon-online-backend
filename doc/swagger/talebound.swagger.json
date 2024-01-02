@@ -2581,6 +2581,12 @@
                 },
                 "motivationalLetter": {
                   "type": "string"
+                },
+                "allowedEntityTypes": {
+                  "$ref": "#/definitions/pbEntityTypeList"
+                },
+                "allowedMenu": {
+                  "type": "boolean"
                 }
               }
             }
@@ -4648,6 +4654,17 @@
         "ENTITY_TYPE_IMAGE"
       ],
       "default": "ENTITY_TYPE_UNKNOWN"
+    },
+    "pbEntityTypeList": {
+      "type": "object",
+      "properties": {
+        "entityTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbEntityType"
+          }
+        }
+      }
     },
     "pbEvaluation": {
       "type": "object",

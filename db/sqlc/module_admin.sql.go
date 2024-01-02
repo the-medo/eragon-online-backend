@@ -320,21 +320,25 @@ SET
     super_admin = COALESCE($1, super_admin),
     approved = COALESCE($2, approved),
     motivational_letter = COALESCE($3, motivational_letter),
-    allowed_entity_types = COALESCE($4, allowed_entity_types),
-    allowed_menu = COALESCE($5, allowed_menu)
+    allowed_entity_types = CASE
+        WHEN $4 = true
+            THEN COALESCE($5, allowed_entity_types)
+        ELSE allowed_entity_types END,
+    allowed_menu = COALESCE($6, allowed_menu)
 WHERE
-    module_id = $6 AND user_id = $7
+    module_id = $7 AND user_id = $8
 RETURNING module_id, user_id, created_at, super_admin, approved, motivational_letter, allowed_entity_types, allowed_menu
 `
 
 type UpdateModuleAdminParams struct {
-	SuperAdmin         sql.NullBool   `json:"super_admin"`
-	Approved           sql.NullInt32  `json:"approved"`
-	MotivationalLetter sql.NullString `json:"motivational_letter"`
-	AllowedEntityTypes []EntityType   `json:"allowed_entity_types"`
-	AllowedMenu        sql.NullBool   `json:"allowed_menu"`
-	ModuleID           int32          `json:"module_id"`
-	UserID             int32          `json:"user_id"`
+	SuperAdmin                sql.NullBool   `json:"super_admin"`
+	Approved                  sql.NullInt32  `json:"approved"`
+	MotivationalLetter        sql.NullString `json:"motivational_letter"`
+	AllowedEntityTypesPresent interface{}    `json:"allowed_entity_types_present"`
+	AllowedEntityTypes        []EntityType   `json:"allowed_entity_types"`
+	AllowedMenu               sql.NullBool   `json:"allowed_menu"`
+	ModuleID                  int32          `json:"module_id"`
+	UserID                    int32          `json:"user_id"`
 }
 
 func (q *Queries) UpdateModuleAdmin(ctx context.Context, arg UpdateModuleAdminParams) (ModuleAdmin, error) {
@@ -342,6 +346,7 @@ func (q *Queries) UpdateModuleAdmin(ctx context.Context, arg UpdateModuleAdminPa
 		arg.SuperAdmin,
 		arg.Approved,
 		arg.MotivationalLetter,
+		arg.AllowedEntityTypesPresent,
 		pq.Array(arg.AllowedEntityTypes),
 		arg.AllowedMenu,
 		arg.ModuleID,
