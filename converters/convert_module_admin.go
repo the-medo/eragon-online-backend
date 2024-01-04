@@ -15,6 +15,12 @@ func ConvertModuleAdmin(dbModuleAdmin db.ModuleAdmin, dbUser db.User) *pb.Module
 		SuperAdmin:         dbModuleAdmin.SuperAdmin,
 		Approved:           dbModuleAdmin.Approved,
 		MotivationalLetter: dbModuleAdmin.MotivationalLetter,
+		AllowedEntityTypes: make([]pb.EntityType, len(dbModuleAdmin.AllowedEntityTypes)),
+		AllowedMenu:        dbModuleAdmin.AllowedMenu,
+	}
+
+	for i, et := range dbModuleAdmin.AllowedEntityTypes {
+		pbModuleAdmin.AllowedEntityTypes[i] = ConvertEntityTypeToPB(et)
 	}
 
 	return pbModuleAdmin
