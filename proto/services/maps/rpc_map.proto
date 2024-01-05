@@ -3,7 +3,6 @@ syntax = "proto3";
 package pb;
 
 import "services/maps/map.proto";
-import "services/modules/module.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -13,11 +12,16 @@ message GetMapByIdRequest {
 }
 
 message GetMapsRequest {
-  ModuleDefinition module = 1;
+  optional int32 moduleId = 1;
+  repeated int32 tags = 2;
+  optional string orderBy = 3;
+  optional int32 limit = 4;
+  optional int32 offset = 5;
 }
 
 message GetMapsResponse {
-  repeated ViewMap maps = 1;
+  repeated Map maps = 1;
+  int32 totalCount = 2;
 }
 
 message CreateMapRequest {

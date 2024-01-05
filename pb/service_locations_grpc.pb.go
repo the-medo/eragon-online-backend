@@ -35,7 +35,7 @@ const (
 type LocationsClient interface {
 	GetLocationById(ctx context.Context, in *GetLocationByIdRequest, opts ...grpc.CallOption) (*Location, error)
 	UpdateLocation(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*Location, error)
-	GetLocations(ctx context.Context, in *ModuleDefinition, opts ...grpc.CallOption) (*GetLocationsResponse, error)
+	GetLocations(ctx context.Context, in *GetLocationsRequest, opts ...grpc.CallOption) (*GetLocationsResponse, error)
 	CreateLocation(ctx context.Context, in *CreateLocationRequest, opts ...grpc.CallOption) (*Location, error)
 	DeleteLocation(ctx context.Context, in *DeleteLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteBulkLocation(ctx context.Context, in *DeleteBulkLocationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -68,7 +68,7 @@ func (c *locationsClient) UpdateLocation(ctx context.Context, in *UpdateLocation
 	return out, nil
 }
 
-func (c *locationsClient) GetLocations(ctx context.Context, in *ModuleDefinition, opts ...grpc.CallOption) (*GetLocationsResponse, error) {
+func (c *locationsClient) GetLocations(ctx context.Context, in *GetLocationsRequest, opts ...grpc.CallOption) (*GetLocationsResponse, error) {
 	out := new(GetLocationsResponse)
 	err := c.cc.Invoke(ctx, Locations_GetLocations_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -119,7 +119,7 @@ func (c *locationsClient) CreateLocationPost(ctx context.Context, in *CreateLoca
 type LocationsServer interface {
 	GetLocationById(context.Context, *GetLocationByIdRequest) (*Location, error)
 	UpdateLocation(context.Context, *UpdateLocationRequest) (*Location, error)
-	GetLocations(context.Context, *ModuleDefinition) (*GetLocationsResponse, error)
+	GetLocations(context.Context, *GetLocationsRequest) (*GetLocationsResponse, error)
 	CreateLocation(context.Context, *CreateLocationRequest) (*Location, error)
 	DeleteLocation(context.Context, *DeleteLocationRequest) (*emptypb.Empty, error)
 	DeleteBulkLocation(context.Context, *DeleteBulkLocationRequest) (*emptypb.Empty, error)
@@ -137,7 +137,7 @@ func (UnimplementedLocationsServer) GetLocationById(context.Context, *GetLocatio
 func (UnimplementedLocationsServer) UpdateLocation(context.Context, *UpdateLocationRequest) (*Location, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateLocation not implemented")
 }
-func (UnimplementedLocationsServer) GetLocations(context.Context, *ModuleDefinition) (*GetLocationsResponse, error) {
+func (UnimplementedLocationsServer) GetLocations(context.Context, *GetLocationsRequest) (*GetLocationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLocations not implemented")
 }
 func (UnimplementedLocationsServer) CreateLocation(context.Context, *CreateLocationRequest) (*Location, error) {
@@ -202,7 +202,7 @@ func _Locations_UpdateLocation_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _Locations_GetLocations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ModuleDefinition)
+	in := new(GetLocationsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -214,7 +214,7 @@ func _Locations_GetLocations_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: Locations_GetLocations_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LocationsServer).GetLocations(ctx, req.(*ModuleDefinition))
+		return srv.(LocationsServer).GetLocations(ctx, req.(*GetLocationsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

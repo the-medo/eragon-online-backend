@@ -156,7 +156,7 @@ var (
 )
 
 func request_Locations_GetLocations_0(ctx context.Context, marshaler runtime.Marshaler, client LocationsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ModuleDefinition
+	var protoReq GetLocationsRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -172,7 +172,7 @@ func request_Locations_GetLocations_0(ctx context.Context, marshaler runtime.Mar
 }
 
 func local_request_Locations_GetLocations_0(ctx context.Context, marshaler runtime.Marshaler, server LocationsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ModuleDefinition
+	var protoReq GetLocationsRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {

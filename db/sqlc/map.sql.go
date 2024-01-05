@@ -546,24 +546,66 @@ func (q *Queries) GetMapPins(ctx context.Context, mapID int32) ([]ViewMapPin, er
 }
 
 const getMaps = `-- name: GetMaps :many
+WITH cte AS (
+    SELECT
+        id, name, type, description, width, height, thumbnail_image_id, thumbnail_image_url, entity_id, module_id, module_type, module_type_id, tags
+    FROM get_maps( $3::int[], $4, $5, $6, $7, 0, 0)
+)
 SELECT
-    vm.id, vm.name, vm.type, vm.description, vm.width, vm.height, vm.thumbnail_image_id, vm.thumbnail_image_url, vm.entity_id, vm.module_id, vm.module_type, vm.module_type_id, vm.tags
-FROM
-    view_maps vm
-WHERE
-    vm.module_id = $1
+    CAST((SELECT count(*) FROM cte) as integer) as total_count,
+    cte.id, cte.name, cte.type, cte.description, cte.width, cte.height, cte.thumbnail_image_id, cte.thumbnail_image_url, cte.entity_id, cte.module_id, cte.module_type, cte.module_type_id, cte.tags
+FROM cte
+ORDER BY id DESC
+LIMIT $2
+    OFFSET $1
 `
 
-func (q *Queries) GetMaps(ctx context.Context, moduleID sql.NullInt32) ([]ViewMap, error) {
-	rows, err := q.db.QueryContext(ctx, getMaps, moduleID)
+type GetMapsParams struct {
+	PageOffset     int32          `json:"page_offset"`
+	PageLimit      int32          `json:"page_limit"`
+	Tags           []int32        `json:"tags"`
+	ModuleID       sql.NullInt32  `json:"module_id"`
+	ModuleType     NullModuleType `json:"module_type"`
+	OrderBy        sql.NullString `json:"order_by"`
+	OrderDirection sql.NullString `json:"order_direction"`
+}
+
+type GetMapsRow struct {
+	TotalCount        int32          `json:"total_count"`
+	ID                int32          `json:"id"`
+	Name              string         `json:"name"`
+	Type              sql.NullString `json:"type"`
+	Description       sql.NullString `json:"description"`
+	Width             int32          `json:"width"`
+	Height            int32          `json:"height"`
+	ThumbnailImageID  sql.NullInt32  `json:"thumbnail_image_id"`
+	ThumbnailImageUrl sql.NullString `json:"thumbnail_image_url"`
+	EntityID          sql.NullInt32  `json:"entity_id"`
+	ModuleID          sql.NullInt32  `json:"module_id"`
+	ModuleType        NullModuleType `json:"module_type"`
+	ModuleTypeID      sql.NullInt32  `json:"module_type_id"`
+	Tags              []int32        `json:"tags"`
+}
+
+func (q *Queries) GetMaps(ctx context.Context, arg GetMapsParams) ([]GetMapsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getMaps,
+		arg.PageOffset,
+		arg.PageLimit,
+		pq.Array(arg.Tags),
+		arg.ModuleID,
+		arg.ModuleType,
+		arg.OrderBy,
+		arg.OrderDirection,
+	)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []ViewMap{}
+	items := []GetMapsRow{}
 	for rows.Next() {
-		var i ViewMap
+		var i GetMapsRow
 		if err := rows.Scan(
+			&i.TotalCount,
 			&i.ID,
 			&i.Name,
 			&i.Type,

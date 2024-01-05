@@ -70,19 +70,65 @@ func (q *Queries) GetLocationById(ctx context.Context, id int32) (Location, erro
 }
 
 const getLocations = `-- name: GetLocations :many
-SELECT id, name, description, post_id, thumbnail_image_id, thumbnail_image_url, post_title, entity_id, module_id, module_type, module_type_id, tags FROM view_locations
+WITH cte AS (
+    SELECT
+        id, name, description, post_id, thumbnail_image_id, thumbnail_image_url, post_title, entity_id, module_id, module_type, module_type_id, tags
+    FROM get_locations( $3::int[], $4, $5, $6, $7, 0, 0)
+)
+SELECT
+    CAST((SELECT count(*) FROM cte) as integer) as total_count,
+    cte.id, cte.name, cte.description, cte.post_id, cte.thumbnail_image_id, cte.thumbnail_image_url, cte.post_title, cte.entity_id, cte.module_id, cte.module_type, cte.module_type_id, cte.tags
+FROM cte
+ORDER BY id DESC
+LIMIT $2
+    OFFSET $1
 `
 
-func (q *Queries) GetLocations(ctx context.Context) ([]ViewLocation, error) {
-	rows, err := q.db.QueryContext(ctx, getLocations)
+type GetLocationsParams struct {
+	PageOffset     int32          `json:"page_offset"`
+	PageLimit      int32          `json:"page_limit"`
+	Tags           []int32        `json:"tags"`
+	ModuleID       sql.NullInt32  `json:"module_id"`
+	ModuleType     NullModuleType `json:"module_type"`
+	OrderBy        sql.NullString `json:"order_by"`
+	OrderDirection sql.NullString `json:"order_direction"`
+}
+
+type GetLocationsRow struct {
+	TotalCount        int32          `json:"total_count"`
+	ID                int32          `json:"id"`
+	Name              string         `json:"name"`
+	Description       sql.NullString `json:"description"`
+	PostID            sql.NullInt32  `json:"post_id"`
+	ThumbnailImageID  sql.NullInt32  `json:"thumbnail_image_id"`
+	ThumbnailImageUrl sql.NullString `json:"thumbnail_image_url"`
+	PostTitle         sql.NullString `json:"post_title"`
+	EntityID          int32          `json:"entity_id"`
+	ModuleID          int32          `json:"module_id"`
+	ModuleType        NullModuleType `json:"module_type"`
+	ModuleTypeID      int32          `json:"module_type_id"`
+	Tags              []int32        `json:"tags"`
+}
+
+func (q *Queries) GetLocations(ctx context.Context, arg GetLocationsParams) ([]GetLocationsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getLocations,
+		arg.PageOffset,
+		arg.PageLimit,
+		pq.Array(arg.Tags),
+		arg.ModuleID,
+		arg.ModuleType,
+		arg.OrderBy,
+		arg.OrderDirection,
+	)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []ViewLocation{}
+	items := []GetLocationsRow{}
 	for rows.Next() {
-		var i ViewLocation
+		var i GetLocationsRow
 		if err := rows.Scan(
+			&i.TotalCount,
 			&i.ID,
 			&i.Name,
 			&i.Description,

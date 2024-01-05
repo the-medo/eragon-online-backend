@@ -4,13 +4,19 @@ VALUES (sqlc.arg(name), sqlc.narg(type), sqlc.narg(description), sqlc.arg(width)
 RETURNING *;
 
 -- name: GetMaps :many
+WITH cte AS (
+    SELECT
+        *
+    FROM get_maps( sqlc.narg(tags)::int[], sqlc.narg(module_id), sqlc.narg(module_type), sqlc.narg(order_by), sqlc.narg(order_direction), 0, 0)
+)
 SELECT
-    vm.*
-FROM
-    view_maps vm
-WHERE
-    vm.module_id = sqlc.arg(module_id);
-;
+    CAST((SELECT count(*) FROM cte) as integer) as total_count,
+    cte.*
+FROM cte
+ORDER BY id DESC
+LIMIT sqlc.arg(page_limit)
+    OFFSET sqlc.arg(page_offset);
+
 
 -- name: GetMapsByIDs :many
 SELECT * FROM maps WHERE id = ANY(@map_ids::int[]);

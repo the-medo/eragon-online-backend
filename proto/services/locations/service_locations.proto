@@ -36,7 +36,7 @@ service Locations {
     };
   };
 
-  rpc GetLocations(ModuleDefinition) returns (GetLocationsResponse) {
+  rpc GetLocations(GetLocationsRequest) returns (GetLocationsResponse) {
     option (google.api.http) = {
       get: "/locations"
     };

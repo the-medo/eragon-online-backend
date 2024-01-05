@@ -1270,18 +1270,18 @@ func (mr *MockStoreMockRecorder) GetLocationById(arg0, arg1 interface{}) *gomock
 }
 
 // GetLocations mocks base method.
-func (m *MockStore) GetLocations(arg0 context.Context) ([]db.ViewLocation, error) {
+func (m *MockStore) GetLocations(arg0 context.Context, arg1 db.GetLocationsParams) ([]db.GetLocationsRow, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLocations", arg0)
-	ret0, _ := ret[0].([]db.ViewLocation)
+	ret := m.ctrl.Call(m, "GetLocations", arg0, arg1)
+	ret0, _ := ret[0].([]db.GetLocationsRow)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetLocations indicates an expected call of GetLocations.
-func (mr *MockStoreMockRecorder) GetLocations(arg0 interface{}) *gomock.Call {
+func (mr *MockStoreMockRecorder) GetLocations(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLocations", reflect.TypeOf((*MockStore)(nil).GetLocations), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLocations", reflect.TypeOf((*MockStore)(nil).GetLocations), arg0, arg1)
 }
 
 // GetLocationsByIDs mocks base method.
@@ -1450,10 +1450,10 @@ func (mr *MockStoreMockRecorder) GetMapPins(arg0, arg1 interface{}) *gomock.Call
 }
 
 // GetMaps mocks base method.
-func (m *MockStore) GetMaps(arg0 context.Context, arg1 sql.NullInt32) ([]db.ViewMap, error) {
+func (m *MockStore) GetMaps(arg0 context.Context, arg1 db.GetMapsParams) ([]db.GetMapsRow, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMaps", arg0, arg1)
-	ret0, _ := ret[0].([]db.ViewMap)
+	ret0, _ := ret[0].([]db.GetMapsRow)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

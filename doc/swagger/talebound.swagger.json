@@ -845,28 +845,38 @@
         },
         "parameters": [
           {
-            "name": "worldId",
+            "name": "moduleId",
             "in": "query",
             "required": false,
             "type": "integer",
             "format": "int32"
           },
           {
-            "name": "questId",
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
             "in": "query",
             "required": false,
             "type": "integer",
             "format": "int32"
           },
           {
-            "name": "characterId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "systemId",
+            "name": "offset",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -1120,28 +1130,38 @@
         },
         "parameters": [
           {
-            "name": "module.worldId",
+            "name": "moduleId",
             "in": "query",
             "required": false,
             "type": "integer",
             "format": "int32"
           },
           {
-            "name": "module.questId",
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
             "in": "query",
             "required": false,
             "type": "integer",
             "format": "int32"
           },
           {
-            "name": "module.characterId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "module.systemId",
+            "name": "offset",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -4796,8 +4816,12 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbViewLocation"
+            "$ref": "#/definitions/pbLocation"
           }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -4844,8 +4868,12 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/pbViewMap"
+            "$ref": "#/definitions/pbMap"
           }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -5256,27 +5284,6 @@
         },
         "allowedMenu": {
           "type": "boolean"
-        }
-      }
-    },
-    "pbModuleDefinition": {
-      "type": "object",
-      "properties": {
-        "worldId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "questId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "characterId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "systemId": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     },

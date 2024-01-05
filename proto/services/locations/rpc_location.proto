@@ -3,7 +3,6 @@ syntax = "proto3";
 package pb;
 
 import "services/locations/location.proto";
-import "services/modules/module.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
@@ -12,11 +11,16 @@ message GetLocationByIdRequest {
 }
 
 message GetLocationsRequest {
-  ModuleDefinition module = 1;
+  optional int32 moduleId = 1;
+  repeated int32 tags = 2;
+  optional string orderBy = 3;
+  optional int32 limit = 4;
+  optional int32 offset = 5;
 }
 
 message GetLocationsResponse {
-  repeated ViewLocation locations = 1;
+  repeated Location locations = 1;
+  int32 totalCount = 2;
 }
 
 message UpdateLocationRequest {
