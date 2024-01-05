@@ -14,6 +14,8 @@ DROP PROCEDURE IF EXISTS delete_location(p_location_id integer);
 DROP FUNCTION IF EXISTS get_worlds(boolean, integer[], varchar, varchar, int, int);
 DROP FUNCTION IF EXISTS get_posts(_is_private boolean, _is_draft boolean, _tags integer[], _user_id integer, _module_id integer, _module_type module_type, _order_by varchar, _order_direction varchar, _limit int, _offset int);
 DROP FUNCTION IF EXISTS get_images(_tags integer[], _width integer, _height integer, _user_id integer, _module_id integer, _module_type module_type, _order_by varchar, _order_direction varchar, _limit int, _offset int);
+DROP FUNCTION IF EXISTS get_locations(_tags integer[], _module_id integer, _module_type module_type, _order_by varchar, _order_direction varchar, _limit int, _offset int);
+DROP FUNCTION IF EXISTS get_maps(_tags integer[], _module_id integer, _module_type module_type, _order_by varchar, _order_direction varchar, _limit int, _offset int);
 
 DROP VIEW IF EXISTS view_worlds;
 DROP VIEW IF EXISTS view_modules;
