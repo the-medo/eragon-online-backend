@@ -7,7 +7,6 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "services/locations/rpc_location.proto";
 import "services/locations/location.proto";
-import "services/modules/module.proto";
 import "google/protobuf/empty.proto";
 
 

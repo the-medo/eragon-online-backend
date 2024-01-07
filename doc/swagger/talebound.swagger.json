@@ -368,10 +368,10 @@
                   "type": "string"
                 },
                 "style": {
-                  "type": "string"
+                  "$ref": "#/definitions/pbEntityGroupStyle"
                 },
                 "direction": {
-                  "type": "string"
+                  "$ref": "#/definitions/pbEntityGroupDirection"
                 }
               }
             }
@@ -4329,10 +4329,10 @@
           "type": "string"
         },
         "style": {
-          "type": "string"
+          "$ref": "#/definitions/pbEntityGroupStyle"
         },
         "direction": {
-          "type": "string"
+          "$ref": "#/definitions/pbEntityGroupDirection"
         }
       }
     },
@@ -4579,6 +4579,12 @@
         },
         "description": {
           "type": "string"
+        },
+        "style": {
+          "$ref": "#/definitions/pbEntityGroupStyle"
+        },
+        "direction": {
+          "$ref": "#/definitions/pbEntityGroupDirection"
         }
       }
     },
@@ -4606,6 +4612,24 @@
           "format": "int32"
         }
       }
+    },
+    "pbEntityGroupDirection": {
+      "type": "string",
+      "enum": [
+        "ENTITY_GROUP_DIRECTION_UNKNOWN",
+        "ENTITY_GROUP_DIRECTION_VERTICAL",
+        "ENTITY_GROUP_DIRECTION_HORIZONTAL"
+      ],
+      "default": "ENTITY_GROUP_DIRECTION_UNKNOWN"
+    },
+    "pbEntityGroupStyle": {
+      "type": "string",
+      "enum": [
+        "ENTITY_GROUP_STYLE_UNKNOWN",
+        "ENTITY_GROUP_STYLE_FRAMED",
+        "ENTITY_GROUP_STYLE_NOT_FRAMED"
+      ],
+      "default": "ENTITY_GROUP_STYLE_UNKNOWN"
     },
     "pbEntityList": {
       "type": "object",

@@ -37,11 +37,11 @@ func (server *ServiceEntities) CreateEntityGroup(ctx context.Context, request *p
 			Valid:  request.Description != nil,
 		},
 		Style: sql.NullString{
-			String: request.GetStyle(),
+			String: converters.ConvertEntityGroupStyleToDB(request.GetStyle()),
 			Valid:  request.Style != nil,
 		},
 		Direction: sql.NullString{
-			String: request.GetDirection(),
+			String: converters.ConvertEntityGroupDirectionToDB(request.GetDirection()),
 			Valid:  request.Direction != nil,
 		},
 	}
@@ -83,13 +83,13 @@ func validateCreateEntityGroup(req *pb.CreateEntityGroupRequest) (violations []*
 	}
 
 	if req.Style != nil {
-		if err := validator.ValidateEntityGroupStyle(req.GetStyle()); err != nil {
+		if err := validator.ValidateEntityGroupStyle(converters.ConvertEntityGroupStyleToDB(req.GetStyle())); err != nil {
 			violations = append(violations, e.FieldViolation("style", err))
 		}
 	}
 
 	if req.Direction != nil {
-		if err := validator.ValidateEntityGroupDirection(req.GetDirection()); err != nil {
+		if err := validator.ValidateEntityGroupDirection(converters.ConvertEntityGroupDirectionToDB(req.GetDirection())); err != nil {
 			violations = append(violations, e.FieldViolation("direction", err))
 		}
 	}
