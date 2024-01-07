@@ -1,10 +1,5 @@
 syntax = "proto3";
 
-
-import "services/posts/post.proto";
-import "services/maps/map.proto";
-import "services/locations/location.proto";
-import "services/images/image.proto";
 import "services/modules/module_type.proto";
 
 package pb;
@@ -40,14 +35,6 @@ message Entity {
   optional int32 mapId = 5;
   optional int32 locationId = 6;
   optional int32 imageId = 7;
-}
-
-message EntityList {
-  repeated Entity entities = 1;
-  repeated ViewPost posts = 2;
-  repeated ViewMap maps = 3;
-  repeated ViewLocation locations = 4;
-  repeated Image images = 5;
 }
 
 message EntityGroup {

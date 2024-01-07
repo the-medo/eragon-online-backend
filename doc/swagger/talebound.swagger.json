@@ -4535,38 +4535,6 @@
         }
       }
     },
-    "pbEntity": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "moduleId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "type": {
-          "$ref": "#/definitions/pbEntityType"
-        },
-        "postId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "mapId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "locationId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "imageId": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
     "pbEntityGroup": {
       "type": "object",
       "properties": {
@@ -4630,46 +4598,6 @@
         "ENTITY_GROUP_STYLE_NOT_FRAMED"
       ],
       "default": "ENTITY_GROUP_STYLE_UNKNOWN"
-    },
-    "pbEntityList": {
-      "type": "object",
-      "properties": {
-        "entities": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbEntity"
-          }
-        },
-        "posts": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbViewPost"
-          }
-        },
-        "maps": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbViewMap"
-          }
-        },
-        "locations": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbViewLocation"
-          }
-        },
-        "images": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbImage"
-          }
-        }
-      }
     },
     "pbEntityTagAvailable": {
       "type": "object",
@@ -4904,22 +4832,23 @@
     "pbGetMenuItemContentResponse": {
       "type": "object",
       "properties": {
-        "menuItemEntityGroups": {
+        "mainGroupId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "groups": {
           "type": "array",
           "items": {
-            "type": "integer",
-            "format": "int32"
+            "type": "object",
+            "$ref": "#/definitions/pbEntityGroup"
           }
         },
-        "content": {
+        "contents": {
           "type": "array",
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbEntityGroupContent"
           }
-        },
-        "entityList": {
-          "$ref": "#/definitions/pbEntityList"
         }
       }
     },
@@ -5855,112 +5784,6 @@
           "format": "int32"
         },
         "imageId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "moduleId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "moduleType": {
-          "$ref": "#/definitions/pbModuleType"
-        },
-        "moduleTypeId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      }
-    },
-    "pbViewLocation": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "postId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "postTitle": {
-          "type": "string"
-        },
-        "thumbnailImageId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "thumbnailImageUrl": {
-          "type": "string"
-        },
-        "entityId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "moduleId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "moduleType": {
-          "$ref": "#/definitions/pbModuleType"
-        },
-        "moduleTypeId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      }
-    },
-    "pbViewMap": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "width": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "height": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "thumbnailImageId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "thumbnailImageUrl": {
-          "type": "string"
-        },
-        "entityId": {
           "type": "integer",
           "format": "int32"
         },

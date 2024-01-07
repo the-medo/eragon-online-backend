@@ -58,13 +58,13 @@ message GetMenuItemsResponse {
 }
 
 message GetMenuItemContentRequest {
-  int32 menuId = 1;
-  int32 menuItemId = 2;
+    int32 menuId = 1;
+    int32 menuItemId = 2;
 }
 
 message GetMenuItemContentResponse {
-  repeated int32 menuItemEntityGroups = 1;
-  repeated EntityGroupContent content = 2;
-  EntityList entityList = 3;
+    int32 mainGroupId = 1;
+    repeated EntityGroup groups = 2;
+    repeated EntityGroupContent contents = 3;
 }
 

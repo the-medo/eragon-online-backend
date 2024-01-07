@@ -1044,6 +1044,21 @@ func (mr *MockStoreMockRecorder) GetEntityGroupContents(arg0, arg1 interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntityGroupContents", reflect.TypeOf((*MockStore)(nil).GetEntityGroupContents), arg0, arg1)
 }
 
+// GetEntityGroupsByIDs mocks base method.
+func (m *MockStore) GetEntityGroupsByIDs(arg0 context.Context, arg1 []int32) ([]db.EntityGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEntityGroupsByIDs", arg0, arg1)
+	ret0, _ := ret[0].([]db.EntityGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEntityGroupsByIDs indicates an expected call of GetEntityGroupsByIDs.
+func (mr *MockStoreMockRecorder) GetEntityGroupsByIDs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntityGroupsByIDs", reflect.TypeOf((*MockStore)(nil).GetEntityGroupsByIDs), arg0, arg1)
+}
+
 // GetEntityIDsOfGroup mocks base method.
 func (m *MockStore) GetEntityIDsOfGroup(arg0 context.Context, arg1 int32) (db.GetEntityIDsOfGroupRow, error) {
 	m.ctrl.T.Helper()
@@ -1777,6 +1792,21 @@ func (m *MockStore) GetPostsByUserId(arg0 context.Context, arg1 db.GetPostsByUse
 func (mr *MockStoreMockRecorder) GetPostsByUserId(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPostsByUserId", reflect.TypeOf((*MockStore)(nil).GetPostsByUserId), arg0, arg1)
+}
+
+// GetRecursiveEntities mocks base method.
+func (m *MockStore) GetRecursiveEntities(arg0 context.Context, arg1 int32) ([]db.EntityGroupContent, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRecursiveEntities", arg0, arg1)
+	ret0, _ := ret[0].([]db.EntityGroupContent)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRecursiveEntities indicates an expected call of GetRecursiveEntities.
+func (mr *MockStoreMockRecorder) GetRecursiveEntities(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRecursiveEntities", reflect.TypeOf((*MockStore)(nil).GetRecursiveEntities), arg0, arg1)
 }
 
 // GetSession mocks base method.

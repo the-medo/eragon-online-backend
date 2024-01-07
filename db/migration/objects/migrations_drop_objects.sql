@@ -4,6 +4,7 @@ DROP PROCEDURE IF EXISTS move_group_up(p_id integer);
 DROP PROCEDURE IF EXISTS move_entity_group_content(p_id integer, p_target_position integer);
 DROP VIEW IF EXISTS view_connections_posts;
 DROP FUNCTION IF EXISTS get_recursive_entities(_main_entity_group_id integer);
+DROP TYPE IF EXISTS get_recursive_entities_row;
 DROP FUNCTION IF EXISTS get_menu_id_of_entity_group(_entity_group_id integer);
 DROP PROCEDURE IF EXISTS delete_menu_item(_menu_item_id integer);
 DROP PROCEDURE IF EXISTS delete_entity_group_content_and_move(_id integer);

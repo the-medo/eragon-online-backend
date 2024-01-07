@@ -48,3 +48,6 @@ CALL move_menu_item(sqlc.arg(menu_item_id), sqlc.arg(target_position));
 
 -- name: MenuItemMoveGroupUp :exec
 CALL move_group_up(sqlc.arg(menu_item_id));
+
+-- name: GetRecursiveEntities :many
+SELECT * FROM get_recursive_entities(sqlc.arg(entity_group_id));

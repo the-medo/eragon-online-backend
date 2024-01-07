@@ -158,6 +158,39 @@ func (q *Queries) GetMenuItems(ctx context.Context, menuID int32) ([]MenuItem, e
 	return items, nil
 }
 
+const getRecursiveEntities = `-- name: GetRecursiveEntities :many
+SELECT id, entity_group_id, position, content_entity_id, content_entity_group_id FROM get_recursive_entities($1)
+`
+
+func (q *Queries) GetRecursiveEntities(ctx context.Context, entityGroupID int32) ([]EntityGroupContent, error) {
+	rows, err := q.db.QueryContext(ctx, getRecursiveEntities, entityGroupID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []EntityGroupContent{}
+	for rows.Next() {
+		var i EntityGroupContent
+		if err := rows.Scan(
+			&i.ID,
+			&i.EntityGroupID,
+			&i.Position,
+			&i.ContentEntityID,
+			&i.ContentEntityGroupID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const menuItemChangePositions = `-- name: MenuItemChangePositions :exec
 CALL move_menu_item($1, $2)
 `

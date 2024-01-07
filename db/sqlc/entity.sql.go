@@ -434,6 +434,39 @@ func (q *Queries) GetEntityGroupContents(ctx context.Context, entityGroupID int3
 	return items, nil
 }
 
+const getEntityGroupsByIDs = `-- name: GetEntityGroupsByIDs :many
+SELECT id, name, description, style, direction FROM entity_groups WHERE id = ANY($1::int[])
+`
+
+func (q *Queries) GetEntityGroupsByIDs(ctx context.Context, entityGroupIds []int32) ([]EntityGroup, error) {
+	rows, err := q.db.QueryContext(ctx, getEntityGroupsByIDs, pq.Array(entityGroupIds))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []EntityGroup{}
+	for rows.Next() {
+		var i EntityGroup
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Description,
+			&i.Style,
+			&i.Direction,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getEntityIDsOfGroup = `-- name: GetEntityIDsOfGroup :one
 WITH entity_data AS (
     SELECT

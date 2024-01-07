@@ -153,3 +153,6 @@ SELECT * FROM entities WHERE location_id = sqlc.arg(location_id);
 
 -- name: GetEntityByMapId :one
 SELECT * FROM entities WHERE map_id = sqlc.arg(map_id);
+
+-- name: GetEntityGroupsByIDs :many
+SELECT * FROM entity_groups WHERE id = ANY(@entity_group_ids::int[]);
