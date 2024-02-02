@@ -1943,6 +1943,39 @@
         ]
       }
     },
+    "/menus/items/content/{menuItemId}": {
+      "get": {
+        "summary": "Get all entities for menu item",
+        "description": "gets list of entities for menu item - posts, maps, locations,...",
+        "operationId": "Menus_GetMenuItemContent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetMenuItemContentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "menuItemId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Menus"
+        ]
+      }
+    },
     "/menus/{menuId}": {
       "get": {
         "summary": "Get menu by ID ",
@@ -2153,44 +2186,6 @@
       }
     },
     "/menus/{menuId}/items/{menuItemId}": {
-      "get": {
-        "summary": "Get all entities for menu item",
-        "description": "gets list of entities for menu item - posts, maps, locations,...",
-        "operationId": "Menus_GetMenuItemContent",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetMenuItemContentResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "menuId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "menuItemId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Menus"
-        ]
-      },
       "delete": {
         "summary": "Delete menu item",
         "description": "deletes menu item",

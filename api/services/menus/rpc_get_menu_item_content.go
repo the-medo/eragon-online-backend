@@ -93,9 +93,6 @@ func (server *ServiceMenus) GetMenuItemContent(ctx context.Context, req *pb.GetM
 }
 
 func validateGetMenuItemContentRequest(req *pb.GetMenuItemContentRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateMenuId(req.GetMenuId()); err != nil {
-		violations = append(violations, e.FieldViolation("menu_id", err))
-	}
 	if err := validator.ValidateMenuItemId(req.GetMenuItemId()); err != nil {
 		violations = append(violations, e.FieldViolation("menu_item_id", err))
 	}

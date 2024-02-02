@@ -58,8 +58,7 @@ message GetMenuItemsResponse {
 }
 
 message GetMenuItemContentRequest {
-    int32 menuId = 1;
-    int32 menuItemId = 2;
+    int32 menuItemId = 1;
 }
 
 message GetMenuItemContentResponse {

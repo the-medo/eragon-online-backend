@@ -90,7 +90,7 @@ service Menus {
 
   rpc GetMenuItemContent(GetMenuItemContentRequest) returns (GetMenuItemContentResponse) {
     option (google.api.http) = {
-      get: "/menus/{menuId}/items/{menuItemId}"
+      get: "/menus/items/content/{menuItemId}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "gets list of entities for menu item - posts, maps, locations,...";

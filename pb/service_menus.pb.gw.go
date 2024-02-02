@@ -514,16 +514,6 @@ func request_Menus_GetMenuItemContent_0(ctx context.Context, marshaler runtime.M
 		_   = err
 	)
 
-	val, ok = pathParams["menuId"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "menuId")
-	}
-
-	protoReq.MenuId, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "menuId", err)
-	}
-
 	val, ok = pathParams["menuItemId"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "menuItemId")
@@ -549,16 +539,6 @@ func local_request_Menus_GetMenuItemContent_0(ctx context.Context, marshaler run
 		err error
 		_   = err
 	)
-
-	val, ok = pathParams["menuId"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "menuId")
-	}
-
-	protoReq.MenuId, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "menuId", err)
-	}
 
 	val, ok = pathParams["menuItemId"]
 	if !ok {
@@ -764,7 +744,7 @@ func RegisterMenusHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Menus/GetMenuItemContent", runtime.WithHTTPPathPattern("/menus/{menuId}/items/{menuItemId}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Menus/GetMenuItemContent", runtime.WithHTTPPathPattern("/menus/items/content/{menuItemId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -982,7 +962,7 @@ func RegisterMenusHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Menus/GetMenuItemContent", runtime.WithHTTPPathPattern("/menus/{menuId}/items/{menuItemId}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Menus/GetMenuItemContent", runtime.WithHTTPPathPattern("/menus/items/content/{menuItemId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1016,7 +996,7 @@ var (
 
 	pattern_Menus_GetMenuItems_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"menus", "menuId", "items"}, ""))
 
-	pattern_Menus_GetMenuItemContent_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"menus", "menuId", "items", "menuItemId"}, ""))
+	pattern_Menus_GetMenuItemContent_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"menus", "items", "content", "menuItemId"}, ""))
 )
 
 var (
