@@ -101,7 +101,7 @@ VALUES (sqlc.arg(entity_group_id), existing_group_content.position, sqlc.narg(co
 RETURNING *;
 
 -- name: EntityGroupContentChangePositions :exec
-CALL move_entity_group_content(sqlc.arg(id), sqlc.arg(target_position));
+CALL move_entity_group_content(sqlc.arg(id), sqlc.arg(new_entity_group_id), sqlc.arg(new_position));
 
 -- name: GetEntityGroupContentByID :one
 SELECT * FROM entity_group_content WHERE id = sqlc.arg(id);

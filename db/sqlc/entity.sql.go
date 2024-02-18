@@ -137,16 +137,17 @@ func (q *Queries) DeleteEntityGroupContent(ctx context.Context, id int32) error 
 }
 
 const entityGroupContentChangePositions = `-- name: EntityGroupContentChangePositions :exec
-CALL move_entity_group_content($1, $2)
+CALL move_entity_group_content($1, $2, $3)
 `
 
 type EntityGroupContentChangePositionsParams struct {
-	ID             int32 `json:"id"`
-	TargetPosition int32 `json:"target_position"`
+	ID               int32 `json:"id"`
+	NewEntityGroupID int32 `json:"new_entity_group_id"`
+	NewPosition      int32 `json:"new_position"`
 }
 
 func (q *Queries) EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error {
-	_, err := q.db.ExecContext(ctx, entityGroupContentChangePositions, arg.ID, arg.TargetPosition)
+	_, err := q.db.ExecContext(ctx, entityGroupContentChangePositions, arg.ID, arg.NewEntityGroupID, arg.NewPosition)
 	return err
 }
 
