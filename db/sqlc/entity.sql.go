@@ -88,7 +88,7 @@ type CreateEntityGroupContentParams struct {
 	EntityGroupID        int32         `json:"entity_group_id"`
 	ContentEntityGroupID sql.NullInt32 `json:"content_entity_group_id"`
 	ContentEntityID      sql.NullInt32 `json:"content_entity_id"`
-	Position             int32         `json:"position"`
+	Position             sql.NullInt32 `json:"position"`
 }
 
 type CreateEntityGroupContentRow struct {
