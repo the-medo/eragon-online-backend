@@ -92,13 +92,7 @@ CALL delete_entity_group(sqlc.arg(id));
 SELECT COUNT(*) FROM "entity_group_content" WHERE entity_group_id = sqlc.arg(entity_group_id);
 
 -- name: CreateEntityGroupContent :one
-WITH existing_group_content AS (
-    SELECT MAX(position) + 1 as position FROM "entity_group_content" d
-    WHERE d.entity_group_id = sqlc.arg(entity_group_id)
-)
-INSERT INTO entity_group_content (entity_group_id, position, content_entity_id, content_entity_group_id)
-VALUES (sqlc.arg(entity_group_id), existing_group_content.position, sqlc.narg(content_entity_id), sqlc.narg(content_entity_group_id))
-RETURNING *;
+CALL create_entity_group_content(sqlc.arg(entity_group_id), sqlc.narg(content_entity_group_id), sqlc.narg(content_entity_id), sqlc.arg(position));
 
 -- name: EntityGroupContentChangePositions :exec
 CALL move_entity_group_content(sqlc.arg(id), sqlc.arg(new_entity_group_id), sqlc.arg(new_position));

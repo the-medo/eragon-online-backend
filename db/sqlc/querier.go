@@ -16,7 +16,7 @@ type Querier interface {
 	AddUserRole(ctx context.Context, arg AddUserRoleParams) (UserRole, error)
 	CreateEntity(ctx context.Context, arg CreateEntityParams) (Entity, error)
 	CreateEntityGroup(ctx context.Context, arg CreateEntityGroupParams) (EntityGroup, error)
-	CreateEntityGroupContent(ctx context.Context, arg CreateEntityGroupContentParams) (EntityGroupContent, error)
+	CreateEntityGroupContent(ctx context.Context, arg CreateEntityGroupContentParams) (CreateEntityGroupContentRow, error)
 	CreateEntityTag(ctx context.Context, arg CreateEntityTagParams) (EntityTag, error)
 	CreateEvaluationVote(ctx context.Context, arg CreateEvaluationVoteParams) (EvaluationVote, error)
 	CreateImage(ctx context.Context, arg CreateImageParams) (Image, error)

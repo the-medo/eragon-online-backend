@@ -81,31 +81,28 @@ func (q *Queries) CreateEntityGroup(ctx context.Context, arg CreateEntityGroupPa
 }
 
 const createEntityGroupContent = `-- name: CreateEntityGroupContent :one
-WITH existing_group_content AS (
-    SELECT MAX(position) + 1 as position FROM "entity_group_content" d
-    WHERE d.entity_group_id = $1
-)
-INSERT INTO entity_group_content (entity_group_id, position, content_entity_id, content_entity_group_id)
-VALUES ($1, existing_group_content.position, $2, $3)
-RETURNING id, entity_group_id, position, content_entity_id, content_entity_group_id
+CALL create_entity_group_content($1, $2, $3, $4)
 `
 
 type CreateEntityGroupContentParams struct {
 	EntityGroupID        int32         `json:"entity_group_id"`
-	ContentEntityID      sql.NullInt32 `json:"content_entity_id"`
 	ContentEntityGroupID sql.NullInt32 `json:"content_entity_group_id"`
+	ContentEntityID      sql.NullInt32 `json:"content_entity_id"`
+	Position             int32         `json:"position"`
 }
 
-func (q *Queries) CreateEntityGroupContent(ctx context.Context, arg CreateEntityGroupContentParams) (EntityGroupContent, error) {
-	row := q.db.QueryRowContext(ctx, createEntityGroupContent, arg.EntityGroupID, arg.ContentEntityID, arg.ContentEntityGroupID)
-	var i EntityGroupContent
-	err := row.Scan(
-		&i.ID,
-		&i.EntityGroupID,
-		&i.Position,
-		&i.ContentEntityID,
-		&i.ContentEntityGroupID,
+type CreateEntityGroupContentRow struct {
+}
+
+func (q *Queries) CreateEntityGroupContent(ctx context.Context, arg CreateEntityGroupContentParams) (CreateEntityGroupContentRow, error) {
+	row := q.db.QueryRowContext(ctx, createEntityGroupContent,
+		arg.EntityGroupID,
+		arg.ContentEntityGroupID,
+		arg.ContentEntityID,
+		arg.Position,
 	)
+	var i CreateEntityGroupContentRow
+	err := row.Scan()
 	return i, err
 }
 
