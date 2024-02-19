@@ -14,8 +14,14 @@ message CreateEntityGroupRequest {
   int32 parentEntityGroupId = 1;
   optional string name = 2;
   optional string description = 3;
-  optional EntityGroupStyle style = 4;
-  optional EntityGroupDirection direction = 5;
+  optional int32 position = 4;
+  optional EntityGroupStyle style = 5;
+  optional EntityGroupDirection direction = 6;
+}
+
+message CreateEntityGroupResponse {
+  EntityGroup entityGroup = 1;
+  EntityGroupContent entityGroupContent = 2;
 }
 
 message UpdateEntityGroupRequest {
@@ -35,6 +41,7 @@ message CreateEntityGroupContentRequest {
   int32 entityGroupId = 1;
   optional int32 contentEntityId = 2;
   optional int32 contentEntityGroupId = 3;
+  optional int32 position = 4;
 }
 
 message UpdateEntityGroupContentRequest {

@@ -23,7 +23,7 @@ service Entities {
     };
   };
 
-  rpc CreateEntityGroup(CreateEntityGroupRequest) returns (EntityGroup) {
+  rpc CreateEntityGroup(CreateEntityGroupRequest) returns (CreateEntityGroupResponse) {
     option (google.api.http) = {
       post: "/entities/groups/create"
       body: "*"

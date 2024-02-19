@@ -34,7 +34,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EntitiesClient interface {
 	GetEntityById(ctx context.Context, in *GetEntityByIdRequest, opts ...grpc.CallOption) (*ViewEntity, error)
-	CreateEntityGroup(ctx context.Context, in *CreateEntityGroupRequest, opts ...grpc.CallOption) (*EntityGroup, error)
+	CreateEntityGroup(ctx context.Context, in *CreateEntityGroupRequest, opts ...grpc.CallOption) (*CreateEntityGroupResponse, error)
 	UpdateEntityGroup(ctx context.Context, in *UpdateEntityGroupRequest, opts ...grpc.CallOption) (*EntityGroup, error)
 	DeleteEntityGroup(ctx context.Context, in *DeleteEntityGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CreateEntityGroupContent(ctx context.Context, in *CreateEntityGroupContentRequest, opts ...grpc.CallOption) (*EntityGroupContent, error)
@@ -59,8 +59,8 @@ func (c *entitiesClient) GetEntityById(ctx context.Context, in *GetEntityByIdReq
 	return out, nil
 }
 
-func (c *entitiesClient) CreateEntityGroup(ctx context.Context, in *CreateEntityGroupRequest, opts ...grpc.CallOption) (*EntityGroup, error) {
-	out := new(EntityGroup)
+func (c *entitiesClient) CreateEntityGroup(ctx context.Context, in *CreateEntityGroupRequest, opts ...grpc.CallOption) (*CreateEntityGroupResponse, error) {
+	out := new(CreateEntityGroupResponse)
 	err := c.cc.Invoke(ctx, Entities_CreateEntityGroup_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -118,7 +118,7 @@ func (c *entitiesClient) DeleteEntityGroupContent(ctx context.Context, in *Delet
 // for forward compatibility
 type EntitiesServer interface {
 	GetEntityById(context.Context, *GetEntityByIdRequest) (*ViewEntity, error)
-	CreateEntityGroup(context.Context, *CreateEntityGroupRequest) (*EntityGroup, error)
+	CreateEntityGroup(context.Context, *CreateEntityGroupRequest) (*CreateEntityGroupResponse, error)
 	UpdateEntityGroup(context.Context, *UpdateEntityGroupRequest) (*EntityGroup, error)
 	DeleteEntityGroup(context.Context, *DeleteEntityGroupRequest) (*emptypb.Empty, error)
 	CreateEntityGroupContent(context.Context, *CreateEntityGroupContentRequest) (*EntityGroupContent, error)
@@ -134,7 +134,7 @@ type UnimplementedEntitiesServer struct {
 func (UnimplementedEntitiesServer) GetEntityById(context.Context, *GetEntityByIdRequest) (*ViewEntity, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEntityById not implemented")
 }
-func (UnimplementedEntitiesServer) CreateEntityGroup(context.Context, *CreateEntityGroupRequest) (*EntityGroup, error) {
+func (UnimplementedEntitiesServer) CreateEntityGroup(context.Context, *CreateEntityGroupRequest) (*CreateEntityGroupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateEntityGroup not implemented")
 }
 func (UnimplementedEntitiesServer) UpdateEntityGroup(context.Context, *UpdateEntityGroupRequest) (*EntityGroup, error) {

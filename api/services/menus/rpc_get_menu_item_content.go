@@ -65,7 +65,7 @@ func (server *ServiceMenus) GetMenuItemContent(ctx context.Context, req *pb.GetM
 	}
 
 	rsp := &pb.GetMenuItemContentResponse{
-		MainGroupId: req.GetMenuItemId(),
+		MainGroupId: req.GetMenuItemId(), // TODO - WHAT IS THIS?!
 		Groups:      make([]*pb.EntityGroup, len(entityGroups)),
 		Contents:    contents,
 	}

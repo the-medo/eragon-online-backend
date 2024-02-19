@@ -270,7 +270,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbEntityGroup"
+              "$ref": "#/definitions/pbCreateEntityGroupResponse"
             }
           },
           "default": {
@@ -421,6 +421,10 @@
                   "format": "int32"
                 },
                 "contentEntityGroupId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "position": {
                   "type": "integer",
                   "format": "int32"
                 }
@@ -4323,11 +4327,26 @@
         "description": {
           "type": "string"
         },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
         "style": {
           "$ref": "#/definitions/pbEntityGroupStyle"
         },
         "direction": {
           "$ref": "#/definitions/pbEntityGroupDirection"
+        }
+      }
+    },
+    "pbCreateEntityGroupResponse": {
+      "type": "object",
+      "properties": {
+        "entityGroup": {
+          "$ref": "#/definitions/pbEntityGroup"
+        },
+        "entityGroupContent": {
+          "$ref": "#/definitions/pbEntityGroupContent"
         }
       }
     },

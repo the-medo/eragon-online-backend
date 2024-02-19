@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *ServiceEntities) CreateEntityGroup(ctx context.Context, request *pb.CreateEntityGroupRequest) (*pb.EntityGroup, error) {
+func (server *ServiceEntities) CreateEntityGroup(ctx context.Context, request *pb.CreateEntityGroupRequest) (*pb.CreateEntityGroupResponse, error) {
 	violations := validateCreateEntityGroup(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
@@ -57,14 +57,21 @@ func (server *ServiceEntities) CreateEntityGroup(ctx context.Context, request *p
 			Int32: newEntityGroup.ID,
 			Valid: true,
 		},
+		Position: sql.NullInt32{
+			Int32: request.GetPosition(),
+			Valid: request.Position != nil,
+		},
 	}
 
-	_, err = server.Store.CreateEntityGroupContent(ctx, arg2)
+	newEntityGroupContent, err := server.Store.CreateEntityGroupContent(ctx, arg2)
 	if err != nil {
 		return nil, err
 	}
 
-	rsp := converters.ConvertEntityGroup(newEntityGroup) // Assuming you have a converter for EntityGroup
+	rsp := &pb.CreateEntityGroupResponse{
+		EntityGroup:        converters.ConvertEntityGroup(newEntityGroup),
+		EntityGroupContent: converters.ConvertEntityGroupContent(newEntityGroupContent),
+	}
 
 	return rsp, nil
 }
@@ -79,6 +86,12 @@ func validateCreateEntityGroup(req *pb.CreateEntityGroupRequest) (violations []*
 	if req.Description != nil {
 		if err := validator.ValidateUniversalDescription(req.GetDescription()); err != nil {
 			violations = append(violations, e.FieldViolation("description", err))
+		}
+	}
+
+	if req.Position != nil {
+		if err := validator.ValidateInt(req.GetPosition(), 1); err != nil {
+			violations = append(violations, e.FieldViolation("position", err))
 		}
 	}
 

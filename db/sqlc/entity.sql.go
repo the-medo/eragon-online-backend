@@ -81,7 +81,7 @@ func (q *Queries) CreateEntityGroup(ctx context.Context, arg CreateEntityGroupPa
 }
 
 const createEntityGroupContent = `-- name: CreateEntityGroupContent :one
-CALL create_entity_group_content($1, $2, $3, $4)
+SELECT id, entity_group_id, position, content_entity_id, content_entity_group_id FROM create_entity_group_content($1, $2, $3, $4)
 `
 
 type CreateEntityGroupContentParams struct {
@@ -91,18 +91,21 @@ type CreateEntityGroupContentParams struct {
 	Position             sql.NullInt32 `json:"position"`
 }
 
-type CreateEntityGroupContentRow struct {
-}
-
-func (q *Queries) CreateEntityGroupContent(ctx context.Context, arg CreateEntityGroupContentParams) (CreateEntityGroupContentRow, error) {
+func (q *Queries) CreateEntityGroupContent(ctx context.Context, arg CreateEntityGroupContentParams) (EntityGroupContent, error) {
 	row := q.db.QueryRowContext(ctx, createEntityGroupContent,
 		arg.EntityGroupID,
 		arg.ContentEntityGroupID,
 		arg.ContentEntityID,
 		arg.Position,
 	)
-	var i CreateEntityGroupContentRow
-	err := row.Scan()
+	var i EntityGroupContent
+	err := row.Scan(
+		&i.ID,
+		&i.EntityGroupID,
+		&i.Position,
+		&i.ContentEntityID,
+		&i.ContentEntityGroupID,
+	)
 	return i, err
 }
 
