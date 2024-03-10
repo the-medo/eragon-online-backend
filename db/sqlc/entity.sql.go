@@ -141,9 +141,9 @@ CALL move_entity_group_content($1, $2, $3)
 `
 
 type EntityGroupContentChangePositionsParams struct {
-	ID               int32 `json:"id"`
-	NewEntityGroupID int32 `json:"new_entity_group_id"`
-	NewPosition      int32 `json:"new_position"`
+	ID               int32         `json:"id"`
+	NewEntityGroupID sql.NullInt32 `json:"new_entity_group_id"`
+	NewPosition      sql.NullInt32 `json:"new_position"`
 }
 
 func (q *Queries) EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error {

@@ -10,6 +10,10 @@ BEGIN
     FROM "entity_group_content"
     WHERE "id" = p_id;
 
+    -- in case of empty entity group, we move inside of the same group
+    IF p_new_entity_group_id IS NULL THEN
+        p_new_entity_group_id := v_old_entity_group_id;
+    end if;
 
     IF p_new_entity_group_id != v_old_entity_group_id THEN
 
@@ -18,6 +22,9 @@ BEGIN
         FROM "entity_group_content"
         WHERE "entity_group_id" = p_new_entity_group_id;
 
+        IF p_new_position IS NULL THEN
+            p_new_position := v_new_max_position;
+        end if;
 
         -- Check if the target position is valid
         IF p_new_position < 1 OR p_new_position > v_new_max_position THEN

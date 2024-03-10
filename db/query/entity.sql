@@ -95,7 +95,7 @@ SELECT COUNT(*) FROM "entity_group_content" WHERE entity_group_id = sqlc.arg(ent
 SELECT * FROM create_entity_group_content(sqlc.arg(entity_group_id), sqlc.narg(content_entity_group_id), sqlc.narg(content_entity_id), sqlc.narg(position));
 
 -- name: EntityGroupContentChangePositions :exec
-CALL move_entity_group_content(sqlc.arg(id), sqlc.arg(new_entity_group_id), sqlc.arg(new_position));
+CALL move_entity_group_content(sqlc.arg(id), sqlc.narg(new_entity_group_id), sqlc.narg(new_position));
 
 -- name: GetEntityGroupContentByID :one
 SELECT * FROM entity_group_content WHERE id = sqlc.arg(id);
