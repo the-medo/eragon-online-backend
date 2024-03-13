@@ -64,8 +64,12 @@ func (server *ServiceMenus) GetMenuItemContent(ctx context.Context, req *pb.GetM
 		return nil, status.Errorf(codes.Internal, "failed to get entity groups for this menu item: %v", err)
 	}
 
+	if !menuItem.EntityGroupID.Valid {
+		return nil, status.Errorf(codes.Internal, "menu item has no entity group")
+	}
+
 	rsp := &pb.GetMenuItemContentResponse{
-		MainGroupId: req.GetMenuItemId(), // TODO - WHAT IS THIS?!
+		MainGroupId: menuItem.EntityGroupID.Int32,
 		Groups:      make([]*pb.EntityGroup, len(entityGroups)),
 		Contents:    contents,
 	}
