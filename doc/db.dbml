@@ -49,6 +49,11 @@ enum entity_type {
   image
 }
 
+enum delete_entity_group_content_action {
+  delete_children
+  move_children
+}
+
 Table image_types {
   id int [not null, unique]
   name varchar [unique, not null]

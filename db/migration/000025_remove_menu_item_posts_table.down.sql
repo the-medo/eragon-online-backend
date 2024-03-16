@@ -1,3 +1,4 @@
+DROP TYPE IF EXISTS delete_entity_group_content_action;
 
 CREATE TABLE "menu_item_posts" (
     "menu_id" int NOT NULL,
