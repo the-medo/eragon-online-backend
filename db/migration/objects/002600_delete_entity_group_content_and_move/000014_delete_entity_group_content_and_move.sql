@@ -1,4 +1,4 @@
-CREATE OR REPLACE PROCEDURE delete_entity_group_content_and_move(_id integer)
+ CREATE OR REPLACE PROCEDURE delete_entity_group_content_and_move(_id integer)
     LANGUAGE plpgsql AS $$
 BEGIN
     WITH deleted_entity_group_content AS (
