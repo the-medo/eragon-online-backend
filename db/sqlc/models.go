@@ -13,6 +13,48 @@ import (
 	"github.com/google/uuid"
 )
 
+type DeleteEntityGroupContentAction string
+
+const (
+	DeleteEntityGroupContentActionDeleteChildren DeleteEntityGroupContentAction = "delete_children"
+	DeleteEntityGroupContentActionMoveChildren   DeleteEntityGroupContentAction = "move_children"
+)
+
+func (e *DeleteEntityGroupContentAction) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = DeleteEntityGroupContentAction(s)
+	case string:
+		*e = DeleteEntityGroupContentAction(s)
+	default:
+		return fmt.Errorf("unsupported scan type for DeleteEntityGroupContentAction: %T", src)
+	}
+	return nil
+}
+
+type NullDeleteEntityGroupContentAction struct {
+	DeleteEntityGroupContentAction DeleteEntityGroupContentAction
+	Valid                          bool // Valid is true if DeleteEntityGroupContentAction is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullDeleteEntityGroupContentAction) Scan(value interface{}) error {
+	if value == nil {
+		ns.DeleteEntityGroupContentAction, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.DeleteEntityGroupContentAction.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullDeleteEntityGroupContentAction) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.DeleteEntityGroupContentAction), nil
+}
+
 type EntityType string
 
 const (

@@ -41,8 +41,8 @@ type Querier interface {
 	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
 	CreateWorld(ctx context.Context, arg CreateWorldParams) (World, error)
 	DeleteEntity(ctx context.Context, id int32) error
-	DeleteEntityGroup(ctx context.Context, id int32) error
-	DeleteEntityGroupContent(ctx context.Context, id int32) error
+	DeleteEntityGroup(ctx context.Context, arg DeleteEntityGroupParams) error
+	DeleteEntityGroupContent(ctx context.Context, arg DeleteEntityGroupContentParams) error
 	DeleteEntityTag(ctx context.Context, arg DeleteEntityTagParams) error
 	DeleteEvaluationVote(ctx context.Context, arg DeleteEvaluationVoteParams) error
 	DeleteImage(ctx context.Context, id int32) error

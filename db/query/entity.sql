@@ -86,7 +86,7 @@ WHERE id = sqlc.arg(id)
 RETURNING *;
 
 -- name: DeleteEntityGroup :exec
-CALL delete_entity_group(sqlc.arg(id));
+CALL delete_entity_group(sqlc.arg(id), sqlc.arg(delete_type));
 
 -- name: GetEntityGroupContentCount :one
 SELECT COUNT(*) FROM "entity_group_content" WHERE entity_group_id = sqlc.arg(entity_group_id);
@@ -111,7 +111,7 @@ WHERE id = sqlc.arg(id)
 RETURNING *;
 
 -- name: DeleteEntityGroupContent :exec
-CALL delete_entity_group_content(sqlc.arg(id), null, null);
+CALL delete_entity_group_content(sqlc.arg(id), sqlc.arg(delete_type));
 
 -- name: GetMenuIdOfEntityGroup :one
 WITH entity_data AS ( --functions dont work well with sqlc, this is a workaround

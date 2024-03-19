@@ -8,6 +8,7 @@ DROP TYPE IF EXISTS get_recursive_entities_row;
 DROP FUNCTION IF EXISTS get_menu_id_of_entity_group(_entity_group_id integer);
 DROP PROCEDURE IF EXISTS delete_menu_item(_menu_item_id integer);
 DROP PROCEDURE IF EXISTS delete_entity_group_content_and_move(_id integer);
+DROP PROCEDURE IF EXISTS delete_entity_group_content(_id integer, _delete_type delete_entity_group_content_action);
 DROP PROCEDURE IF EXISTS delete_entity_group_content(_id integer, _entity_id integer, _entity_group_id integer, _delete_type delete_entity_group_content_action);
 DROP PROCEDURE IF EXISTS delete_entity_group_content(_id integer, _entity_id integer, _entity_group_id integer);
 DROP PROCEDURE IF EXISTS delete_entity_group(_entity_group_id integer, _delete_type delete_entity_group_content_action);

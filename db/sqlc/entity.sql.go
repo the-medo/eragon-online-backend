@@ -119,20 +119,30 @@ func (q *Queries) DeleteEntity(ctx context.Context, id int32) error {
 }
 
 const deleteEntityGroup = `-- name: DeleteEntityGroup :exec
-CALL delete_entity_group($1)
+CALL delete_entity_group($1, $2)
 `
 
-func (q *Queries) DeleteEntityGroup(ctx context.Context, id int32) error {
-	_, err := q.db.ExecContext(ctx, deleteEntityGroup, id)
+type DeleteEntityGroupParams struct {
+	ID         int32                          `json:"id"`
+	DeleteType DeleteEntityGroupContentAction `json:"delete_type"`
+}
+
+func (q *Queries) DeleteEntityGroup(ctx context.Context, arg DeleteEntityGroupParams) error {
+	_, err := q.db.ExecContext(ctx, deleteEntityGroup, arg.ID, arg.DeleteType)
 	return err
 }
 
 const deleteEntityGroupContent = `-- name: DeleteEntityGroupContent :exec
-CALL delete_entity_group_content($1, null, null)
+CALL delete_entity_group_content($1, $2)
 `
 
-func (q *Queries) DeleteEntityGroupContent(ctx context.Context, id int32) error {
-	_, err := q.db.ExecContext(ctx, deleteEntityGroupContent, id)
+type DeleteEntityGroupContentParams struct {
+	ID         int32                          `json:"id"`
+	DeleteType DeleteEntityGroupContentAction `json:"delete_type"`
+}
+
+func (q *Queries) DeleteEntityGroupContent(ctx context.Context, arg DeleteEntityGroupContentParams) error {
+	_, err := q.db.ExecContext(ctx, deleteEntityGroupContent, arg.ID, arg.DeleteType)
 	return err
 }
 

@@ -18,7 +18,7 @@ BEGIN
 
         -- first, we delete contents of the entity group
         FOR egc IN (SELECT * FROM entity_group_content WHERE entity_group_id = _entity_group_id) LOOP
-                CALL delete_entity_group_content(egc.id, egc.content_entity_id, egc.content_entity_group_id, _delete_type);
+                CALL delete_entity_group_content(egc.id, _delete_type);
             END LOOP;
 
 
