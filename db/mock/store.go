@@ -487,7 +487,7 @@ func (mr *MockStoreMockRecorder) DeleteEntity(arg0, arg1 interface{}) *gomock.Ca
 }
 
 // DeleteEntityGroup mocks base method.
-func (m *MockStore) DeleteEntityGroup(arg0 context.Context, arg1 int32) error {
+func (m *MockStore) DeleteEntityGroup(arg0 context.Context, arg1 db.DeleteEntityGroupParams) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteEntityGroup", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -501,7 +501,7 @@ func (mr *MockStoreMockRecorder) DeleteEntityGroup(arg0, arg1 interface{}) *gomo
 }
 
 // DeleteEntityGroupContent mocks base method.
-func (m *MockStore) DeleteEntityGroupContent(arg0 context.Context, arg1 int32) error {
+func (m *MockStore) DeleteEntityGroupContent(arg0 context.Context, arg1 db.DeleteEntityGroupContentParams) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteEntityGroupContent", arg0, arg1)
 	ret0, _ := ret[0].(error)

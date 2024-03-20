@@ -3,6 +3,7 @@ package entities
 import (
 	"context"
 	"github.com/the-medo/talebound-backend/api/servicecore"
+	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -17,7 +18,13 @@ func (server *ServiceEntities) DeleteEntityGroup(ctx context.Context, request *p
 		return nil, status.Errorf(codes.PermissionDenied, "failed to delete entity group: %v", err)
 	}
 
-	err = server.Store.DeleteEntityGroup(ctx, request.GetEntityGroupId())
+	arg := db.DeleteEntityGroupParams{
+		ID: request.GetEntityGroupId(),
+		//TODO: add delete type
+		//DeleteType: db.DeleteEntityGroupContentActionDeleteChildren,
+	}
+
+	err = server.Store.DeleteEntityGroup(ctx, arg)
 	if err != nil {
 		return nil, err
 	}
