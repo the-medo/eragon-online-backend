@@ -16,6 +16,7 @@ import (
 type DeleteEntityGroupContentAction string
 
 const (
+	DeleteEntityGroupContentActionUnknown        DeleteEntityGroupContentAction = "unknown"
 	DeleteEntityGroupContentActionDeleteChildren DeleteEntityGroupContentAction = "delete_children"
 	DeleteEntityGroupContentActionMoveChildren   DeleteEntityGroupContentAction = "move_children"
 )

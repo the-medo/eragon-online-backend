@@ -27,6 +27,12 @@ enum EntityGroupDirection {
   ENTITY_GROUP_DIRECTION_HORIZONTAL = 2;
 }
 
+enum DeleteEntityGroupContentAction {
+  DELETE_EGC_ACTION_UNKNOWN = 0;
+  DELETE_EGC_ACTION_DELETE_CHILDREN = 1;
+  DELETE_EGC_ACTION_MOVE_CHILDREN = 2;
+}
+
 message Entity {
   int32 id = 1;
   int32 moduleId = 2;

@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2024-03-16T13:33:42.964Z
+-- Generated at: 2024-03-21T16:49:38.382Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -51,6 +51,7 @@ CREATE TYPE "entity_type" AS ENUM (
 );
 
 CREATE TYPE "delete_entity_group_content_action" AS ENUM (
+  'unknown',
   'delete_children',
   'move_children'
 );
