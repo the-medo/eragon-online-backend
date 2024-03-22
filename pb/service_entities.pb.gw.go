@@ -191,6 +191,7 @@ func request_Entities_DeleteEntityGroup_0(ctx context.Context, marshaler runtime
 
 	var (
 		val string
+		e   int32
 		ok  bool
 		err error
 		_   = err
@@ -205,6 +206,18 @@ func request_Entities_DeleteEntityGroup_0(ctx context.Context, marshaler runtime
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "entityGroupId", err)
 	}
+
+	val, ok = pathParams["deleteType"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "deleteType")
+	}
+
+	e, err = runtime.Enum(val, DeleteEntityGroupContentAction_value)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "deleteType", err)
+	}
+
+	protoReq.DeleteType = DeleteEntityGroupContentAction(e)
 
 	msg, err := client.DeleteEntityGroup(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -217,6 +230,7 @@ func local_request_Entities_DeleteEntityGroup_0(ctx context.Context, marshaler r
 
 	var (
 		val string
+		e   int32
 		ok  bool
 		err error
 		_   = err
@@ -231,6 +245,18 @@ func local_request_Entities_DeleteEntityGroup_0(ctx context.Context, marshaler r
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "entityGroupId", err)
 	}
+
+	val, ok = pathParams["deleteType"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "deleteType")
+	}
+
+	e, err = runtime.Enum(val, DeleteEntityGroupContentAction_value)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "deleteType", err)
+	}
+
+	protoReq.DeleteType = DeleteEntityGroupContentAction(e)
 
 	msg, err := server.DeleteEntityGroup(ctx, &protoReq)
 	return msg, metadata, err
@@ -554,7 +580,7 @@ func RegisterEntitiesHandlerServer(ctx context.Context, mux *runtime.ServeMux, s
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Entities/DeleteEntityGroup", runtime.WithHTTPPathPattern("/entities/groups/{entityGroupId}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Entities/DeleteEntityGroup", runtime.WithHTTPPathPattern("/entities/groups/{entityGroupId}/delete_type/{deleteType}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -759,7 +785,7 @@ func RegisterEntitiesHandlerClient(ctx context.Context, mux *runtime.ServeMux, c
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Entities/DeleteEntityGroup", runtime.WithHTTPPathPattern("/entities/groups/{entityGroupId}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Entities/DeleteEntityGroup", runtime.WithHTTPPathPattern("/entities/groups/{entityGroupId}/delete_type/{deleteType}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -851,7 +877,7 @@ var (
 
 	pattern_Entities_UpdateEntityGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"entities", "groups", "entityGroupId"}, ""))
 
-	pattern_Entities_DeleteEntityGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"entities", "groups", "entityGroupId"}, ""))
+	pattern_Entities_DeleteEntityGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"entities", "groups", "entityGroupId", "delete_type", "deleteType"}, ""))
 
 	pattern_Entities_CreateEntityGroupContent_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"entities", "groups", "entityGroupId", "content"}, ""))
 

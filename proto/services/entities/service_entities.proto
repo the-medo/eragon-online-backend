@@ -47,7 +47,7 @@ service Entities {
 
   rpc DeleteEntityGroup(DeleteEntityGroupRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/entities/groups/{entityGroupId}"
+      delete: "/entities/groups/{entityGroupId}/delete_type/{deleteType}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "deletes an entity group";

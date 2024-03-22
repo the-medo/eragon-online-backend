@@ -296,38 +296,6 @@
       }
     },
     "/entities/groups/{entityGroupId}": {
-      "delete": {
-        "summary": "Delete entity group",
-        "description": "deletes an entity group",
-        "operationId": "Entities_DeleteEntityGroup",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "entityGroupId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Entities"
-        ]
-      },
       "patch": {
         "summary": "Update entity group",
         "description": "updates entity group properties",
@@ -535,6 +503,51 @@
                 }
               }
             }
+          }
+        ],
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/groups/{entityGroupId}/delete_type/{deleteType}": {
+      "delete": {
+        "summary": "Delete entity group",
+        "description": "deletes an entity group",
+        "operationId": "Entities_DeleteEntityGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entityGroupId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "deleteType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "DELETE_EGC_ACTION_UNKNOWN",
+              "DELETE_EGC_ACTION_DELETE_CHILDREN",
+              "DELETE_EGC_ACTION_MOVE_CHILDREN"
+            ]
           }
         ],
         "tags": [
@@ -4526,6 +4539,15 @@
           "$ref": "#/definitions/pbViewModule"
         }
       }
+    },
+    "pbDeleteEntityGroupContentAction": {
+      "type": "string",
+      "enum": [
+        "DELETE_EGC_ACTION_UNKNOWN",
+        "DELETE_EGC_ACTION_DELETE_CHILDREN",
+        "DELETE_EGC_ACTION_MOVE_CHILDREN"
+      ],
+      "default": "DELETE_EGC_ACTION_UNKNOWN"
     },
     "pbDeleteEvaluationVoteResponse": {
       "type": "object",

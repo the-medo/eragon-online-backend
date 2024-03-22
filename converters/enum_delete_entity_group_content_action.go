@@ -17,15 +17,15 @@ var deleteEntityGroupContentActionToDB = map[pb.DeleteEntityGroupContentAction]d
 	pb.DeleteEntityGroupContentAction_DELETE_EGC_ACTION_DELETE_CHILDREN: db.DeleteEntityGroupContentActionDeleteChildren,
 }
 
-func ConvertDeleteEntityGroupContentActionToPB(shape db.DeleteEntityGroupContentAction) pb.DeleteEntityGroupContentAction {
-	if val, ok := deleteEntityGroupContentActionToPB[shape]; ok {
+func ConvertDeleteEntityGroupContentActionToPB(action db.DeleteEntityGroupContentAction) pb.DeleteEntityGroupContentAction {
+	if val, ok := deleteEntityGroupContentActionToPB[action]; ok {
 		return val
 	}
 	return pb.DeleteEntityGroupContentAction_DELETE_EGC_ACTION_UNKNOWN
 }
 
-func ConvertDeleteEntityGroupContentActionToDB(shape pb.DeleteEntityGroupContentAction) db.DeleteEntityGroupContentAction {
-	if val, ok := deleteEntityGroupContentActionToDB[shape]; ok {
+func ConvertDeleteEntityGroupContentActionToDB(action pb.DeleteEntityGroupContentAction) db.DeleteEntityGroupContentAction {
+	if val, ok := deleteEntityGroupContentActionToDB[action]; ok {
 		return val
 	}
 	return db.DeleteEntityGroupContentActionUnknown

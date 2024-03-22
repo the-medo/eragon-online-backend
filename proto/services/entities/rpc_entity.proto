@@ -32,9 +32,9 @@ message UpdateEntityGroupRequest {
   optional EntityGroupDirection direction = 5;
 }
 
-
 message DeleteEntityGroupRequest {
   int32 entityGroupId = 1;
+  DeleteEntityGroupContentAction deleteType = 2;
 }
 
 message CreateEntityGroupContentRequest {
