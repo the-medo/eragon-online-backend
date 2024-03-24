@@ -18,7 +18,7 @@ BEGIN
     IF p_new_entity_group_id != v_old_entity_group_id THEN
 
         -- Get the maximum position within the new group
-        SELECT MAX("position") INTO v_new_max_position
+        SELECT MAX("position") + 1 INTO v_new_max_position
         FROM "entity_group_content"
         WHERE "entity_group_id" = p_new_entity_group_id;
 
