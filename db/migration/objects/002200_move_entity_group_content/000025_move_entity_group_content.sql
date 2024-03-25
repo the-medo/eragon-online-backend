@@ -17,11 +17,11 @@ BEGIN
         p_new_entity_group_id := v_old_entity_group_id;
     end if;
 
-
+    -- Check for recursive groups
     IF v_old_content_entity_group_id IS NOT NULL THEN
+        -- we need to check, if the new group is not inside of the actual moved group - if that was the case, groups would be recursive and we can not have that
         SELECT COUNT(*) INTO v_recursion_check FROM get_recursive_entities(v_old_content_entity_group_id ) WHERE content_entity_group_id = p_new_entity_group_id;
 
-        -- Check for recursive groups
         IF v_recursion_check > 0 OR p_new_entity_group_id = v_old_content_entity_group_id THEN
             RAISE EXCEPTION 'Recursion check failed';
         END IF;
