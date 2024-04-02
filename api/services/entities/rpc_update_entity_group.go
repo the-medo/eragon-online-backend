@@ -58,13 +58,13 @@ func (server *ServiceEntities) UpdateEntityGroup(ctx context.Context, request *p
 }
 
 func validateUpdateEntityGroup(req *pb.UpdateEntityGroupRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if req.Name != nil {
+	if req.Name != nil && len(req.GetName()) > 0 {
 		if err := validator.ValidateUniversalName(req.GetName()); err != nil {
 			violations = append(violations, e.FieldViolation("name", err))
 		}
 	}
 
-	if req.Description != nil {
+	if req.Description != nil && len(req.GetDescription()) > 0 {
 		if err := validator.ValidateUniversalDescription(req.GetDescription()); err != nil {
 			violations = append(violations, e.FieldViolation("description", err))
 		}
