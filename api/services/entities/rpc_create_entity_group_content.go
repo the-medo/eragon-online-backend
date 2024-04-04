@@ -3,8 +3,10 @@ package entities
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/the-medo/talebound-backend/api/apihelpers"
 	"github.com/the-medo/talebound-backend/api/servicecore"
 	"github.com/the-medo/talebound-backend/converters"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
@@ -12,7 +14,9 @@ import (
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
@@ -113,6 +117,22 @@ func (server *ServiceEntities) CreateEntityGroupContent(ctx context.Context, req
 			Int32: entity.ID,
 			Valid: true,
 		}
+
+		fetchInterface := &apihelpers.FetchInterface{
+			EntityIds: []int32{entity.ID},
+		}
+
+		fetchIdsHeader, err := json.Marshal(fetchInterface)
+
+		md := metadata.Pairs(
+			"X-Fetch-Ids", string(fetchIdsHeader),
+		)
+
+		err = grpc.SendHeader(ctx, md)
+		if err != nil {
+			return nil, err
+		}
+
 	} else {
 		//this shouldn't happen
 		return nil, fmt.Errorf("invalid state in rpc_create_entity_group_content")
