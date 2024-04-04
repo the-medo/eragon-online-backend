@@ -518,13 +518,11 @@ func (q *Queries) GetEntityIDsOfGroup(ctx context.Context, entityGroupID int32) 
 }
 
 const getMenuIdOfEntityGroup = `-- name: GetMenuIdOfEntityGroup :one
-WITH entity_data AS ( --functions dont work well with sqlc, this is a workaround
-    SELECT
-        m.id as menu_id
-    FROM
-        get_menu_id_of_entity_group($1) meg
-        JOIN menus m ON meg.menu_id = m.id
-) SELECT menu_id FROM entity_data
+SELECT
+    m.id as menu_id
+FROM
+    menus m
+    JOIN get_menu_id_of_entity_group($1) x ON x.menu_id = m.id
 `
 
 func (q *Queries) GetMenuIdOfEntityGroup(ctx context.Context, entityGroupID int32) (int32, error) {
@@ -532,6 +530,21 @@ func (q *Queries) GetMenuIdOfEntityGroup(ctx context.Context, entityGroupID int3
 	var menu_id int32
 	err := row.Scan(&menu_id)
 	return menu_id, err
+}
+
+const getModuleIdOfEntityGroup = `-- name: GetModuleIdOfEntityGroup :one
+SELECT
+    m.id
+FROM
+    modules m
+    JOIN get_menu_id_of_entity_group($1) x ON x.menu_id = m.menu_id
+`
+
+func (q *Queries) GetModuleIdOfEntityGroup(ctx context.Context, entityGroupID int32) (int32, error) {
+	row := q.db.QueryRowContext(ctx, getModuleIdOfEntityGroup, entityGroupID)
+	var id int32
+	err := row.Scan(&id)
+	return id, err
 }
 
 const updateEntity = `-- name: UpdateEntity :one

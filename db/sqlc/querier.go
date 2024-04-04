@@ -120,6 +120,7 @@ type Querier interface {
 	GetModuleAdmins(ctx context.Context, moduleID int32) ([]GetModuleAdminsRow, error)
 	GetModuleById(ctx context.Context, moduleID int32) (ViewModule, error)
 	GetModuleEntityTagsAvailable(ctx context.Context, moduleID int32) ([]ModuleEntityTagsAvailable, error)
+	GetModuleIdOfEntityGroup(ctx context.Context, entityGroupID int32) (int32, error)
 	GetModuleTypeTagAvailable(ctx context.Context, tagID int32) (ViewModuleTypeTagsAvailable, error)
 	GetModuleTypeTagsAvailable(ctx context.Context, moduleType ModuleType) ([]ViewModuleTypeTagsAvailable, error)
 	GetModulesByIDs(ctx context.Context, moduleIds []int32) ([]ViewModule, error)

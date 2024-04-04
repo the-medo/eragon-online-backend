@@ -395,6 +395,13 @@
                 "position": {
                   "type": "integer",
                   "format": "int32"
+                },
+                "entityType": {
+                  "$ref": "#/definitions/pbEntityType"
+                },
+                "entityIdOfType": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }

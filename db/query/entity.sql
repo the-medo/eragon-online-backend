@@ -114,13 +114,19 @@ RETURNING *;
 CALL delete_entity_group_content(sqlc.arg(id), sqlc.arg(delete_type));
 
 -- name: GetMenuIdOfEntityGroup :one
-WITH entity_data AS ( --functions dont work well with sqlc, this is a workaround
-    SELECT
-        m.id as menu_id
-    FROM
-        get_menu_id_of_entity_group(sqlc.arg(entity_group_id)) meg
-        JOIN menus m ON meg.menu_id = m.id
-) SELECT * FROM entity_data
+SELECT
+    m.id as menu_id
+FROM
+    menus m
+    JOIN get_menu_id_of_entity_group(sqlc.arg(entity_group_id)) x ON x.menu_id = m.id
+;
+
+-- name: GetModuleIdOfEntityGroup :one
+SELECT
+    m.id
+FROM
+    modules m
+    JOIN get_menu_id_of_entity_group(sqlc.arg(entity_group_id)) x ON x.menu_id = m.menu_id
 ;
 
 -- name: GetEntities :one

@@ -42,6 +42,8 @@ message CreateEntityGroupContentRequest {
   optional int32 contentEntityId = 2;
   optional int32 contentEntityGroupId = 3;
   optional int32 position = 4;
+  optional EntityType entityType = 5;
+  optional int32 entityIdOfType = 6;
 }
 
 message UpdateEntityGroupContentRequest {
