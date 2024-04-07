@@ -61,7 +61,7 @@ BEGIN
         UPDATE "entity_group_content"
         SET "position" = "position" + CASE WHEN p_new_position > v_old_position THEN -1 ELSE 1 END
         WHERE "entity_group_id" = v_old_entity_group_id
-          AND "position" BETWEEN p_new_position AND v_old_position;
+          AND "position" BETWEEN LEAST(p_new_position, v_old_position) AND GREATEST(p_new_position, v_old_position);
 
     END IF;
 
