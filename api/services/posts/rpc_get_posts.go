@@ -15,6 +15,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+	"strings"
 )
 
 func (server *ServicePosts) GetPosts(ctx context.Context, req *pb.GetPostsRequest) (*pb.GetPostsResponse, error) {
@@ -49,7 +50,7 @@ func (server *ServicePosts) GetPosts(ctx context.Context, req *pb.GetPostsReques
 			Valid:  req.OrderBy != nil,
 		},
 		OrderDirection: sql.NullString{
-			String: req.GetOrderDirection(),
+			String: strings.ToUpper(req.GetOrderDirection()),
 			Valid:  req.OrderDirection != nil,
 		},
 		Tags: req.GetTags(),
@@ -106,7 +107,7 @@ func (server *ServicePosts) GetPosts(ctx context.Context, req *pb.GetPostsReques
 
 func validateGetPosts(req *pb.GetPostsRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
-	fields := []string{"title", "created_at", "description"}
+	fields := []string{"title", "created_at", "last_updated_at", "description"}
 
 	if req.OrderBy != nil {
 		if validator.StringInSlice(req.GetOrderBy(), fields) == false {

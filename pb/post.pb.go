@@ -28,12 +28,12 @@ type Post struct {
 
 	Id                int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId            int32                  `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
-	Title             string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
+	Title             string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"` // field is sortable
 	Content           string                 `protobuf:"bytes,4,opt,name=content,proto3" json:"content,omitempty"`
-	Description       string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=createdAt,proto3" json:"createdAt,omitempty"`
+	Description       string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"` // field is sortable
+	CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=createdAt,proto3" json:"createdAt,omitempty"`     // field is sortable
 	DeletedAt         *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=deletedAt,proto3" json:"deletedAt,omitempty"`
-	LastUpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=lastUpdatedAt,proto3" json:"lastUpdatedAt,omitempty"`
+	LastUpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=lastUpdatedAt,proto3" json:"lastUpdatedAt,omitempty"` // field is sortable
 	LastUpdatedUserId int32                  `protobuf:"varint,9,opt,name=lastUpdatedUserId,proto3" json:"lastUpdatedUserId,omitempty"`
 	IsDraft           bool                   `protobuf:"varint,10,opt,name=isDraft,proto3" json:"isDraft,omitempty"`
 	IsPrivate         bool                   `protobuf:"varint,11,opt,name=isPrivate,proto3" json:"isPrivate,omitempty"`

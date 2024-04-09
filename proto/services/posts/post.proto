@@ -10,12 +10,12 @@ option go_package = "github.com/the-medo/talebound-backend/pb";
 message Post {
   int32 id = 1;
   int32 userId = 2;
-  string title = 3;
+  string title = 3; // field is sortable
   string content = 4;
-  string description = 5;
-  google.protobuf.Timestamp createdAt = 6;
+  string description = 5; // field is sortable
+  google.protobuf.Timestamp createdAt = 6; // field is sortable
   google.protobuf.Timestamp deletedAt = 7;
-  google.protobuf.Timestamp lastUpdatedAt = 8;
+  google.protobuf.Timestamp lastUpdatedAt = 8; // field is sortable
   int32 lastUpdatedUserId = 9;
   bool isDraft = 10;
   bool isPrivate = 11;

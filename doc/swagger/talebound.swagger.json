@@ -5329,17 +5329,20 @@
           "format": "int32"
         },
         "title": {
-          "type": "string"
+          "type": "string",
+          "title": "field is sortable"
         },
         "content": {
           "type": "string"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "title": "field is sortable"
         },
         "createdAt": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "title": "field is sortable"
         },
         "deletedAt": {
           "type": "string",
@@ -5347,7 +5350,8 @@
         },
         "lastUpdatedAt": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "title": "field is sortable"
         },
         "lastUpdatedUserId": {
           "type": "integer",
