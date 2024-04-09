@@ -242,7 +242,6 @@ SELECT
     CAST((SELECT count(*) FROM cte) as integer) as total_count,
     cte.id, cte.user_id, cte.title, cte.description, cte.content, cte.created_at, cte.deleted_at, cte.last_updated_at, cte.last_updated_user_id, cte.is_draft, cte.is_private, cte.thumbnail_img_id, cte.thumbnail_img_url, cte.entity_id, cte.module_id, cte.module_type, cte.module_type_id, cte.tags
 FROM cte
-ORDER BY created_at DESC
 LIMIT $2
 OFFSET $1
 `

@@ -13,10 +13,11 @@ message GetPostsRequest {
   optional int32 userId = 2;
   repeated int32 tags = 3;
   optional string orderBy = 4;
-  optional bool isDraft = 5;
-  optional bool isPrivate = 6;
-  optional int32 limit = 7;
-  optional int32 offset = 8;
+  optional string orderDirection = 5;
+  optional bool isDraft = 6;
+  optional bool isPrivate = 7;
+  optional int32 limit = 8;
+  optional int32 offset = 9;
 }
 
 message GetPostsResponse {

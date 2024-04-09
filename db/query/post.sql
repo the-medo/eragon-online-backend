@@ -46,7 +46,6 @@ SELECT
     CAST((SELECT count(*) FROM cte) as integer) as total_count,
     cte.*
 FROM cte
-ORDER BY created_at DESC
 LIMIT sqlc.arg(page_limit)
 OFFSET sqlc.arg(page_offset);
 

@@ -48,6 +48,10 @@ func (server *ServicePosts) GetPosts(ctx context.Context, req *pb.GetPostsReques
 			String: req.GetOrderBy(),
 			Valid:  req.OrderBy != nil,
 		},
+		OrderDirection: sql.NullString{
+			String: req.GetOrderDirection(),
+			Valid:  req.OrderDirection != nil,
+		},
 		Tags: req.GetTags(),
 	}
 

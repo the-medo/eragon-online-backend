@@ -2688,6 +2688,12 @@
             "type": "string"
           },
           {
+            "name": "orderDirection",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "isDraft",
             "in": "query",
             "required": false,
