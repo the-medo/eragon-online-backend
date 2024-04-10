@@ -4494,6 +4494,10 @@
     "pbCreatePostRequest": {
       "type": "object",
       "properties": {
+        "moduleId": {
+          "type": "integer",
+          "format": "int32"
+        },
         "title": {
           "type": "string"
         },

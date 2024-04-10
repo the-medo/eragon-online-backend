@@ -40,10 +40,11 @@ message GetUserPostsResponse {
 }
 
 message CreatePostRequest {
-  string title = 1;
-  string content = 2;
-  optional bool isDraft = 3;
-  optional bool isPrivate = 4;
+  int32 moduleId = 1;
+  string title = 2;
+  string content = 3;
+  optional bool isDraft = 4;
+  optional bool isPrivate = 5;
 }
 
 message UpdatePostRequest {
