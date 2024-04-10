@@ -265,7 +265,7 @@ Table map_layers {
   image_id int [not null, ref: > images.id]
   is_main bool [not null, default: false]
   enabled bool [not null, default: true]
-  sublayer bool [not null, default: false]
+  position int [not null, note: 'Position 1 means main layer. Highest position = highest layer.']
 }
 
 Table map_pins {

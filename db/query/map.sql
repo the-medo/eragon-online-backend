@@ -40,8 +40,8 @@ RETURNING *;
 CALL delete_map(sqlc.arg(id));
 
 -- name: CreateMapLayer :one
-INSERT INTO map_layers (name, map_id, image_id, is_main, enabled, sublayer)
-VALUES (sqlc.arg(name), sqlc.arg(map_id), sqlc.arg(image_id), sqlc.arg(is_main), sqlc.arg(enabled), sqlc.arg(sublayer))
+INSERT INTO map_layers (name, map_id, image_id, is_main, enabled, position)
+VALUES (sqlc.arg(name), sqlc.arg(map_id), sqlc.arg(image_id), sqlc.arg(is_main), sqlc.arg(enabled), sqlc.arg(position))
 RETURNING *;
 
 -- name: GetMapLayers :many
@@ -56,7 +56,7 @@ SET
     name = COALESCE(sqlc.narg(name), name),
     image_id = COALESCE(sqlc.narg(image_id), image_id),
     enabled = COALESCE(sqlc.narg(enabled), enabled),
-    sublayer = COALESCE(sqlc.narg(sublayer), sublayer)
+    position = COALESCE(sqlc.narg(position), position)
 WHERE id = sqlc.arg(id)
 RETURNING *;
 

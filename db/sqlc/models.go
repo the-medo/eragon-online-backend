@@ -385,13 +385,14 @@ type Map struct {
 }
 
 type MapLayer struct {
-	ID       int32  `json:"id"`
-	Name     string `json:"name"`
-	MapID    int32  `json:"map_id"`
-	ImageID  int32  `json:"image_id"`
-	IsMain   bool   `json:"is_main"`
-	Enabled  bool   `json:"enabled"`
-	Sublayer bool   `json:"sublayer"`
+	ID      int32  `json:"id"`
+	Name    string `json:"name"`
+	MapID   int32  `json:"map_id"`
+	ImageID int32  `json:"image_id"`
+	IsMain  bool   `json:"is_main"`
+	Enabled bool   `json:"enabled"`
+	// Position 1 means main layer. Highest position = highest layer.
+	Position int32 `json:"position"`
 }
 
 type MapPin struct {
@@ -668,7 +669,7 @@ type ViewMapLayer struct {
 	ImageID  int32          `json:"image_id"`
 	IsMain   bool           `json:"is_main"`
 	Enabled  bool           `json:"enabled"`
-	Sublayer bool           `json:"sublayer"`
+	Position int32          `json:"position"`
 	ImageUrl sql.NullString `json:"image_url"`
 }
 

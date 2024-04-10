@@ -27,7 +27,7 @@ func (server *ServiceMaps) CreateMapLayer(ctx context.Context, request *pb.Creat
 		ImageID:  request.GetImageId(),
 		IsMain:   request.GetIsMain(),
 		Enabled:  request.GetEnabled(),
-		Sublayer: request.GetSublayer(),
+		Position: request.GetPosition(),
 	}
 
 	mapRow, err := server.Store.GetMapById(ctx, request.GetMapId())

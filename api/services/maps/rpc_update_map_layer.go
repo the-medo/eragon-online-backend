@@ -29,7 +29,7 @@ func (server *ServiceMaps) UpdateMapLayer(ctx context.Context, request *pb.Updat
 		}
 	}
 
-	if request.Name != nil || request.ImageId != nil || request.Enabled != nil || request.Sublayer != nil {
+	if request.Name != nil || request.ImageId != nil || request.Enabled != nil || request.Position != nil {
 
 		if request.ImageId != nil {
 			mapRow, err := server.Store.GetMapById(ctx, request.GetMapId())
@@ -90,9 +90,9 @@ func (server *ServiceMaps) UpdateMapLayer(ctx context.Context, request *pb.Updat
 				Bool:  request.GetEnabled(),
 				Valid: request.Enabled != nil,
 			},
-			Sublayer: sql.NullBool{
-				Bool:  request.GetSublayer(),
-				Valid: request.Sublayer != nil,
+			Position: sql.NullInt32{
+				Int32: request.GetPosition(),
+				Valid: request.Position != nil,
 			},
 		}
 

@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2024-03-21T16:49:38.382Z
+-- Generated at: 2024-04-10T17:05:24.881Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -250,7 +250,7 @@ CREATE TABLE "map_layers" (
   "image_id" int NOT NULL,
   "is_main" bool NOT NULL DEFAULT false,
   "enabled" bool NOT NULL DEFAULT true,
-  "sublayer" bool NOT NULL DEFAULT false
+  "position" int NOT NULL
 );
 
 CREATE TABLE "map_pins" (
@@ -392,6 +392,8 @@ CREATE UNIQUE INDEX ON "entities" ("image_id", "module_id");
 COMMENT ON COLUMN "image_types"."variant" IS 'Variant name from cloudflare. ';
 
 COMMENT ON COLUMN "module_admins"."approved" IS '0 = NO, 1 = YES, 2 = PENDING';
+
+COMMENT ON COLUMN "map_layers"."position" IS 'Position 1 means main layer. Highest position = highest layer.';
 
 COMMENT ON TABLE "modules" IS 'Groups higher-level sections into one table. Contains worlds, quests, characters and play systems.';
 

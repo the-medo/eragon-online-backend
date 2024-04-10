@@ -1426,8 +1426,9 @@
                 "enabled": {
                   "type": "boolean"
                 },
-                "sublayer": {
-                  "type": "boolean"
+                "position": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -1531,8 +1532,9 @@
                 "enabled": {
                   "type": "boolean"
                 },
-                "sublayer": {
-                  "type": "boolean"
+                "position": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -5887,8 +5889,9 @@
         "enabled": {
           "type": "boolean"
         },
-        "sublayer": {
-          "type": "boolean"
+        "position": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

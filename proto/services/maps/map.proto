@@ -53,7 +53,7 @@ message MapLayer {
   int32 imageId = 4;
   bool isMain = 5;
   bool enabled = 6;
-  bool sublayer = 7;
+  int32 position = 7;
 }
 
 message ViewMapLayer {
@@ -64,7 +64,7 @@ message ViewMapLayer {
   string imageUrl = 5;
   bool isMain = 6;
   bool enabled = 7;
-  bool sublayer = 8;
+  int32 position = 8;
 }
 
 message MapPinType {

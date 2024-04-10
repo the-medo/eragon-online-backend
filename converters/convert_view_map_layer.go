@@ -14,7 +14,7 @@ func ConvertViewMapLayer(viewMapLayer db.ViewMapLayer) *pb.ViewMapLayer {
 		ImageId:  viewMapLayer.ImageID,
 		IsMain:   viewMapLayer.IsMain,
 		Enabled:  viewMapLayer.Enabled,
-		Sublayer: viewMapLayer.Sublayer,
+		Position: viewMapLayer.Position,
 	}
 
 	if viewMapLayer.ImageUrl.Valid {

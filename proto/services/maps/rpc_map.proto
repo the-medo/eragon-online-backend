@@ -63,7 +63,7 @@ message CreateMapLayerRequest {
   int32 imageId = 3;
   bool isMain = 4;
   bool enabled = 5;
-  bool sublayer = 6;
+  int32 position = 6;
 }
 
 message DeleteMapLayerRequest {
@@ -78,7 +78,7 @@ message UpdateMapLayerRequest {
   optional int32 imageId = 4;
   optional bool isMain = 5;
   optional bool enabled = 6;
-  optional bool sublayer = 7;
+  optional int32 position = 7;
 }
 
 message GetMapPinTypesRequest {

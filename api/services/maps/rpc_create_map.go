@@ -63,12 +63,12 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 	}
 
 	argMapLayer := db.CreateMapLayerParams{
-		Name:     request.GetName(),
+		Name:     "Main layer",
 		MapID:    newMap.ID,
 		ImageID:  request.GetLayerImageId(),
 		IsMain:   true,
 		Enabled:  true,
-		Sublayer: false,
+		Position: 1,
 	}
 
 	// Assuming a function to create the main layer for the map based on LayerImageID

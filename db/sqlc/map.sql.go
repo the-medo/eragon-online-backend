@@ -50,9 +50,9 @@ func (q *Queries) CreateMap(ctx context.Context, arg CreateMapParams) (Map, erro
 }
 
 const createMapLayer = `-- name: CreateMapLayer :one
-INSERT INTO map_layers (name, map_id, image_id, is_main, enabled, sublayer)
+INSERT INTO map_layers (name, map_id, image_id, is_main, enabled, position)
 VALUES ($1, $2, $3, $4, $5, $6)
-RETURNING id, name, map_id, image_id, is_main, enabled, sublayer
+RETURNING id, name, map_id, image_id, is_main, enabled, position
 `
 
 type CreateMapLayerParams struct {
@@ -61,7 +61,7 @@ type CreateMapLayerParams struct {
 	ImageID  int32  `json:"image_id"`
 	IsMain   bool   `json:"is_main"`
 	Enabled  bool   `json:"enabled"`
-	Sublayer bool   `json:"sublayer"`
+	Position int32  `json:"position"`
 }
 
 func (q *Queries) CreateMapLayer(ctx context.Context, arg CreateMapLayerParams) (MapLayer, error) {
@@ -71,7 +71,7 @@ func (q *Queries) CreateMapLayer(ctx context.Context, arg CreateMapLayerParams) 
 		arg.ImageID,
 		arg.IsMain,
 		arg.Enabled,
-		arg.Sublayer,
+		arg.Position,
 	)
 	var i MapLayer
 	err := row.Scan(
@@ -81,7 +81,7 @@ func (q *Queries) CreateMapLayer(ctx context.Context, arg CreateMapLayerParams) 
 		&i.ImageID,
 		&i.IsMain,
 		&i.Enabled,
-		&i.Sublayer,
+		&i.Position,
 	)
 	return i, err
 }
@@ -319,7 +319,7 @@ func (q *Queries) GetMapById(ctx context.Context, id int32) (Map, error) {
 }
 
 const getMapLayerByID = `-- name: GetMapLayerByID :one
-SELECT id, name, map_id, image_id, is_main, enabled, sublayer, image_url FROM view_map_layers WHERE id = $1
+SELECT id, name, map_id, image_id, is_main, enabled, position, image_url FROM view_map_layers WHERE id = $1
 `
 
 func (q *Queries) GetMapLayerByID(ctx context.Context, mapLayerID int32) (ViewMapLayer, error) {
@@ -332,14 +332,14 @@ func (q *Queries) GetMapLayerByID(ctx context.Context, mapLayerID int32) (ViewMa
 		&i.ImageID,
 		&i.IsMain,
 		&i.Enabled,
-		&i.Sublayer,
+		&i.Position,
 		&i.ImageUrl,
 	)
 	return i, err
 }
 
 const getMapLayers = `-- name: GetMapLayers :many
-SELECT id, name, map_id, image_id, is_main, enabled, sublayer, image_url FROM view_map_layers WHERE map_id = $1
+SELECT id, name, map_id, image_id, is_main, enabled, position, image_url FROM view_map_layers WHERE map_id = $1
 `
 
 func (q *Queries) GetMapLayers(ctx context.Context, mapID int32) ([]ViewMapLayer, error) {
@@ -358,7 +358,7 @@ func (q *Queries) GetMapLayers(ctx context.Context, mapID int32) ([]ViewMapLayer
 			&i.ImageID,
 			&i.IsMain,
 			&i.Enabled,
-			&i.Sublayer,
+			&i.Position,
 			&i.ImageUrl,
 		); err != nil {
 			return nil, err
@@ -720,16 +720,16 @@ SET
     name = COALESCE($1, name),
     image_id = COALESCE($2, image_id),
     enabled = COALESCE($3, enabled),
-    sublayer = COALESCE($4, sublayer)
+    position = COALESCE($4, position)
 WHERE id = $5
-RETURNING id, name, map_id, image_id, is_main, enabled, sublayer
+RETURNING id, name, map_id, image_id, is_main, enabled, position
 `
 
 type UpdateMapLayerParams struct {
 	Name     sql.NullString `json:"name"`
 	ImageID  sql.NullInt32  `json:"image_id"`
 	Enabled  sql.NullBool   `json:"enabled"`
-	Sublayer sql.NullBool   `json:"sublayer"`
+	Position sql.NullInt32  `json:"position"`
 	ID       int32          `json:"id"`
 }
 
@@ -738,7 +738,7 @@ func (q *Queries) UpdateMapLayer(ctx context.Context, arg UpdateMapLayerParams) 
 		arg.Name,
 		arg.ImageID,
 		arg.Enabled,
-		arg.Sublayer,
+		arg.Position,
 		arg.ID,
 	)
 	var i MapLayer
@@ -749,7 +749,7 @@ func (q *Queries) UpdateMapLayer(ctx context.Context, arg UpdateMapLayerParams) 
 		&i.ImageID,
 		&i.IsMain,
 		&i.Enabled,
-		&i.Sublayer,
+		&i.Position,
 	)
 	return i, err
 }
