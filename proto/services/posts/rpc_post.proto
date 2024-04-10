@@ -42,9 +42,11 @@ message GetUserPostsResponse {
 message CreatePostRequest {
   int32 moduleId = 1;
   string title = 2;
-  string content = 3;
-  optional bool isDraft = 4;
-  optional bool isPrivate = 5;
+  optional string description = 3;
+  string content = 4;
+  optional bool isDraft = 5;
+  optional bool isPrivate = 6;
+  optional int32 imageThumbnailId = 7;
 }
 
 message UpdatePostRequest {

@@ -30,11 +30,19 @@ func (server *ServicePosts) CreatePost(ctx context.Context, req *pb.CreatePostRe
 	}
 
 	arg := db.CreatePostParams{
-		UserID:    authPayload.UserId,
-		Title:     req.GetTitle(),
+		UserID: authPayload.UserId,
+		Title:  req.GetTitle(),
+		Description: sql.NullString{
+			String: req.GetDescription(),
+			Valid:  req.Description != nil,
+		},
 		Content:   req.GetContent(),
 		IsDraft:   req.GetIsDraft(),
 		IsPrivate: req.GetIsPrivate(),
+		ThumbnailImgID: sql.NullInt32{
+			Int32: req.GetImageThumbnailId(),
+			Valid: req.ImageThumbnailId != nil,
+		},
 	}
 
 	postResult, err := server.Store.CreatePost(ctx, arg)
@@ -43,7 +51,7 @@ func (server *ServicePosts) CreatePost(ctx context.Context, req *pb.CreatePostRe
 	}
 
 	_, err = server.Store.CreateEntity(ctx, db.CreateEntityParams{
-		Type:     db.EntityTypeLocation,
+		Type:     db.EntityTypePost,
 		ModuleID: req.GetModuleId(),
 		PostID: sql.NullInt32{
 			Int32: postResult.ID,

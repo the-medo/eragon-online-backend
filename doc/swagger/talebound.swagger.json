@@ -4501,6 +4501,9 @@
         "title": {
           "type": "string"
         },
+        "description": {
+          "type": "string"
+        },
         "content": {
           "type": "string"
         },
@@ -4509,6 +4512,10 @@
         },
         "isPrivate": {
           "type": "boolean"
+        },
+        "imageThumbnailId": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
