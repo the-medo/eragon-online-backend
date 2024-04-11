@@ -9,13 +9,14 @@ import (
 // ConvertViewMap converts a db.ViewMap to pb.ViewMap
 func ConvertViewMap(viewMap db.ViewMap) *pb.ViewMap {
 	pbMap := &pb.ViewMap{
-		Id:        viewMap.ID,
-		Title:     viewMap.Title,
-		Width:     viewMap.Width,
-		Height:    viewMap.Height,
-		Tags:      viewMap.Tags,
-		CreatedAt: timestamppb.New(viewMap.CreatedAt),
-		IsPrivate: viewMap.IsPrivate,
+		Id:               viewMap.ID,
+		Title:            viewMap.Title,
+		Width:            viewMap.Width,
+		Height:           viewMap.Height,
+		Tags:             viewMap.Tags,
+		CreatedAt:        timestamppb.New(viewMap.CreatedAt),
+		IsPrivate:        viewMap.IsPrivate,
+		BaseLayerImageId: viewMap.BaseLayerImageID,
 	}
 
 	if viewMap.Type.Valid {

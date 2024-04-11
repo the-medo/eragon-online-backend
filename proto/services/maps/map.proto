@@ -44,15 +44,16 @@ message ViewMap {
   int32 height = 6;
   optional int32 thumbnailImageId = 7;
   optional string thumbnailImageUrl = 8;
-  google.protobuf.Timestamp createdAt = 9;
-  google.protobuf.Timestamp lastUpdatedAt = 10;
-  int32 lastUpdatedUserId = 11;
-  bool isPrivate = 12;
-  int32 entityId = 13;
-  int32 moduleId = 14;
-  ModuleType moduleType = 15;
-  int32 moduleTypeId = 16;
-  repeated int32 tags = 17;
+  int32 baseLayerImageId = 9;
+  google.protobuf.Timestamp createdAt = 10;
+  google.protobuf.Timestamp lastUpdatedAt = 11;
+  int32 lastUpdatedUserId = 12;
+  bool isPrivate = 13;
+  int32 entityId = 14;
+  int32 moduleId = 15;
+  ModuleType moduleType = 16;
+  int32 moduleTypeId = 17;
+  repeated int32 tags = 18;
 }
 
 message MapLayer {
