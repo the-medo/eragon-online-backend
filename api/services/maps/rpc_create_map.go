@@ -28,7 +28,7 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 	}
 
 	argMap := db.CreateMapParams{
-		Name: request.GetName(),
+		Title: request.GetTitle(),
 		Type: sql.NullString{
 			String: request.GetType(),
 			Valid:  request.Type != nil,
@@ -43,6 +43,7 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 			Int32: request.GetThumbnailImageId(),
 			Valid: request.ThumbnailImageId != nil,
 		},
+		IsPrivate: request.GetIsPrivate(),
 	}
 
 	newMap, err := server.Store.CreateMap(ctx, argMap)
@@ -101,8 +102,8 @@ func validateCreateMap(req *pb.CreateMapRequest) (violations []*errdetails.BadRe
 		violations = append(violations, e.FieldViolation("module_id", err))
 	}
 
-	if err := validator.ValidateUniversalName(req.GetName()); err != nil {
-		violations = append(violations, e.FieldViolation("name", err))
+	if err := validator.ValidateUniversalName(req.GetTitle()); err != nil {
+		violations = append(violations, e.FieldViolation("title", err))
 	}
 
 	if req.Type != nil {

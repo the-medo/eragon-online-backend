@@ -17,16 +17,16 @@ func (server *ServiceMaps) UpdateMap(ctx context.Context, request *pb.UpdateMapR
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeMap, request.GetMapId(), nil)
+	authPayload, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeMap, request.GetMapId(), nil)
 	if err != nil {
 		return nil, err
 	}
 
 	argMap := db.UpdateMapParams{
 		ID: request.GetMapId(),
-		Name: sql.NullString{
-			String: request.GetName(),
-			Valid:  request.Name != nil,
+		Title: sql.NullString{
+			String: request.GetTitle(),
+			Valid:  request.Title != nil,
 		},
 		Type: sql.NullString{
 			String: request.GetType(),
@@ -39,6 +39,14 @@ func (server *ServiceMaps) UpdateMap(ctx context.Context, request *pb.UpdateMapR
 		ThumbnailImageID: sql.NullInt32{
 			Int32: request.GetThumbnailImageId(),
 			Valid: request.ThumbnailImageId != nil,
+		},
+		IsPrivate: sql.NullBool{
+			Bool:  request.GetIsPrivate(),
+			Valid: request.IsPrivate != nil,
+		},
+		LastUpdatedUserID: sql.NullInt32{
+			Int32: authPayload.UserId,
+			Valid: true,
 		},
 	}
 
@@ -62,9 +70,9 @@ func validateUpdateMap(req *pb.UpdateMapRequest) (violations []*errdetails.BadRe
 		violations = append(violations, e.FieldViolation("map_id", err))
 	}
 
-	if req.Name != nil {
-		if err := validator.ValidateUniversalName(req.GetName()); err != nil {
-			violations = append(violations, e.FieldViolation("name", err))
+	if req.Title != nil {
+		if err := validator.ValidateUniversalName(req.GetTitle()); err != nil {
+			violations = append(violations, e.FieldViolation("title", err))
 		}
 	}
 

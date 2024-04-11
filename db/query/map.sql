@@ -1,6 +1,6 @@
 -- name: CreateMap :one
-INSERT INTO maps (name, type, description, width, height, thumbnail_image_id)
-VALUES (sqlc.arg(name), sqlc.narg(type), sqlc.narg(description), sqlc.arg(width), sqlc.arg(height), sqlc.narg(thumbnail_image_id))
+INSERT INTO maps (user_id, title, type, description, width, height, thumbnail_image_id, is_private)
+VALUES (sqlc.arg(user_id), sqlc.arg(title), sqlc.narg(type), sqlc.narg(description), sqlc.arg(width), sqlc.arg(height), sqlc.narg(thumbnail_image_id), sqlc.arg(is_private))
 RETURNING *;
 
 -- name: GetMaps :many
@@ -27,12 +27,15 @@ SELECT * FROM maps WHERE id = sqlc.arg(id);
 -- name: UpdateMap :one
 UPDATE maps
 SET
-    name = COALESCE(sqlc.narg(name), name),
+    title = COALESCE(sqlc.narg(title), title),
     type = COALESCE(sqlc.narg(type), type),
     description = COALESCE(sqlc.narg(description), description),
     width = COALESCE(sqlc.narg(width), width),
     height = COALESCE(sqlc.narg(height), height),
-    thumbnail_image_id = COALESCE(sqlc.narg(thumbnail_image_id), thumbnail_image_id)
+    thumbnail_image_id = COALESCE(sqlc.narg(thumbnail_image_id), thumbnail_image_id),
+    is_private = COALESCE(sqlc.narg(is_private), is_private),
+    last_updated_at = now(),
+    last_updated_user_id =  COALESCE(sqlc.narg(last_updated_user_id), last_updated_user_id)
 WHERE id = sqlc.arg(id)
 RETURNING *;
 

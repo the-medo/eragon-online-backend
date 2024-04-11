@@ -26,11 +26,12 @@ message GetMapsResponse {
 
 message CreateMapRequest {
   int32 moduleId = 1;
-  string name = 2;
+  string title = 2;
   optional string type = 3;
   optional string description = 4;
   optional int32 thumbnailImageId = 5;
-  int32 layerImageId = 6;
+  optional bool isPrivate = 6;
+  int32 layerImageId = 7;
 }
 
 message CreateMapResponse {
@@ -44,10 +45,11 @@ message DeleteMapRequest {
 
 message UpdateMapRequest {
   int32 mapId = 1;
-  optional string name = 2;
+  optional string title = 2;
   optional string type = 3;
   optional string description = 4;
   optional int32 thumbnailImageId = 5;
+  optional bool isPrivate = 6;
 }
 
 message GetMapLayersRequest {

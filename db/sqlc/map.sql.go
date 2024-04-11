@@ -8,39 +8,49 @@ package db
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/lib/pq"
 )
 
 const createMap = `-- name: CreateMap :one
-INSERT INTO maps (name, type, description, width, height, thumbnail_image_id)
-VALUES ($1, $2, $3, $4, $5, $6)
-RETURNING id, name, type, description, width, height, thumbnail_image_id
+INSERT INTO maps (user_id, title, type, description, width, height, thumbnail_image_id, is_private)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+RETURNING id, user_id, title, type, created_at, last_updated_at, last_updated_user_id, is_private, description, width, height, thumbnail_image_id
 `
 
 type CreateMapParams struct {
-	Name             string         `json:"name"`
+	UserID           int32          `json:"user_id"`
+	Title            string         `json:"title"`
 	Type             sql.NullString `json:"type"`
 	Description      sql.NullString `json:"description"`
 	Width            int32          `json:"width"`
 	Height           int32          `json:"height"`
 	ThumbnailImageID sql.NullInt32  `json:"thumbnail_image_id"`
+	IsPrivate        bool           `json:"is_private"`
 }
 
 func (q *Queries) CreateMap(ctx context.Context, arg CreateMapParams) (Map, error) {
 	row := q.db.QueryRowContext(ctx, createMap,
-		arg.Name,
+		arg.UserID,
+		arg.Title,
 		arg.Type,
 		arg.Description,
 		arg.Width,
 		arg.Height,
 		arg.ThumbnailImageID,
+		arg.IsPrivate,
 	)
 	var i Map
 	err := row.Scan(
 		&i.ID,
-		&i.Name,
+		&i.UserID,
+		&i.Title,
 		&i.Type,
+		&i.CreatedAt,
+		&i.LastUpdatedAt,
+		&i.LastUpdatedUserID,
+		&i.IsPrivate,
 		&i.Description,
 		&i.Width,
 		&i.Height,
@@ -300,7 +310,7 @@ func (q *Queries) GetMapAssignments(ctx context.Context, mapID sql.NullInt32) (G
 }
 
 const getMapById = `-- name: GetMapById :one
-SELECT id, name, type, description, width, height, thumbnail_image_id FROM maps WHERE id = $1
+SELECT id, user_id, title, type, created_at, last_updated_at, last_updated_user_id, is_private, description, width, height, thumbnail_image_id FROM maps WHERE id = $1
 `
 
 func (q *Queries) GetMapById(ctx context.Context, id int32) (Map, error) {
@@ -308,8 +318,13 @@ func (q *Queries) GetMapById(ctx context.Context, id int32) (Map, error) {
 	var i Map
 	err := row.Scan(
 		&i.ID,
-		&i.Name,
+		&i.UserID,
+		&i.Title,
 		&i.Type,
+		&i.CreatedAt,
+		&i.LastUpdatedAt,
+		&i.LastUpdatedUserID,
+		&i.IsPrivate,
 		&i.Description,
 		&i.Width,
 		&i.Height,
@@ -548,12 +563,12 @@ func (q *Queries) GetMapPins(ctx context.Context, mapID int32) ([]ViewMapPin, er
 const getMaps = `-- name: GetMaps :many
 WITH cte AS (
     SELECT
-        id, name, type, description, width, height, thumbnail_image_id, thumbnail_image_url, entity_id, module_id, module_type, module_type_id, tags
+        id, user_id, title, type, created_at, last_updated_at, last_updated_user_id, is_private, description, width, height, thumbnail_image_id, base_layer_image_id, thumbnail_image_url, entity_id, module_id, module_type, module_type_id, tags
     FROM get_maps( $3::int[], $4, $5, $6, $7, 0, 0)
 )
 SELECT
     CAST((SELECT count(*) FROM cte) as integer) as total_count,
-    cte.id, cte.name, cte.type, cte.description, cte.width, cte.height, cte.thumbnail_image_id, cte.thumbnail_image_url, cte.entity_id, cte.module_id, cte.module_type, cte.module_type_id, cte.tags
+    cte.id, cte.user_id, cte.title, cte.type, cte.created_at, cte.last_updated_at, cte.last_updated_user_id, cte.is_private, cte.description, cte.width, cte.height, cte.thumbnail_image_id, cte.base_layer_image_id, cte.thumbnail_image_url, cte.entity_id, cte.module_id, cte.module_type, cte.module_type_id, cte.tags
 FROM cte
 ORDER BY id DESC
 LIMIT $2
@@ -573,12 +588,18 @@ type GetMapsParams struct {
 type GetMapsRow struct {
 	TotalCount        int32          `json:"total_count"`
 	ID                int32          `json:"id"`
-	Name              string         `json:"name"`
+	UserID            int32          `json:"user_id"`
+	Title             string         `json:"title"`
 	Type              sql.NullString `json:"type"`
+	CreatedAt         time.Time      `json:"created_at"`
+	LastUpdatedAt     sql.NullTime   `json:"last_updated_at"`
+	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
+	IsPrivate         bool           `json:"is_private"`
 	Description       sql.NullString `json:"description"`
 	Width             int32          `json:"width"`
 	Height            int32          `json:"height"`
 	ThumbnailImageID  sql.NullInt32  `json:"thumbnail_image_id"`
+	BaseLayerImageID  int32          `json:"base_layer_image_id"`
 	ThumbnailImageUrl sql.NullString `json:"thumbnail_image_url"`
 	EntityID          sql.NullInt32  `json:"entity_id"`
 	ModuleID          sql.NullInt32  `json:"module_id"`
@@ -607,12 +628,18 @@ func (q *Queries) GetMaps(ctx context.Context, arg GetMapsParams) ([]GetMapsRow,
 		if err := rows.Scan(
 			&i.TotalCount,
 			&i.ID,
-			&i.Name,
+			&i.UserID,
+			&i.Title,
 			&i.Type,
+			&i.CreatedAt,
+			&i.LastUpdatedAt,
+			&i.LastUpdatedUserID,
+			&i.IsPrivate,
 			&i.Description,
 			&i.Width,
 			&i.Height,
 			&i.ThumbnailImageID,
+			&i.BaseLayerImageID,
 			&i.ThumbnailImageUrl,
 			&i.EntityID,
 			&i.ModuleID,
@@ -634,7 +661,7 @@ func (q *Queries) GetMaps(ctx context.Context, arg GetMapsParams) ([]GetMapsRow,
 }
 
 const getMapsByIDs = `-- name: GetMapsByIDs :many
-SELECT id, name, type, description, width, height, thumbnail_image_id FROM maps WHERE id = ANY($1::int[])
+SELECT id, user_id, title, type, created_at, last_updated_at, last_updated_user_id, is_private, description, width, height, thumbnail_image_id FROM maps WHERE id = ANY($1::int[])
 `
 
 func (q *Queries) GetMapsByIDs(ctx context.Context, mapIds []int32) ([]Map, error) {
@@ -648,8 +675,13 @@ func (q *Queries) GetMapsByIDs(ctx context.Context, mapIds []int32) ([]Map, erro
 		var i Map
 		if err := rows.Scan(
 			&i.ID,
-			&i.Name,
+			&i.UserID,
+			&i.Title,
 			&i.Type,
+			&i.CreatedAt,
+			&i.LastUpdatedAt,
+			&i.LastUpdatedUserID,
+			&i.IsPrivate,
 			&i.Description,
 			&i.Width,
 			&i.Height,
@@ -671,41 +703,53 @@ func (q *Queries) GetMapsByIDs(ctx context.Context, mapIds []int32) ([]Map, erro
 const updateMap = `-- name: UpdateMap :one
 UPDATE maps
 SET
-    name = COALESCE($1, name),
+    title = COALESCE($1, title),
     type = COALESCE($2, type),
     description = COALESCE($3, description),
     width = COALESCE($4, width),
     height = COALESCE($5, height),
-    thumbnail_image_id = COALESCE($6, thumbnail_image_id)
-WHERE id = $7
-RETURNING id, name, type, description, width, height, thumbnail_image_id
+    thumbnail_image_id = COALESCE($6, thumbnail_image_id),
+    is_private = COALESCE($7, is_private),
+    last_updated_at = now(),
+    last_updated_user_id =  COALESCE($8, last_updated_user_id)
+WHERE id = $9
+RETURNING id, user_id, title, type, created_at, last_updated_at, last_updated_user_id, is_private, description, width, height, thumbnail_image_id
 `
 
 type UpdateMapParams struct {
-	Name             sql.NullString `json:"name"`
-	Type             sql.NullString `json:"type"`
-	Description      sql.NullString `json:"description"`
-	Width            sql.NullInt32  `json:"width"`
-	Height           sql.NullInt32  `json:"height"`
-	ThumbnailImageID sql.NullInt32  `json:"thumbnail_image_id"`
-	ID               int32          `json:"id"`
+	Title             sql.NullString `json:"title"`
+	Type              sql.NullString `json:"type"`
+	Description       sql.NullString `json:"description"`
+	Width             sql.NullInt32  `json:"width"`
+	Height            sql.NullInt32  `json:"height"`
+	ThumbnailImageID  sql.NullInt32  `json:"thumbnail_image_id"`
+	IsPrivate         sql.NullBool   `json:"is_private"`
+	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
+	ID                int32          `json:"id"`
 }
 
 func (q *Queries) UpdateMap(ctx context.Context, arg UpdateMapParams) (Map, error) {
 	row := q.db.QueryRowContext(ctx, updateMap,
-		arg.Name,
+		arg.Title,
 		arg.Type,
 		arg.Description,
 		arg.Width,
 		arg.Height,
 		arg.ThumbnailImageID,
+		arg.IsPrivate,
+		arg.LastUpdatedUserID,
 		arg.ID,
 	)
 	var i Map
 	err := row.Scan(
 		&i.ID,
-		&i.Name,
+		&i.UserID,
+		&i.Title,
 		&i.Type,
+		&i.CreatedAt,
+		&i.LastUpdatedAt,
+		&i.LastUpdatedUserID,
+		&i.IsPrivate,
 		&i.Description,
 		&i.Width,
 		&i.Height,

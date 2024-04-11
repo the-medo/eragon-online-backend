@@ -1326,7 +1326,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
+                "title": {
                   "type": "string"
                 },
                 "type": {
@@ -1338,6 +1338,9 @@
                 "thumbnailImageId": {
                   "type": "integer",
                   "format": "int32"
+                },
+                "isPrivate": {
+                  "type": "boolean"
                 }
               }
             }
@@ -4417,7 +4420,7 @@
           "type": "integer",
           "format": "int32"
         },
-        "name": {
+        "title": {
           "type": "string"
         },
         "type": {
@@ -4429,6 +4432,9 @@
         "thumbnailImageId": {
           "type": "integer",
           "format": "int32"
+        },
+        "isPrivate": {
+          "type": "boolean"
         },
         "layerImageId": {
           "type": "integer",
@@ -5167,26 +5173,48 @@
           "type": "integer",
           "format": "int32"
         },
-        "name": {
-          "type": "string"
+        "title": {
+          "type": "string",
+          "title": "field is sortable"
         },
         "type": {
-          "type": "string"
+          "type": "string",
+          "title": "field is sortable"
         },
         "description": {
           "type": "string"
         },
         "width": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "title": "field is sortable"
         },
         "height": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "title": "field is sortable"
         },
         "thumbnailImageId": {
           "type": "integer",
           "format": "int32"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "field is sortable"
+        },
+        "lastUpdatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "field is sortable"
+        },
+        "lastUpdatedUserId": {
+          "type": "integer",
+          "format": "int32",
+          "title": "field is sortable"
+        },
+        "isPrivate": {
+          "type": "boolean"
         }
       }
     },

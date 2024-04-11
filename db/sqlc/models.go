@@ -375,13 +375,18 @@ type Location struct {
 }
 
 type Map struct {
-	ID               int32          `json:"id"`
-	Name             string         `json:"name"`
-	Type             sql.NullString `json:"type"`
-	Description      sql.NullString `json:"description"`
-	Width            int32          `json:"width"`
-	Height           int32          `json:"height"`
-	ThumbnailImageID sql.NullInt32  `json:"thumbnail_image_id"`
+	ID                int32          `json:"id"`
+	UserID            int32          `json:"user_id"`
+	Title             string         `json:"title"`
+	Type              sql.NullString `json:"type"`
+	CreatedAt         time.Time      `json:"created_at"`
+	LastUpdatedAt     sql.NullTime   `json:"last_updated_at"`
+	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
+	IsPrivate         bool           `json:"is_private"`
+	Description       sql.NullString `json:"description"`
+	Width             int32          `json:"width"`
+	Height            int32          `json:"height"`
+	ThumbnailImageID  sql.NullInt32  `json:"thumbnail_image_id"`
 }
 
 type MapLayer struct {
@@ -648,12 +653,18 @@ type ViewLocation struct {
 
 type ViewMap struct {
 	ID                int32          `json:"id"`
-	Name              string         `json:"name"`
+	UserID            int32          `json:"user_id"`
+	Title             string         `json:"title"`
 	Type              sql.NullString `json:"type"`
+	CreatedAt         time.Time      `json:"created_at"`
+	LastUpdatedAt     sql.NullTime   `json:"last_updated_at"`
+	LastUpdatedUserID sql.NullInt32  `json:"last_updated_user_id"`
+	IsPrivate         bool           `json:"is_private"`
 	Description       sql.NullString `json:"description"`
 	Width             int32          `json:"width"`
 	Height            int32          `json:"height"`
 	ThumbnailImageID  sql.NullInt32  `json:"thumbnail_image_id"`
+	BaseLayerImageID  int32          `json:"base_layer_image_id"`
 	ThumbnailImageUrl sql.NullString `json:"thumbnail_image_url"`
 	EntityID          sql.NullInt32  `json:"entity_id"`
 	ModuleID          sql.NullInt32  `json:"module_id"`
