@@ -185,7 +185,7 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			BorderColor:       sql.NullString{String: "#000000", Valid: true},
 			IconColor:         sql.NullString{String: "#000000", Valid: true},
 			Width:             sql.NullInt32{Int32: 24, Valid: true},
-			Section:           "Base",
+			IsDefault:         sql.NullBool{Bool: true, Valid: true},
 		})
 		if err != nil {
 			return err

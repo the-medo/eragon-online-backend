@@ -63,9 +63,8 @@ message CreateMapLayerRequest {
   int32 mapId = 1;
   string name = 2;
   int32 imageId = 3;
-  bool isMain = 4;
-  bool enabled = 5;
-  int32 position = 6;
+  bool enabled = 4;
+  int32 position = 5;
 }
 
 message DeleteMapLayerRequest {
@@ -78,9 +77,8 @@ message UpdateMapLayerRequest {
   int32 layerId = 2;
   optional string name = 3;
   optional int32 imageId = 4;
-  optional bool isMain = 5;
-  optional bool enabled = 6;
-  optional int32 position = 7;
+  optional bool enabled = 5;
+  optional int32 position = 6;
 }
 
 message GetMapPinTypesRequest {
@@ -99,7 +97,6 @@ message CreateMapPinTypeRequest {
   string icon = 6;
   int32 iconSize = 7;
   int32 width = 8;
-  string section = 9;
 }
 
 message DeleteMapPinTypeRequest {
@@ -117,7 +114,7 @@ message UpdateMapPinTypeRequest {
   optional string icon = 7;
   optional int32 iconSize = 8;
   optional int32 width = 9;
-  optional string section = 10;
+  optional bool isDefault = 10;
 }
 
 message UpdateMapPinTypeResponse {

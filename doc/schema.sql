@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2024-04-11T21:22:24.439Z
+-- Generated at: 2024-04-14T18:18:52.364Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -253,7 +253,6 @@ CREATE TABLE "map_layers" (
   "name" varchar NOT NULL,
   "map_id" int NOT NULL,
   "image_id" int NOT NULL,
-  "is_main" bool NOT NULL DEFAULT false,
   "enabled" bool NOT NULL DEFAULT true,
   "position" int NOT NULL
 );
@@ -289,7 +288,7 @@ CREATE TABLE "map_pin_types" (
   "icon" varchar,
   "icon_size" int,
   "width" int,
-  "section" varchar NOT NULL DEFAULT 'base'
+  "is_default" bool NOT NULL DEFAULT false
 );
 
 CREATE TABLE "quests" (

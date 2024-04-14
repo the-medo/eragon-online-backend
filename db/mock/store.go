@@ -2256,20 +2256,6 @@ func (mr *MockStoreMockRecorder) UpdateMapLayer(arg0, arg1 interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMapLayer", reflect.TypeOf((*MockStore)(nil).UpdateMapLayer), arg0, arg1)
 }
 
-// UpdateMapLayerIsMain mocks base method.
-func (m *MockStore) UpdateMapLayerIsMain(arg0 context.Context, arg1 int32) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateMapLayerIsMain", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpdateMapLayerIsMain indicates an expected call of UpdateMapLayerIsMain.
-func (mr *MockStoreMockRecorder) UpdateMapLayerIsMain(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMapLayerIsMain", reflect.TypeOf((*MockStore)(nil).UpdateMapLayerIsMain), arg0, arg1)
-}
-
 // UpdateMapPin mocks base method.
 func (m *MockStore) UpdateMapPin(arg0 context.Context, arg1 db.UpdateMapPinParams) (db.MapPin, error) {
 	m.ctrl.T.Helper()

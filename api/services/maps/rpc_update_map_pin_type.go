@@ -52,9 +52,9 @@ func (server *ServiceMaps) UpdateMapPinType(ctx context.Context, request *pb.Upd
 			Int32: request.GetWidth(),
 			Valid: request.Width != nil,
 		},
-		Section: sql.NullString{
-			String: request.GetSection(),
-			Valid:  request.Section != nil,
+		IsDefault: sql.NullBool{
+			Bool:  request.GetIsDefault(),
+			Valid: request.IsDefault != nil,
 		},
 	}
 

@@ -61,9 +61,8 @@ message MapLayer {
   string name = 2;
   int32 mapId = 3;
   int32 imageId = 4;
-  bool isMain = 5;
-  bool enabled = 6;
-  int32 position = 7;
+  bool enabled = 5;
+  int32 position = 6;
 }
 
 message ViewMapLayer {
@@ -72,9 +71,8 @@ message ViewMapLayer {
   int32 mapId = 3;
   int32 imageId = 4;
   string imageUrl = 5;
-  bool isMain = 6;
-  bool enabled = 7;
-  int32 position = 8;
+  bool enabled = 6;
+  int32 position = 7;
 }
 
 message MapPinType {
@@ -87,7 +85,7 @@ message MapPinType {
   string icon = 7;
   int32 iconSize = 8;
   int32 width = 9;
-  string section = 10;
+  bool isDefault = 10;
 }
 
 message MapPin {

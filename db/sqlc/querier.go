@@ -159,7 +159,6 @@ type Querier interface {
 	UpdateLocation(ctx context.Context, arg UpdateLocationParams) (Location, error)
 	UpdateMap(ctx context.Context, arg UpdateMapParams) (Map, error)
 	UpdateMapLayer(ctx context.Context, arg UpdateMapLayerParams) (MapLayer, error)
-	UpdateMapLayerIsMain(ctx context.Context, mapLayerID int32) error
 	UpdateMapPin(ctx context.Context, arg UpdateMapPinParams) (MapPin, error)
 	UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypeParams) (MapPinType, error)
 	UpdateMapPinTypeGroup(ctx context.Context, arg UpdateMapPinTypeGroupParams) (MapPinTypeGroup, error)

@@ -28,8 +28,8 @@ func (server *ServiceMaps) DeleteMapLayer(ctx context.Context, request *pb.Delet
 	if err != nil {
 		return nil, err
 	}
-	if mapLayer.IsMain {
-		return nil, status.Errorf(codes.PermissionDenied, "cannot delete main map layer")
+	if mapLayer.Position == 1 {
+		return nil, status.Errorf(codes.PermissionDenied, "cannot delete main map layer!")
 	}
 
 	err = server.Store.DeleteMapPinsForMapLayer(ctx, sql.NullInt32{

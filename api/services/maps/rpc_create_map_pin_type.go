@@ -54,7 +54,6 @@ func (server *ServiceMaps) CreateMapPinType(ctx context.Context, request *pb.Cre
 			Int32: request.GetWidth(),
 			Valid: true,
 		},
-		Section: request.GetSection(),
 	}
 
 	newPinType, err := server.Store.CreateMapPinType(ctx, argPinType)

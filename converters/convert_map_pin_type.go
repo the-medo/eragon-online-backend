@@ -11,7 +11,7 @@ func ConvertMapPinType(mapPinType db.MapPinType) *pb.MapPinType {
 		Id:                mapPinType.ID,
 		MapPinTypeGroupId: mapPinType.MapPinTypeGroupID,
 		Shape:             ConvertPinShapeToPB(mapPinType.Shape),
-		Section:           mapPinType.Section,
+		IsDefault:         mapPinType.IsDefault,
 	}
 
 	if mapPinType.BackgroundColor.Valid {

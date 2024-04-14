@@ -67,7 +67,6 @@ func (server *ServiceMaps) CreateMap(ctx context.Context, request *pb.CreateMapR
 		Name:     "Main layer",
 		MapID:    newMap.ID,
 		ImageID:  request.GetLayerImageId(),
-		IsMain:   true,
 		Enabled:  true,
 		Position: 1,
 	}

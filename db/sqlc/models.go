@@ -394,7 +394,6 @@ type MapLayer struct {
 	Name    string `json:"name"`
 	MapID   int32  `json:"map_id"`
 	ImageID int32  `json:"image_id"`
-	IsMain  bool   `json:"is_main"`
 	Enabled bool   `json:"enabled"`
 	// Position 1 means main layer. Highest position = highest layer.
 	Position int32 `json:"position"`
@@ -421,7 +420,7 @@ type MapPinType struct {
 	Icon              sql.NullString `json:"icon"`
 	IconSize          sql.NullInt32  `json:"icon_size"`
 	Width             sql.NullInt32  `json:"width"`
-	Section           string         `json:"section"`
+	IsDefault         bool           `json:"is_default"`
 }
 
 type MapPinTypeGroup struct {
@@ -678,7 +677,6 @@ type ViewMapLayer struct {
 	Name     string         `json:"name"`
 	MapID    int32          `json:"map_id"`
 	ImageID  int32          `json:"image_id"`
-	IsMain   bool           `json:"is_main"`
 	Enabled  bool           `json:"enabled"`
 	Position int32          `json:"position"`
 	ImageUrl sql.NullString `json:"image_url"`

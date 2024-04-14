@@ -1,0 +1,1 @@
+-- no longer valid - is_main column deleted

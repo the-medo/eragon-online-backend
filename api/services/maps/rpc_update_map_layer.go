@@ -22,13 +22,6 @@ func (server *ServiceMaps) UpdateMapLayer(ctx context.Context, request *pb.Updat
 		return nil, err
 	}
 
-	if request.IsMain != nil && request.GetIsMain() {
-		err = server.Store.UpdateMapLayerIsMain(ctx, request.GetLayerId())
-		if err != nil {
-			return nil, err
-		}
-	}
-
 	if request.Name != nil || request.ImageId != nil || request.Enabled != nil || request.Position != nil {
 
 		if request.ImageId != nil {

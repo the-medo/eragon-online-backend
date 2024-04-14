@@ -1423,9 +1423,6 @@
                   "type": "integer",
                   "format": "int32"
                 },
-                "isMain": {
-                  "type": "boolean"
-                },
                 "enabled": {
                   "type": "boolean"
                 },
@@ -1528,9 +1525,6 @@
                 "imageId": {
                   "type": "integer",
                   "format": "int32"
-                },
-                "isMain": {
-                  "type": "boolean"
                 },
                 "enabled": {
                   "type": "boolean"
@@ -1635,9 +1629,6 @@
                 "width": {
                   "type": "integer",
                   "format": "int32"
-                },
-                "section": {
-                  "type": "string"
                 }
               }
             }
@@ -1751,8 +1742,8 @@
                   "type": "integer",
                   "format": "int32"
                 },
-                "section": {
-                  "type": "string"
+                "isDefault": {
+                  "type": "boolean"
                 }
               }
             }
@@ -5245,8 +5236,8 @@
           "type": "integer",
           "format": "int32"
         },
-        "section": {
-          "type": "string"
+        "isDefault": {
+          "type": "boolean"
         }
       }
     },
@@ -5914,9 +5905,6 @@
         },
         "imageUrl": {
           "type": "string"
-        },
-        "isMain": {
-          "type": "boolean"
         },
         "enabled": {
           "type": "boolean"

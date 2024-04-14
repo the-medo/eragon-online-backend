@@ -60,16 +60,15 @@ func (q *Queries) CreateMap(ctx context.Context, arg CreateMapParams) (Map, erro
 }
 
 const createMapLayer = `-- name: CreateMapLayer :one
-INSERT INTO map_layers (name, map_id, image_id, is_main, enabled, position)
-VALUES ($1, $2, $3, $4, $5, $6)
-RETURNING id, name, map_id, image_id, is_main, enabled, position
+INSERT INTO map_layers (name, map_id, image_id, enabled, position)
+VALUES ($1, $2, $3, $4, $5)
+RETURNING id, name, map_id, image_id, enabled, position
 `
 
 type CreateMapLayerParams struct {
 	Name     string `json:"name"`
 	MapID    int32  `json:"map_id"`
 	ImageID  int32  `json:"image_id"`
-	IsMain   bool   `json:"is_main"`
 	Enabled  bool   `json:"enabled"`
 	Position int32  `json:"position"`
 }
@@ -79,7 +78,6 @@ func (q *Queries) CreateMapLayer(ctx context.Context, arg CreateMapLayerParams) 
 		arg.Name,
 		arg.MapID,
 		arg.ImageID,
-		arg.IsMain,
 		arg.Enabled,
 		arg.Position,
 	)
@@ -89,7 +87,6 @@ func (q *Queries) CreateMapLayer(ctx context.Context, arg CreateMapLayerParams) 
 		&i.Name,
 		&i.MapID,
 		&i.ImageID,
-		&i.IsMain,
 		&i.Enabled,
 		&i.Position,
 	)
@@ -138,9 +135,9 @@ func (q *Queries) CreateMapPin(ctx context.Context, arg CreateMapPinParams) (Map
 
 const createMapPinType = `-- name: CreateMapPinType :one
 
-INSERT INTO map_pin_types (shape, background_color, border_color, icon_color, icon, icon_size, width, map_pin_type_group_id, section)
+INSERT INTO map_pin_types (shape, background_color, border_color, icon_color, icon, icon_size, width, map_pin_type_group_id, is_default)
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 )
-RETURNING id, map_pin_type_group_id, shape, background_color, border_color, icon_color, icon, icon_size, width, section
+RETURNING id, map_pin_type_group_id, shape, background_color, border_color, icon_color, icon, icon_size, width, is_default
 `
 
 type CreateMapPinTypeParams struct {
@@ -152,7 +149,7 @@ type CreateMapPinTypeParams struct {
 	IconSize          sql.NullInt32  `json:"icon_size"`
 	Width             sql.NullInt32  `json:"width"`
 	MapPinTypeGroupID int32          `json:"map_pin_type_group_id"`
-	Section           string         `json:"section"`
+	IsDefault         sql.NullBool   `json:"is_default"`
 }
 
 // ------------------------------------
@@ -166,7 +163,7 @@ func (q *Queries) CreateMapPinType(ctx context.Context, arg CreateMapPinTypePara
 		arg.IconSize,
 		arg.Width,
 		arg.MapPinTypeGroupID,
-		arg.Section,
+		arg.IsDefault,
 	)
 	var i MapPinType
 	err := row.Scan(
@@ -179,7 +176,7 @@ func (q *Queries) CreateMapPinType(ctx context.Context, arg CreateMapPinTypePara
 		&i.Icon,
 		&i.IconSize,
 		&i.Width,
-		&i.Section,
+		&i.IsDefault,
 	)
 	return i, err
 }
@@ -334,7 +331,7 @@ func (q *Queries) GetMapById(ctx context.Context, id int32) (Map, error) {
 }
 
 const getMapLayerByID = `-- name: GetMapLayerByID :one
-SELECT id, name, map_id, image_id, is_main, enabled, position, image_url FROM view_map_layers WHERE id = $1
+SELECT id, name, map_id, image_id, enabled, position, image_url FROM view_map_layers WHERE id = $1
 `
 
 func (q *Queries) GetMapLayerByID(ctx context.Context, mapLayerID int32) (ViewMapLayer, error) {
@@ -345,7 +342,6 @@ func (q *Queries) GetMapLayerByID(ctx context.Context, mapLayerID int32) (ViewMa
 		&i.Name,
 		&i.MapID,
 		&i.ImageID,
-		&i.IsMain,
 		&i.Enabled,
 		&i.Position,
 		&i.ImageUrl,
@@ -354,7 +350,7 @@ func (q *Queries) GetMapLayerByID(ctx context.Context, mapLayerID int32) (ViewMa
 }
 
 const getMapLayers = `-- name: GetMapLayers :many
-SELECT id, name, map_id, image_id, is_main, enabled, position, image_url FROM view_map_layers WHERE map_id = $1
+SELECT id, name, map_id, image_id, enabled, position, image_url FROM view_map_layers WHERE map_id = $1
 `
 
 func (q *Queries) GetMapLayers(ctx context.Context, mapID int32) ([]ViewMapLayer, error) {
@@ -371,7 +367,6 @@ func (q *Queries) GetMapLayers(ctx context.Context, mapID int32) ([]ViewMapLayer
 			&i.Name,
 			&i.MapID,
 			&i.ImageID,
-			&i.IsMain,
 			&i.Enabled,
 			&i.Position,
 			&i.ImageUrl,
@@ -433,7 +428,7 @@ func (q *Queries) GetMapPinTypeGroupIdForMap(ctx context.Context, mapID sql.Null
 
 const getMapPinTypesForMap = `-- name: GetMapPinTypesForMap :many
 SELECT
-    mpt.id, mpt.map_pin_type_group_id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.section
+    mpt.id, mpt.map_pin_type_group_id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.is_default
 FROM
     map_pin_types mpt
     JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
@@ -460,7 +455,7 @@ func (q *Queries) GetMapPinTypesForMap(ctx context.Context, mapID sql.NullInt32)
 			&i.Icon,
 			&i.IconSize,
 			&i.Width,
-			&i.Section,
+			&i.IsDefault,
 		); err != nil {
 			return nil, err
 		}
@@ -477,7 +472,7 @@ func (q *Queries) GetMapPinTypesForMap(ctx context.Context, mapID sql.NullInt32)
 
 const getMapPinTypesForWorld = `-- name: GetMapPinTypesForWorld :many
 SELECT
-    mpt.id, mpt.map_pin_type_group_id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.section
+    mpt.id, mpt.map_pin_type_group_id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.is_default
 FROM
     map_pin_types mpt
     JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
@@ -504,7 +499,7 @@ func (q *Queries) GetMapPinTypesForWorld(ctx context.Context, worldID sql.NullIn
 			&i.Icon,
 			&i.IconSize,
 			&i.Width,
-			&i.Section,
+			&i.IsDefault,
 		); err != nil {
 			return nil, err
 		}
@@ -766,7 +761,7 @@ SET
     enabled = COALESCE($3, enabled),
     position = COALESCE($4, position)
 WHERE id = $5
-RETURNING id, name, map_id, image_id, is_main, enabled, position
+RETURNING id, name, map_id, image_id, enabled, position
 `
 
 type UpdateMapLayerParams struct {
@@ -791,20 +786,10 @@ func (q *Queries) UpdateMapLayer(ctx context.Context, arg UpdateMapLayerParams) 
 		&i.Name,
 		&i.MapID,
 		&i.ImageID,
-		&i.IsMain,
 		&i.Enabled,
 		&i.Position,
 	)
 	return i, err
-}
-
-const updateMapLayerIsMain = `-- name: UpdateMapLayerIsMain :exec
-CALL update_map_layer_is_main($1)
-`
-
-func (q *Queries) UpdateMapLayerIsMain(ctx context.Context, mapLayerID int32) error {
-	_, err := q.db.ExecContext(ctx, updateMapLayerIsMain, mapLayerID)
-	return err
 }
 
 const updateMapPin = `-- name: UpdateMapPin :one
@@ -864,9 +849,9 @@ SET
     icon = COALESCE($5, icon),
     icon_size = COALESCE($6, icon_size),
     width = COALESCE($7, width),
-    section = COALESCE($8, section)
+    is_default = COALESCE($8, is_default)
 WHERE id = $9
-RETURNING id, map_pin_type_group_id, shape, background_color, border_color, icon_color, icon, icon_size, width, section
+RETURNING id, map_pin_type_group_id, shape, background_color, border_color, icon_color, icon, icon_size, width, is_default
 `
 
 type UpdateMapPinTypeParams struct {
@@ -877,7 +862,7 @@ type UpdateMapPinTypeParams struct {
 	Icon            sql.NullString `json:"icon"`
 	IconSize        sql.NullInt32  `json:"icon_size"`
 	Width           sql.NullInt32  `json:"width"`
-	Section         sql.NullString `json:"section"`
+	IsDefault       sql.NullBool   `json:"is_default"`
 	ID              int32          `json:"id"`
 }
 
@@ -890,7 +875,7 @@ func (q *Queries) UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypePara
 		arg.Icon,
 		arg.IconSize,
 		arg.Width,
-		arg.Section,
+		arg.IsDefault,
 		arg.ID,
 	)
 	var i MapPinType
@@ -904,7 +889,7 @@ func (q *Queries) UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypePara
 		&i.Icon,
 		&i.IconSize,
 		&i.Width,
-		&i.Section,
+		&i.IsDefault,
 	)
 	return i, err
 }

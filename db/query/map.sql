@@ -43,8 +43,8 @@ RETURNING *;
 CALL delete_map(sqlc.arg(id));
 
 -- name: CreateMapLayer :one
-INSERT INTO map_layers (name, map_id, image_id, is_main, enabled, position)
-VALUES (sqlc.arg(name), sqlc.arg(map_id), sqlc.arg(image_id), sqlc.arg(is_main), sqlc.arg(enabled), sqlc.arg(position))
+INSERT INTO map_layers (name, map_id, image_id, enabled, position)
+VALUES (sqlc.arg(name), sqlc.arg(map_id), sqlc.arg(image_id), sqlc.arg(enabled), sqlc.arg(position))
 RETURNING *;
 
 -- name: GetMapLayers :many
@@ -63,9 +63,6 @@ SET
 WHERE id = sqlc.arg(id)
 RETURNING *;
 
--- name: UpdateMapLayerIsMain :exec
-CALL update_map_layer_is_main(sqlc.arg(map_layer_id));
-
 -- name: DeleteMapLayer :exec
 DELETE FROM map_layers WHERE id = sqlc.arg(id);
 
@@ -76,8 +73,8 @@ DELETE FROM map_layers WHERE map_id = sqlc.arg(map_id);
 --------------------------------------
 
 -- name: CreateMapPinType :one
-INSERT INTO map_pin_types (shape, background_color, border_color, icon_color, icon, icon_size, width, map_pin_type_group_id, section)
-VALUES (sqlc.arg(shape), sqlc.arg(background_color), sqlc.arg(border_color), sqlc.arg(icon_color), sqlc.arg(icon), sqlc.arg(icon_size), sqlc.arg(width), sqlc.arg(map_pin_type_group_id), sqlc.arg(section) )
+INSERT INTO map_pin_types (shape, background_color, border_color, icon_color, icon, icon_size, width, map_pin_type_group_id, is_default)
+VALUES (sqlc.arg(shape), sqlc.arg(background_color), sqlc.arg(border_color), sqlc.arg(icon_color), sqlc.arg(icon), sqlc.arg(icon_size), sqlc.arg(width), sqlc.arg(map_pin_type_group_id), sqlc.narg(is_default) )
 RETURNING *;
 
 -- name: GetMapPinTypesForMap :many
@@ -108,7 +105,7 @@ SET
     icon = COALESCE(sqlc.narg(icon), icon),
     icon_size = COALESCE(sqlc.narg(icon_size), icon_size),
     width = COALESCE(sqlc.narg(width), width),
-    section = COALESCE(sqlc.narg(section), section)
+    is_default = COALESCE(sqlc.narg(is_default), is_default)
 WHERE id = sqlc.arg(id)
 RETURNING *;
 

@@ -12,7 +12,6 @@ func ConvertViewMapLayer(viewMapLayer db.ViewMapLayer) *pb.ViewMapLayer {
 		Name:     viewMapLayer.Name,
 		MapId:    viewMapLayer.MapID,
 		ImageId:  viewMapLayer.ImageID,
-		IsMain:   viewMapLayer.IsMain,
 		Enabled:  viewMapLayer.Enabled,
 		Position: viewMapLayer.Position,
 	}
