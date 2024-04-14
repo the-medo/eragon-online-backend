@@ -12,25 +12,6 @@ import (
 	"github.com/lib/pq"
 )
 
-const createModuleMapPinTypeGroup = `-- name: CreateModuleMapPinTypeGroup :one
-INSERT INTO module_map_pin_type_groups (module_id, map_pin_type_group_id)
-VALUES ($1, $2)
-ON CONFLICT (module_id, map_pin_type_group_id) DO NOTHING
-RETURNING module_id, map_pin_type_group_id
-`
-
-type CreateModuleMapPinTypeGroupParams struct {
-	ModuleID          int32 `json:"module_id"`
-	MapPinTypeGroupID int32 `json:"map_pin_type_group_id"`
-}
-
-func (q *Queries) CreateModuleMapPinTypeGroup(ctx context.Context, arg CreateModuleMapPinTypeGroupParams) (ModuleMapPinTypeGroup, error) {
-	row := q.db.QueryRowContext(ctx, createModuleMapPinTypeGroup, arg.ModuleID, arg.MapPinTypeGroupID)
-	var i ModuleMapPinTypeGroup
-	err := row.Scan(&i.ModuleID, &i.MapPinTypeGroupID)
-	return i, err
-}
-
 const createWorld = `-- name: CreateWorld :one
 INSERT INTO worlds (
     name,
@@ -59,20 +40,6 @@ func (q *Queries) CreateWorld(ctx context.Context, arg CreateWorldParams) (World
 		&i.ShortDescription,
 	)
 	return i, err
-}
-
-const deleteModuleMapPinTypeGroup = `-- name: DeleteModuleMapPinTypeGroup :exec
-DELETE FROM module_map_pin_type_groups WHERE module_id = $1 AND map_pin_type_group_id = $2
-`
-
-type DeleteModuleMapPinTypeGroupParams struct {
-	ModuleID          int32 `json:"module_id"`
-	MapPinTypeGroupID int32 `json:"map_pin_type_group_id"`
-}
-
-func (q *Queries) DeleteModuleMapPinTypeGroup(ctx context.Context, arg DeleteModuleMapPinTypeGroupParams) error {
-	_, err := q.db.ExecContext(ctx, deleteModuleMapPinTypeGroup, arg.ModuleID, arg.MapPinTypeGroupID)
-	return err
 }
 
 const deleteWorld = `-- name: DeleteWorld :exec

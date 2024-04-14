@@ -26,6 +26,7 @@ type Querier interface {
 	CreateMapPin(ctx context.Context, arg CreateMapPinParams) (MapPin, error)
 	//------------------------------------
 	CreateMapPinType(ctx context.Context, arg CreateMapPinTypeParams) (MapPinType, error)
+	//------------------------------------
 	CreateMapPinTypeGroup(ctx context.Context, name string) (MapPinTypeGroup, error)
 	CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, error)
 	CreateMenuItem(ctx context.Context, arg CreateMenuItemParams) (MenuItem, error)

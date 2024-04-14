@@ -124,6 +124,22 @@ message UpdateMapPinTypeResponse {
   MapPinType pinType = 1;
 }
 
+message CreateMapPinTypeGroupRequest {
+  int32 moduleId = 1;
+  string name = 2;
+}
+
+message UpdateMapPinTypeGroupRequest {
+  int32 moduleId = 1;
+  int32 mapPinTypeGroupId = 2;
+  string name = 3;
+}
+
+message DeleteMapPinTypeGroupRequest {
+  int32 moduleId = 1;
+  int32 mapPinTypeGroupId = 2;
+}
+
 message GetMapPinsRequest {
   int32 mapId = 1;
 }

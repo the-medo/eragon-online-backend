@@ -182,13 +182,34 @@ func (q *Queries) CreateMapPinType(ctx context.Context, arg CreateMapPinTypePara
 }
 
 const createMapPinTypeGroup = `-- name: CreateMapPinTypeGroup :one
-INSERT INTO map_pin_type_group (name) VALUES ($1) RETURNING id, name
+INSERT INTO map_pin_type_group (name)
+VALUES ($1)
+RETURNING id, name
 `
 
+// ------------------------------------
 func (q *Queries) CreateMapPinTypeGroup(ctx context.Context, name string) (MapPinTypeGroup, error) {
 	row := q.db.QueryRowContext(ctx, createMapPinTypeGroup, name)
 	var i MapPinTypeGroup
 	err := row.Scan(&i.ID, &i.Name)
+	return i, err
+}
+
+const createModuleMapPinTypeGroup = `-- name: CreateModuleMapPinTypeGroup :one
+INSERT INTO module_map_pin_type_groups (module_id, map_pin_type_group_id)
+VALUES ($1, $2)
+RETURNING module_id, map_pin_type_group_id
+`
+
+type CreateModuleMapPinTypeGroupParams struct {
+	ModuleID          int32 `json:"module_id"`
+	MapPinTypeGroupID int32 `json:"map_pin_type_group_id"`
+}
+
+func (q *Queries) CreateModuleMapPinTypeGroup(ctx context.Context, arg CreateModuleMapPinTypeGroupParams) (ModuleMapPinTypeGroup, error) {
+	row := q.db.QueryRowContext(ctx, createModuleMapPinTypeGroup, arg.ModuleID, arg.MapPinTypeGroupID)
+	var i ModuleMapPinTypeGroup
+	err := row.Scan(&i.ModuleID, &i.MapPinTypeGroupID)
 	return i, err
 }
 
@@ -261,6 +282,20 @@ DELETE FROM map_pins WHERE map_layer_id = $1
 
 func (q *Queries) DeleteMapPinsForMapLayer(ctx context.Context, mapLayerID sql.NullInt32) error {
 	_, err := q.db.ExecContext(ctx, deleteMapPinsForMapLayer, mapLayerID)
+	return err
+}
+
+const deleteModuleMapPinTypeGroup = `-- name: DeleteModuleMapPinTypeGroup :exec
+DELETE FROM module_map_pin_type_groups WHERE module_id = $1 AND map_pin_type_group_id = $2
+`
+
+type DeleteModuleMapPinTypeGroupParams struct {
+	ModuleID          int32 `json:"module_id"`
+	MapPinTypeGroupID int32 `json:"map_pin_type_group_id"`
+}
+
+func (q *Queries) DeleteModuleMapPinTypeGroup(ctx context.Context, arg DeleteModuleMapPinTypeGroupParams) error {
+	_, err := q.db.ExecContext(ctx, deleteModuleMapPinTypeGroup, arg.ModuleID, arg.MapPinTypeGroupID)
 	return err
 }
 
@@ -882,7 +917,11 @@ func (q *Queries) UpdateMapPinType(ctx context.Context, arg UpdateMapPinTypePara
 }
 
 const updateMapPinTypeGroup = `-- name: UpdateMapPinTypeGroup :one
-UPDATE map_pin_type_group SET name = COALESCE($1, name) WHERE id = $2 RETURNING id, name
+UPDATE map_pin_type_group
+SET
+    name = COALESCE($1, name)
+WHERE id = $2
+RETURNING id, name
 `
 
 type UpdateMapPinTypeGroupParams struct {

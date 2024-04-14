@@ -69,6 +69,29 @@ DELETE FROM map_layers WHERE id = sqlc.arg(id);
 -- name: DeleteMapLayersForMap :exec
 DELETE FROM map_layers WHERE map_id = sqlc.arg(map_id);
 
+--------------------------------------
+-- name: CreateMapPinTypeGroup :one
+INSERT INTO map_pin_type_group (name)
+VALUES (sqlc.arg(name))
+RETURNING *;
+
+-- name: UpdateMapPinTypeGroup :one
+UPDATE map_pin_type_group
+SET
+    name = COALESCE(sqlc.narg(name), name)
+WHERE id = sqlc.arg(id)
+RETURNING *;
+
+-- name: DeleteMapPinTypeGroup :exec
+DELETE FROM map_pin_type_group WHERE id = sqlc.arg(id);
+
+-- name: CreateModuleMapPinTypeGroup :one
+INSERT INTO module_map_pin_type_groups (module_id, map_pin_type_group_id)
+VALUES (sqlc.arg(module_id), sqlc.arg(map_pin_type_group_id))
+RETURNING *;
+
+-- name: DeleteModuleMapPinTypeGroup :exec
+DELETE FROM module_map_pin_type_groups WHERE module_id = sqlc.arg(module_id) AND map_pin_type_group_id = sqlc.arg(map_pin_type_group_id);
 
 --------------------------------------
 
@@ -150,15 +173,6 @@ FROM
     LEFT JOIN modules m ON e.module_id = m.id
 WHERE e.map_id = sqlc.arg(map_id)
 ;
-
--- name: CreateMapPinTypeGroup :one
-INSERT INTO map_pin_type_group (name) VALUES (sqlc.arg(name)) RETURNING *;
-
--- name: UpdateMapPinTypeGroup :one
-UPDATE map_pin_type_group SET name = COALESCE(sqlc.narg(name), name) WHERE id = sqlc.arg(id) RETURNING *;
-
--- name: DeleteMapPinTypeGroup :exec
-DELETE FROM map_pin_type_group WHERE id = sqlc.arg(id);
 
 -- name: GetMapPinTypeGroupIdForMap :one
 SELECT

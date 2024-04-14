@@ -34,12 +34,3 @@ SELECT * FROM get_worlds(@is_public::boolean, @tags::integer[], @order_by::VARCH
 SELECT COUNT(*) FROM view_worlds
 WHERE (@is_public::boolean IS NULL OR public = @is_public) AND
     (array_length(@tags::integer[], 1) IS NULL OR tags @> @tags::integer[]);
-
--- name: CreateModuleMapPinTypeGroup :one
-INSERT INTO module_map_pin_type_groups (module_id, map_pin_type_group_id)
-VALUES (sqlc.arg(module_id), sqlc.arg(map_pin_type_group_id))
-ON CONFLICT (module_id, map_pin_type_group_id) DO NOTHING
-RETURNING *;
-
--- name: DeleteModuleMapPinTypeGroup :exec
-DELETE FROM module_map_pin_type_groups WHERE module_id = sqlc.arg(module_id) AND map_pin_type_group_id = sqlc.arg(map_pin_type_group_id);

@@ -150,6 +150,38 @@ service Maps {
     };
   }
 
+  rpc CreateMapPinTypeGroup(CreateMapPinTypeGroupRequest) returns (MapPinTypeGroup) {
+    option (google.api.http) = {
+      post: "/maps/modules/{moduleId}/pin_type_groups"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates a new map pin type group for the module";
+      summary: "Create map pin type group";
+    };
+  }
+
+  rpc UpdateMapPinTypeGroup(UpdateMapPinTypeGroupRequest) returns (MapPinTypeGroup) {
+    option (google.api.http) = {
+      patch: "/maps/modules/{moduleId}/pin_type_groups/{mapPinTypeGroupId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates map pin type group properties";
+      summary: "Update map pin type group";
+    };
+  }
+
+  rpc DeleteMapPinTypeGroup(DeleteMapPinTypeGroupRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/maps/modules/{moduleId}/pin_type_groups/{mapPinTypeGroupId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes a map pin type group from the module";
+      summary: "Delete map pin type group";
+    };
+  }
+
   rpc GetMapPins(GetMapPinsRequest) returns (GetMapPinsResponse) {
     option (google.api.http) = {
       get: "/maps/{mapId}/pins"
