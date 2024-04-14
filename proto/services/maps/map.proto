@@ -23,15 +23,15 @@ enum PinShape {
 
 message Map {
   int32 id = 1;
-  string title = 2; // field is sortable
-  optional string type = 3; // field is sortable
+  string title = 2;
+  optional string type = 3;
   optional string description = 4;
-  int32 width = 5; // field is sortable
-  int32 height = 6; // field is sortable
+  int32 width = 5;
+  int32 height = 6;
   optional int32 thumbnailImageId = 7;
-  google.protobuf.Timestamp createdAt = 8; // field is sortable
-  google.protobuf.Timestamp lastUpdatedAt = 9; // field is sortable
-  int32 lastUpdatedUserId = 10; // field is sortable
+  google.protobuf.Timestamp createdAt = 8;
+  google.protobuf.Timestamp lastUpdatedAt = 9;
+  int32 lastUpdatedUserId = 10;
   bool isPrivate = 11;
 }
 

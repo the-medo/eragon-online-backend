@@ -58,11 +58,11 @@ func (server *ServiceMaps) GetMaps(ctx context.Context, req *pb.GetMapsRequest) 
 }
 
 func validateGetMaps(req *pb.GetMapsRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	fields := []string{"id", "name", "description"}
+	fields := []string{"id", "title", "type", "description", "width", "height", "created_at", "last_updated_at", "is_private"}
 
 	if req.OrderBy != nil {
 		if validator.StringInSlice(req.GetOrderBy(), fields) == false {
-			violations = append(violations, e.FieldViolation("order_by", fmt.Errorf("invalid field to order by %s", req.GetOrderBy())))
+			violations = append(violations, e.FieldViolation("order_by", fmt.Errorf("invalid field to order by - %s", req.GetOrderBy())))
 		}
 	}
 

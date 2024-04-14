@@ -5174,25 +5174,21 @@
           "format": "int32"
         },
         "title": {
-          "type": "string",
-          "title": "field is sortable"
+          "type": "string"
         },
         "type": {
-          "type": "string",
-          "title": "field is sortable"
+          "type": "string"
         },
         "description": {
           "type": "string"
         },
         "width": {
           "type": "integer",
-          "format": "int32",
-          "title": "field is sortable"
+          "format": "int32"
         },
         "height": {
           "type": "integer",
-          "format": "int32",
-          "title": "field is sortable"
+          "format": "int32"
         },
         "thumbnailImageId": {
           "type": "integer",
@@ -5200,18 +5196,15 @@
         },
         "createdAt": {
           "type": "string",
-          "format": "date-time",
-          "title": "field is sortable"
+          "format": "date-time"
         },
         "lastUpdatedAt": {
           "type": "string",
-          "format": "date-time",
-          "title": "field is sortable"
+          "format": "date-time"
         },
         "lastUpdatedUserId": {
           "type": "integer",
-          "format": "int32",
-          "title": "field is sortable"
+          "format": "int32"
         },
         "isPrivate": {
           "type": "boolean"

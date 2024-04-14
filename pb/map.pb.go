@@ -100,15 +100,15 @@ type Map struct {
 	unknownFields protoimpl.UnknownFields
 
 	Id                int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Title             string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`     // field is sortable
-	Type              *string                `protobuf:"bytes,3,opt,name=type,proto3,oneof" json:"type,omitempty"` // field is sortable
+	Title             string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Type              *string                `protobuf:"bytes,3,opt,name=type,proto3,oneof" json:"type,omitempty"`
 	Description       *string                `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
-	Width             int32                  `protobuf:"varint,5,opt,name=width,proto3" json:"width,omitempty"`   // field is sortable
-	Height            int32                  `protobuf:"varint,6,opt,name=height,proto3" json:"height,omitempty"` // field is sortable
+	Width             int32                  `protobuf:"varint,5,opt,name=width,proto3" json:"width,omitempty"`
+	Height            int32                  `protobuf:"varint,6,opt,name=height,proto3" json:"height,omitempty"`
 	ThumbnailImageId  *int32                 `protobuf:"varint,7,opt,name=thumbnailImageId,proto3,oneof" json:"thumbnailImageId,omitempty"`
-	CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=createdAt,proto3" json:"createdAt,omitempty"`                   // field is sortable
-	LastUpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=lastUpdatedAt,proto3" json:"lastUpdatedAt,omitempty"`           // field is sortable
-	LastUpdatedUserId int32                  `protobuf:"varint,10,opt,name=lastUpdatedUserId,proto3" json:"lastUpdatedUserId,omitempty"` // field is sortable
+	CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=createdAt,proto3" json:"createdAt,omitempty"`
+	LastUpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=lastUpdatedAt,proto3" json:"lastUpdatedAt,omitempty"`
+	LastUpdatedUserId int32                  `protobuf:"varint,10,opt,name=lastUpdatedUserId,proto3" json:"lastUpdatedUserId,omitempty"`
 	IsPrivate         bool                   `protobuf:"varint,11,opt,name=isPrivate,proto3" json:"isPrivate,omitempty"`
 }
 
