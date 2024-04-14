@@ -426,37 +426,25 @@ func (q *Queries) GetMapPinTypeGroupIdForMap(ctx context.Context, mapID sql.Null
 	return map_pin_type_group_id, err
 }
 
-const getMapPinTypesForMap = `-- name: GetMapPinTypesForMap :many
+const getMapPinTypeGroupsForModule = `-- name: GetMapPinTypeGroupsForModule :many
 SELECT
-    mpt.id, mpt.map_pin_type_group_id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.is_default
+    mptg.id, mptg.name
 FROM
-    map_pin_types mpt
-    JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
-    JOIN entities e ON e.module_id = mmptg.module_id
-WHERE e.map_id = $1
+    map_pin_type_group mptg
+    JOIN module_map_pin_type_groups mmptg ON mptg.id = mmptg.map_pin_type_group_id
+WHERE mmptg.module_id = $1
 `
 
-func (q *Queries) GetMapPinTypesForMap(ctx context.Context, mapID sql.NullInt32) ([]MapPinType, error) {
-	rows, err := q.db.QueryContext(ctx, getMapPinTypesForMap, mapID)
+func (q *Queries) GetMapPinTypeGroupsForModule(ctx context.Context, moduleID int32) ([]MapPinTypeGroup, error) {
+	rows, err := q.db.QueryContext(ctx, getMapPinTypeGroupsForModule, moduleID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []MapPinType{}
+	items := []MapPinTypeGroup{}
 	for rows.Next() {
-		var i MapPinType
-		if err := rows.Scan(
-			&i.ID,
-			&i.MapPinTypeGroupID,
-			&i.Shape,
-			&i.BackgroundColor,
-			&i.BorderColor,
-			&i.IconColor,
-			&i.Icon,
-			&i.IconSize,
-			&i.Width,
-			&i.IsDefault,
-		); err != nil {
+		var i MapPinTypeGroup
+		if err := rows.Scan(&i.ID, &i.Name); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -470,18 +458,17 @@ func (q *Queries) GetMapPinTypesForMap(ctx context.Context, mapID sql.NullInt32)
 	return items, nil
 }
 
-const getMapPinTypesForWorld = `-- name: GetMapPinTypesForWorld :many
+const getMapPinTypesForModule = `-- name: GetMapPinTypesForModule :many
 SELECT
     mpt.id, mpt.map_pin_type_group_id, mpt.shape, mpt.background_color, mpt.border_color, mpt.icon_color, mpt.icon, mpt.icon_size, mpt.width, mpt.is_default
 FROM
     map_pin_types mpt
     JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
-    JOIN modules m ON m.id = mmptg.module_id
-WHERE m.world_id = $1
+WHERE mmptg.module_id = $1
 `
 
-func (q *Queries) GetMapPinTypesForWorld(ctx context.Context, worldID sql.NullInt32) ([]MapPinType, error) {
-	rows, err := q.db.QueryContext(ctx, getMapPinTypesForWorld, worldID)
+func (q *Queries) GetMapPinTypesForModule(ctx context.Context, moduleID int32) ([]MapPinType, error) {
+	rows, err := q.db.QueryContext(ctx, getMapPinTypesForModule, moduleID)
 	if err != nil {
 		return nil, err
 	}

@@ -108,13 +108,13 @@ service Maps {
     };
   }
 
-  rpc GetMapPinTypes(GetMapPinTypesRequest) returns (GetMapPinTypesResponse) {
+  rpc GetModuleMapPinTypes(GetModuleMapPinTypesRequest) returns (GetModuleMapPinTypesResponse) {
     option (google.api.http) = {
-      get: "/maps/{mapId}/pin_types"
+      get: "/maps/modules/{moduleId}/pin_types"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "returns pin types of the map";
-      summary: "Get map pin types";
+      description: "returns pin types of the module";
+      summary: "Get module map pin types";
     };
   }
 

@@ -553,8 +553,8 @@ func local_request_Maps_UpdateMapLayer_0(ctx context.Context, marshaler runtime.
 
 }
 
-func request_Maps_GetMapPinTypes_0(ctx context.Context, marshaler runtime.Marshaler, client MapsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetMapPinTypesRequest
+func request_Maps_GetModuleMapPinTypes_0(ctx context.Context, marshaler runtime.Marshaler, client MapsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetModuleMapPinTypesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -564,23 +564,23 @@ func request_Maps_GetMapPinTypes_0(ctx context.Context, marshaler runtime.Marsha
 		_   = err
 	)
 
-	val, ok = pathParams["mapId"]
+	val, ok = pathParams["moduleId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "mapId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "moduleId")
 	}
 
-	protoReq.MapId, err = runtime.Int32(val)
+	protoReq.ModuleId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "mapId", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "moduleId", err)
 	}
 
-	msg, err := client.GetMapPinTypes(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetModuleMapPinTypes(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Maps_GetMapPinTypes_0(ctx context.Context, marshaler runtime.Marshaler, server MapsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetMapPinTypesRequest
+func local_request_Maps_GetModuleMapPinTypes_0(ctx context.Context, marshaler runtime.Marshaler, server MapsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetModuleMapPinTypesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -590,17 +590,17 @@ func local_request_Maps_GetMapPinTypes_0(ctx context.Context, marshaler runtime.
 		_   = err
 	)
 
-	val, ok = pathParams["mapId"]
+	val, ok = pathParams["moduleId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "mapId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "moduleId")
 	}
 
-	protoReq.MapId, err = runtime.Int32(val)
+	protoReq.ModuleId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "mapId", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "moduleId", err)
 	}
 
-	msg, err := server.GetMapPinTypes(ctx, &protoReq)
+	msg, err := server.GetModuleMapPinTypes(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -1344,7 +1344,7 @@ func RegisterMapsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 
 	})
 
-	mux.Handle("GET", pattern_Maps_GetMapPinTypes_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Maps_GetModuleMapPinTypes_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -1352,12 +1352,12 @@ func RegisterMapsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Maps/GetMapPinTypes", runtime.WithHTTPPathPattern("/maps/{mapId}/pin_types"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Maps/GetModuleMapPinTypes", runtime.WithHTTPPathPattern("/maps/modules/{moduleId}/pin_types"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Maps_GetMapPinTypes_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Maps_GetModuleMapPinTypes_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -1365,7 +1365,7 @@ func RegisterMapsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 			return
 		}
 
-		forward_Maps_GetMapPinTypes_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Maps_GetModuleMapPinTypes_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1783,25 +1783,25 @@ func RegisterMapsHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 
 	})
 
-	mux.Handle("GET", pattern_Maps_GetMapPinTypes_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Maps_GetModuleMapPinTypes_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Maps/GetMapPinTypes", runtime.WithHTTPPathPattern("/maps/{mapId}/pin_types"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Maps/GetModuleMapPinTypes", runtime.WithHTTPPathPattern("/maps/modules/{moduleId}/pin_types"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Maps_GetMapPinTypes_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Maps_GetModuleMapPinTypes_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Maps_GetMapPinTypes_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Maps_GetModuleMapPinTypes_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1981,7 +1981,7 @@ var (
 
 	pattern_Maps_UpdateMapLayer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"maps", "mapId", "layers", "layerId"}, ""))
 
-	pattern_Maps_GetMapPinTypes_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"maps", "mapId", "pin_types"}, ""))
+	pattern_Maps_GetModuleMapPinTypes_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"maps", "modules", "moduleId", "pin_types"}, ""))
 
 	pattern_Maps_CreateMapPinType_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"maps", "mapId", "pin_types"}, ""))
 
@@ -2017,7 +2017,7 @@ var (
 
 	forward_Maps_UpdateMapLayer_0 = runtime.ForwardResponseMessage
 
-	forward_Maps_GetMapPinTypes_0 = runtime.ForwardResponseMessage
+	forward_Maps_GetModuleMapPinTypes_0 = runtime.ForwardResponseMessage
 
 	forward_Maps_CreateMapPinType_0 = runtime.ForwardResponseMessage
 

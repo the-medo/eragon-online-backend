@@ -1229,6 +1229,39 @@
         ]
       }
     },
+    "/maps/modules/{moduleId}/pin_types": {
+      "get": {
+        "summary": "Get module map pin types",
+        "description": "returns pin types of the module",
+        "operationId": "Maps_GetModuleMapPinTypes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetModuleMapPinTypesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      }
+    },
     "/maps/{mapId}": {
       "get": {
         "summary": "Get map by id",
@@ -1543,37 +1576,6 @@
       }
     },
     "/maps/{mapId}/pin_types": {
-      "get": {
-        "summary": "Get map pin types",
-        "description": "returns pin types of the map",
-        "operationId": "Maps_GetMapPinTypes",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbGetMapPinTypesResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "mapId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Maps"
-        ]
-      },
       "post": {
         "summary": "Create map pin type",
         "description": "creates a new pin type for the map",
@@ -4848,18 +4850,6 @@
         }
       }
     },
-    "pbGetMapPinTypesResponse": {
-      "type": "object",
-      "properties": {
-        "pinTypes": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/pbMapPinType"
-          }
-        }
-      }
-    },
     "pbGetMapPinsResponse": {
       "type": "object",
       "properties": {
@@ -4956,6 +4946,25 @@
         },
         "moduleType": {
           "$ref": "#/definitions/pbModuleType"
+        }
+      }
+    },
+    "pbGetModuleMapPinTypesResponse": {
+      "type": "object",
+      "properties": {
+        "pinTypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbMapPinType"
+          }
+        },
+        "pinTypeGroups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbMapPinTypeGroup"
+          }
         }
       }
     },
@@ -5238,6 +5247,18 @@
         },
         "isDefault": {
           "type": "boolean"
+        }
+      }
+    },
+    "pbMapPinTypeGroup": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
         }
       }
     },

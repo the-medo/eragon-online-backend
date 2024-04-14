@@ -82,11 +82,13 @@ message UpdateMapLayerRequest {
   optional int32 position = 6;
 }
 
-message GetMapPinTypesRequest {
-  int32 mapId = 1;
+message GetModuleMapPinTypesRequest {
+  int32 moduleId = 1;
 }
-message GetMapPinTypesResponse {
+
+message GetModuleMapPinTypesResponse {
   repeated MapPinType pinTypes = 1;
+  repeated MapPinTypeGroup pinTypeGroups = 2;
 }
 
 message CreateMapPinTypeRequest {

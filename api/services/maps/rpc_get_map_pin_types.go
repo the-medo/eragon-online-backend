@@ -2,7 +2,6 @@ package maps
 
 import (
 	"context"
-	"database/sql"
 	"github.com/the-medo/talebound-backend/converters"
 	"github.com/the-medo/talebound-backend/e"
 	"github.com/the-medo/talebound-backend/pb"
@@ -10,32 +9,41 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-func (server *ServiceMaps) GetMapPinTypes(ctx context.Context, request *pb.GetMapPinTypesRequest) (*pb.GetMapPinTypesResponse, error) {
-	violations := validateGetMapPinTypes(request)
+func (server *ServiceMaps) GetModuleMapPinTypes(ctx context.Context, request *pb.GetModuleMapPinTypesRequest) (*pb.GetModuleMapPinTypesResponse, error) {
+	violations := validateGetModuleMapPinTypes(request)
 	if violations != nil {
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	// currently works only for world map, not quest maps
-	pinTypeRows, err := server.Store.GetMapPinTypesForMap(ctx, sql.NullInt32{Int32: request.GetMapId(), Valid: true})
+	pinTypeRows, err := server.Store.GetMapPinTypesForModule(ctx, request.GetModuleId())
 	if err != nil {
 		return nil, err
 	}
 
-	rsp := &pb.GetMapPinTypesResponse{
-		PinTypes: make([]*pb.MapPinType, len(pinTypeRows)),
+	pinTypeGroupRows, err := server.Store.GetMapPinTypeGroupsForModule(ctx, request.GetModuleId())
+	if err != nil {
+		return nil, err
+	}
+
+	rsp := &pb.GetModuleMapPinTypesResponse{
+		PinTypes:      make([]*pb.MapPinType, len(pinTypeRows)),
+		PinTypeGroups: make([]*pb.MapPinTypeGroup, len(pinTypeGroupRows)),
 	}
 
 	for i, pinTypeRow := range pinTypeRows {
 		rsp.PinTypes[i] = converters.ConvertMapPinType(pinTypeRow)
 	}
 
+	for i, pinTypeGroupRow := range pinTypeGroupRows {
+		rsp.PinTypeGroups[i] = converters.ConvertMapPinTypeGroup(pinTypeGroupRow)
+	}
+
 	return rsp, nil
 }
 
-func validateGetMapPinTypes(req *pb.GetMapPinTypesRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateMapId(req.GetMapId()); err != nil {
-		violations = append(violations, e.FieldViolation("map_id", err))
+func validateGetModuleMapPinTypes(req *pb.GetModuleMapPinTypesRequest) (violations []*errdetails.BadRequest_FieldViolation) {
+	if err := validator.ValidateMapId(req.GetModuleId()); err != nil {
+		violations = append(violations, e.FieldViolation("module_id", err))
 	}
 
 	return violations

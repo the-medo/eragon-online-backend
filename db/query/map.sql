@@ -77,23 +77,21 @@ INSERT INTO map_pin_types (shape, background_color, border_color, icon_color, ic
 VALUES (sqlc.arg(shape), sqlc.arg(background_color), sqlc.arg(border_color), sqlc.arg(icon_color), sqlc.arg(icon), sqlc.arg(icon_size), sqlc.arg(width), sqlc.arg(map_pin_type_group_id), sqlc.narg(is_default) )
 RETURNING *;
 
--- name: GetMapPinTypesForMap :many
+-- name: GetMapPinTypesForModule :many
 SELECT
     mpt.*
 FROM
     map_pin_types mpt
     JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
-    JOIN entities e ON e.module_id = mmptg.module_id
-WHERE e.map_id = sqlc.arg(map_id);
+WHERE mmptg.module_id = sqlc.arg(module_id);
 
--- name: GetMapPinTypesForWorld :many
+-- name: GetMapPinTypeGroupsForModule :many
 SELECT
-    mpt.*
+    mptg.*
 FROM
-    map_pin_types mpt
-    JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
-    JOIN modules m ON m.id = mmptg.module_id
-WHERE m.world_id = sqlc.arg(world_id);
+    map_pin_type_group mptg
+    JOIN module_map_pin_type_groups mmptg ON mptg.id = mmptg.map_pin_type_group_id
+WHERE mmptg.module_id = sqlc.arg(module_id);
 
 -- name: UpdateMapPinType :one
 UPDATE map_pin_types

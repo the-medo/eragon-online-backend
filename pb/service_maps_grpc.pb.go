@@ -20,23 +20,23 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Maps_GetMapById_FullMethodName       = "/pb.Maps/GetMapById"
-	Maps_GetMaps_FullMethodName          = "/pb.Maps/GetMaps"
-	Maps_CreateMap_FullMethodName        = "/pb.Maps/CreateMap"
-	Maps_UpdateMap_FullMethodName        = "/pb.Maps/UpdateMap"
-	Maps_DeleteMap_FullMethodName        = "/pb.Maps/DeleteMap"
-	Maps_GetMapLayers_FullMethodName     = "/pb.Maps/GetMapLayers"
-	Maps_CreateMapLayer_FullMethodName   = "/pb.Maps/CreateMapLayer"
-	Maps_DeleteMapLayer_FullMethodName   = "/pb.Maps/DeleteMapLayer"
-	Maps_UpdateMapLayer_FullMethodName   = "/pb.Maps/UpdateMapLayer"
-	Maps_GetMapPinTypes_FullMethodName   = "/pb.Maps/GetMapPinTypes"
-	Maps_CreateMapPinType_FullMethodName = "/pb.Maps/CreateMapPinType"
-	Maps_DeleteMapPinType_FullMethodName = "/pb.Maps/DeleteMapPinType"
-	Maps_UpdateMapPinType_FullMethodName = "/pb.Maps/UpdateMapPinType"
-	Maps_GetMapPins_FullMethodName       = "/pb.Maps/GetMapPins"
-	Maps_CreateMapPin_FullMethodName     = "/pb.Maps/CreateMapPin"
-	Maps_DeleteMapPin_FullMethodName     = "/pb.Maps/DeleteMapPin"
-	Maps_UpdateMapPin_FullMethodName     = "/pb.Maps/UpdateMapPin"
+	Maps_GetMapById_FullMethodName           = "/pb.Maps/GetMapById"
+	Maps_GetMaps_FullMethodName              = "/pb.Maps/GetMaps"
+	Maps_CreateMap_FullMethodName            = "/pb.Maps/CreateMap"
+	Maps_UpdateMap_FullMethodName            = "/pb.Maps/UpdateMap"
+	Maps_DeleteMap_FullMethodName            = "/pb.Maps/DeleteMap"
+	Maps_GetMapLayers_FullMethodName         = "/pb.Maps/GetMapLayers"
+	Maps_CreateMapLayer_FullMethodName       = "/pb.Maps/CreateMapLayer"
+	Maps_DeleteMapLayer_FullMethodName       = "/pb.Maps/DeleteMapLayer"
+	Maps_UpdateMapLayer_FullMethodName       = "/pb.Maps/UpdateMapLayer"
+	Maps_GetModuleMapPinTypes_FullMethodName = "/pb.Maps/GetModuleMapPinTypes"
+	Maps_CreateMapPinType_FullMethodName     = "/pb.Maps/CreateMapPinType"
+	Maps_DeleteMapPinType_FullMethodName     = "/pb.Maps/DeleteMapPinType"
+	Maps_UpdateMapPinType_FullMethodName     = "/pb.Maps/UpdateMapPinType"
+	Maps_GetMapPins_FullMethodName           = "/pb.Maps/GetMapPins"
+	Maps_CreateMapPin_FullMethodName         = "/pb.Maps/CreateMapPin"
+	Maps_DeleteMapPin_FullMethodName         = "/pb.Maps/DeleteMapPin"
+	Maps_UpdateMapPin_FullMethodName         = "/pb.Maps/UpdateMapPin"
 )
 
 // MapsClient is the client API for Maps service.
@@ -52,7 +52,7 @@ type MapsClient interface {
 	CreateMapLayer(ctx context.Context, in *CreateMapLayerRequest, opts ...grpc.CallOption) (*ViewMapLayer, error)
 	DeleteMapLayer(ctx context.Context, in *DeleteMapLayerRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateMapLayer(ctx context.Context, in *UpdateMapLayerRequest, opts ...grpc.CallOption) (*ViewMapLayer, error)
-	GetMapPinTypes(ctx context.Context, in *GetMapPinTypesRequest, opts ...grpc.CallOption) (*GetMapPinTypesResponse, error)
+	GetModuleMapPinTypes(ctx context.Context, in *GetModuleMapPinTypesRequest, opts ...grpc.CallOption) (*GetModuleMapPinTypesResponse, error)
 	CreateMapPinType(ctx context.Context, in *CreateMapPinTypeRequest, opts ...grpc.CallOption) (*MapPinType, error)
 	DeleteMapPinType(ctx context.Context, in *DeleteMapPinTypeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateMapPinType(ctx context.Context, in *UpdateMapPinTypeRequest, opts ...grpc.CallOption) (*UpdateMapPinTypeResponse, error)
@@ -151,9 +151,9 @@ func (c *mapsClient) UpdateMapLayer(ctx context.Context, in *UpdateMapLayerReque
 	return out, nil
 }
 
-func (c *mapsClient) GetMapPinTypes(ctx context.Context, in *GetMapPinTypesRequest, opts ...grpc.CallOption) (*GetMapPinTypesResponse, error) {
-	out := new(GetMapPinTypesResponse)
-	err := c.cc.Invoke(ctx, Maps_GetMapPinTypes_FullMethodName, in, out, opts...)
+func (c *mapsClient) GetModuleMapPinTypes(ctx context.Context, in *GetModuleMapPinTypesRequest, opts ...grpc.CallOption) (*GetModuleMapPinTypesResponse, error) {
+	out := new(GetModuleMapPinTypesResponse)
+	err := c.cc.Invoke(ctx, Maps_GetModuleMapPinTypes_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -236,7 +236,7 @@ type MapsServer interface {
 	CreateMapLayer(context.Context, *CreateMapLayerRequest) (*ViewMapLayer, error)
 	DeleteMapLayer(context.Context, *DeleteMapLayerRequest) (*emptypb.Empty, error)
 	UpdateMapLayer(context.Context, *UpdateMapLayerRequest) (*ViewMapLayer, error)
-	GetMapPinTypes(context.Context, *GetMapPinTypesRequest) (*GetMapPinTypesResponse, error)
+	GetModuleMapPinTypes(context.Context, *GetModuleMapPinTypesRequest) (*GetModuleMapPinTypesResponse, error)
 	CreateMapPinType(context.Context, *CreateMapPinTypeRequest) (*MapPinType, error)
 	DeleteMapPinType(context.Context, *DeleteMapPinTypeRequest) (*emptypb.Empty, error)
 	UpdateMapPinType(context.Context, *UpdateMapPinTypeRequest) (*UpdateMapPinTypeResponse, error)
@@ -278,8 +278,8 @@ func (UnimplementedMapsServer) DeleteMapLayer(context.Context, *DeleteMapLayerRe
 func (UnimplementedMapsServer) UpdateMapLayer(context.Context, *UpdateMapLayerRequest) (*ViewMapLayer, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMapLayer not implemented")
 }
-func (UnimplementedMapsServer) GetMapPinTypes(context.Context, *GetMapPinTypesRequest) (*GetMapPinTypesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMapPinTypes not implemented")
+func (UnimplementedMapsServer) GetModuleMapPinTypes(context.Context, *GetModuleMapPinTypesRequest) (*GetModuleMapPinTypesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetModuleMapPinTypes not implemented")
 }
 func (UnimplementedMapsServer) CreateMapPinType(context.Context, *CreateMapPinTypeRequest) (*MapPinType, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMapPinType not implemented")
@@ -477,20 +477,20 @@ func _Maps_UpdateMapLayer_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Maps_GetMapPinTypes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMapPinTypesRequest)
+func _Maps_GetModuleMapPinTypes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetModuleMapPinTypesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MapsServer).GetMapPinTypes(ctx, in)
+		return srv.(MapsServer).GetModuleMapPinTypes(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Maps_GetMapPinTypes_FullMethodName,
+		FullMethod: Maps_GetModuleMapPinTypes_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MapsServer).GetMapPinTypes(ctx, req.(*GetMapPinTypesRequest))
+		return srv.(MapsServer).GetModuleMapPinTypes(ctx, req.(*GetModuleMapPinTypesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -665,8 +665,8 @@ var Maps_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Maps_UpdateMapLayer_Handler,
 		},
 		{
-			MethodName: "GetMapPinTypes",
-			Handler:    _Maps_GetMapPinTypes_Handler,
+			MethodName: "GetModuleMapPinTypes",
+			Handler:    _Maps_GetModuleMapPinTypes_Handler,
 		},
 		{
 			MethodName: "CreateMapPinType",

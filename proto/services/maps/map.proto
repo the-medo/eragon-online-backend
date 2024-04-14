@@ -88,6 +88,11 @@ message MapPinType {
   bool isDefault = 10;
 }
 
+message MapPinTypeGroup {
+  int32 id = 1;
+  string name = 2;
+}
+
 message MapPin {
   int32 id = 1;
   string name = 2;
