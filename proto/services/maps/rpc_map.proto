@@ -55,6 +55,7 @@ message UpdateMapRequest {
 message GetMapLayersRequest {
   int32 mapId = 1;
 }
+
 message GetMapLayersResponse {
   repeated ViewMapLayer layers = 1;
 }
