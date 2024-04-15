@@ -70,6 +70,7 @@ type Querier interface {
 	DeleteWorld(ctx context.Context, worldID int32) error
 	EntityGroupContentChangePositions(ctx context.Context, arg EntityGroupContentChangePositionsParams) error
 	GetAverageUserEvaluationsByType(ctx context.Context, arg GetAverageUserEvaluationsByTypeParams) ([]GetAverageUserEvaluationsByTypeRow, error)
+	GetDefaultMapPinTypeForMap(ctx context.Context, mapID sql.NullInt32) (int32, error)
 	GetEntities(ctx context.Context, arg GetEntitiesParams) (ViewEntity, error)
 	GetEntitiesByIDs(ctx context.Context, entityIds []int32) ([]ViewEntity, error)
 	GetEntityByID(ctx context.Context, id int32) (ViewEntity, error)

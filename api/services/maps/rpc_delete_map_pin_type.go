@@ -2,6 +2,8 @@ package maps
 
 import (
 	"context"
+	"database/sql"
+	"fmt"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/e"
 	"github.com/the-medo/talebound-backend/pb"
@@ -19,6 +21,15 @@ func (server *ServiceMaps) DeleteMapPinType(ctx context.Context, request *pb.Del
 	_, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeMap, request.GetMapId(), nil)
 	if err != nil {
 		return nil, err
+	}
+
+	defaultMapPinTypeId, err := server.Store.GetDefaultMapPinTypeForMap(ctx, sql.NullInt32{Int32: request.GetMapId(), Valid: true})
+	if err != nil {
+		return nil, err
+	}
+
+	if defaultMapPinTypeId == request.GetPinTypeId() {
+		return nil, fmt.Errorf("can not delete default map pin type")
 	}
 
 	err = server.Store.DeleteMapPinType(ctx, request.GetPinTypeId())

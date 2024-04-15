@@ -24,23 +24,15 @@ func (server *ServiceMaps) UpdateMapPinType(ctx context.Context, request *pb.Upd
 
 	// Only one MapPinType can be set as default in the whole module
 	if request.IsDefault != nil && request.GetIsDefault() {
-		pinTypeRows, err := server.Store.GetMapPinTypesForMap(ctx, sql.NullInt32{Int32: request.GetMapId(), Valid: true})
+		defaultMapPinTypeId, err := server.Store.GetDefaultMapPinTypeForMap(ctx, sql.NullInt32{Int32: request.GetMapId(), Valid: true})
 		if err != nil {
 			return nil, err
 		}
 
-		var defaultPinTypeId int32 = 0
-		for _, pinTypeRow := range pinTypeRows {
-			if pinTypeRow.IsDefault {
-				defaultPinTypeId = pinTypeRow.ID
-				break
-			}
-		}
-
 		// set old IsDefault pin type to false
-		if defaultPinTypeId > 0 && defaultPinTypeId != request.GetPinTypeId() {
+		if defaultMapPinTypeId > 0 && defaultMapPinTypeId != request.GetPinTypeId() {
 			_, err := server.Store.UpdateMapPinType(ctx, db.UpdateMapPinTypeParams{
-				ID: defaultPinTypeId,
+				ID: defaultMapPinTypeId,
 				IsDefault: sql.NullBool{
 					Bool:  false,
 					Valid: true,
