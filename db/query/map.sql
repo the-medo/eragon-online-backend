@@ -108,6 +108,15 @@ FROM
     JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
 WHERE mmptg.module_id = sqlc.arg(module_id);
 
+-- name: GetMapPinTypesForMap :many
+SELECT
+    mpt.*
+FROM
+    map_pin_types mpt
+    JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
+    JOIN entities e ON e.module_id = mmptg.module_id
+WHERE e.map_id = sqlc.arg(map_id);
+
 -- name: GetMapPinTypeGroupsForModule :many
 SELECT
     mptg.*

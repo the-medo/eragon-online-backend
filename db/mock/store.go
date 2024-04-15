@@ -1434,6 +1434,21 @@ func (mr *MockStoreMockRecorder) GetMapPinTypeGroupsForModule(arg0, arg1 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMapPinTypeGroupsForModule", reflect.TypeOf((*MockStore)(nil).GetMapPinTypeGroupsForModule), arg0, arg1)
 }
 
+// GetMapPinTypesForMap mocks base method.
+func (m *MockStore) GetMapPinTypesForMap(arg0 context.Context, arg1 sql.NullInt32) ([]db.MapPinType, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMapPinTypesForMap", arg0, arg1)
+	ret0, _ := ret[0].([]db.MapPinType)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMapPinTypesForMap indicates an expected call of GetMapPinTypesForMap.
+func (mr *MockStoreMockRecorder) GetMapPinTypesForMap(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMapPinTypesForMap", reflect.TypeOf((*MockStore)(nil).GetMapPinTypesForMap), arg0, arg1)
+}
+
 // GetMapPinTypesForModule mocks base method.
 func (m *MockStore) GetMapPinTypesForModule(arg0 context.Context, arg1 int32) ([]db.MapPinType, error) {
 	m.ctrl.T.Helper()
