@@ -63,6 +63,9 @@ SET
 WHERE id = sqlc.arg(id)
 RETURNING *;
 
+-- name: MoveMapLayer :exec
+CALL move_map_layer(sqlc.arg(id), sqlc.arg(position));
+
 -- name: DeleteMapLayer :exec
 DELETE FROM map_layers WHERE id = sqlc.arg(id);
 

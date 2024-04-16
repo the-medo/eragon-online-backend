@@ -69,29 +69,37 @@ func (server *ServiceMaps) UpdateMapLayer(ctx context.Context, request *pb.Updat
 			}
 		}
 
-		argLayer := db.UpdateMapLayerParams{
-			ID: request.GetLayerId(),
-			Name: sql.NullString{
-				String: request.GetName(),
-				Valid:  request.Name != nil,
-			},
-			ImageID: sql.NullInt32{
-				Int32: request.GetImageId(),
-				Valid: request.ImageId != nil,
-			},
-			Enabled: sql.NullBool{
-				Bool:  request.GetEnabled(),
-				Valid: request.Enabled != nil,
-			},
-			Position: sql.NullInt32{
-				Int32: request.GetPosition(),
-				Valid: request.Position != nil,
-			},
+		if request.Position != nil {
+			err := server.Store.MoveMapLayer(ctx, db.MoveMapLayerParams{
+				ID:       request.GetLayerId(),
+				Position: request.GetPosition(),
+			})
+			if err != nil {
+				return nil, err
+			}
 		}
 
-		_, err := server.Store.UpdateMapLayer(ctx, argLayer)
-		if err != nil {
-			return nil, err
+		if request.Name != nil || request.ImageId != nil || request.Enabled != nil {
+			argLayer := db.UpdateMapLayerParams{
+				ID: request.GetLayerId(),
+				Name: sql.NullString{
+					String: request.GetName(),
+					Valid:  request.Name != nil,
+				},
+				ImageID: sql.NullInt32{
+					Int32: request.GetImageId(),
+					Valid: request.ImageId != nil,
+				},
+				Enabled: sql.NullBool{
+					Bool:  request.GetEnabled(),
+					Valid: request.Enabled != nil,
+				},
+			}
+
+			_, err := server.Store.UpdateMapLayer(ctx, argLayer)
+			if err != nil {
+				return nil, err
+			}
 		}
 
 	}

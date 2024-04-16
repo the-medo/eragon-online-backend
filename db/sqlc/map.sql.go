@@ -778,6 +778,20 @@ func (q *Queries) GetMapsByIDs(ctx context.Context, mapIds []int32) ([]Map, erro
 	return items, nil
 }
 
+const moveMapLayer = `-- name: MoveMapLayer :exec
+CALL move_map_layer($1, $2)
+`
+
+type MoveMapLayerParams struct {
+	ID       int32 `json:"id"`
+	Position int32 `json:"position"`
+}
+
+func (q *Queries) MoveMapLayer(ctx context.Context, arg MoveMapLayerParams) error {
+	_, err := q.db.ExecContext(ctx, moveMapLayer, arg.ID, arg.Position)
+	return err
+}
+
 const updateMap = `-- name: UpdateMap :one
 UPDATE maps
 SET

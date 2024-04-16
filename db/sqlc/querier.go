@@ -153,6 +153,7 @@ type Querier interface {
 	InsertPostHistory(ctx context.Context, postID int32) (PostHistory, error)
 	MenuItemChangePositions(ctx context.Context, arg MenuItemChangePositionsParams) error
 	MenuItemMoveGroupUp(ctx context.Context, menuItemID int32) error
+	MoveMapLayer(ctx context.Context, arg MoveMapLayerParams) error
 	RemoveUserRole(ctx context.Context, arg RemoveUserRoleParams) error
 	UpdateEntity(ctx context.Context, arg UpdateEntityParams) (Entity, error)
 	UpdateEntityGroup(ctx context.Context, arg UpdateEntityGroupParams) (EntityGroup, error)
