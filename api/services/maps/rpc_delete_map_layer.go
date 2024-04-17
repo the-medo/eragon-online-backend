@@ -42,6 +42,14 @@ func (server *ServiceMaps) DeleteMapLayer(ctx context.Context, request *pb.Delet
 		return nil, err
 	}
 
+	err = server.Store.DecreaseMapLayerPositions(ctx, db.DecreaseMapLayerPositionsParams{
+		MapID:    mapLayer.MapID,
+		Position: mapLayer.Position,
+	})
+	if err != nil {
+		return nil, err
+	}
+
 	return &emptypb.Empty{}, nil
 }
 

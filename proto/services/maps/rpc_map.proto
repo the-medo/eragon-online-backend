@@ -65,7 +65,7 @@ message CreateMapLayerRequest {
   string name = 2;
   int32 imageId = 3;
   bool enabled = 4;
-  int32 position = 5;
+  optional int32 position = 5;
 }
 
 message DeleteMapLayerRequest {

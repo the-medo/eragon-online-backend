@@ -2,6 +2,7 @@ package maps
 
 import (
 	"context"
+	"fmt"
 	"github.com/the-medo/talebound-backend/converters"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/e"
@@ -21,12 +22,33 @@ func (server *ServiceMaps) CreateMapLayer(ctx context.Context, request *pb.Creat
 		return nil, err
 	}
 
+	maxLayerPositionForMap, err := server.Store.GetMaxMapLayerPosition(ctx, request.GetMapId())
+	if err != nil {
+		return nil, err
+	}
+
 	argLayer := db.CreateMapLayerParams{
-		MapID:    request.GetMapId(),
-		Name:     request.GetName(),
-		ImageID:  request.GetImageId(),
-		Enabled:  request.GetEnabled(),
-		Position: request.GetPosition(),
+		MapID:   request.GetMapId(),
+		Name:    request.GetName(),
+		ImageID: request.GetImageId(),
+		Enabled: request.GetEnabled(),
+	}
+
+	if request.Position != nil {
+		if request.GetPosition() > maxLayerPositionForMap+1 {
+			return nil, fmt.Errorf("position out of range")
+		}
+		argLayer.Position = request.GetPosition()
+
+		err := server.Store.IncreaseMapLayerPositions(ctx, db.IncreaseMapLayerPositionsParams{
+			MapID:    request.GetMapId(),
+			Position: request.GetPosition(),
+		})
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		argLayer.Position = maxLayerPositionForMap + 1
 	}
 
 	mapRow, err := server.Store.GetMapById(ctx, request.GetMapId())

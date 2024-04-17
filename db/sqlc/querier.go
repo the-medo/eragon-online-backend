@@ -41,6 +41,7 @@ type Querier interface {
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
 	CreateWorld(ctx context.Context, arg CreateWorldParams) (World, error)
+	DecreaseMapLayerPositions(ctx context.Context, arg DecreaseMapLayerPositionsParams) error
 	DeleteEntity(ctx context.Context, id int32) error
 	DeleteEntityGroup(ctx context.Context, arg DeleteEntityGroupParams) error
 	DeleteEntityGroupContent(ctx context.Context, arg DeleteEntityGroupContentParams) error
@@ -113,6 +114,7 @@ type Querier interface {
 	GetMapPins(ctx context.Context, mapID int32) ([]ViewMapPin, error)
 	GetMaps(ctx context.Context, arg GetMapsParams) ([]GetMapsRow, error)
 	GetMapsByIDs(ctx context.Context, mapIds []int32) ([]Map, error)
+	GetMaxMapLayerPosition(ctx context.Context, mapID int32) (int32, error)
 	GetMenu(ctx context.Context, id int32) (ViewMenu, error)
 	GetMenuIdOfEntityGroup(ctx context.Context, entityGroupID int32) (int32, error)
 	GetMenuItemById(ctx context.Context, id int32) (MenuItem, error)
@@ -150,6 +152,7 @@ type Querier interface {
 	GetWorldsByIDs(ctx context.Context, worldIds []int32) ([]World, error)
 	GetWorldsCount(ctx context.Context, arg GetWorldsCountParams) (int64, error)
 	HasUserRole(ctx context.Context, arg HasUserRoleParams) (HasUserRoleRow, error)
+	IncreaseMapLayerPositions(ctx context.Context, arg IncreaseMapLayerPositionsParams) error
 	InsertPostHistory(ctx context.Context, postID int32) (PostHistory, error)
 	MenuItemChangePositions(ctx context.Context, arg MenuItemChangePositionsParams) error
 	MenuItemMoveGroupUp(ctx context.Context, menuItemID int32) error

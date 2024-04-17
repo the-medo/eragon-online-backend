@@ -472,6 +472,20 @@ func (mr *MockStoreMockRecorder) CreateWorldTx(arg0, arg1 interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorldTx", reflect.TypeOf((*MockStore)(nil).CreateWorldTx), arg0, arg1)
 }
 
+// DecreaseMapLayerPositions mocks base method.
+func (m *MockStore) DecreaseMapLayerPositions(arg0 context.Context, arg1 db.DecreaseMapLayerPositionsParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecreaseMapLayerPositions", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DecreaseMapLayerPositions indicates an expected call of DecreaseMapLayerPositions.
+func (mr *MockStoreMockRecorder) DecreaseMapLayerPositions(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecreaseMapLayerPositions", reflect.TypeOf((*MockStore)(nil).DecreaseMapLayerPositions), arg0, arg1)
+}
+
 // DeleteEntity mocks base method.
 func (m *MockStore) DeleteEntity(arg0 context.Context, arg1 int32) error {
 	m.ctrl.T.Helper()
@@ -1524,6 +1538,21 @@ func (mr *MockStoreMockRecorder) GetMapsByIDs(arg0, arg1 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMapsByIDs", reflect.TypeOf((*MockStore)(nil).GetMapsByIDs), arg0, arg1)
 }
 
+// GetMaxMapLayerPosition mocks base method.
+func (m *MockStore) GetMaxMapLayerPosition(arg0 context.Context, arg1 int32) (int32, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMaxMapLayerPosition", arg0, arg1)
+	ret0, _ := ret[0].(int32)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMaxMapLayerPosition indicates an expected call of GetMaxMapLayerPosition.
+func (mr *MockStoreMockRecorder) GetMaxMapLayerPosition(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMaxMapLayerPosition", reflect.TypeOf((*MockStore)(nil).GetMaxMapLayerPosition), arg0, arg1)
+}
+
 // GetMenu mocks base method.
 func (m *MockStore) GetMenu(arg0 context.Context, arg1 int32) (db.ViewMenu, error) {
 	m.ctrl.T.Helper()
@@ -2077,6 +2106,20 @@ func (m *MockStore) HasUserRole(arg0 context.Context, arg1 db.HasUserRoleParams)
 func (mr *MockStoreMockRecorder) HasUserRole(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasUserRole", reflect.TypeOf((*MockStore)(nil).HasUserRole), arg0, arg1)
+}
+
+// IncreaseMapLayerPositions mocks base method.
+func (m *MockStore) IncreaseMapLayerPositions(arg0 context.Context, arg1 db.IncreaseMapLayerPositionsParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "IncreaseMapLayerPositions", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// IncreaseMapLayerPositions indicates an expected call of IncreaseMapLayerPositions.
+func (mr *MockStoreMockRecorder) IncreaseMapLayerPositions(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IncreaseMapLayerPositions", reflect.TypeOf((*MockStore)(nil).IncreaseMapLayerPositions), arg0, arg1)
 }
 
 // InsertPostHistory mocks base method.

@@ -47,6 +47,17 @@ INSERT INTO map_layers (name, map_id, image_id, enabled, position)
 VALUES (sqlc.arg(name), sqlc.arg(map_id), sqlc.arg(image_id), sqlc.arg(enabled), sqlc.arg(position))
 RETURNING *;
 
+-- name: GetMaxMapLayerPosition :one
+SELECT CAST(MAX(position) as integer) FROM map_layers WHERE map_id = sqlc.arg(map_id);
+
+-- name: IncreaseMapLayerPositions :exec
+UPDATE map_layers SET position = position + 1
+WHERE map_id = sqlc.arg(map_id) AND position >= sqlc.arg(position);
+
+-- name: DecreaseMapLayerPositions :exec
+UPDATE map_layers SET position = position - 1
+WHERE map_id = sqlc.arg(map_id) AND position >= sqlc.arg(position);
+
 -- name: GetMapLayers :many
 SELECT * FROM view_map_layers WHERE map_id = sqlc.arg(map_id);
 

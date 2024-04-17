@@ -213,6 +213,21 @@ func (q *Queries) CreateModuleMapPinTypeGroup(ctx context.Context, arg CreateMod
 	return i, err
 }
 
+const decreaseMapLayerPositions = `-- name: DecreaseMapLayerPositions :exec
+UPDATE map_layers SET position = position - 1
+WHERE map_id = $1 AND position >= $2
+`
+
+type DecreaseMapLayerPositionsParams struct {
+	MapID    int32 `json:"map_id"`
+	Position int32 `json:"position"`
+}
+
+func (q *Queries) DecreaseMapLayerPositions(ctx context.Context, arg DecreaseMapLayerPositionsParams) error {
+	_, err := q.db.ExecContext(ctx, decreaseMapLayerPositions, arg.MapID, arg.Position)
+	return err
+}
+
 const deleteMap = `-- name: DeleteMap :exec
 CALL delete_map($1)
 `
@@ -776,6 +791,32 @@ func (q *Queries) GetMapsByIDs(ctx context.Context, mapIds []int32) ([]Map, erro
 		return nil, err
 	}
 	return items, nil
+}
+
+const getMaxMapLayerPosition = `-- name: GetMaxMapLayerPosition :one
+SELECT CAST(MAX(position) as integer) FROM map_layers WHERE map_id = $1
+`
+
+func (q *Queries) GetMaxMapLayerPosition(ctx context.Context, mapID int32) (int32, error) {
+	row := q.db.QueryRowContext(ctx, getMaxMapLayerPosition, mapID)
+	var column_1 int32
+	err := row.Scan(&column_1)
+	return column_1, err
+}
+
+const increaseMapLayerPositions = `-- name: IncreaseMapLayerPositions :exec
+UPDATE map_layers SET position = position + 1
+WHERE map_id = $1 AND position >= $2
+`
+
+type IncreaseMapLayerPositionsParams struct {
+	MapID    int32 `json:"map_id"`
+	Position int32 `json:"position"`
+}
+
+func (q *Queries) IncreaseMapLayerPositions(ctx context.Context, arg IncreaseMapLayerPositionsParams) error {
+	_, err := q.db.ExecContext(ctx, increaseMapLayerPositions, arg.MapID, arg.Position)
+	return err
 }
 
 const moveMapLayer = `-- name: MoveMapLayer :exec
