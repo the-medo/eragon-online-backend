@@ -52,6 +52,10 @@ func (server *ServiceMaps) CreateMapPinType(ctx context.Context, request *pb.Cre
 			Int32: request.GetWidth(),
 			Valid: true,
 		},
+		IsDefault: sql.NullBool{
+			Bool:  false,
+			Valid: true,
+		},
 	}
 
 	newPinType, err := server.Store.CreateMapPinType(ctx, argPinType)
@@ -73,28 +77,40 @@ func validateCreateMapPinType(req *pb.CreateMapPinTypeRequest) (violations []*er
 		violations = append(violations, e.FieldViolation("map_pin_type_group_id", err))
 	}
 
-	if err := validator.ValidateUniversalColor(req.GetBackgroundColor()); err != nil {
-		violations = append(violations, e.FieldViolation("background_color", err))
+	if req.BackgroundColor != nil {
+		if err := validator.ValidateUniversalColor(req.GetBackgroundColor()); err != nil {
+			violations = append(violations, e.FieldViolation("background_color", err))
+		}
 	}
 
-	if err := validator.ValidateUniversalColor(req.GetBorderColor()); err != nil {
-		violations = append(violations, e.FieldViolation("border_color", err))
+	if req.BorderColor != nil {
+		if err := validator.ValidateUniversalColor(req.GetBorderColor()); err != nil {
+			violations = append(violations, e.FieldViolation("border_color", err))
+		}
 	}
 
-	if err := validator.ValidateUniversalColor(req.GetIconColor()); err != nil {
-		violations = append(violations, e.FieldViolation("icon_color", err))
+	if req.IconColor != nil {
+		if err := validator.ValidateUniversalColor(req.GetIconColor()); err != nil {
+			violations = append(violations, e.FieldViolation("icon_color", err))
+		}
 	}
 
-	if err := validator.ValidateUniversalName(req.GetIcon()); err != nil {
-		violations = append(violations, e.FieldViolation("icon", err))
+	if req.Icon != nil {
+		if err := validator.ValidateUniversalName(req.GetIcon()); err != nil {
+			violations = append(violations, e.FieldViolation("icon", err))
+		}
 	}
 
-	if err := validator.ValidateUniversalDimension(req.GetIconSize()); err != nil {
-		violations = append(violations, e.FieldViolation("icon_size", err))
+	if req.IconSize != nil {
+		if err := validator.ValidateUniversalDimension(req.GetIconSize()); err != nil {
+			violations = append(violations, e.FieldViolation("icon_size", err))
+		}
 	}
 
-	if err := validator.ValidateUniversalDimension(req.GetWidth()); err != nil {
-		violations = append(violations, e.FieldViolation("width", err))
+	if req.Width != nil {
+		if err := validator.ValidateUniversalDimension(req.GetWidth()); err != nil {
+			violations = append(violations, e.FieldViolation("width", err))
+		}
 	}
 
 	return violations
