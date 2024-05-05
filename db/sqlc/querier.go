@@ -107,7 +107,6 @@ type Querier interface {
 	GetMapLayerByID(ctx context.Context, mapLayerID int32) (ViewMapLayer, error)
 	GetMapLayers(ctx context.Context, mapID int32) ([]ViewMapLayer, error)
 	GetMapPinByID(ctx context.Context, id int32) (ViewMapPin, error)
-	GetMapPinTypeGroupIdForMap(ctx context.Context, mapID sql.NullInt32) (int32, error)
 	GetMapPinTypeGroupsForModule(ctx context.Context, moduleID int32) ([]MapPinTypeGroup, error)
 	GetMapPinTypesForMap(ctx context.Context, mapID sql.NullInt32) ([]MapPinType, error)
 	GetMapPinTypesForModule(ctx context.Context, moduleID int32) ([]MapPinType, error)

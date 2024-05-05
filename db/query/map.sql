@@ -205,13 +205,3 @@ FROM
     LEFT JOIN modules m ON e.module_id = m.id
 WHERE e.map_id = sqlc.arg(map_id)
 ;
-
--- name: GetMapPinTypeGroupIdForMap :one
-SELECT
-    CAST(MAX(mmptg.map_pin_type_group_id) as integer) AS map_pin_type_group_id
-FROM
-    entities e
-    JOIN module_map_pin_type_groups mmptg ON e.module_id = mmptg.module_id
-WHERE
-    e.map_id = sqlc.arg(map_id)
-;

@@ -476,23 +476,6 @@ func (q *Queries) GetMapPinByID(ctx context.Context, id int32) (ViewMapPin, erro
 	return i, err
 }
 
-const getMapPinTypeGroupIdForMap = `-- name: GetMapPinTypeGroupIdForMap :one
-SELECT
-    CAST(MAX(mmptg.map_pin_type_group_id) as integer) AS map_pin_type_group_id
-FROM
-    entities e
-    JOIN module_map_pin_type_groups mmptg ON e.module_id = mmptg.module_id
-WHERE
-    e.map_id = $1
-`
-
-func (q *Queries) GetMapPinTypeGroupIdForMap(ctx context.Context, mapID sql.NullInt32) (int32, error) {
-	row := q.db.QueryRowContext(ctx, getMapPinTypeGroupIdForMap, mapID)
-	var map_pin_type_group_id int32
-	err := row.Scan(&map_pin_type_group_id)
-	return map_pin_type_group_id, err
-}
-
 const getMapPinTypeGroupsForModule = `-- name: GetMapPinTypeGroupsForModule :many
 SELECT
     mptg.id, mptg.name

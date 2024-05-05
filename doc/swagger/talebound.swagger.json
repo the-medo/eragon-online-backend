@@ -1398,6 +1398,74 @@
         "tags": [
           "Maps"
         ]
+      },
+      "post": {
+        "summary": "Create map pin type",
+        "description": "creates a new pin type for the map",
+        "operationId": "Maps_CreateMapPinType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbMapPinType"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mapPinTypeGroupId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "shape": {
+                  "$ref": "#/definitions/pbPinShape"
+                },
+                "backgroundColor": {
+                  "type": "string"
+                },
+                "borderColor": {
+                  "type": "string"
+                },
+                "iconColor": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "iconSize": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "width": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
       }
     },
     "/maps/{mapId}": {
@@ -1701,72 +1769,6 @@
                   "type": "boolean"
                 },
                 "position": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Maps"
-        ]
-      }
-    },
-    "/maps/{mapId}/pin_types": {
-      "post": {
-        "summary": "Create map pin type",
-        "description": "creates a new pin type for the map",
-        "operationId": "Maps_CreateMapPinType",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbMapPinType"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "mapId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "shape": {
-                  "$ref": "#/definitions/pbPinShape"
-                },
-                "backgroundColor": {
-                  "type": "string"
-                },
-                "borderColor": {
-                  "type": "string"
-                },
-                "iconColor": {
-                  "type": "string"
-                },
-                "icon": {
-                  "type": "string"
-                },
-                "iconSize": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "width": {
                   "type": "integer",
                   "format": "int32"
                 }

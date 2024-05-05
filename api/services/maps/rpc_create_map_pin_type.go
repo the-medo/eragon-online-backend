@@ -3,6 +3,7 @@ package maps
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/servicecore"
 	"github.com/the-medo/talebound-backend/converters"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/e"
@@ -17,18 +18,15 @@ func (server *ServiceMaps) CreateMapPinType(ctx context.Context, request *pb.Cre
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeMap, request.GetMapId(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	mapPinTypeGroupId, err := server.Store.GetMapPinTypeGroupIdForMap(ctx, sql.NullInt32{Int32: request.GetMapId(), Valid: true})
+	_, err := server.CheckModuleIdPermissions(ctx, request.GetModuleId(), &servicecore.ModulePermission{
+		NeedsEntityPermission: &[]db.EntityType{db.EntityTypeMap},
+	})
 	if err != nil {
 		return nil, err
 	}
 
 	argPinType := db.CreateMapPinTypeParams{
-		MapPinTypeGroupID: mapPinTypeGroupId,
+		MapPinTypeGroupID: request.GetMapPinTypeGroupId(),
 		Shape:             converters.ConvertPinShapeToDB(request.GetShape()),
 		BackgroundColor: sql.NullString{
 			String: request.GetBackgroundColor(),
@@ -67,8 +65,12 @@ func (server *ServiceMaps) CreateMapPinType(ctx context.Context, request *pb.Cre
 }
 
 func validateCreateMapPinType(req *pb.CreateMapPinTypeRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateMapId(req.GetMapId()); err != nil {
-		violations = append(violations, e.FieldViolation("map_id", err))
+	if err := validator.ValidateUniversalId(req.GetModuleId()); err != nil {
+		violations = append(violations, e.FieldViolation("module_id", err))
+	}
+
+	if err := validator.ValidateUniversalId(req.GetMapPinTypeGroupId()); err != nil {
+		violations = append(violations, e.FieldViolation("map_pin_type_group_id", err))
 	}
 
 	if err := validator.ValidateUniversalColor(req.GetBackgroundColor()); err != nil {

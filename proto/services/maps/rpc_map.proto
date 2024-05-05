@@ -92,14 +92,15 @@ message GetModuleMapPinTypesResponse {
 }
 
 message CreateMapPinTypeRequest {
-  int32 mapId = 1;
-  PinShape shape = 2;
-  string backgroundColor = 3;
-  string borderColor = 4;
-  string iconColor = 5;
-  string icon = 6;
-  int32 iconSize = 7;
-  int32 width = 8;
+  int32 moduleId = 1;
+  int32 mapPinTypeGroupId = 2;
+  PinShape shape = 3;
+  string backgroundColor = 4;
+  string borderColor = 5;
+  string iconColor = 6;
+  string icon = 7;
+  int32 iconSize = 8;
+  int32 width = 9;
 }
 
 message DeleteMapPinTypeRequest {
