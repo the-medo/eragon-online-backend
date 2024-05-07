@@ -3,6 +3,7 @@ package maps
 import (
 	"context"
 	"database/sql"
+	"github.com/the-medo/talebound-backend/api/servicecore"
 	"github.com/the-medo/talebound-backend/converters"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/e"
@@ -17,14 +18,16 @@ func (server *ServiceMaps) UpdateMapPinType(ctx context.Context, request *pb.Upd
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	_, err := server.CheckEntityTypePermissions(ctx, db.EntityTypeMap, request.GetMapId(), nil)
+	_, err := server.CheckModuleIdPermissions(ctx, request.GetModuleId(), &servicecore.ModulePermission{
+		NeedsEntityPermission: &[]db.EntityType{db.EntityTypeMap},
+	})
 	if err != nil {
 		return nil, err
 	}
 
 	// Only one MapPinType can be set as default in the whole module
 	if request.IsDefault != nil && request.GetIsDefault() {
-		defaultMapPinTypeId, err := server.Store.GetDefaultMapPinTypeForMap(ctx, sql.NullInt32{Int32: request.GetMapId(), Valid: true})
+		defaultMapPinTypeId, err := server.Store.GetDefaultMapPinTypeForModule(ctx, request.GetModuleId())
 		if err != nil {
 			return nil, err
 		}
@@ -43,7 +46,6 @@ func (server *ServiceMaps) UpdateMapPinType(ctx context.Context, request *pb.Upd
 				return nil, err
 			}
 		}
-
 	}
 
 	argPinType := db.UpdateMapPinTypeParams{
@@ -95,8 +97,8 @@ func (server *ServiceMaps) UpdateMapPinType(ctx context.Context, request *pb.Upd
 }
 
 func validateUpdateMapPinType(req *pb.UpdateMapPinTypeRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateMapId(req.GetMapId()); err != nil {
-		violations = append(violations, e.FieldViolation("map_id", err))
+	if err := validator.ValidateUniversalId(req.GetModuleId()); err != nil {
+		violations = append(violations, e.FieldViolation("module_id", err))
 	}
 
 	if err := validator.ValidateUniversalId(req.GetPinTypeId()); err != nil {

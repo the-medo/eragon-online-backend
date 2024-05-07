@@ -141,7 +141,7 @@ service Maps {
 
   rpc UpdateMapPinType(UpdateMapPinTypeRequest) returns (UpdateMapPinTypeResponse) {
     option (google.api.http) = {
-      patch: "/maps/{mapId}/pin_types/{pinTypeId}"
+      patch: "/maps/modules/{moduleId}/pin_types/{pinTypeId}"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {

@@ -331,6 +331,22 @@ func (q *Queries) GetDefaultMapPinTypeForMap(ctx context.Context, mapID sql.Null
 	return id, err
 }
 
+const getDefaultMapPinTypeForModule = `-- name: GetDefaultMapPinTypeForModule :one
+SELECT
+    mpt.id
+FROM
+    map_pin_types mpt
+    JOIN module_map_pin_type_groups mmptg ON mpt.map_pin_type_group_id = mmptg.map_pin_type_group_id
+WHERE mmptg.module_id = $1 AND mpt.is_default = true
+`
+
+func (q *Queries) GetDefaultMapPinTypeForModule(ctx context.Context, moduleID int32) (int32, error) {
+	row := q.db.QueryRowContext(ctx, getDefaultMapPinTypeForModule, moduleID)
+	var id int32
+	err := row.Scan(&id)
+	return id, err
+}
+
 const getMapAssignments = `-- name: GetMapAssignments :one
 SELECT
     m.id, m.module_type, m.menu_id, m.header_img_id, m.thumbnail_img_id, m.avatar_img_id, m.world_id, m.system_id, m.character_id, m.quest_id, m.description_post_id

@@ -908,6 +908,21 @@ func (mr *MockStoreMockRecorder) GetDefaultMapPinTypeForMap(arg0, arg1 interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDefaultMapPinTypeForMap", reflect.TypeOf((*MockStore)(nil).GetDefaultMapPinTypeForMap), arg0, arg1)
 }
 
+// GetDefaultMapPinTypeForModule mocks base method.
+func (m *MockStore) GetDefaultMapPinTypeForModule(arg0 context.Context, arg1 int32) (int32, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDefaultMapPinTypeForModule", arg0, arg1)
+	ret0, _ := ret[0].(int32)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDefaultMapPinTypeForModule indicates an expected call of GetDefaultMapPinTypeForModule.
+func (mr *MockStoreMockRecorder) GetDefaultMapPinTypeForModule(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDefaultMapPinTypeForModule", reflect.TypeOf((*MockStore)(nil).GetDefaultMapPinTypeForModule), arg0, arg1)
+}
+
 // GetEntities mocks base method.
 func (m *MockStore) GetEntities(arg0 context.Context, arg1 db.GetEntitiesParams) (db.ViewEntity, error) {
 	m.ctrl.T.Helper()

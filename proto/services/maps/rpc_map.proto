@@ -109,7 +109,7 @@ message DeleteMapPinTypeRequest {
 }
 
 message UpdateMapPinTypeRequest {
-  int32 mapId = 1;
+  int32 moduleId = 1;
   int32 pinTypeId = 2;
   optional PinShape shape = 3;
   optional string backgroundColor = 4;

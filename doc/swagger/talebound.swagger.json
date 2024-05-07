@@ -1468,6 +1468,82 @@
         ]
       }
     },
+    "/maps/modules/{moduleId}/pin_types/{pinTypeId}": {
+      "patch": {
+        "summary": "Update map pin type",
+        "description": "updates pin type properties",
+        "operationId": "Maps_UpdateMapPinType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUpdateMapPinTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pinTypeId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "shape": {
+                  "$ref": "#/definitions/pbPinShape"
+                },
+                "backgroundColor": {
+                  "type": "string"
+                },
+                "borderColor": {
+                  "type": "string"
+                },
+                "iconColor": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "iconSize": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "width": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "isDefault": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Maps"
+        ]
+      }
+    },
     "/maps/{mapId}": {
       "get": {
         "summary": "Get map by id",
@@ -1815,80 +1891,6 @@
             "required": true,
             "type": "integer",
             "format": "int32"
-          }
-        ],
-        "tags": [
-          "Maps"
-        ]
-      },
-      "patch": {
-        "summary": "Update map pin type",
-        "description": "updates pin type properties",
-        "operationId": "Maps_UpdateMapPinType",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbUpdateMapPinTypeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "mapId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "pinTypeId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "shape": {
-                  "$ref": "#/definitions/pbPinShape"
-                },
-                "backgroundColor": {
-                  "type": "string"
-                },
-                "borderColor": {
-                  "type": "string"
-                },
-                "iconColor": {
-                  "type": "string"
-                },
-                "icon": {
-                  "type": "string"
-                },
-                "iconSize": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "width": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "isDefault": {
-                  "type": "boolean"
-                }
-              }
-            }
           }
         ],
         "tags": [

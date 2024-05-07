@@ -764,14 +764,14 @@ func request_Maps_UpdateMapPinType_0(ctx context.Context, marshaler runtime.Mars
 		_   = err
 	)
 
-	val, ok = pathParams["mapId"]
+	val, ok = pathParams["moduleId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "mapId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "moduleId")
 	}
 
-	protoReq.MapId, err = runtime.Int32(val)
+	protoReq.ModuleId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "mapId", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "moduleId", err)
 	}
 
 	val, ok = pathParams["pinTypeId"]
@@ -808,14 +808,14 @@ func local_request_Maps_UpdateMapPinType_0(ctx context.Context, marshaler runtim
 		_   = err
 	)
 
-	val, ok = pathParams["mapId"]
+	val, ok = pathParams["moduleId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "mapId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "moduleId")
 	}
 
-	protoReq.MapId, err = runtime.Int32(val)
+	protoReq.ModuleId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "mapId", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "moduleId", err)
 	}
 
 	val, ok = pathParams["pinTypeId"]
@@ -1655,7 +1655,7 @@ func RegisterMapsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Maps/UpdateMapPinType", runtime.WithHTTPPathPattern("/maps/{mapId}/pin_types/{pinTypeId}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Maps/UpdateMapPinType", runtime.WithHTTPPathPattern("/maps/modules/{moduleId}/pin_types/{pinTypeId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2158,7 +2158,7 @@ func RegisterMapsHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Maps/UpdateMapPinType", runtime.WithHTTPPathPattern("/maps/{mapId}/pin_types/{pinTypeId}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Maps/UpdateMapPinType", runtime.WithHTTPPathPattern("/maps/modules/{moduleId}/pin_types/{pinTypeId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2356,7 +2356,7 @@ var (
 
 	pattern_Maps_DeleteMapPinType_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"maps", "mapId", "pin_types", "pinTypeId"}, ""))
 
-	pattern_Maps_UpdateMapPinType_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"maps", "mapId", "pin_types", "pinTypeId"}, ""))
+	pattern_Maps_UpdateMapPinType_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"maps", "modules", "moduleId", "pin_types", "pinTypeId"}, ""))
 
 	pattern_Maps_CreateMapPinTypeGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"maps", "modules", "moduleId", "pin_type_groups"}, ""))
 
