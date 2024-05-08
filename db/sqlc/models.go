@@ -246,6 +246,7 @@ func (ns NullModuleType) Value() (driver.Value, error) {
 type PinShape string
 
 const (
+	PinShapeNone     PinShape = "none"
 	PinShapeSquare   PinShape = "square"
 	PinShapeTriangle PinShape = "triangle"
 	PinShapePin      PinShape = "pin"

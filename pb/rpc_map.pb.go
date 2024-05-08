@@ -968,7 +968,7 @@ func (x *CreateMapPinTypeRequest) GetShape() PinShape {
 	if x != nil && x.Shape != nil {
 		return *x.Shape
 	}
-	return PinShape_SQUARE
+	return PinShape_NONE
 }
 
 func (x *CreateMapPinTypeRequest) GetBackgroundColor() string {
@@ -1135,7 +1135,7 @@ func (x *UpdateMapPinTypeRequest) GetShape() PinShape {
 	if x != nil && x.Shape != nil {
 		return *x.Shape
 	}
-	return PinShape_SQUARE
+	return PinShape_NONE
 }
 
 func (x *UpdateMapPinTypeRequest) GetBackgroundColor() string {

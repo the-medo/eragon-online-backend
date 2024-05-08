@@ -20,6 +20,7 @@ CREATE TYPE "image_variant" AS ENUM (
 );
 
 CREATE TYPE "pin_shape" AS ENUM (
+  'none',
   'square',
   'triangle',
   'pin',

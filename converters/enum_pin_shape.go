@@ -6,6 +6,7 @@ import (
 )
 
 var pinShapeToPB = map[db.PinShape]pb.PinShape{
+	db.PinShapeNone:     pb.PinShape_NONE,
 	db.PinShapeSquare:   pb.PinShape_SQUARE,
 	db.PinShapeTriangle: pb.PinShape_TRIANGLE,
 	db.PinShapePin:      pb.PinShape_PIN,
@@ -20,6 +21,7 @@ var pinShapeToPB = map[db.PinShape]pb.PinShape{
 }
 
 var pinShapeToDB = map[pb.PinShape]db.PinShape{
+	pb.PinShape_NONE:     db.PinShapeNone,
 	pb.PinShape_SQUARE:   db.PinShapeSquare,
 	pb.PinShape_TRIANGLE: db.PinShapeTriangle,
 	pb.PinShape_PIN:      db.PinShapePin,
@@ -37,12 +39,12 @@ func ConvertPinShapeToPB(shape db.PinShape) pb.PinShape {
 	if val, ok := pinShapeToPB[shape]; ok {
 		return val
 	}
-	return pb.PinShape_SQUARE
+	return pb.PinShape_NONE
 }
 
 func ConvertPinShapeToDB(shape pb.PinShape) db.PinShape {
 	if val, ok := pinShapeToDB[shape]; ok {
 		return val
 	}
-	return db.PinShapeSquare
+	return db.PinShapeNone
 }

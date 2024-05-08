@@ -5491,6 +5491,7 @@
     "pbPinShape": {
       "type": "string",
       "enum": [
+        "NONE",
         "SQUARE",
         "TRIANGLE",
         "PIN",
@@ -5503,7 +5504,7 @@
         "HEART",
         "CLOUD"
       ],
-      "default": "SQUARE"
+      "default": "NONE"
     },
     "pbPost": {
       "type": "object",

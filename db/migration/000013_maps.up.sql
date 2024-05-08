@@ -1,4 +1,5 @@
 CREATE TYPE "pin_shape" AS ENUM (
+    'none',
     'square',
     'triangle',
     'pin',

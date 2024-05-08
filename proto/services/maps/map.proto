@@ -8,17 +8,18 @@ import "services/modules/module_type.proto";
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
 enum PinShape {
-  SQUARE = 0;
-  TRIANGLE = 1;
-  PIN = 2;
-  CIRCLE = 3;
-  HEXAGON = 4;
-  OCTAGON = 5;
-  STAR = 6;
-  DIAMOND = 7;
-  PENTAGON = 8;
-  HEART = 9;
-  CLOUD = 10;
+  NONE = 0;
+  SQUARE = 1;
+  TRIANGLE = 2;
+  PIN = 3;
+  CIRCLE = 4;
+  HEXAGON = 5;
+  OCTAGON = 6;
+  STAR = 7;
+  DIAMOND = 8;
+  PENTAGON = 9;
+  HEART = 10;
+  CLOUD = 11;
 }
 
 message Map {

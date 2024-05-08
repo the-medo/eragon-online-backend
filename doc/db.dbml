@@ -19,6 +19,7 @@ enum image_variant {
 }
 
 enum pin_shape {
+  none
   square
   triangle
   pin
