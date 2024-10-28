@@ -2,4 +2,6 @@
 -- It manages new views, procedures and functions, that are stored in /db/migration/objects
 -- Here is the list of these objects
 -- -- view_systems
+-- -- view_characters
 -- -- get_systems
+-- -- get_characters
