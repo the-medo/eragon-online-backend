@@ -53,6 +53,12 @@ https://github.com/ScoopInstaller/Scoop#readme
 `migrate create -ext sql -dir db/migration -seq migration_name`
 
 ---
+### Install DMBL CLI
+For converting dbml schemas to SQL 
+
+`npm install -g @dbml/cli`
+
+---
 ### Install jq
 
 https://stedolan.github.io/jq/download/
