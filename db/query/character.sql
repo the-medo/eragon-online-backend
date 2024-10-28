@@ -30,7 +30,7 @@ SELECT * FROM characters WHERE id = @character_id LIMIT 1;
 SELECT * FROM characters WHERE id = ANY(@character_ids::int[]);
 
 -- name: GetCharacters :many
-SELECT * FROM get_characters(@is_public::boolean, @tags::integer[], @order_by::VARCHAR, 'DESC', @page_limit, @page_offset);
+SELECT * FROM get_characters(@is_public::boolean, @tags::integer[], @world_id::integer, @system_id::integer, @order_by::VARCHAR, 'DESC', @page_limit, @page_offset);
 
 -- name: GetCharactersCount :one
 SELECT COUNT(*) FROM view_characters
