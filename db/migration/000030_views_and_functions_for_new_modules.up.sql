@@ -3,5 +3,7 @@
 -- Here is the list of these objects
 -- -- view_systems
 -- -- view_characters
+-- -- view_quests
 -- -- get_systems
 -- -- get_characters
+-- -- get_quests
