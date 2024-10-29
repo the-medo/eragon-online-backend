@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/quests/quest.proto";
+import "services/modules/module.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+
+message CreateQuestRequest {
+  string name = 1;
+  string shortDescription = 2;
+  string basedOn = 3;
+  int32 worldId = 4;
+  int32 systemId = 5;
+}
+
+message CreateQuestResponse {
+  Quest quest = 1;
+  ViewModule module = 2;
+}
+
+message UpdateQuestRequest {
+  int32 questId = 1;
+  optional string name = 2;
+  optional string shortDescription = 3;
+  optional bool public = 4;
+  optional string basedOn = 5;
+  optional int32 worldId = 6;
+  optional int32 systemId = 7;
+}
+
+message UploadQuestImageRequest {
+  int32 questId = 1;
+  bytes data = 2;
+  int32 imageTypeId = 3;
+}
+
+message GetQuestsRequest {
+  optional bool public = 1;
+  repeated int32 tags = 2;
+  optional int32 worldId = 3;
+  optional int32 systemId = 4;
+  optional string orderBy = 5;
+  optional int32 limit = 6;
+  optional int32 offset = 7;
+}
+
+message GetQuestsResponse {
+  repeated int32 questIds = 1;
+  int32 totalCount = 2;
+}
+
+message GetQuestByIdRequest {
+  int32 questId = 1;
+}

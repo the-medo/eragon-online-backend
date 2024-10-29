@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/characters/character.proto";
+import "services/modules/module.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+
+message CreateCharacterRequest {
+  string name = 1;
+  string shortDescription = 2;
+  string basedOn = 3;
+  int32 worldId = 4;
+  int32 systemId = 5;
+}
+
+message CreateCharacterResponse {
+  Character character = 1;
+  ViewModule module = 2;
+}
+
+message UpdateCharacterRequest {
+  int32 characterId = 1;
+  optional string name = 2;
+  optional string shortDescription = 3;
+  optional bool public = 4;
+  optional string basedOn = 5;
+  optional int32 worldId = 6;
+  optional int32 systemId = 7;
+}
+
+message UploadCharacterImageRequest {
+  int32 characterId = 1;
+  bytes data = 2;
+  int32 imageTypeId = 3;
+}
+
+message GetCharactersRequest {
+  optional bool public = 1;
+  repeated int32 tags = 2;
+  optional int32 worldId = 3;
+  optional int32 systemId = 4;
+  optional string orderBy = 5;
+  optional int32 limit = 6;
+  optional int32 offset = 7;
+}
+
+message GetCharactersResponse {
+  repeated int32 characterIds = 1;
+  int32 totalCount = 2;
+}
+
+message GetCharacterByIdRequest {
+  int32 characterId = 1;
+}

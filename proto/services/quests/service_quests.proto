@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "services/quests/rpc_quest.proto";
+import "services/quests/quest.proto";
+import "services/images/image.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Quests {
+
+  rpc CreateQuest(CreateQuestRequest) returns (CreateQuestResponse) {
+    option (google.api.http) = {
+      post: "/quests"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates completely new quest";
+      summary: "Create quest";
+    };
+  };
+
+  rpc UpdateQuest(UpdateQuestRequest) returns (Quest) {
+    option (google.api.http) = {
+      patch: "/quests/{questId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates quest properties (NO images or stats!)";
+      summary: "Update quest";
+    };
+  };
+
+  rpc UploadQuestImage(UploadQuestImageRequest) returns (Image) {
+    option (google.api.http) = {
+      post: "/quests/{questId}/images"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "uploads and sets new image for given quest";
+      summary: "Upload image for quest";
+    };
+  };
+
+  rpc GetQuests(GetQuestsRequest) returns (GetQuestsResponse) {
+    option (google.api.http) = {
+      get: "/quests"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of quests";
+      summary: "Get quests ";
+    };
+  };
+
+  rpc GetQuestById(GetQuestByIdRequest) returns (Quest) {
+    option (google.api.http) = {
+      get: "/quests/{questId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets quest by ID";
+      summary: "Get quest by ID ";
+    };
+  };
+}

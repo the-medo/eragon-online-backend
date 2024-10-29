@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "services/characters/rpc_character.proto";
+import "services/characters/character.proto";
+import "services/images/image.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Characters {
+
+  rpc CreateCharacter(CreateCharacterRequest) returns (CreateCharacterResponse) {
+    option (google.api.http) = {
+      post: "/characters"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates completely new character";
+      summary: "Create character";
+    };
+  };
+
+  rpc UpdateCharacter(UpdateCharacterRequest) returns (Character) {
+    option (google.api.http) = {
+      patch: "/characters/{characterId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates character properties (NO images or stats!)";
+      summary: "Update character";
+    };
+  };
+
+  rpc UploadCharacterImage(UploadCharacterImageRequest) returns (Image) {
+    option (google.api.http) = {
+      post: "/characters/{characterId}/images"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "uploads and sets new image for given character";
+      summary: "Upload image for character";
+    };
+  };
+
+  rpc GetCharacters(GetCharactersRequest) returns (GetCharactersResponse) {
+    option (google.api.http) = {
+      get: "/characters"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of characters";
+      summary: "Get characters ";
+    };
+  };
+
+  rpc GetCharacterById(GetCharacterByIdRequest) returns (Character) {
+    option (google.api.http) = {
+      get: "/characters/{characterId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets character by ID";
+      summary: "Get character by ID ";
+    };
+  };
+}

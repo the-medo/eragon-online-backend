@@ -14,6 +14,9 @@
       "name": "Auth"
     },
     {
+      "name": "Characters"
+    },
+    {
       "name": "Entities"
     },
     {
@@ -39,6 +42,12 @@
     },
     {
       "name": "Posts"
+    },
+    {
+      "name": "Quests"
+    },
+    {
+      "name": "Systems"
     },
     {
       "name": "Tags"
@@ -258,6 +267,260 @@
         ],
         "tags": [
           "Auth"
+        ]
+      }
+    },
+    "/characters": {
+      "get": {
+        "summary": "Get characters ",
+        "description": "gets list of characters",
+        "operationId": "Characters_GetCharacters",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetCharactersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "public",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "worldId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "systemId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Characters"
+        ]
+      },
+      "post": {
+        "summary": "Create character",
+        "description": "creates completely new character",
+        "operationId": "Characters_CreateCharacter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateCharacterResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateCharacterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Characters"
+        ]
+      }
+    },
+    "/characters/{characterId}": {
+      "get": {
+        "summary": "Get character by ID ",
+        "description": "gets character by ID",
+        "operationId": "Characters_GetCharacterById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCharacter"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "characterId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Characters"
+        ]
+      },
+      "patch": {
+        "summary": "Update character",
+        "description": "updates character properties (NO images or stats!)",
+        "operationId": "Characters_UpdateCharacter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCharacter"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "characterId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "shortDescription": {
+                  "type": "string"
+                },
+                "public": {
+                  "type": "boolean"
+                },
+                "basedOn": {
+                  "type": "string"
+                },
+                "worldId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "systemId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Characters"
+        ]
+      }
+    },
+    "/characters/{characterId}/images": {
+      "post": {
+        "summary": "Upload image for character",
+        "description": "uploads and sets new image for given character",
+        "operationId": "Characters_UploadCharacterImage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbImage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "characterId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string",
+                  "format": "byte"
+                },
+                "imageTypeId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Characters"
         ]
       }
     },
@@ -3094,6 +3357,492 @@
         ]
       }
     },
+    "/quests": {
+      "get": {
+        "summary": "Get quests ",
+        "description": "gets list of quests",
+        "operationId": "Quests_GetQuests",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetQuestsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "public",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "worldId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "systemId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Quests"
+        ]
+      },
+      "post": {
+        "summary": "Create quest",
+        "description": "creates completely new quest",
+        "operationId": "Quests_CreateQuest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateQuestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateQuestRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Quests"
+        ]
+      }
+    },
+    "/quests/{questId}": {
+      "get": {
+        "summary": "Get quest by ID ",
+        "description": "gets quest by ID",
+        "operationId": "Quests_GetQuestById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbQuest"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "questId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Quests"
+        ]
+      },
+      "patch": {
+        "summary": "Update quest",
+        "description": "updates quest properties (NO images or stats!)",
+        "operationId": "Quests_UpdateQuest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbQuest"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "questId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "shortDescription": {
+                  "type": "string"
+                },
+                "public": {
+                  "type": "boolean"
+                },
+                "basedOn": {
+                  "type": "string"
+                },
+                "worldId": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "systemId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Quests"
+        ]
+      }
+    },
+    "/quests/{questId}/images": {
+      "post": {
+        "summary": "Upload image for quest",
+        "description": "uploads and sets new image for given quest",
+        "operationId": "Quests_UploadQuestImage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbImage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "questId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string",
+                  "format": "byte"
+                },
+                "imageTypeId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Quests"
+        ]
+      }
+    },
+    "/systems": {
+      "get": {
+        "summary": "Get systems ",
+        "description": "gets list of systems",
+        "operationId": "Systems_GetSystems",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetSystemsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "public",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Systems"
+        ]
+      },
+      "post": {
+        "summary": "Create system",
+        "description": "creates completely new system",
+        "operationId": "Systems_CreateSystem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateSystemResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateSystemRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Systems"
+        ]
+      }
+    },
+    "/systems/{systemId}": {
+      "get": {
+        "summary": "Get system by ID ",
+        "description": "gets system by ID",
+        "operationId": "Systems_GetSystemById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbSystem"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "systemId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Systems"
+        ]
+      },
+      "patch": {
+        "summary": "Update system",
+        "description": "updates system properties (NO images or stats!)",
+        "operationId": "Systems_UpdateSystem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbSystem"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "systemId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "shortDescription": {
+                  "type": "string"
+                },
+                "public": {
+                  "type": "boolean"
+                },
+                "basedOn": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Systems"
+        ]
+      }
+    },
+    "/systems/{systemId}/images": {
+      "post": {
+        "summary": "Upload image for system",
+        "description": "uploads and sets new image for given system",
+        "operationId": "Systems_UploadSystemImage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbImage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "systemId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string",
+                  "format": "byte"
+                },
+                "imageTypeId": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Systems"
+        ]
+      }
+    },
     "/tags/available/entity": {
       "get": {
         "summary": "Get available tags for entities",
@@ -4480,6 +5229,72 @@
         }
       }
     },
+    "pbCharacter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "public": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "basedOn": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "systemId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateCharacterRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "basedOn": {
+          "type": "string"
+        },
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "systemId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateCharacterResponse": {
+      "type": "object",
+      "properties": {
+        "character": {
+          "$ref": "#/definitions/pbCharacter"
+        },
+        "module": {
+          "$ref": "#/definitions/pbViewModule"
+        }
+      }
+    },
     "pbCreateEntityGroupRequest": {
       "type": "object",
       "properties": {
@@ -4657,6 +5472,64 @@
         "imageThumbnailId": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "pbCreateQuestRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "basedOn": {
+          "type": "string"
+        },
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "systemId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateQuestResponse": {
+      "type": "object",
+      "properties": {
+        "quest": {
+          "$ref": "#/definitions/pbQuest"
+        },
+        "module": {
+          "$ref": "#/definitions/pbViewModule"
+        }
+      }
+    },
+    "pbCreateSystemRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "basedOn": {
+          "type": "string"
+        }
+      }
+    },
+    "pbCreateSystemResponse": {
+      "type": "object",
+      "properties": {
+        "system": {
+          "$ref": "#/definitions/pbSystem"
+        },
+        "module": {
+          "$ref": "#/definitions/pbViewModule"
         }
       }
     },
@@ -4904,6 +5777,22 @@
         }
       }
     },
+    "pbGetCharactersResponse": {
+      "type": "object",
+      "properties": {
+        "characterIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "pbGetEvaluationByIdResponse": {
       "type": "object",
       "properties": {
@@ -5142,6 +6031,38 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/pbPost"
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbGetQuestsResponse": {
+      "type": "object",
+      "properties": {
+        "questIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbGetSystemsResponse": {
+      "type": "object",
+      "properties": {
+        "systemIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "totalCount": {
@@ -5610,6 +6531,39 @@
         }
       }
     },
+    "pbQuest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "public": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "basedOn": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "worldId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "systemId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "pbRemoveRoleFromUserResponse": {
       "type": "object",
       "properties": {
@@ -5828,6 +6782,31 @@
             "type": "object",
             "$ref": "#/definitions/pbUser"
           }
+        }
+      }
+    },
+    "pbSystem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "public": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "basedOn": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
         }
       }
     },
