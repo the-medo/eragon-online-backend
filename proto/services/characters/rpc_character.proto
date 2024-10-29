@@ -11,9 +11,8 @@ option go_package = "github.com/the-medo/talebound-backend/pb";
 message CreateCharacterRequest {
   string name = 1;
   string shortDescription = 2;
-  string basedOn = 3;
-  int32 worldId = 4;
-  int32 systemId = 5;
+  int32 worldId = 3;
+  int32 systemId = 4;
 }
 
 message CreateCharacterResponse {
@@ -26,9 +25,8 @@ message UpdateCharacterRequest {
   optional string name = 2;
   optional string shortDescription = 3;
   optional bool public = 4;
-  optional string basedOn = 5;
-  optional int32 worldId = 6;
-  optional int32 systemId = 7;
+  optional int32 worldId = 5;
+  optional int32 systemId = 6;
 }
 
 message UploadCharacterImageRequest {

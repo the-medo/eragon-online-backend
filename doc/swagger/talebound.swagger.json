@@ -453,9 +453,6 @@
                 "public": {
                   "type": "boolean"
                 },
-                "basedOn": {
-                  "type": "string"
-                },
                 "worldId": {
                   "type": "integer",
                   "format": "int32"
@@ -3540,9 +3537,6 @@
                 "public": {
                   "type": "boolean"
                 },
-                "basedOn": {
-                  "type": "string"
-                },
                 "worldId": {
                   "type": "integer",
                   "format": "int32"
@@ -5246,9 +5240,6 @@
           "type": "string",
           "format": "date-time"
         },
-        "basedOn": {
-          "type": "string"
-        },
         "shortDescription": {
           "type": "string"
         },
@@ -5269,9 +5260,6 @@
           "type": "string"
         },
         "shortDescription": {
-          "type": "string"
-        },
-        "basedOn": {
           "type": "string"
         },
         "worldId": {
@@ -5482,9 +5470,6 @@
           "type": "string"
         },
         "shortDescription": {
-          "type": "string"
-        },
-        "basedOn": {
           "type": "string"
         },
         "worldId": {
@@ -6547,9 +6532,6 @@
         "createdAt": {
           "type": "string",
           "format": "date-time"
-        },
-        "basedOn": {
-          "type": "string"
         },
         "shortDescription": {
           "type": "string"
