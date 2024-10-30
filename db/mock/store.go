@@ -82,6 +82,21 @@ func (mr *MockStoreMockRecorder) CreateCharacter(arg0, arg1 interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateCharacter", reflect.TypeOf((*MockStore)(nil).CreateCharacter), arg0, arg1)
 }
 
+// CreateCharacterTx mocks base method.
+func (m *MockStore) CreateCharacterTx(arg0 context.Context, arg1 db.CreateCharacterTxParams) (db.CreateCharacterTxResult, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateCharacterTx", arg0, arg1)
+	ret0, _ := ret[0].(db.CreateCharacterTxResult)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateCharacterTx indicates an expected call of CreateCharacterTx.
+func (mr *MockStoreMockRecorder) CreateCharacterTx(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateCharacterTx", reflect.TypeOf((*MockStore)(nil).CreateCharacterTx), arg0, arg1)
+}
+
 // CreateEntity mocks base method.
 func (m *MockStore) CreateEntity(arg0 context.Context, arg1 db.CreateEntityParams) (db.Entity, error) {
 	m.ctrl.T.Helper()
@@ -412,6 +427,21 @@ func (mr *MockStoreMockRecorder) CreateQuest(arg0, arg1 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateQuest", reflect.TypeOf((*MockStore)(nil).CreateQuest), arg0, arg1)
 }
 
+// CreateQuestTx mocks base method.
+func (m *MockStore) CreateQuestTx(arg0 context.Context, arg1 db.CreateQuestTxParams) (db.CreateQuestTxResult, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateQuestTx", arg0, arg1)
+	ret0, _ := ret[0].(db.CreateQuestTxResult)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateQuestTx indicates an expected call of CreateQuestTx.
+func (mr *MockStoreMockRecorder) CreateQuestTx(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateQuestTx", reflect.TypeOf((*MockStore)(nil).CreateQuestTx), arg0, arg1)
+}
+
 // CreateSession mocks base method.
 func (m *MockStore) CreateSession(arg0 context.Context, arg1 db.CreateSessionParams) (db.Session, error) {
 	m.ctrl.T.Helper()
@@ -440,6 +470,21 @@ func (m *MockStore) CreateSystem(arg0 context.Context, arg1 db.CreateSystemParam
 func (mr *MockStoreMockRecorder) CreateSystem(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSystem", reflect.TypeOf((*MockStore)(nil).CreateSystem), arg0, arg1)
+}
+
+// CreateSystemTx mocks base method.
+func (m *MockStore) CreateSystemTx(arg0 context.Context, arg1 db.CreateSystemTxParams) (db.CreateSystemTxResult, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateSystemTx", arg0, arg1)
+	ret0, _ := ret[0].(db.CreateSystemTxResult)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateSystemTx indicates an expected call of CreateSystemTx.
+func (mr *MockStoreMockRecorder) CreateSystemTx(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSystemTx", reflect.TypeOf((*MockStore)(nil).CreateSystemTx), arg0, arg1)
 }
 
 // CreateUser mocks base method.
