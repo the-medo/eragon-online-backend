@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/the-medo/talebound-backend/api/servicecore"
 	"github.com/the-medo/talebound-backend/api/services/auth"
+	"github.com/the-medo/talebound-backend/api/services/characters"
 	"github.com/the-medo/talebound-backend/api/services/entities"
 	"github.com/the-medo/talebound-backend/api/services/evaluations"
 	"github.com/the-medo/talebound-backend/api/services/fetcher"
@@ -13,6 +14,7 @@ import (
 	"github.com/the-medo/talebound-backend/api/services/menus"
 	"github.com/the-medo/talebound-backend/api/services/modules"
 	"github.com/the-medo/talebound-backend/api/services/posts"
+	"github.com/the-medo/talebound-backend/api/services/quests"
 	"github.com/the-medo/talebound-backend/api/services/systems"
 	"github.com/the-medo/talebound-backend/api/services/tags"
 	"github.com/the-medo/talebound-backend/api/services/users"
@@ -38,6 +40,8 @@ type Server struct {
 	*auth.ServiceAuth
 	*worlds.ServiceWorlds
 	*systems.ServiceSystems
+	*characters.ServiceCharacters
+	*quests.ServiceQuests
 	*fetcher.ServiceFetcher
 	Config          util.Config
 	Store           db.Store
@@ -67,6 +71,8 @@ func NewServer(config util.Config, store db.Store, taskDistributor worker.TaskDi
 		ServiceAuth:        auth.NewAuthService(serverCore),
 		ServiceWorlds:      worlds.NewWorldsService(serverCore),
 		ServiceSystems:     systems.NewSystemsService(serverCore),
+		ServiceCharacters:  characters.NewCharactersService(serverCore),
+		ServiceQuests:      quests.NewQuestsService(serverCore),
 		ServiceFetcher:     fetcher.NewFetcherService(serverCore),
 		Config:             serverCore.Config,
 		Store:              serverCore.Store,
