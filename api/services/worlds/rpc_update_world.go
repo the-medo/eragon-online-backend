@@ -68,24 +68,24 @@ func (server *ServiceWorlds) UpdateWorld(ctx context.Context, req *pb.UpdateWorl
 
 func validateUpdateWorldRequest(req *pb.UpdateWorldRequest) (violations []*errdetails.BadRequest_FieldViolation) {
 
-	if err := validator.ValidateWorldId(req.GetWorldId()); err != nil {
+	if err := validator.ValidateModuleId(req.GetWorldId()); err != nil {
 		violations = append(violations, e.FieldViolation("world_id", err))
 	}
 
 	if req.Name != nil {
-		if err := validator.ValidateWorldName(req.GetName()); err != nil {
+		if err := validator.ValidateModuleName(req.GetName()); err != nil {
 			violations = append(violations, e.FieldViolation("name", err))
 		}
 	}
 
 	if req.ShortDescription != nil {
-		if err := validator.ValidateWorldShortDescription(req.GetShortDescription()); err != nil {
+		if err := validator.ValidateModuleShortDescription(req.GetShortDescription()); err != nil {
 			violations = append(violations, e.FieldViolation("short_description", err))
 		}
 	}
 
 	if req.BasedOn != nil {
-		if err := validator.ValidateWorldBasedOn(req.GetBasedOn()); err != nil {
+		if err := validator.ValidateModuleBasedOn(req.GetBasedOn()); err != nil {
 			violations = append(violations, e.FieldViolation("based_on", err))
 		}
 	}

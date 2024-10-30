@@ -53,15 +53,15 @@ func (server *ServiceWorlds) CreateWorld(ctx context.Context, req *pb.CreateWorl
 }
 
 func validateCreateWorldRequest(req *pb.CreateWorldRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateWorldName(req.GetName()); err != nil {
+	if err := validator.ValidateModuleName(req.GetName()); err != nil {
 		violations = append(violations, e.FieldViolation("name", err))
 	}
 
-	if err := validator.ValidateWorldShortDescription(req.GetShortDescription()); err != nil {
+	if err := validator.ValidateModuleShortDescription(req.GetShortDescription()); err != nil {
 		violations = append(violations, e.FieldViolation("short_description", err))
 	}
 
-	if err := validator.ValidateWorldBasedOn(req.GetBasedOn()); err != nil {
+	if err := validator.ValidateModuleBasedOn(req.GetBasedOn()); err != nil {
 		violations = append(violations, e.FieldViolation("based_on", err))
 	}
 
