@@ -11,6 +11,7 @@ type Store interface {
 	Querier
 	CreateUserTx(ctx context.Context, arg CreateUserTxParams) (CreateUserTxResult, error)
 	CreateWorldTx(ctx context.Context, arg CreateWorldTxParams) (CreateWorldTxResult, error)
+	CreateSystemTx(ctx context.Context, arg CreateSystemTxParams) (CreateSystemTxResult, error)
 	VerifyEmailTx(ctx context.Context, arg VerifyEmailTxParams) (VerifyEmailTxResult, error)
 	ResetPasswordRequestTx(ctx context.Context, arg ResetPasswordRequestTxParams) (ResetPasswordRequestTxResult, error)
 	ResetPasswordVerifyTx(ctx context.Context, arg ResetPasswordVerifyTxParams) (ResetPasswordVerifyTxResult, error)
