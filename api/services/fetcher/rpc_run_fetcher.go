@@ -79,6 +79,42 @@ func (server *ServiceFetcher) RunFetcher(ctx context.Context, req *pb.RunFetcher
 		}
 	}
 
+	if req.SystemIds != nil {
+		data, err := server.Store.GetSystemsByIDs(ctx, req.SystemIds)
+		if err != nil {
+			return nil, err
+		}
+
+		rsp.Systems = make([]*pb.System, len(data))
+		for i, item := range data {
+			rsp.Systems[i] = converters.ConvertSystem(item)
+		}
+	}
+
+	if req.CharacterIds != nil {
+		data, err := server.Store.GetCharactersByIDs(ctx, req.CharacterIds)
+		if err != nil {
+			return nil, err
+		}
+
+		rsp.Characters = make([]*pb.Character, len(data))
+		for i, item := range data {
+			rsp.Characters[i] = converters.ConvertCharacter(item)
+		}
+	}
+
+	if req.QuestIds != nil {
+		data, err := server.Store.GetQuestsByIDs(ctx, req.QuestIds)
+		if err != nil {
+			return nil, err
+		}
+
+		rsp.Quests = make([]*pb.Quest, len(data))
+		for i, item := range data {
+			rsp.Quests[i] = converters.ConvertQuest(item)
+		}
+	}
+
 	if req.EntityIds != nil {
 		data, err := server.Store.GetEntitiesByIDs(ctx, req.EntityIds)
 		if err != nil {

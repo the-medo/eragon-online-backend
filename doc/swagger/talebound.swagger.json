@@ -6723,6 +6723,27 @@
             "$ref": "#/definitions/pbWorld"
           }
         },
+        "systems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbSystem"
+          }
+        },
+        "characters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbCharacter"
+          }
+        },
+        "quests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbQuest"
+          }
+        },
         "entities": {
           "type": "array",
           "items": {
