@@ -140,6 +140,9 @@ func runGrpcServer(config util.Config, store db.Store, taskDistributor worker.Ta
 	pb.RegisterImagesServer(grpcServer, server)
 	pb.RegisterAuthServer(grpcServer, server)
 	pb.RegisterWorldsServer(grpcServer, server)
+	pb.RegisterSystemsServer(grpcServer, server)
+	pb.RegisterCharactersServer(grpcServer, server)
+	pb.RegisterQuestsServer(grpcServer, server)
 	pb.RegisterFetcherServer(grpcServer, server)
 
 	reflection.Register(grpcServer)
@@ -195,6 +198,9 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	err = pb.RegisterImagesHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterAuthHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterWorldsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterSystemsHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterCharactersHandlerServer(ctx, grpcMux, server)
+	err = pb.RegisterQuestsHandlerServer(ctx, grpcMux, server)
 	err = pb.RegisterFetcherHandlerServer(ctx, grpcMux, server)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot register handler server")
