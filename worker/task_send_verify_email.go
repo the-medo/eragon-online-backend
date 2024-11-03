@@ -69,7 +69,7 @@ func (processor *RedisTaskProcessor) ProcessTaskSendVerifyEmail(ctx context.Cont
 
 	subject := "Welcome to Talebound!"
 
-	verifyUrl := fmt.Sprintf("%s/auth?id=%d&secret_code=%s", processor.config.FullDomain, verifyEmail.ID, verifyEmail.SecretCode)
+	verifyUrl := fmt.Sprintf("%s/verify?id=%d&secret_code=%s", processor.config.FullDomain, verifyEmail.ID, verifyEmail.SecretCode)
 
 	emailContent := fmt.Sprintf(EmailTemplate, fmt.Sprintf(`
 		Hello <b>%s</b>,<br/><br/>
