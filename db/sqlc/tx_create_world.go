@@ -17,8 +17,17 @@ type CreateWorldTxResult struct {
 }
 
 func insertSubMenuItem(ctx context.Context, q *Queries, menuId int32, position int32, code string, name string, isMain bool) error {
+	entityGroup, err := q.CreateEntityGroup(ctx, CreateEntityGroupParams{
+		Name: sql.NullString{
+			String: name,
+			Valid:  true,
+		},
+	})
+	if err != nil {
+		return err
+	}
 
-	_, err := q.CreateMenuItem(ctx, CreateMenuItemParams{
+	_, err = q.CreateMenuItem(ctx, CreateMenuItemParams{
 		MenuID:       menuId,
 		MenuItemCode: code,
 		Name:         name,
@@ -28,6 +37,7 @@ func insertSubMenuItem(ctx context.Context, q *Queries, menuId int32, position i
 			Valid: true,
 		},
 		DescriptionPostID: sql.NullInt32{},
+		EntityGroupID:     sql.NullInt32{Int32: entityGroup.ID, Valid: true},
 	})
 	if err != nil {
 		return err
@@ -113,6 +123,12 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 			return err
 		}
 
+		entityGroup, err := q.CreateEntityGroup(ctx, CreateEntityGroupParams{
+			Name: sql.NullString{String: "Overview", Valid: true},
+		})
+		if err != nil {
+			return err
+		}
 		_, err = q.CreateMenuItem(ctx, CreateMenuItemParams{
 			MenuID:       menu.ID,
 			MenuItemCode: "overview",
@@ -123,6 +139,7 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 				Valid: true,
 			},
 			DescriptionPostID: sql.NullInt32{},
+			EntityGroupID:     sql.NullInt32{Int32: entityGroup.ID, Valid: true},
 		})
 		if err != nil {
 			return err
