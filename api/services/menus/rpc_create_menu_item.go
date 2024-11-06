@@ -2,10 +2,8 @@ package menus
 
 import (
 	"context"
-	"database/sql"
 	"github.com/the-medo/talebound-backend/api/servicecore"
 	"github.com/the-medo/talebound-backend/converters"
-	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/e"
 	"github.com/the-medo/talebound-backend/pb"
 	"github.com/the-medo/talebound-backend/validator"
@@ -27,50 +25,11 @@ func (server *ServiceMenus) CreateMenuItem(ctx context.Context, req *pb.CreateMe
 		return nil, status.Errorf(codes.PermissionDenied, "failed create menu item: %v", err)
 	}
 
-	argCreateEntityGroup := db.CreateEntityGroupParams{
-		Name: sql.NullString{
-			String: req.GetName(),
-			Valid:  true,
-		},
-		Description: sql.NullString{},
-		Style: sql.NullString{
-			String: "framed",
-			Valid:  true,
-		},
-		Direction: sql.NullString{
-			String: "vertical",
-			Valid:  true,
-		},
-	}
-
-	newEntityGroup, err := server.Store.CreateEntityGroup(ctx, argCreateEntityGroup)
+	dbMenuItem, err := server.SharedCreateMenuItem(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-
-	arg := db.CreateMenuItemParams{
-		MenuID:       req.GetMenuId(),
-		MenuItemCode: req.GetCode(),
-		Name:         req.GetName(),
-		Position:     req.GetPosition(),
-		IsMain: sql.NullBool{
-			Bool:  req.GetIsMain(),
-			Valid: req.IsMain != nil,
-		},
-		EntityGroupID: sql.NullInt32{
-			Int32: newEntityGroup.ID,
-			Valid: true,
-		},
-	}
-
-	menuItem, err := server.Store.CreateMenuItem(ctx, arg)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to create menu item: %s", err)
-	}
-
-	rsp := converters.ConvertMenuItem(menuItem)
-
-	return rsp, nil
+	return converters.ConvertMenuItem(*dbMenuItem), nil
 }
 
 func validateCreateMenuItemRequest(req *pb.CreateMenuItemRequest) (violations []*errdetails.BadRequest_FieldViolation) {

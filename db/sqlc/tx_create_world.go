@@ -16,35 +16,6 @@ type CreateWorldTxResult struct {
 	Module *ViewModule
 }
 
-func insertSubMenuItem(ctx context.Context, q *Queries, menuId int32, position int32, code string, name string, isMain bool) error {
-	entityGroup, err := q.CreateEntityGroup(ctx, CreateEntityGroupParams{
-		Name: sql.NullString{
-			String: name,
-			Valid:  true,
-		},
-	})
-	if err != nil {
-		return err
-	}
-
-	_, err = q.CreateMenuItem(ctx, CreateMenuItemParams{
-		MenuID:       menuId,
-		MenuItemCode: code,
-		Name:         name,
-		Position:     position,
-		IsMain: sql.NullBool{
-			Bool:  isMain,
-			Valid: true,
-		},
-		DescriptionPostID: sql.NullInt32{},
-		EntityGroupID:     sql.NullInt32{Int32: entityGroup.ID, Valid: true},
-	})
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParams) (CreateWorldTxResult, error) {
 	var result CreateWorldTxResult
 
@@ -119,53 +90,6 @@ func (store *SQLStore) CreateWorldTx(ctx context.Context, arg CreateWorldTxParam
 				Valid: true,
 			},
 		})
-		if err != nil {
-			return err
-		}
-
-		entityGroup, err := q.CreateEntityGroup(ctx, CreateEntityGroupParams{
-			Name: sql.NullString{String: "Overview", Valid: true},
-		})
-		if err != nil {
-			return err
-		}
-		_, err = q.CreateMenuItem(ctx, CreateMenuItemParams{
-			MenuID:       menu.ID,
-			MenuItemCode: "overview",
-			Name:         "Overview",
-			Position:     1,
-			IsMain: sql.NullBool{
-				Bool:  true,
-				Valid: true,
-			},
-			DescriptionPostID: sql.NullInt32{},
-			EntityGroupID:     sql.NullInt32{Int32: entityGroup.ID, Valid: true},
-		})
-		if err != nil {
-			return err
-		}
-
-		err = insertSubMenuItem(ctx, q, menu.ID, 2, "races", "Races", false)
-		if err != nil {
-			return err
-		}
-
-		err = insertSubMenuItem(ctx, q, menu.ID, 3, "flora-and-fauna", "Flora & Fauna", false)
-		if err != nil {
-			return err
-		}
-
-		err = insertSubMenuItem(ctx, q, menu.ID, 4, "magic", "Magic", false)
-		if err != nil {
-			return err
-		}
-
-		err = insertSubMenuItem(ctx, q, menu.ID, 5, "science-and-technology", "Science & Technology", false)
-		if err != nil {
-			return err
-		}
-
-		err = insertSubMenuItem(ctx, q, menu.ID, 6, "history", "History", false)
 		if err != nil {
 			return err
 		}
