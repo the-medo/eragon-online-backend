@@ -1,10 +1,10 @@
 -- name: GetModule :one
 SELECT * FROM modules
 WHERE
-    world_id = COALESCE(sqlc.narg(world_id), world_id) OR
-    quest_id = COALESCE(sqlc.narg(quest_id), quest_id) OR
-    character_id = COALESCE(sqlc.narg(character_id), character_id) OR
-    system_id = COALESCE(sqlc.narg(system_id), system_id)
+    (world_id IS NULL OR world_id = sqlc.narg(world_id)) AND
+    (system_id IS NULL OR system_id = sqlc.narg(system_id)) AND
+    (character_id IS NULL OR character_id = sqlc.narg(character_id)) AND
+    (quest_id IS NULL OR quest_id = sqlc.narg(quest_id))
 ;
 
 -- name: GetModuleById :one

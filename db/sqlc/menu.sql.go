@@ -28,7 +28,7 @@ func (q *Queries) CreateMenu(ctx context.Context, arg CreateMenuParams) (Menu, e
 	return i, err
 }
 
-const createMenuItem = `-- name: SharedCreateMenuItem :one
+const createMenuItem = `-- name: CreateMenuItem :one
 INSERT INTO menu_items (menu_id, menu_item_code, name, position, is_main, description_post_id, entity_group_id)
 VALUES ($1, $2, $3, $4, $5, $6, $7)
 RETURNING id, menu_id, menu_item_code, name, position, is_main, description_post_id, entity_group_id

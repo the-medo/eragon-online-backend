@@ -67,25 +67,25 @@ func (q *Queries) DeleteModule(ctx context.Context, id int32) error {
 const getModule = `-- name: GetModule :one
 SELECT id, module_type, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, world_id, system_id, character_id, quest_id, description_post_id FROM modules
 WHERE
-    world_id = COALESCE($1, world_id) OR
-    quest_id = COALESCE($2, quest_id) OR
-    character_id = COALESCE($3, character_id) OR
-    system_id = COALESCE($4, system_id)
+    (world_id IS NULL OR world_id = $1) AND
+    (system_id IS NULL OR system_id = $2) AND
+    (character_id IS NULL OR character_id = $3) AND
+    (quest_id IS NULL OR quest_id = $4)
 `
 
 type GetModuleParams struct {
 	WorldID     sql.NullInt32 `json:"world_id"`
-	QuestID     sql.NullInt32 `json:"quest_id"`
-	CharacterID sql.NullInt32 `json:"character_id"`
 	SystemID    sql.NullInt32 `json:"system_id"`
+	CharacterID sql.NullInt32 `json:"character_id"`
+	QuestID     sql.NullInt32 `json:"quest_id"`
 }
 
 func (q *Queries) GetModule(ctx context.Context, arg GetModuleParams) (Module, error) {
 	row := q.db.QueryRowContext(ctx, getModule,
 		arg.WorldID,
-		arg.QuestID,
-		arg.CharacterID,
 		arg.SystemID,
+		arg.CharacterID,
+		arg.QuestID,
 	)
 	var i Module
 	err := row.Scan(
