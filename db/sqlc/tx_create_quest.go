@@ -94,21 +94,6 @@ func (store *SQLStore) CreateQuestTx(ctx context.Context, arg CreateQuestTxParam
 			return err
 		}
 
-		_, err = q.CreateMenuItem(ctx, CreateMenuItemParams{
-			MenuID:       menu.ID,
-			MenuItemCode: "overview",
-			Name:         "Overview",
-			Position:     1,
-			IsMain: sql.NullBool{
-				Bool:  true,
-				Valid: true,
-			},
-			DescriptionPostID: sql.NullInt32{},
-		})
-		if err != nil {
-			return err
-		}
-
 		_, err = q.CreateModuleAdmin(ctx, CreateModuleAdminParams{
 			ModuleID:           module.ID,
 			UserID:             arg.UserId,

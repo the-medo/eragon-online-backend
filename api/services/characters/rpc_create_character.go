@@ -52,6 +52,20 @@ func (server *ServiceCharacters) CreateCharacter(ctx context.Context, req *pb.Cr
 		return nil, status.Errorf(codes.Internal, "failed to create character: %s", err)
 	}
 
+	menuId := txResult.Module.MenuID
+
+	pos1, isMainFalse := int32(1), false
+	items := []pb.CreateMenuItemRequest{
+		{MenuId: menuId, Code: "overview", Name: "Overview", Position: &pos1, IsMain: &isMainFalse},
+	}
+
+	for i := range items {
+		_, err := server.SharedCreateMenuItem(ctx, &items[i])
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to create menu item: %s", err)
+		}
+	}
+
 	rsp := &pb.CreateCharacterResponse{
 		Character: converters.ConvertCharacter(*txResult.Character),
 		Module:    converters.ConvertViewModule(*txResult.Module),
