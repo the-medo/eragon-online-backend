@@ -313,14 +313,31 @@ Table map_pin_types {
 
 Table quests {
   id int [pk, increment]
+  name varchar [not null, unique]
+  public boolean [not null, default: false]
+  created_at timestamptz [not null, default: `now()`]
+  short_description varchar [not null, default: '']
+  world_id int [ref: > worlds.id]
+  system_id int [ref: > systems.id]
 }
 
 Table systems {
   id int [pk, increment]
+  name varchar [not null, unique]
+  based_on varchar [not null]
+  public boolean [not null, default: false]
+  created_at timestamptz [not null, default: `now()`]
+  short_description varchar [not null, default: '']
 }
 
 Table characters {
   id int [pk, increment]
+  name varchar [not null, unique]
+  public boolean [not null, default: false]
+  created_at timestamptz [not null, default: `now()`]
+  short_description varchar [not null, default: '']
+  world_id int [ref: > worlds.id]
+  system_id int [ref: > systems.id]
 }
 
 Table modules {

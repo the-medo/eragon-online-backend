@@ -44,6 +44,25 @@ func (server *ServiceWorlds) CreateWorld(ctx context.Context, req *pb.CreateWorl
 		return nil, status.Errorf(codes.Internal, "failed to create world: %s", err)
 	}
 
+	menuId := txResult.Module.MenuID
+
+	pos1, pos2, pos3, pos4, pos5, pos6, isMainTrue, isMainFalse := int32(1), int32(2), int32(3), int32(4), int32(5), int32(6), true, false
+	items := []pb.CreateMenuItemRequest{
+		{MenuId: menuId, Code: "overview", Name: "Overview", Position: &pos1, IsMain: &isMainTrue},
+		{MenuId: menuId, Code: "races", Name: "Races", Position: &pos2, IsMain: &isMainFalse},
+		{MenuId: menuId, Code: "flora-and-fauna", Name: "Flora & Fauna", Position: &pos3, IsMain: &isMainFalse},
+		{MenuId: menuId, Code: "magic", Name: "Magic", Position: &pos4, IsMain: &isMainFalse},
+		{MenuId: menuId, Code: "science-and-technology", Name: "Science & Technology", Position: &pos5, IsMain: &isMainFalse},
+		{MenuId: menuId, Code: "history", Name: "History", Position: &pos6, IsMain: &isMainFalse},
+	}
+
+	for i := range items {
+		_, err := server.SharedCreateMenuItem(ctx, &items[i])
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to create menu item: %s", err)
+		}
+	}
+
 	rsp := &pb.CreateWorldResponse{
 		World:  converters.ConvertWorld(*txResult.World),
 		Module: converters.ConvertViewModule(*txResult.Module),
@@ -53,15 +72,15 @@ func (server *ServiceWorlds) CreateWorld(ctx context.Context, req *pb.CreateWorl
 }
 
 func validateCreateWorldRequest(req *pb.CreateWorldRequest) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := validator.ValidateWorldName(req.GetName()); err != nil {
+	if err := validator.ValidateModuleName(req.GetName()); err != nil {
 		violations = append(violations, e.FieldViolation("name", err))
 	}
 
-	if err := validator.ValidateWorldShortDescription(req.GetShortDescription()); err != nil {
+	if err := validator.ValidateModuleShortDescription(req.GetShortDescription()); err != nil {
 		violations = append(violations, e.FieldViolation("short_description", err))
 	}
 
-	if err := validator.ValidateWorldBasedOn(req.GetBasedOn()); err != nil {
+	if err := validator.ValidateModuleBasedOn(req.GetBasedOn()); err != nil {
 		violations = append(violations, e.FieldViolation("based_on", err))
 	}
 

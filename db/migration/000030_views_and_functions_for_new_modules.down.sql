@@ -1,0 +1,9 @@
+-- This migration file is empty on purpose.
+-- It manages new views, procedures and functions, that are stored in /db/migration/objects
+-- These DB objects will be removed after lowering version:
+-- -- view_systems
+-- -- view_characters
+-- -- view_quests
+-- -- get_systems
+-- -- get_characters
+-- -- get_quests

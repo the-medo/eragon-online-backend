@@ -9,7 +9,7 @@ func ValidateModuleExtended(worldId *int32, questId *int32, systemId *int32, cha
 
 	if worldId != nil && *worldId > 0 {
 		inputCount++
-		err := ValidateWorldId(*worldId)
+		err := ValidateModuleId(*worldId)
 		if err != nil {
 			return err
 		}

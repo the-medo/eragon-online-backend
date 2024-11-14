@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+message Character {
+  int32 id = 1;
+  string name = 2;
+  bool public = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  string shortDescription = 5;
+  int32 worldId = 6;
+  int32 systemId = 7;
+}
+
+message ViewCharacter {
+  int32 id = 1;
+  string name = 2;
+  bool public = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  string shortDescription = 5;
+  int32 worldId = 6;
+  int32 systemId = 7;
+  int32 moduleId = 8;
+  int32 menuId = 9;
+  int32 headerImgId = 10;
+  string headerImgUrl = 11;
+  int32 thumbnailImgId = 12;
+  string thumbnailImgUrl = 13;
+  int32 avatarImgId = 14;
+  string avatarImgUrl = 15;
+  repeated int32 tags = 16;
+}

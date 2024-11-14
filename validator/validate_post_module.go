@@ -10,7 +10,7 @@ func ValidatePostModule(module *pb.Module) error {
 
 	if module.WorldId != nil {
 		inputCount++
-		err := ValidateWorldId(module.GetWorldId())
+		err := ValidateModuleId(module.GetWorldId())
 		if err != nil {
 			return err
 		}
@@ -52,7 +52,7 @@ func ValidatePostModuleExtended(worldId *int32, questId *int32, systemId *int32,
 
 	if worldId != nil {
 		inputCount++
-		err := ValidateWorldId(*worldId)
+		err := ValidateModuleId(*worldId)
 		if err != nil {
 			return err
 		}

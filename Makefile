@@ -5,6 +5,9 @@ export
 DB_URL=postgresql://root:secret@localhost:5432/talebound?sslmode=disable
 PROTO_SERVICES := $(shell find proto/services -mindepth 1 -maxdepth 1 -type d | sort | awk -F/ '{print "proto/services/" $$NF "/*.proto"}' | tr '\n' ' ')
 
+network-create:
+	-docker network inspect talebound-backend >nul 2>&1 || docker network create talebound-backend
+
 rm-postgres:
 	docker stop postgres15
 	docker rm postgres15
@@ -95,6 +98,6 @@ redis:
 new_migration:
 	migrate create -ext sql -dir db/migration -seq $(name)
 
-prepare: rm-postgres rm-redis postgres redis wait-for-createdb createdb wait-for-createdb migrateup server
+prepare: network-create postgres redis wait-for-createdb createdb wait-for-createdb migrateup server
 
-.PHONY: rm-postgres createdb dropdb postgres migrateup migratedown sqlc-generate test mock migrateup1 migratedown1 db_docs db_schema proto_win proto_linux evans proto_without_clean redis new_migration
+.PHONY: network-create rm-postgres createdb dropdb postgres migrateup migratedown sqlc-generate test mock migrateup1 migratedown1 db_docs db_schema proto_win proto_linux evans proto_without_clean redis new_migration

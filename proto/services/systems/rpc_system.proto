@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package pb;
+
+import "services/systems/system.proto";
+import "services/modules/module.proto";
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+
+message CreateSystemRequest {
+  string name = 1;
+  string shortDescription = 2;
+  string basedOn = 3;
+}
+
+message CreateSystemResponse {
+  System system = 1;
+  ViewModule module = 2;
+}
+
+message UpdateSystemRequest {
+  int32 systemId = 1;
+  optional string name = 2;
+  optional string shortDescription = 3;
+  optional bool public = 4;
+  optional string basedOn = 5;
+}
+
+message UploadSystemImageRequest {
+  int32 systemId = 1;
+  bytes data = 2;
+  int32 imageTypeId = 3;
+}
+
+message GetSystemsRequest {
+  optional bool public = 1;
+  repeated int32 tags = 2;
+  optional string orderBy = 3;
+  optional int32 limit = 4;
+  optional int32 offset = 5;
+}
+
+message GetSystemsResponse {
+  repeated int32 systemIds = 1;
+  int32 totalCount = 2;
+}
+
+message GetSystemByIdRequest {
+  int32 systemId = 1;
+}

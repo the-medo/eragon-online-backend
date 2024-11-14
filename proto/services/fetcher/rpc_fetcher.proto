@@ -4,6 +4,9 @@ package pb;
 
 import "services/modules/module.proto";
 import "services/worlds/world.proto";
+import "services/systems/system.proto";
+import "services/characters/character.proto";
+import "services/quests/quest.proto";
 import "services/entities/entity.proto";
 import "services/posts/post.proto";
 import "services/images/image.proto";
@@ -30,10 +33,13 @@ message RunFetcherRequest {
 message RunFetcherResponse {
   repeated ViewModule modules = 1;
   repeated World worlds = 2;
-  repeated ViewEntity entities = 3;
-  repeated Post posts = 4;
-  repeated Image images = 5;
-  repeated Map maps = 6;
-  repeated Location locations = 7;
-  repeated User users = 8;
+  repeated System systems = 3;
+  repeated Character characters = 4;
+  repeated Quest quests = 5;
+  repeated ViewEntity entities = 6;
+  repeated Post posts = 7;
+  repeated Image images = 8;
+  repeated Map maps = 9;
+  repeated Location locations = 10;
+  repeated User users = 11;
 }

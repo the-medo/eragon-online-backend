@@ -28,6 +28,10 @@ func (server *ServiceModules) GetModuleId(ctx context.Context, req *pb.GetModule
 			Int32: req.GetWorldId(),
 			Valid: req.WorldId != nil,
 		},
+		SystemID: sql.NullInt32{
+			Int32: req.GetSystemId(),
+			Valid: req.SystemId != nil,
+		},
 		QuestID: sql.NullInt32{
 			Int32: req.GetQuestId(),
 			Valid: req.QuestId != nil,
@@ -35,10 +39,6 @@ func (server *ServiceModules) GetModuleId(ctx context.Context, req *pb.GetModule
 		CharacterID: sql.NullInt32{
 			Int32: req.GetCharacterId(),
 			Valid: req.CharacterId != nil,
-		},
-		SystemID: sql.NullInt32{
-			Int32: req.GetSystemId(),
-			Valid: req.SystemId != nil,
 		},
 	})
 	if err != nil {

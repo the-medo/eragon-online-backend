@@ -10,7 +10,7 @@ func ValidateLocationModule(module *pb.ModuleDefinition) error {
 
 	if module.WorldId != nil {
 		inputCount++
-		err := ValidateWorldId(module.GetWorldId())
+		err := ValidateModuleId(module.GetWorldId())
 		if err != nil {
 			return err
 		}

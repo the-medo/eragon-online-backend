@@ -124,7 +124,7 @@ func validateUpdateMapPinType(req *pb.UpdateMapPinTypeRequest) (violations []*er
 	}
 
 	if req.Icon != nil {
-		if err := validator.ValidateUniversalName(req.GetIcon()); err != nil {
+		if err := validator.ValidateString(req.GetIcon(), 0, 64); err != nil {
 			violations = append(violations, e.FieldViolation("icon", err))
 		}
 	}

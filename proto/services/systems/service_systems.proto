@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "services/systems/rpc_system.proto";
+import "services/systems/system.proto";
+import "services/images/image.proto";
+
+
+option go_package = "github.com/the-medo/talebound-backend/pb";
+
+service Systems {
+
+  rpc CreateSystem(CreateSystemRequest) returns (CreateSystemResponse) {
+    option (google.api.http) = {
+      post: "/systems"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates completely new system";
+      summary: "Create system";
+    };
+  };
+
+  rpc UpdateSystem(UpdateSystemRequest) returns (System) {
+    option (google.api.http) = {
+      patch: "/systems/{systemId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates system properties (NO images or stats!)";
+      summary: "Update system";
+    };
+  };
+
+  rpc UploadSystemImage(UploadSystemImageRequest) returns (Image) {
+    option (google.api.http) = {
+      post: "/systems/{systemId}/images"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "uploads and sets new image for given system";
+      summary: "Upload image for system";
+    };
+  };
+
+  rpc GetSystems(GetSystemsRequest) returns (GetSystemsResponse) {
+    option (google.api.http) = {
+      get: "/systems"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of systems";
+      summary: "Get systems ";
+    };
+  };
+
+  rpc GetSystemById(GetSystemByIdRequest) returns (System) {
+    option (google.api.http) = {
+      get: "/systems/{systemId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets system by ID";
+      summary: "Get system by ID ";
+    };
+  };
+}
