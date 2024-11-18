@@ -295,6 +295,51 @@ func (ns NullPinShape) Value() (driver.Value, error) {
 	return string(ns.PinShape), nil
 }
 
+type QuestStatus string
+
+const (
+	QuestStatusUnknown              QuestStatus = "unknown"
+	QuestStatusNotStarted           QuestStatus = "not_started"
+	QuestStatusInProgress           QuestStatus = "in_progress"
+	QuestStatusFinishedCompleted    QuestStatus = "finished_completed"
+	QuestStatusFinishedNotCompleted QuestStatus = "finished_not_completed"
+)
+
+func (e *QuestStatus) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = QuestStatus(s)
+	case string:
+		*e = QuestStatus(s)
+	default:
+		return fmt.Errorf("unsupported scan type for QuestStatus: %T", src)
+	}
+	return nil
+}
+
+type NullQuestStatus struct {
+	QuestStatus QuestStatus `json:"quest_status"`
+	Valid       bool        `json:"valid"` // Valid is true if QuestStatus is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullQuestStatus) Scan(value interface{}) error {
+	if value == nil {
+		ns.QuestStatus, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.QuestStatus.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullQuestStatus) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.QuestStatus), nil
+}
+
 type Character struct {
 	ID               int32         `json:"id"`
 	Name             string        `json:"name"`
@@ -543,6 +588,21 @@ type Quest struct {
 	ShortDescription string        `json:"short_description"`
 	WorldID          sql.NullInt32 `json:"world_id"`
 	SystemID         sql.NullInt32 `json:"system_id"`
+}
+
+type QuestCharacter struct {
+	QuestID     int32     `json:"quest_id"`
+	CharacterID int32     `json:"character_id"`
+	CreatedAt   time.Time `json:"created_at"`
+	// 0 = NO, 1 = YES, 2 = PENDING
+	Approved           int32  `json:"approved"`
+	MotivationalLetter string `json:"motivational_letter"`
+}
+
+type QuestSetting struct {
+	QuestID int32       `json:"quest_id"`
+	Status  QuestStatus `json:"status"`
+	CanJoin bool        `json:"can_join"`
 }
 
 type Role struct {

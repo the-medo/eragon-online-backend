@@ -50,12 +50,84 @@ func (q *Queries) CreateQuest(ctx context.Context, arg CreateQuestParams) (Quest
 	return i, err
 }
 
+const createQuestCharacter = `-- name: CreateQuestCharacter :one
+INSERT INTO quest_characters (quest_id, character_id, created_at, approved, motivational_letter)
+VALUES ($1, $2, NOW(), $3, $4) RETURNING quest_id, character_id, created_at, approved, motivational_letter
+`
+
+type CreateQuestCharacterParams struct {
+	QuestID            int32  `json:"quest_id"`
+	CharacterID        int32  `json:"character_id"`
+	Approved           int32  `json:"approved"`
+	MotivationalLetter string `json:"motivational_letter"`
+}
+
+func (q *Queries) CreateQuestCharacter(ctx context.Context, arg CreateQuestCharacterParams) (QuestCharacter, error) {
+	row := q.db.QueryRowContext(ctx, createQuestCharacter,
+		arg.QuestID,
+		arg.CharacterID,
+		arg.Approved,
+		arg.MotivationalLetter,
+	)
+	var i QuestCharacter
+	err := row.Scan(
+		&i.QuestID,
+		&i.CharacterID,
+		&i.CreatedAt,
+		&i.Approved,
+		&i.MotivationalLetter,
+	)
+	return i, err
+}
+
+const createQuestSetting = `-- name: CreateQuestSetting :one
+INSERT INTO quest_settings (quest_id, status, can_join) VALUES ($1, $2, $3) RETURNING quest_id, status, can_join
+`
+
+type CreateQuestSettingParams struct {
+	QuestID int32       `json:"quest_id"`
+	Status  QuestStatus `json:"status"`
+	CanJoin bool        `json:"can_join"`
+}
+
+func (q *Queries) CreateQuestSetting(ctx context.Context, arg CreateQuestSettingParams) (QuestSetting, error) {
+	row := q.db.QueryRowContext(ctx, createQuestSetting, arg.QuestID, arg.Status, arg.CanJoin)
+	var i QuestSetting
+	err := row.Scan(&i.QuestID, &i.Status, &i.CanJoin)
+	return i, err
+}
+
 const deleteQuest = `-- name: DeleteQuest :exec
 DELETE FROM quests WHERE id = $1
 `
 
 func (q *Queries) DeleteQuest(ctx context.Context, questID int32) error {
 	_, err := q.db.ExecContext(ctx, deleteQuest, questID)
+	return err
+}
+
+const deleteQuestCharacter = `-- name: DeleteQuestCharacter :exec
+DELETE FROM quest_characters
+WHERE quest_id = $1 AND character_id = $2
+`
+
+type DeleteQuestCharacterParams struct {
+	QuestID     int32 `json:"quest_id"`
+	CharacterID int32 `json:"character_id"`
+}
+
+func (q *Queries) DeleteQuestCharacter(ctx context.Context, arg DeleteQuestCharacterParams) error {
+	_, err := q.db.ExecContext(ctx, deleteQuestCharacter, arg.QuestID, arg.CharacterID)
+	return err
+}
+
+const deleteQuestSetting = `-- name: DeleteQuestSetting :exec
+DELETE FROM quest_settings
+WHERE quest_id = $1
+`
+
+func (q *Queries) DeleteQuestSetting(ctx context.Context, questID int32) error {
+	_, err := q.db.ExecContext(ctx, deleteQuestSetting, questID)
 	return err
 }
 
@@ -75,6 +147,111 @@ func (q *Queries) GetQuestByID(ctx context.Context, questID int32) (Quest, error
 		&i.WorldID,
 		&i.SystemID,
 	)
+	return i, err
+}
+
+const getQuestCharacterByQuestAndCharacterID = `-- name: GetQuestCharacterByQuestAndCharacterID :one
+SELECT quest_id, character_id, created_at, approved, motivational_letter FROM quest_characters
+WHERE quest_id = $1 AND character_id = $2
+LIMIT 1
+`
+
+type GetQuestCharacterByQuestAndCharacterIDParams struct {
+	QuestID     int32 `json:"quest_id"`
+	CharacterID int32 `json:"character_id"`
+}
+
+func (q *Queries) GetQuestCharacterByQuestAndCharacterID(ctx context.Context, arg GetQuestCharacterByQuestAndCharacterIDParams) (QuestCharacter, error) {
+	row := q.db.QueryRowContext(ctx, getQuestCharacterByQuestAndCharacterID, arg.QuestID, arg.CharacterID)
+	var i QuestCharacter
+	err := row.Scan(
+		&i.QuestID,
+		&i.CharacterID,
+		&i.CreatedAt,
+		&i.Approved,
+		&i.MotivationalLetter,
+	)
+	return i, err
+}
+
+const getQuestCharactersByCharacterID = `-- name: GetQuestCharactersByCharacterID :many
+SELECT quest_id, character_id, created_at, approved, motivational_letter FROM quest_characters
+WHERE character_id = $1
+`
+
+func (q *Queries) GetQuestCharactersByCharacterID(ctx context.Context, characterID int32) ([]QuestCharacter, error) {
+	rows, err := q.db.QueryContext(ctx, getQuestCharactersByCharacterID, characterID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []QuestCharacter{}
+	for rows.Next() {
+		var i QuestCharacter
+		if err := rows.Scan(
+			&i.QuestID,
+			&i.CharacterID,
+			&i.CreatedAt,
+			&i.Approved,
+			&i.MotivationalLetter,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getQuestCharactersByQuestID = `-- name: GetQuestCharactersByQuestID :many
+SELECT quest_id, character_id, created_at, approved, motivational_letter FROM quest_characters
+WHERE quest_id = $1
+`
+
+func (q *Queries) GetQuestCharactersByQuestID(ctx context.Context, questID int32) ([]QuestCharacter, error) {
+	rows, err := q.db.QueryContext(ctx, getQuestCharactersByQuestID, questID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []QuestCharacter{}
+	for rows.Next() {
+		var i QuestCharacter
+		if err := rows.Scan(
+			&i.QuestID,
+			&i.CharacterID,
+			&i.CreatedAt,
+			&i.Approved,
+			&i.MotivationalLetter,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getQuestSettingByQuestID = `-- name: GetQuestSettingByQuestID :one
+SELECT quest_id, status, can_join FROM quest_settings
+WHERE quest_id = $1
+LIMIT 1
+`
+
+func (q *Queries) GetQuestSettingByQuestID(ctx context.Context, questID int32) (QuestSetting, error) {
+	row := q.db.QueryRowContext(ctx, getQuestSettingByQuestID, questID)
+	var i QuestSetting
+	err := row.Scan(&i.QuestID, &i.Status, &i.CanJoin)
 	return i, err
 }
 
@@ -231,5 +408,63 @@ func (q *Queries) UpdateQuest(ctx context.Context, arg UpdateQuestParams) (Quest
 		&i.WorldID,
 		&i.SystemID,
 	)
+	return i, err
+}
+
+const updateQuestCharacter = `-- name: UpdateQuestCharacter :one
+UPDATE quest_characters
+SET
+    approved = COALESCE($1, approved),
+    motivational_letter = COALESCE($2, motivational_letter)
+WHERE
+    quest_id = $3 AND character_id = $4
+RETURNING quest_id, character_id, created_at, approved, motivational_letter
+`
+
+type UpdateQuestCharacterParams struct {
+	Approved           int32  `json:"approved"`
+	MotivationalLetter string `json:"motivational_letter"`
+	QuestID            int32  `json:"quest_id"`
+	CharacterID        int32  `json:"character_id"`
+}
+
+func (q *Queries) UpdateQuestCharacter(ctx context.Context, arg UpdateQuestCharacterParams) (QuestCharacter, error) {
+	row := q.db.QueryRowContext(ctx, updateQuestCharacter,
+		arg.Approved,
+		arg.MotivationalLetter,
+		arg.QuestID,
+		arg.CharacterID,
+	)
+	var i QuestCharacter
+	err := row.Scan(
+		&i.QuestID,
+		&i.CharacterID,
+		&i.CreatedAt,
+		&i.Approved,
+		&i.MotivationalLetter,
+	)
+	return i, err
+}
+
+const updateQuestSetting = `-- name: UpdateQuestSetting :one
+UPDATE quest_settings
+SET
+    status = COALESCE($1, status),
+    can_join = COALESCE($2, can_join)
+WHERE
+    quest_id = $3
+RETURNING quest_id, status, can_join
+`
+
+type UpdateQuestSettingParams struct {
+	Status  QuestStatus `json:"status"`
+	CanJoin bool        `json:"can_join"`
+	QuestID int32       `json:"quest_id"`
+}
+
+func (q *Queries) UpdateQuestSetting(ctx context.Context, arg UpdateQuestSettingParams) (QuestSetting, error) {
+	row := q.db.QueryRowContext(ctx, updateQuestSetting, arg.Status, arg.CanJoin, arg.QuestID)
+	var i QuestSetting
+	err := row.Scan(&i.QuestID, &i.Status, &i.CanJoin)
 	return i, err
 }
