@@ -16,6 +16,8 @@ func ConvertViewQuest(quest db.ViewQuest) *pb.ViewQuest {
 		ShortDescription: quest.ShortDescription,
 		Tags:             quest.Tags,
 		MenuId:           quest.MenuID,
+		CanJoin:          quest.CanJoin,
+		Status:           ConvertQuestStatusToPB(quest.Status),
 	}
 
 	if quest.WorldID.Valid {

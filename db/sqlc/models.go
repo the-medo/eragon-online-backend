@@ -869,6 +869,8 @@ type ViewQuest struct {
 	ShortDescription string        `json:"short_description"`
 	WorldID          sql.NullInt32 `json:"world_id"`
 	SystemID         sql.NullInt32 `json:"system_id"`
+	Status           QuestStatus   `json:"status"`
+	CanJoin          bool          `json:"can_join"`
 	ModuleID         int32         `json:"module_id"`
 	MenuID           int32         `json:"menu_id"`
 	HeaderImgID      sql.NullInt32 `json:"header_img_id"`

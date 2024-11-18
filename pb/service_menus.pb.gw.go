@@ -619,7 +619,7 @@ func RegisterMenusHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Menus/SharedCreateMenuItem", runtime.WithHTTPPathPattern("/menus/{menuId}/items"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.Menus/CreateMenuItem", runtime.WithHTTPPathPattern("/menus/{menuId}/items"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -852,7 +852,7 @@ func RegisterMenusHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Menus/SharedCreateMenuItem", runtime.WithHTTPPathPattern("/menus/{menuId}/items"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/pb.Menus/CreateMenuItem", runtime.WithHTTPPathPattern("/menus/{menuId}/items"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return

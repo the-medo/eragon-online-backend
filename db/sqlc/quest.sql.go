@@ -256,7 +256,7 @@ func (q *Queries) GetQuestSettingByQuestID(ctx context.Context, questID int32) (
 }
 
 const getQuests = `-- name: GetQuests :many
-SELECT id, name, public, created_at, short_description, world_id, system_id, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM get_quests($1::boolean, $2::integer[], $3::integer, $4::integer, $5::VARCHAR, 'DESC', $6, $7)
+SELECT id, name, public, created_at, short_description, world_id, system_id, status, can_join, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM get_quests($1::boolean, $2::integer[], $3::integer, $4::integer, $5::VARCHAR, 'DESC', $6, $7)
 `
 
 type GetQuestsParams struct {
@@ -294,6 +294,8 @@ func (q *Queries) GetQuests(ctx context.Context, arg GetQuestsParams) ([]ViewQue
 			&i.ShortDescription,
 			&i.WorldID,
 			&i.SystemID,
+			&i.Status,
+			&i.CanJoin,
 			&i.ModuleID,
 			&i.MenuID,
 			&i.HeaderImgID,

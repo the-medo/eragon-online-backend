@@ -140,7 +140,7 @@ var file_services_menus_service_menus_proto_goTypes = []interface{}{
 var file_services_menus_service_menus_proto_depIdxs = []int32{
 	0,  // 0: pb.Menus.UpdateMenu:input_type -> pb.UpdateMenuRequest
 	1,  // 1: pb.Menus.GetMenu:input_type -> pb.GetMenuRequest
-	2,  // 2: pb.Menus.SharedCreateMenuItem:input_type -> pb.CreateMenuItemRequest
+	2,  // 2: pb.Menus.CreateMenuItem:input_type -> pb.CreateMenuItemRequest
 	3,  // 3: pb.Menus.UpdateMenuItem:input_type -> pb.UpdateMenuItemRequest
 	4,  // 4: pb.Menus.UpdateMenuItemMoveGroupUp:input_type -> pb.UpdateMenuItemMoveGroupUpRequest
 	5,  // 5: pb.Menus.DeleteMenuItem:input_type -> pb.DeleteMenuItemRequest
@@ -148,7 +148,7 @@ var file_services_menus_service_menus_proto_depIdxs = []int32{
 	7,  // 7: pb.Menus.GetMenuItemContent:input_type -> pb.GetMenuItemContentRequest
 	8,  // 8: pb.Menus.UpdateMenu:output_type -> pb.ViewMenu
 	8,  // 9: pb.Menus.GetMenu:output_type -> pb.ViewMenu
-	9,  // 10: pb.Menus.SharedCreateMenuItem:output_type -> pb.MenuItem
+	9,  // 10: pb.Menus.CreateMenuItem:output_type -> pb.MenuItem
 	9,  // 11: pb.Menus.UpdateMenuItem:output_type -> pb.MenuItem
 	10, // 12: pb.Menus.UpdateMenuItemMoveGroupUp:output_type -> google.protobuf.Empty
 	10, // 13: pb.Menus.DeleteMenuItem:output_type -> google.protobuf.Empty
