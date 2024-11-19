@@ -20,7 +20,7 @@ INSERT INTO quests (
     system_id
 ) VALUES (
     $1, $2, $3, $4
-) RETURNING id, name, public, created_at, short_description, world_id, system_id
+) RETURNING id, name, public, created_at, short_description, world_id, system_id, status, can_join
 `
 
 type CreateQuestParams struct {
@@ -46,6 +46,8 @@ func (q *Queries) CreateQuest(ctx context.Context, arg CreateQuestParams) (Quest
 		&i.ShortDescription,
 		&i.WorldID,
 		&i.SystemID,
+		&i.Status,
+		&i.CanJoin,
 	)
 	return i, err
 }
@@ -80,23 +82,6 @@ func (q *Queries) CreateQuestCharacter(ctx context.Context, arg CreateQuestChara
 	return i, err
 }
 
-const createQuestSetting = `-- name: CreateQuestSetting :one
-INSERT INTO quest_settings (quest_id, status, can_join) VALUES ($1, $2, $3) RETURNING quest_id, status, can_join
-`
-
-type CreateQuestSettingParams struct {
-	QuestID int32       `json:"quest_id"`
-	Status  QuestStatus `json:"status"`
-	CanJoin bool        `json:"can_join"`
-}
-
-func (q *Queries) CreateQuestSetting(ctx context.Context, arg CreateQuestSettingParams) (QuestSetting, error) {
-	row := q.db.QueryRowContext(ctx, createQuestSetting, arg.QuestID, arg.Status, arg.CanJoin)
-	var i QuestSetting
-	err := row.Scan(&i.QuestID, &i.Status, &i.CanJoin)
-	return i, err
-}
-
 const deleteQuest = `-- name: DeleteQuest :exec
 DELETE FROM quests WHERE id = $1
 `
@@ -121,18 +106,8 @@ func (q *Queries) DeleteQuestCharacter(ctx context.Context, arg DeleteQuestChara
 	return err
 }
 
-const deleteQuestSetting = `-- name: DeleteQuestSetting :exec
-DELETE FROM quest_settings
-WHERE quest_id = $1
-`
-
-func (q *Queries) DeleteQuestSetting(ctx context.Context, questID int32) error {
-	_, err := q.db.ExecContext(ctx, deleteQuestSetting, questID)
-	return err
-}
-
 const getQuestByID = `-- name: GetQuestByID :one
-SELECT id, name, public, created_at, short_description, world_id, system_id FROM quests WHERE id = $1 LIMIT 1
+SELECT id, name, public, created_at, short_description, world_id, system_id, status, can_join FROM quests WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetQuestByID(ctx context.Context, questID int32) (Quest, error) {
@@ -146,6 +121,8 @@ func (q *Queries) GetQuestByID(ctx context.Context, questID int32) (Quest, error
 		&i.ShortDescription,
 		&i.WorldID,
 		&i.SystemID,
+		&i.Status,
+		&i.CanJoin,
 	)
 	return i, err
 }
@@ -242,19 +219,6 @@ func (q *Queries) GetQuestCharactersByQuestID(ctx context.Context, questID int32
 	return items, nil
 }
 
-const getQuestSettingByQuestID = `-- name: GetQuestSettingByQuestID :one
-SELECT quest_id, status, can_join FROM quest_settings
-WHERE quest_id = $1
-LIMIT 1
-`
-
-func (q *Queries) GetQuestSettingByQuestID(ctx context.Context, questID int32) (QuestSetting, error) {
-	row := q.db.QueryRowContext(ctx, getQuestSettingByQuestID, questID)
-	var i QuestSetting
-	err := row.Scan(&i.QuestID, &i.Status, &i.CanJoin)
-	return i, err
-}
-
 const getQuests = `-- name: GetQuests :many
 SELECT id, name, public, created_at, short_description, world_id, system_id, status, can_join, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM get_quests($1::boolean, $2::integer[], $3::integer, $4::integer, $5::VARCHAR, 'DESC', $6, $7)
 `
@@ -317,7 +281,7 @@ func (q *Queries) GetQuests(ctx context.Context, arg GetQuestsParams) ([]ViewQue
 }
 
 const getQuestsByIDs = `-- name: GetQuestsByIDs :many
-SELECT id, name, public, created_at, short_description, world_id, system_id FROM quests WHERE id = ANY($1::int[])
+SELECT id, name, public, created_at, short_description, world_id, system_id, status, can_join FROM quests WHERE id = ANY($1::int[])
 `
 
 func (q *Queries) GetQuestsByIDs(ctx context.Context, questIds []int32) ([]Quest, error) {
@@ -337,6 +301,8 @@ func (q *Queries) GetQuestsByIDs(ctx context.Context, questIds []int32) ([]Quest
 			&i.ShortDescription,
 			&i.WorldID,
 			&i.SystemID,
+			&i.Status,
+			&i.CanJoin,
 		); err != nil {
 			return nil, err
 		}
@@ -376,19 +342,23 @@ SET
     short_description = COALESCE($2, short_description),
     public = COALESCE($3, public),
     world_id = COALESCE($4, world_id),
-    system_id = COALESCE($5, system_id)
+    system_id = COALESCE($5, system_id),
+    status = COALESCE($6, status),
+    can_join = COALESCE($7, can_join)
 WHERE
-    id = $6
-    RETURNING id, name, public, created_at, short_description, world_id, system_id
+    id = $8
+    RETURNING id, name, public, created_at, short_description, world_id, system_id, status, can_join
 `
 
 type UpdateQuestParams struct {
-	Name             sql.NullString `json:"name"`
-	ShortDescription sql.NullString `json:"short_description"`
-	Public           sql.NullBool   `json:"public"`
-	WorldID          sql.NullInt32  `json:"world_id"`
-	SystemID         sql.NullInt32  `json:"system_id"`
-	QuestID          int32          `json:"quest_id"`
+	Name             sql.NullString  `json:"name"`
+	ShortDescription sql.NullString  `json:"short_description"`
+	Public           sql.NullBool    `json:"public"`
+	WorldID          sql.NullInt32   `json:"world_id"`
+	SystemID         sql.NullInt32   `json:"system_id"`
+	Status           NullQuestStatus `json:"status"`
+	CanJoin          sql.NullBool    `json:"can_join"`
+	QuestID          int32           `json:"quest_id"`
 }
 
 func (q *Queries) UpdateQuest(ctx context.Context, arg UpdateQuestParams) (Quest, error) {
@@ -398,6 +368,8 @@ func (q *Queries) UpdateQuest(ctx context.Context, arg UpdateQuestParams) (Quest
 		arg.Public,
 		arg.WorldID,
 		arg.SystemID,
+		arg.Status,
+		arg.CanJoin,
 		arg.QuestID,
 	)
 	var i Quest
@@ -409,6 +381,8 @@ func (q *Queries) UpdateQuest(ctx context.Context, arg UpdateQuestParams) (Quest
 		&i.ShortDescription,
 		&i.WorldID,
 		&i.SystemID,
+		&i.Status,
+		&i.CanJoin,
 	)
 	return i, err
 }
@@ -445,28 +419,5 @@ func (q *Queries) UpdateQuestCharacter(ctx context.Context, arg UpdateQuestChara
 		&i.Approved,
 		&i.MotivationalLetter,
 	)
-	return i, err
-}
-
-const updateQuestSetting = `-- name: UpdateQuestSetting :one
-UPDATE quest_settings
-SET
-    status = COALESCE($1, status),
-    can_join = COALESCE($2, can_join)
-WHERE
-    quest_id = $3
-RETURNING quest_id, status, can_join
-`
-
-type UpdateQuestSettingParams struct {
-	Status  QuestStatus `json:"status"`
-	CanJoin bool        `json:"can_join"`
-	QuestID int32       `json:"quest_id"`
-}
-
-func (q *Queries) UpdateQuestSetting(ctx context.Context, arg UpdateQuestSettingParams) (QuestSetting, error) {
-	row := q.db.QueryRowContext(ctx, updateQuestSetting, arg.Status, arg.CanJoin, arg.QuestID)
-	var i QuestSetting
-	err := row.Scan(&i.QuestID, &i.Status, &i.CanJoin)
 	return i, err
 }

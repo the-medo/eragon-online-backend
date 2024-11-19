@@ -40,7 +40,6 @@ type Querier interface {
 	CreatePost(ctx context.Context, arg CreatePostParams) (Post, error)
 	CreateQuest(ctx context.Context, arg CreateQuestParams) (Quest, error)
 	CreateQuestCharacter(ctx context.Context, arg CreateQuestCharacterParams) (QuestCharacter, error)
-	CreateQuestSetting(ctx context.Context, arg CreateQuestSettingParams) (QuestSetting, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateSystem(ctx context.Context, arg CreateSystemParams) (System, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
@@ -74,7 +73,6 @@ type Querier interface {
 	DeletePost(ctx context.Context, postID int32) error
 	DeleteQuest(ctx context.Context, questID int32) error
 	DeleteQuestCharacter(ctx context.Context, arg DeleteQuestCharacterParams) error
-	DeleteQuestSetting(ctx context.Context, questID int32) error
 	DeleteSystem(ctx context.Context, systemID int32) error
 	DeleteUserModule(ctx context.Context, arg DeleteUserModuleParams) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
@@ -154,7 +152,6 @@ type Querier interface {
 	GetQuestCharacterByQuestAndCharacterID(ctx context.Context, arg GetQuestCharacterByQuestAndCharacterIDParams) (QuestCharacter, error)
 	GetQuestCharactersByCharacterID(ctx context.Context, characterID int32) ([]QuestCharacter, error)
 	GetQuestCharactersByQuestID(ctx context.Context, questID int32) ([]QuestCharacter, error)
-	GetQuestSettingByQuestID(ctx context.Context, questID int32) (QuestSetting, error)
 	GetQuests(ctx context.Context, arg GetQuestsParams) ([]ViewQuest, error)
 	GetQuestsByIDs(ctx context.Context, questIds []int32) ([]Quest, error)
 	GetQuestsCount(ctx context.Context, arg GetQuestsCountParams) (int64, error)
@@ -205,7 +202,6 @@ type Querier interface {
 	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
 	UpdateQuest(ctx context.Context, arg UpdateQuestParams) (Quest, error)
 	UpdateQuestCharacter(ctx context.Context, arg UpdateQuestCharacterParams) (QuestCharacter, error)
-	UpdateQuestSetting(ctx context.Context, arg UpdateQuestSettingParams) (QuestSetting, error)
 	UpdateSystem(ctx context.Context, arg UpdateSystemParams) (System, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)

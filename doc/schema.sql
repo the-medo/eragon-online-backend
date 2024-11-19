@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2024-11-17T18:13:49.753Z
+-- Generated at: 2024-11-19T18:15:55.505Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -307,7 +307,9 @@ CREATE TABLE "quests" (
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "short_description" varchar NOT NULL DEFAULT '',
   "world_id" int,
-  "system_id" int
+  "system_id" int,
+  "status" quest_status NOT NULL DEFAULT 'not_started',
+  "can_join" boolean NOT NULL DEFAULT false
 );
 
 CREATE TABLE "systems" (
@@ -399,12 +401,6 @@ CREATE TABLE "quest_characters" (
   "motivational_letter" varchar NOT NULL
 );
 
-CREATE TABLE "quest_settings" (
-  "quest_id" int NOT NULL,
-  "status" quest_status NOT NULL DEFAULT 'not_started',
-  "can_join" boolean NOT NULL DEFAULT false
-);
-
 CREATE UNIQUE INDEX ON "user_modules" ("user_id", "module_id");
 
 CREATE UNIQUE INDEX ON "evaluation_votes" ("evaluation_id", "user_id", "user_id_voter");
@@ -434,8 +430,6 @@ CREATE UNIQUE INDEX ON "entities" ("location_id", "module_id");
 CREATE UNIQUE INDEX ON "entities" ("image_id", "module_id");
 
 CREATE UNIQUE INDEX ON "quest_characters" ("quest_id", "character_id");
-
-CREATE UNIQUE INDEX ON "quest_settings" ("quest_id");
 
 COMMENT ON COLUMN "image_types"."variant" IS 'Variant name from cloudflare. ';
 
@@ -592,5 +586,3 @@ ALTER TABLE "entity_group_content" ADD FOREIGN KEY ("content_entity_group_id") R
 ALTER TABLE "quest_characters" ADD FOREIGN KEY ("quest_id") REFERENCES "quests" ("id");
 
 ALTER TABLE "quest_characters" ADD FOREIGN KEY ("character_id") REFERENCES "characters" ("id");
-
-ALTER TABLE "quest_settings" ADD FOREIGN KEY ("quest_id") REFERENCES "quests" ("id");

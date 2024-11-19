@@ -15,7 +15,9 @@ SET
     short_description = COALESCE(sqlc.narg(short_description), short_description),
     public = COALESCE(sqlc.narg(public), public),
     world_id = COALESCE(sqlc.narg(world_id), world_id),
-    system_id = COALESCE(sqlc.narg(system_id), system_id)
+    system_id = COALESCE(sqlc.narg(system_id), system_id),
+    status = COALESCE(sqlc.narg(status), status),
+    can_join = COALESCE(sqlc.narg(can_join), can_join)
 WHERE
     id = sqlc.arg(quest_id)
     RETURNING *;
@@ -37,30 +39,9 @@ SELECT COUNT(*) FROM view_quests
 WHERE (@is_public::boolean IS NULL OR public = @is_public) AND
     (array_length(@tags::integer[], 1) IS NULL OR tags @> @tags::integer[]);
 
--- name: CreateQuestSetting :one
-INSERT INTO quest_settings (quest_id, status, can_join) VALUES (@quest_id, @status, @can_join) RETURNING *;
-
 -- name: CreateQuestCharacter :one
 INSERT INTO quest_characters (quest_id, character_id, created_at, approved, motivational_letter)
 VALUES (@quest_id, @character_id, NOW(), @approved, @motivational_letter) RETURNING *;
-
--- name: UpdateQuestSetting :one
-UPDATE quest_settings
-SET
-    status = COALESCE(@status, status),
-    can_join = COALESCE(@can_join, can_join)
-WHERE
-    quest_id = @quest_id
-RETURNING *;
-
--- name: DeleteQuestSetting :exec
-DELETE FROM quest_settings
-WHERE quest_id = @quest_id;
-
--- name: GetQuestSettingByQuestID :one
-SELECT * FROM quest_settings
-WHERE quest_id = @quest_id
-LIMIT 1;
 
 -- name: UpdateQuestCharacter :one
 UPDATE quest_characters

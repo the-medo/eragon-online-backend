@@ -588,6 +588,8 @@ type Quest struct {
 	ShortDescription string        `json:"short_description"`
 	WorldID          sql.NullInt32 `json:"world_id"`
 	SystemID         sql.NullInt32 `json:"system_id"`
+	Status           QuestStatus   `json:"status"`
+	CanJoin          bool          `json:"can_join"`
 }
 
 type QuestCharacter struct {
@@ -597,12 +599,6 @@ type QuestCharacter struct {
 	// 0 = NO, 1 = YES, 2 = PENDING
 	Approved           int32  `json:"approved"`
 	MotivationalLetter string `json:"motivational_letter"`
-}
-
-type QuestSetting struct {
-	QuestID int32       `json:"quest_id"`
-	Status  QuestStatus `json:"status"`
-	CanJoin bool        `json:"can_join"`
 }
 
 type Role struct {
