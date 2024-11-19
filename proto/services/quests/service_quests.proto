@@ -3,8 +3,8 @@ syntax = "proto3";
 package pb;
 
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
-
 import "services/quests/rpc_quest.proto";
 import "services/quests/quest.proto";
 import "services/images/image.proto";
@@ -64,6 +64,48 @@ service Quests {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "gets quest by ID";
       summary: "Get quest by ID ";
+    };
+  };
+
+  rpc CreateQuestCharacter(CreateQuestCharacterRequest) returns (QuestCharacter) {
+    option (google.api.http) = {
+      post: "/quests/{questId}/characters/{characterId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "creates quest character";
+      summary: "Create quest character";
+    };
+  };
+
+  rpc UpdateQuestCharacter(UpdateQuestCharacterRequest) returns (QuestCharacter) {
+    option (google.api.http) = {
+      patch: "/quests/{questId}/characters/{characterId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "updates quest character properties";
+      summary: "Update quest character";
+    };
+  };
+
+  rpc DeleteQuestCharacter(DeleteQuestCharacterRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/quests/{questId}/characters/{characterId}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "deletes quest character";
+      summary: "Delete quest character";
+    };
+  };
+
+  rpc GetQuestCharacters(GetQuestCharactersRequest) returns (GetQuestCharactersResponse) {
+    option (google.api.http) = {
+      get: "/quests/{questId}/characters"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of quest characters";
+      summary: "Get quest characters";
     };
   };
 }

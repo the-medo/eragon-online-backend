@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,11 +20,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Quests_CreateQuest_FullMethodName      = "/pb.Quests/CreateQuest"
-	Quests_UpdateQuest_FullMethodName      = "/pb.Quests/UpdateQuest"
-	Quests_UploadQuestImage_FullMethodName = "/pb.Quests/UploadQuestImage"
-	Quests_GetQuests_FullMethodName        = "/pb.Quests/GetQuests"
-	Quests_GetQuestById_FullMethodName     = "/pb.Quests/GetQuestById"
+	Quests_CreateQuest_FullMethodName          = "/pb.Quests/CreateQuest"
+	Quests_UpdateQuest_FullMethodName          = "/pb.Quests/UpdateQuest"
+	Quests_UploadQuestImage_FullMethodName     = "/pb.Quests/UploadQuestImage"
+	Quests_GetQuests_FullMethodName            = "/pb.Quests/GetQuests"
+	Quests_GetQuestById_FullMethodName         = "/pb.Quests/GetQuestById"
+	Quests_CreateQuestCharacter_FullMethodName = "/pb.Quests/CreateQuestCharacter"
+	Quests_UpdateQuestCharacter_FullMethodName = "/pb.Quests/UpdateQuestCharacter"
+	Quests_DeleteQuestCharacter_FullMethodName = "/pb.Quests/DeleteQuestCharacter"
+	Quests_GetQuestCharacters_FullMethodName   = "/pb.Quests/GetQuestCharacters"
 )
 
 // QuestsClient is the client API for Quests service.
@@ -35,6 +40,10 @@ type QuestsClient interface {
 	UploadQuestImage(ctx context.Context, in *UploadQuestImageRequest, opts ...grpc.CallOption) (*Image, error)
 	GetQuests(ctx context.Context, in *GetQuestsRequest, opts ...grpc.CallOption) (*GetQuestsResponse, error)
 	GetQuestById(ctx context.Context, in *GetQuestByIdRequest, opts ...grpc.CallOption) (*Quest, error)
+	CreateQuestCharacter(ctx context.Context, in *CreateQuestCharacterRequest, opts ...grpc.CallOption) (*QuestCharacter, error)
+	UpdateQuestCharacter(ctx context.Context, in *UpdateQuestCharacterRequest, opts ...grpc.CallOption) (*QuestCharacter, error)
+	DeleteQuestCharacter(ctx context.Context, in *DeleteQuestCharacterRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetQuestCharacters(ctx context.Context, in *GetQuestCharactersRequest, opts ...grpc.CallOption) (*GetQuestCharactersResponse, error)
 }
 
 type questsClient struct {
@@ -90,6 +99,42 @@ func (c *questsClient) GetQuestById(ctx context.Context, in *GetQuestByIdRequest
 	return out, nil
 }
 
+func (c *questsClient) CreateQuestCharacter(ctx context.Context, in *CreateQuestCharacterRequest, opts ...grpc.CallOption) (*QuestCharacter, error) {
+	out := new(QuestCharacter)
+	err := c.cc.Invoke(ctx, Quests_CreateQuestCharacter_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *questsClient) UpdateQuestCharacter(ctx context.Context, in *UpdateQuestCharacterRequest, opts ...grpc.CallOption) (*QuestCharacter, error) {
+	out := new(QuestCharacter)
+	err := c.cc.Invoke(ctx, Quests_UpdateQuestCharacter_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *questsClient) DeleteQuestCharacter(ctx context.Context, in *DeleteQuestCharacterRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Quests_DeleteQuestCharacter_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *questsClient) GetQuestCharacters(ctx context.Context, in *GetQuestCharactersRequest, opts ...grpc.CallOption) (*GetQuestCharactersResponse, error) {
+	out := new(GetQuestCharactersResponse)
+	err := c.cc.Invoke(ctx, Quests_GetQuestCharacters_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QuestsServer is the server API for Quests service.
 // All implementations must embed UnimplementedQuestsServer
 // for forward compatibility
@@ -99,6 +144,10 @@ type QuestsServer interface {
 	UploadQuestImage(context.Context, *UploadQuestImageRequest) (*Image, error)
 	GetQuests(context.Context, *GetQuestsRequest) (*GetQuestsResponse, error)
 	GetQuestById(context.Context, *GetQuestByIdRequest) (*Quest, error)
+	CreateQuestCharacter(context.Context, *CreateQuestCharacterRequest) (*QuestCharacter, error)
+	UpdateQuestCharacter(context.Context, *UpdateQuestCharacterRequest) (*QuestCharacter, error)
+	DeleteQuestCharacter(context.Context, *DeleteQuestCharacterRequest) (*emptypb.Empty, error)
+	GetQuestCharacters(context.Context, *GetQuestCharactersRequest) (*GetQuestCharactersResponse, error)
 	mustEmbedUnimplementedQuestsServer()
 }
 
@@ -120,6 +169,18 @@ func (UnimplementedQuestsServer) GetQuests(context.Context, *GetQuestsRequest) (
 }
 func (UnimplementedQuestsServer) GetQuestById(context.Context, *GetQuestByIdRequest) (*Quest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetQuestById not implemented")
+}
+func (UnimplementedQuestsServer) CreateQuestCharacter(context.Context, *CreateQuestCharacterRequest) (*QuestCharacter, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateQuestCharacter not implemented")
+}
+func (UnimplementedQuestsServer) UpdateQuestCharacter(context.Context, *UpdateQuestCharacterRequest) (*QuestCharacter, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateQuestCharacter not implemented")
+}
+func (UnimplementedQuestsServer) DeleteQuestCharacter(context.Context, *DeleteQuestCharacterRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteQuestCharacter not implemented")
+}
+func (UnimplementedQuestsServer) GetQuestCharacters(context.Context, *GetQuestCharactersRequest) (*GetQuestCharactersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetQuestCharacters not implemented")
 }
 func (UnimplementedQuestsServer) mustEmbedUnimplementedQuestsServer() {}
 
@@ -224,6 +285,78 @@ func _Quests_GetQuestById_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Quests_CreateQuestCharacter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateQuestCharacterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuestsServer).CreateQuestCharacter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Quests_CreateQuestCharacter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuestsServer).CreateQuestCharacter(ctx, req.(*CreateQuestCharacterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Quests_UpdateQuestCharacter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateQuestCharacterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuestsServer).UpdateQuestCharacter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Quests_UpdateQuestCharacter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuestsServer).UpdateQuestCharacter(ctx, req.(*UpdateQuestCharacterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Quests_DeleteQuestCharacter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteQuestCharacterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuestsServer).DeleteQuestCharacter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Quests_DeleteQuestCharacter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuestsServer).DeleteQuestCharacter(ctx, req.(*DeleteQuestCharacterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Quests_GetQuestCharacters_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetQuestCharactersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuestsServer).GetQuestCharacters(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Quests_GetQuestCharacters_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuestsServer).GetQuestCharacters(ctx, req.(*GetQuestCharactersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Quests_ServiceDesc is the grpc.ServiceDesc for Quests service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,6 +383,22 @@ var Quests_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetQuestById",
 			Handler:    _Quests_GetQuestById_Handler,
+		},
+		{
+			MethodName: "CreateQuestCharacter",
+			Handler:    _Quests_CreateQuestCharacter_Handler,
+		},
+		{
+			MethodName: "UpdateQuestCharacter",
+			Handler:    _Quests_UpdateQuestCharacter_Handler,
+		},
+		{
+			MethodName: "DeleteQuestCharacter",
+			Handler:    _Quests_DeleteQuestCharacter_Handler,
+		},
+		{
+			MethodName: "GetQuestCharacters",
+			Handler:    _Quests_GetQuestCharacters_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

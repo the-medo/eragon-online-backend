@@ -53,3 +53,7 @@ message GetCharactersResponse {
 message GetCharacterByIdRequest {
   int32 characterId = 1;
 }
+
+message GetCharacterQuestsRequest {
+  int32 characterId = 1;
+}

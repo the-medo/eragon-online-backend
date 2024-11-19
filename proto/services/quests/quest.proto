@@ -24,6 +24,14 @@ message Quest {
   int32 systemId = 7;
 }
 
+message QuestCharacter {
+  int32 questId = 1;
+  int32 characterId = 2;
+  google.protobuf.Timestamp createdAt = 3;
+  bool approved = 4;
+  string motivationalLetter = 5;
+}
+
 message ViewQuest {
   int32 id = 1;
   string name = 2;

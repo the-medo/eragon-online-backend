@@ -442,21 +442,6 @@ func (mr *MockStoreMockRecorder) CreateQuestCharacter(arg0, arg1 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateQuestCharacter", reflect.TypeOf((*MockStore)(nil).CreateQuestCharacter), arg0, arg1)
 }
 
-// CreateQuestSetting mocks base method.
-func (m *MockStore) CreateQuestSetting(arg0 context.Context, arg1 db.CreateQuestSettingParams) (db.QuestSetting, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateQuestSetting", arg0, arg1)
-	ret0, _ := ret[0].(db.QuestSetting)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CreateQuestSetting indicates an expected call of CreateQuestSetting.
-func (mr *MockStoreMockRecorder) CreateQuestSetting(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateQuestSetting", reflect.TypeOf((*MockStore)(nil).CreateQuestSetting), arg0, arg1)
-}
-
 // CreateQuestTx mocks base method.
 func (m *MockStore) CreateQuestTx(arg0 context.Context, arg1 db.CreateQuestTxParams) (db.CreateQuestTxResult, error) {
 	m.ctrl.T.Helper()
@@ -982,20 +967,6 @@ func (m *MockStore) DeleteQuestCharacter(arg0 context.Context, arg1 db.DeleteQue
 func (mr *MockStoreMockRecorder) DeleteQuestCharacter(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteQuestCharacter", reflect.TypeOf((*MockStore)(nil).DeleteQuestCharacter), arg0, arg1)
-}
-
-// DeleteQuestSetting mocks base method.
-func (m *MockStore) DeleteQuestSetting(arg0 context.Context, arg1 int32) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteQuestSetting", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteQuestSetting indicates an expected call of DeleteQuestSetting.
-func (mr *MockStoreMockRecorder) DeleteQuestSetting(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteQuestSetting", reflect.TypeOf((*MockStore)(nil).DeleteQuestSetting), arg0, arg1)
 }
 
 // DeleteSystem mocks base method.
@@ -2178,21 +2149,6 @@ func (mr *MockStoreMockRecorder) GetQuestCharactersByQuestID(arg0, arg1 interfac
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetQuestCharactersByQuestID", reflect.TypeOf((*MockStore)(nil).GetQuestCharactersByQuestID), arg0, arg1)
 }
 
-// GetQuestSettingByQuestID mocks base method.
-func (m *MockStore) GetQuestSettingByQuestID(arg0 context.Context, arg1 int32) (db.QuestSetting, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetQuestSettingByQuestID", arg0, arg1)
-	ret0, _ := ret[0].(db.QuestSetting)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetQuestSettingByQuestID indicates an expected call of GetQuestSettingByQuestID.
-func (mr *MockStoreMockRecorder) GetQuestSettingByQuestID(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetQuestSettingByQuestID", reflect.TypeOf((*MockStore)(nil).GetQuestSettingByQuestID), arg0, arg1)
-}
-
 // GetQuests mocks base method.
 func (m *MockStore) GetQuests(arg0 context.Context, arg1 db.GetQuestsParams) ([]db.ViewQuest, error) {
 	m.ctrl.T.Helper()
@@ -2966,21 +2922,6 @@ func (m *MockStore) UpdateQuestCharacter(arg0 context.Context, arg1 db.UpdateQue
 func (mr *MockStoreMockRecorder) UpdateQuestCharacter(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateQuestCharacter", reflect.TypeOf((*MockStore)(nil).UpdateQuestCharacter), arg0, arg1)
-}
-
-// UpdateQuestSetting mocks base method.
-func (m *MockStore) UpdateQuestSetting(arg0 context.Context, arg1 db.UpdateQuestSettingParams) (db.QuestSetting, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateQuestSetting", arg0, arg1)
-	ret0, _ := ret[0].(db.QuestSetting)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateQuestSetting indicates an expected call of UpdateQuestSetting.
-func (mr *MockStoreMockRecorder) UpdateQuestSetting(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateQuestSetting", reflect.TypeOf((*MockStore)(nil).UpdateQuestSetting), arg0, arg1)
 }
 
 // UpdateSystem mocks base method.

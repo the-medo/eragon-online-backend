@@ -493,6 +493,53 @@ func (x *GetCharacterByIdRequest) GetCharacterId() int32 {
 	return 0
 }
 
+type GetCharacterQuestsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	CharacterId int32 `protobuf:"varint,1,opt,name=characterId,proto3" json:"characterId,omitempty"`
+}
+
+func (x *GetCharacterQuestsRequest) Reset() {
+	*x = GetCharacterQuestsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_services_characters_rpc_character_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetCharacterQuestsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCharacterQuestsRequest) ProtoMessage() {}
+
+func (x *GetCharacterQuestsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_services_characters_rpc_character_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCharacterQuestsRequest.ProtoReflect.Descriptor instead.
+func (*GetCharacterQuestsRequest) Descriptor() ([]byte, []int) {
+	return file_services_characters_rpc_character_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *GetCharacterQuestsRequest) GetCharacterId() int32 {
+	if x != nil {
+		return x.CharacterId
+	}
+	return 0
+}
+
 var File_services_characters_rpc_character_proto protoreflect.FileDescriptor
 
 var file_services_characters_rpc_character_proto_rawDesc = []byte{
@@ -572,11 +619,15 @@ var file_services_characters_rpc_character_proto_rawDesc = []byte{
 	0x6e, 0x74, 0x22, 0x3b, 0x0a, 0x17, 0x47, 0x65, 0x74, 0x43, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74,
 	0x65, 0x72, 0x42, 0x79, 0x49, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x20, 0x0a,
 	0x0b, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x05, 0x52, 0x0b, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x49, 0x64, 0x42,
-	0x2a, 0x5a, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68,
-	0x65, 0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64,
-	0x2d, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x28, 0x05, 0x52, 0x0b, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x49, 0x64, 0x22,
+	0x3d, 0x0a, 0x19, 0x47, 0x65, 0x74, 0x43, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x51,
+	0x75, 0x65, 0x73, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x20, 0x0a, 0x0b,
+	0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x05, 0x52, 0x0b, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x49, 0x64, 0x42, 0x2a,
+	0x5a, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x68, 0x65,
+	0x2d, 0x6d, 0x65, 0x64, 0x6f, 0x2f, 0x74, 0x61, 0x6c, 0x65, 0x62, 0x6f, 0x75, 0x6e, 0x64, 0x2d,
+	0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -591,7 +642,7 @@ func file_services_characters_rpc_character_proto_rawDescGZIP() []byte {
 	return file_services_characters_rpc_character_proto_rawDescData
 }
 
-var file_services_characters_rpc_character_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_services_characters_rpc_character_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_services_characters_rpc_character_proto_goTypes = []interface{}{
 	(*CreateCharacterRequest)(nil),      // 0: pb.CreateCharacterRequest
 	(*CreateCharacterResponse)(nil),     // 1: pb.CreateCharacterResponse
@@ -600,12 +651,13 @@ var file_services_characters_rpc_character_proto_goTypes = []interface{}{
 	(*GetCharactersRequest)(nil),        // 4: pb.GetCharactersRequest
 	(*GetCharactersResponse)(nil),       // 5: pb.GetCharactersResponse
 	(*GetCharacterByIdRequest)(nil),     // 6: pb.GetCharacterByIdRequest
-	(*Character)(nil),                   // 7: pb.Character
-	(*ViewModule)(nil),                  // 8: pb.ViewModule
+	(*GetCharacterQuestsRequest)(nil),   // 7: pb.GetCharacterQuestsRequest
+	(*Character)(nil),                   // 8: pb.Character
+	(*ViewModule)(nil),                  // 9: pb.ViewModule
 }
 var file_services_characters_rpc_character_proto_depIdxs = []int32{
-	7, // 0: pb.CreateCharacterResponse.character:type_name -> pb.Character
-	8, // 1: pb.CreateCharacterResponse.module:type_name -> pb.ViewModule
+	8, // 0: pb.CreateCharacterResponse.character:type_name -> pb.Character
+	9, // 1: pb.CreateCharacterResponse.module:type_name -> pb.ViewModule
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -705,6 +757,18 @@ func file_services_characters_rpc_character_proto_init() {
 				return nil
 			}
 		}
+		file_services_characters_rpc_character_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetCharacterQuestsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_services_characters_rpc_character_proto_msgTypes[2].OneofWrappers = []interface{}{}
 	file_services_characters_rpc_character_proto_msgTypes[4].OneofWrappers = []interface{}{}
@@ -714,7 +778,7 @@ func file_services_characters_rpc_character_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_services_characters_rpc_character_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

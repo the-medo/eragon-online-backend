@@ -15,6 +15,12 @@ message CreateQuestRequest {
   int32 systemId = 4;
 }
 
+message CreateQuestCharacterRequest {
+  int32 questId = 1;
+  int32 characterId = 2;
+  string motivationalLetter = 3;
+}
+
 message CreateQuestResponse {
   Quest quest = 1;
   ViewModule module = 2;
@@ -27,6 +33,15 @@ message UpdateQuestRequest {
   optional bool public = 4;
   optional int32 worldId = 5;
   optional int32 systemId = 6;
+  optional QuestStatus status = 7;
+  optional bool canJoin = 8;
+}
+
+message UpdateQuestCharacterRequest {
+  int32 questId = 1;
+  int32 characterId = 2;
+  optional bool approved = 3;
+  optional string motivationalLetter = 4;
 }
 
 message UploadQuestImageRequest {
@@ -45,6 +60,14 @@ message GetQuestsRequest {
   optional int32 offset = 7;
 }
 
+message GetQuestCharactersRequest {
+  int32 questId = 1;
+}
+
+message GetQuestCharactersResponse {
+  repeated QuestCharacter questCharacters = 1;
+}
+
 message GetQuestsResponse {
   repeated int32 questIds = 1;
   int32 totalCount = 2;
@@ -52,4 +75,9 @@ message GetQuestsResponse {
 
 message GetQuestByIdRequest {
   int32 questId = 1;
+}
+
+message DeleteQuestCharacterRequest {
+  int32 questId = 1;
+  int32 characterId = 2;
 }
