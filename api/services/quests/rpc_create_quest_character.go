@@ -45,6 +45,7 @@ func (server *ServiceQuests) CreateQuestCharacter(ctx context.Context, request *
 	argQuestCharacter := db.CreateQuestCharacterParams{
 		QuestID:            request.GetQuestId(),
 		CharacterID:        request.GetCharacterId(),
+		Approved:           2, //Pending
 		MotivationalLetter: request.GetMotivationalLetter(),
 	}
 

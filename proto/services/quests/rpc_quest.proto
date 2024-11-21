@@ -40,7 +40,7 @@ message UpdateQuestRequest {
 message UpdateQuestCharacterRequest {
   int32 questId = 1;
   int32 characterId = 2;
-  optional bool approved = 3;
+  optional int32 approved = 3;
   optional string motivationalLetter = 4;
 }
 

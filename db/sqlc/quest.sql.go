@@ -398,10 +398,10 @@ RETURNING quest_id, character_id, created_at, approved, motivational_letter
 `
 
 type UpdateQuestCharacterParams struct {
-	Approved           int32  `json:"approved"`
-	MotivationalLetter string `json:"motivational_letter"`
-	QuestID            int32  `json:"quest_id"`
-	CharacterID        int32  `json:"character_id"`
+	Approved           sql.NullInt32  `json:"approved"`
+	MotivationalLetter sql.NullString `json:"motivational_letter"`
+	QuestID            int32          `json:"quest_id"`
+	CharacterID        int32          `json:"character_id"`
 }
 
 func (q *Queries) UpdateQuestCharacter(ctx context.Context, arg UpdateQuestCharacterParams) (QuestCharacter, error) {

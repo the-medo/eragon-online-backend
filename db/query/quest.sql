@@ -46,8 +46,8 @@ VALUES (@quest_id, @character_id, NOW(), @approved, @motivational_letter) RETURN
 -- name: UpdateQuestCharacter :one
 UPDATE quest_characters
 SET
-    approved = COALESCE(@approved, approved),
-    motivational_letter = COALESCE(@motivational_letter, motivational_letter)
+    approved = COALESCE(sqlc.narg(approved), approved),
+    motivational_letter = COALESCE(sqlc.narg(motivational_letter), motivational_letter)
 WHERE
     quest_id = @quest_id AND character_id = @character_id
 RETURNING *;

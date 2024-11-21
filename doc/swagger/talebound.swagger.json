@@ -3758,7 +3758,8 @@
               "type": "object",
               "properties": {
                 "approved": {
-                  "type": "boolean"
+                  "type": "integer",
+                  "format": "int32"
                 },
                 "motivationalLetter": {
                   "type": "string"
