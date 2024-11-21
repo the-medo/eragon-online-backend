@@ -28,7 +28,7 @@ message QuestCharacter {
   int32 questId = 1;
   int32 characterId = 2;
   google.protobuf.Timestamp createdAt = 3;
-  bool approved = 4;
+  int32 approved = 4;
   string motivationalLetter = 5;
 }
 
