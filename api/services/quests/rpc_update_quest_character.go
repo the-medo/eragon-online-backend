@@ -20,13 +20,24 @@ func (server *ServiceQuests) UpdateQuestCharacter(ctx context.Context, req *pb.U
 		return nil, e.InvalidArgumentError(violations)
 	}
 
-	//TODO - check update permissions by module type (quest admin can change "approved", character admin can (maybe?) change "motivational letter")
-	_, _, err := server.CheckModuleTypePermissions(ctx, db.ModuleTypeQuest, req.GetQuestId(), &servicecore.ModulePermission{
-		NeedsSuperAdmin: true,
-	})
+	//Only quest owner can change Approved
+	if req.Approved != nil {
+		_, _, err := server.CheckModuleTypePermissions(ctx, db.ModuleTypeQuest, req.GetQuestId(), &servicecore.ModulePermission{
+			NeedsSuperAdmin: true,
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
 
-	if err != nil {
-		return nil, err
+	// Only character owner can change MotivationalLetter
+	if req.MotivationalLetter != nil {
+		_, _, err := server.CheckModuleTypePermissions(ctx, db.ModuleTypeCharacter, req.GetCharacterId(), &servicecore.ModulePermission{
+			NeedsSuperAdmin: true,
+		})
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	arg := db.UpdateQuestCharacterParams{
@@ -51,6 +62,11 @@ func (server *ServiceQuests) UpdateQuestCharacter(ctx context.Context, req *pb.U
 }
 
 func validateUpdateQuestCharacterRequest(req *pb.UpdateQuestCharacterRequest) (violations []*errdetails.BadRequest_FieldViolation) {
+
+	if req.MotivationalLetter == nil && req.Approved == nil {
+		violations = append(violations, e.FieldViolation("motivational_letter", status.Errorf(codes.Internal, "failed to update quest character: no update field is present")))
+	}
+
 	if err := validator.ValidateModuleId(req.GetQuestId()); err != nil {
 		violations = append(violations, e.FieldViolation("quest_id", err))
 	}
