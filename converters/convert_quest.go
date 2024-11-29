@@ -13,6 +13,8 @@ func ConvertQuest(quest db.Quest) *pb.Quest {
 		Public:           quest.Public,
 		CreatedAt:        timestamppb.New(quest.CreatedAt),
 		ShortDescription: quest.ShortDescription,
+		Status:           ConvertQuestStatusToPB(quest.Status),
+		CanJoin:          quest.CanJoin,
 	}
 
 	if quest.WorldID.Valid {

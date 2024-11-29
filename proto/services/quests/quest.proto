@@ -22,6 +22,8 @@ message Quest {
   string shortDescription = 5;
   int32 worldId = 6;
   int32 systemId = 7;
+  bool canJoin = 8;
+  QuestStatus status = 9;
 }
 
 message QuestCharacter {

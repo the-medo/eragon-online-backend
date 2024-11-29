@@ -6774,6 +6774,12 @@
         "systemId": {
           "type": "integer",
           "format": "int32"
+        },
+        "canJoin": {
+          "type": "boolean"
+        },
+        "status": {
+          "$ref": "#/definitions/pbQuestStatus"
         }
       }
     },
