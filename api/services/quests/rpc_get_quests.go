@@ -2,6 +2,7 @@ package quests
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"github.com/the-medo/talebound-backend/api/apihelpers"
@@ -24,30 +25,29 @@ func (server *ServiceQuests) GetQuests(ctx context.Context, req *pb.GetQuestsReq
 	limit, offset := apihelpers.GetDefaultQueryBoundaries(req.GetLimit(), req.GetOffset())
 
 	arg := db.GetQuestsParams{
-		PageLimit:  limit,
-		PageOffset: offset,
+		PageLimit:  sql.NullInt32{Int32: limit, Valid: true},
+		PageOffset: sql.NullInt32{Int32: offset, Valid: true},
 		Tags:       req.GetTags(),
-		OrderBy:    "created_at",
+		OrderBy:    sql.NullString{String: "created_at", Valid: true},
+	}
+
+	countArg := db.GetQuestsCountParams{
+		IsPublic: true,
+		Tags:     req.GetTags(),
 	}
 
 	if req.Public != nil {
-		arg.IsPublic = req.GetPublic()
-	} else {
-		arg.IsPublic = true
+		arg.IsPublic = sql.NullBool{Bool: req.GetPublic(), Valid: true}
+		countArg.IsPublic = req.GetPublic()
 	}
 
 	if req.OrderBy != nil {
-		arg.OrderBy = req.GetOrderBy()
+		arg.OrderBy.String = req.GetOrderBy()
 	}
 
 	quests, err := server.Store.GetQuests(ctx, arg)
 	if err != nil {
 		return nil, err
-	}
-
-	countArg := db.GetQuestsCountParams{
-		IsPublic: arg.IsPublic,
-		Tags:     req.GetTags(),
 	}
 
 	totalCount, err := server.Store.GetQuestsCount(ctx, countArg)

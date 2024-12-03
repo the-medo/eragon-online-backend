@@ -224,13 +224,13 @@ SELECT id, name, public, created_at, short_description, world_id, system_id, sta
 `
 
 type GetQuestsParams struct {
-	IsPublic   bool    `json:"is_public"`
-	Tags       []int32 `json:"tags"`
-	WorldID    int32   `json:"world_id"`
-	SystemID   int32   `json:"system_id"`
-	OrderBy    string  `json:"order_by"`
-	PageLimit  int32   `json:"page_limit"`
-	PageOffset int32   `json:"page_offset"`
+	IsPublic   sql.NullBool   `json:"is_public"`
+	Tags       []int32        `json:"tags"`
+	WorldID    sql.NullInt32  `json:"world_id"`
+	SystemID   sql.NullInt32  `json:"system_id"`
+	OrderBy    sql.NullString `json:"order_by"`
+	PageLimit  sql.NullInt32  `json:"page_limit"`
+	PageOffset sql.NullInt32  `json:"page_offset"`
 }
 
 func (q *Queries) GetQuests(ctx context.Context, arg GetQuestsParams) ([]ViewQuest, error) {

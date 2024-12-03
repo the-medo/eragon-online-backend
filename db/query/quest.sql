@@ -32,7 +32,7 @@ SELECT * FROM quests WHERE id = @quest_id LIMIT 1;
 SELECT * FROM quests WHERE id = ANY(@quest_ids::int[]);
 
 -- name: GetQuests :many
-SELECT * FROM get_quests(@is_public::boolean, @tags::integer[], @world_id::integer, @system_id::integer, @order_by::VARCHAR, 'DESC', @page_limit, @page_offset);
+SELECT * FROM get_quests(sqlc.narg(is_public)::boolean, sqlc.narg(tags)::integer[], sqlc.narg(world_id)::integer, sqlc.narg(system_id)::integer, sqlc.narg(order_by)::VARCHAR, 'DESC', sqlc.narg(page_limit), sqlc.narg(page_offset));
 
 -- name: GetQuestsCount :one
 SELECT COUNT(*) FROM view_quests
