@@ -3439,6 +3439,26 @@
             "format": "int32"
           },
           {
+            "name": "canJoin",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNKNOWN",
+              "NOT_STARTED",
+              "IN_PROGRESS",
+              "FINISHED_COMPLETED",
+              "FINISHED_NOT_COMPLETED"
+            ],
+            "default": "UNKNOWN"
+          },
+          {
             "name": "orderBy",
             "in": "query",
             "required": false,

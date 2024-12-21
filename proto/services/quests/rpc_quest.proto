@@ -55,9 +55,11 @@ message GetQuestsRequest {
   repeated int32 tags = 2;
   optional int32 worldId = 3;
   optional int32 systemId = 4;
-  optional string orderBy = 5;
-  optional int32 limit = 6;
-  optional int32 offset = 7;
+  optional bool canJoin = 5;
+  optional QuestStatus status = 6;
+  optional string orderBy = 7;
+  optional int32 limit = 8;
+  optional int32 offset = 9;
 }
 
 message GetQuestCharactersRequest {

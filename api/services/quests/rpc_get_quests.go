@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/the-medo/talebound-backend/api/apihelpers"
+	"github.com/the-medo/talebound-backend/converters"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/e"
 	"github.com/the-medo/talebound-backend/pb"
@@ -37,6 +38,14 @@ func (server *ServiceQuests) GetQuests(ctx context.Context, req *pb.GetQuestsReq
 			Int32: req.GetSystemId(),
 			Valid: req.SystemId != nil,
 		},
+		CanJoin: sql.NullBool{
+			Bool:  req.GetCanJoin(),
+			Valid: req.CanJoin != nil,
+		},
+		Status: db.NullQuestStatus{
+			QuestStatus: converters.ConvertQuestStatusToDB(req.GetStatus()),
+			Valid:       req.Status != nil,
+		},
 	}
 
 	countArg := db.GetQuestsCountParams{
@@ -44,6 +53,8 @@ func (server *ServiceQuests) GetQuests(ctx context.Context, req *pb.GetQuestsReq
 		Tags:     req.GetTags(),
 		WorldID:  arg.WorldID,
 		SystemID: arg.SystemID,
+		CanJoin:  arg.CanJoin,
+		Status:   arg.Status,
 	}
 
 	if req.Public != nil {
