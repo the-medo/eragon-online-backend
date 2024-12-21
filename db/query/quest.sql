@@ -32,13 +32,15 @@ SELECT * FROM quests WHERE id = @quest_id LIMIT 1;
 SELECT * FROM quests WHERE id = ANY(@quest_ids::int[]);
 
 -- name: GetQuests :many
-SELECT * FROM get_quests(sqlc.narg(is_public)::boolean, sqlc.narg(tags)::integer[], sqlc.narg(world_id)::integer, sqlc.narg(system_id)::integer, sqlc.narg(order_by)::VARCHAR, 'DESC', sqlc.narg(page_limit), sqlc.narg(page_offset));
+SELECT * FROM get_quests(sqlc.narg(is_public)::boolean, sqlc.narg(tags)::integer[], sqlc.narg(world_id)::integer, sqlc.narg(system_id)::integer, sqlc.narg(can_join)::boolean, sqlc.narg(status)::quest_status, sqlc.narg(order_by)::VARCHAR, 'DESC', sqlc.narg(page_limit), sqlc.narg(page_offset));
 
 -- name: GetQuestsCount :one
 SELECT COUNT(*) FROM view_quests
 WHERE (sqlc.narg(is_public)::boolean IS NULL OR public = sqlc.narg(is_public)) AND
       (sqlc.narg(world_id)::int IS NULL OR world_id = sqlc.narg(world_id)) AND
       (sqlc.narg(system_id)::int IS NULL OR system_id = sqlc.narg(system_id)) AND
+      (sqlc.narg(can_join)::boolean IS NULL OR can_join = sqlc.narg(can_join)) AND
+      (sqlc.narg(status)::quest_status IS NULL OR status = sqlc.narg(status)) AND
     (array_length(sqlc.narg(tags)::integer[], 1) IS NULL OR tags @> sqlc.narg(tags)::integer[]);
 
 -- name: CreateQuestCharacter :one

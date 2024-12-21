@@ -220,17 +220,19 @@ func (q *Queries) GetQuestCharactersByQuestID(ctx context.Context, questID int32
 }
 
 const getQuests = `-- name: GetQuests :many
-SELECT id, name, public, created_at, short_description, world_id, system_id, status, can_join, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM get_quests($1::boolean, $2::integer[], $3::integer, $4::integer, $5::VARCHAR, 'DESC', $6, $7)
+SELECT id, name, public, created_at, short_description, world_id, system_id, status, can_join, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM get_quests($1::boolean, $2::integer[], $3::integer, $4::integer, $5::boolean, $6::quest_status, $7::VARCHAR, 'DESC', $8, $9)
 `
 
 type GetQuestsParams struct {
-	IsPublic   sql.NullBool   `json:"is_public"`
-	Tags       []int32        `json:"tags"`
-	WorldID    sql.NullInt32  `json:"world_id"`
-	SystemID   sql.NullInt32  `json:"system_id"`
-	OrderBy    sql.NullString `json:"order_by"`
-	PageLimit  sql.NullInt32  `json:"page_limit"`
-	PageOffset sql.NullInt32  `json:"page_offset"`
+	IsPublic   sql.NullBool    `json:"is_public"`
+	Tags       []int32         `json:"tags"`
+	WorldID    sql.NullInt32   `json:"world_id"`
+	SystemID   sql.NullInt32   `json:"system_id"`
+	CanJoin    sql.NullBool    `json:"can_join"`
+	Status     NullQuestStatus `json:"status"`
+	OrderBy    sql.NullString  `json:"order_by"`
+	PageLimit  sql.NullInt32   `json:"page_limit"`
+	PageOffset sql.NullInt32   `json:"page_offset"`
 }
 
 func (q *Queries) GetQuests(ctx context.Context, arg GetQuestsParams) ([]ViewQuest, error) {
@@ -239,6 +241,8 @@ func (q *Queries) GetQuests(ctx context.Context, arg GetQuestsParams) ([]ViewQue
 		pq.Array(arg.Tags),
 		arg.WorldID,
 		arg.SystemID,
+		arg.CanJoin,
+		arg.Status,
 		arg.OrderBy,
 		arg.PageLimit,
 		arg.PageOffset,
@@ -322,14 +326,18 @@ SELECT COUNT(*) FROM view_quests
 WHERE ($1::boolean IS NULL OR public = $1) AND
       ($2::int IS NULL OR world_id = $2) AND
       ($3::int IS NULL OR system_id = $3) AND
-    (array_length($4::integer[], 1) IS NULL OR tags @> $4::integer[])
+      ($4::boolean IS NULL OR can_join = $4) AND
+      ($5::quest_status IS NULL OR status = $5) AND
+    (array_length($6::integer[], 1) IS NULL OR tags @> $6::integer[])
 `
 
 type GetQuestsCountParams struct {
-	IsPublic sql.NullBool  `json:"is_public"`
-	WorldID  sql.NullInt32 `json:"world_id"`
-	SystemID sql.NullInt32 `json:"system_id"`
-	Tags     []int32       `json:"tags"`
+	IsPublic sql.NullBool    `json:"is_public"`
+	WorldID  sql.NullInt32   `json:"world_id"`
+	SystemID sql.NullInt32   `json:"system_id"`
+	CanJoin  sql.NullBool    `json:"can_join"`
+	Status   NullQuestStatus `json:"status"`
+	Tags     []int32         `json:"tags"`
 }
 
 func (q *Queries) GetQuestsCount(ctx context.Context, arg GetQuestsCountParams) (int64, error) {
@@ -337,6 +345,8 @@ func (q *Queries) GetQuestsCount(ctx context.Context, arg GetQuestsCountParams) 
 		arg.IsPublic,
 		arg.WorldID,
 		arg.SystemID,
+		arg.CanJoin,
+		arg.Status,
 		pq.Array(arg.Tags),
 	)
 	var count int64
