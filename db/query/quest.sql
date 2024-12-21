@@ -36,8 +36,10 @@ SELECT * FROM get_quests(sqlc.narg(is_public)::boolean, sqlc.narg(tags)::integer
 
 -- name: GetQuestsCount :one
 SELECT COUNT(*) FROM view_quests
-WHERE (@is_public::boolean IS NULL OR public = @is_public) AND
-    (array_length(@tags::integer[], 1) IS NULL OR tags @> @tags::integer[]);
+WHERE (sqlc.narg(is_public)::boolean IS NULL OR public = sqlc.narg(is_public)) AND
+      (sqlc.narg(world_id)::int IS NULL OR world_id = sqlc.narg(world_id)) AND
+      (sqlc.narg(system_id)::int IS NULL OR system_id = sqlc.narg(system_id)) AND
+    (array_length(sqlc.narg(tags)::integer[], 1) IS NULL OR tags @> sqlc.narg(tags)::integer[]);
 
 -- name: CreateQuestCharacter :one
 INSERT INTO quest_characters (quest_id, character_id, created_at, approved, motivational_letter)

@@ -320,16 +320,25 @@ func (q *Queries) GetQuestsByIDs(ctx context.Context, questIds []int32) ([]Quest
 const getQuestsCount = `-- name: GetQuestsCount :one
 SELECT COUNT(*) FROM view_quests
 WHERE ($1::boolean IS NULL OR public = $1) AND
-    (array_length($2::integer[], 1) IS NULL OR tags @> $2::integer[])
+      ($2::int IS NULL OR world_id = $2) AND
+      ($3::int IS NULL OR system_id = $3) AND
+    (array_length($4::integer[], 1) IS NULL OR tags @> $4::integer[])
 `
 
 type GetQuestsCountParams struct {
-	IsPublic bool    `json:"is_public"`
-	Tags     []int32 `json:"tags"`
+	IsPublic sql.NullBool  `json:"is_public"`
+	WorldID  sql.NullInt32 `json:"world_id"`
+	SystemID sql.NullInt32 `json:"system_id"`
+	Tags     []int32       `json:"tags"`
 }
 
 func (q *Queries) GetQuestsCount(ctx context.Context, arg GetQuestsCountParams) (int64, error) {
-	row := q.db.QueryRowContext(ctx, getQuestsCount, arg.IsPublic, pq.Array(arg.Tags))
+	row := q.db.QueryRowContext(ctx, getQuestsCount,
+		arg.IsPublic,
+		arg.WorldID,
+		arg.SystemID,
+		pq.Array(arg.Tags),
+	)
 	var count int64
 	err := row.Scan(&count)
 	return count, err

@@ -29,16 +29,29 @@ func (server *ServiceQuests) GetQuests(ctx context.Context, req *pb.GetQuestsReq
 		PageOffset: sql.NullInt32{Int32: offset, Valid: true},
 		Tags:       req.GetTags(),
 		OrderBy:    sql.NullString{String: "created_at", Valid: true},
+		WorldID: sql.NullInt32{
+			Int32: req.GetWorldId(),
+			Valid: req.WorldId != nil,
+		},
+		SystemID: sql.NullInt32{
+			Int32: req.GetSystemId(),
+			Valid: req.SystemId != nil,
+		},
 	}
 
 	countArg := db.GetQuestsCountParams{
-		IsPublic: true,
+		IsPublic: sql.NullBool{},
 		Tags:     req.GetTags(),
+		WorldID:  arg.WorldID,
+		SystemID: arg.SystemID,
 	}
 
 	if req.Public != nil {
 		arg.IsPublic = sql.NullBool{Bool: req.GetPublic(), Valid: true}
-		countArg.IsPublic = req.GetPublic()
+		countArg.IsPublic = sql.NullBool{
+			Bool:  req.GetPublic(),
+			Valid: true,
+		}
 	}
 
 	if req.OrderBy != nil {
