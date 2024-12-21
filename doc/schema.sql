@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2024-10-28T14:23:52.077Z
+-- Generated at: 2024-11-19T18:15:55.505Z
 
 CREATE TYPE "image_variant" AS ENUM (
   '100x100',
@@ -60,6 +60,14 @@ CREATE TYPE "delete_entity_group_content_action" AS ENUM (
 CREATE TYPE "evaluation_type" AS ENUM (
   'self',
   'dm'
+);
+
+CREATE TYPE "quest_status" AS ENUM (
+  'unknown',
+  'not_started',
+  'in_progress',
+  'finished_completed',
+  'finished_not_completed'
 );
 
 CREATE TABLE "image_types" (
@@ -299,7 +307,9 @@ CREATE TABLE "quests" (
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "short_description" varchar NOT NULL DEFAULT '',
   "world_id" int,
-  "system_id" int
+  "system_id" int,
+  "status" quest_status NOT NULL DEFAULT 'not_started',
+  "can_join" boolean NOT NULL DEFAULT false
 );
 
 CREATE TABLE "systems" (
@@ -383,6 +393,14 @@ CREATE TABLE "entity_group_content" (
   "content_entity_group_id" int
 );
 
+CREATE TABLE "quest_characters" (
+  "quest_id" int NOT NULL,
+  "character_id" int NOT NULL,
+  "created_at" timestamptz NOT NULL DEFAULT (now()),
+  "approved" int NOT NULL,
+  "motivational_letter" varchar NOT NULL
+);
+
 CREATE UNIQUE INDEX ON "user_modules" ("user_id", "module_id");
 
 CREATE UNIQUE INDEX ON "evaluation_votes" ("evaluation_id", "user_id", "user_id_voter");
@@ -411,6 +429,8 @@ CREATE UNIQUE INDEX ON "entities" ("location_id", "module_id");
 
 CREATE UNIQUE INDEX ON "entities" ("image_id", "module_id");
 
+CREATE UNIQUE INDEX ON "quest_characters" ("quest_id", "character_id");
+
 COMMENT ON COLUMN "image_types"."variant" IS 'Variant name from cloudflare. ';
 
 COMMENT ON COLUMN "module_admins"."approved" IS '0 = NO, 1 = YES, 2 = PENDING';
@@ -426,6 +446,8 @@ COMMENT ON TABLE "module_tags" IS 'Tag assignments for modules. So, if you are l
 COMMENT ON TABLE "module_entity_tags_available" IS 'Contains tags, that are possible to assign to ANY entity inside of a module. One module can only have one set of tags, that are usable for any entity type inside of that module.';
 
 COMMENT ON TABLE "entity_tags" IS 'Assignments of module_entity_tags_available to entities';
+
+COMMENT ON COLUMN "quest_characters"."approved" IS '0 = NO, 1 = YES, 2 = PENDING';
 
 ALTER TABLE "images" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
@@ -560,3 +582,7 @@ ALTER TABLE "entity_group_content" ADD FOREIGN KEY ("entity_group_id") REFERENCE
 ALTER TABLE "entity_group_content" ADD FOREIGN KEY ("content_entity_id") REFERENCES "entities" ("id");
 
 ALTER TABLE "entity_group_content" ADD FOREIGN KEY ("content_entity_group_id") REFERENCES "entity_groups" ("id");
+
+ALTER TABLE "quest_characters" ADD FOREIGN KEY ("quest_id") REFERENCES "quests" ("id");
+
+ALTER TABLE "quest_characters" ADD FOREIGN KEY ("character_id") REFERENCES "characters" ("id");

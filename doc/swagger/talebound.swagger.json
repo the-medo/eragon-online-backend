@@ -521,6 +521,39 @@
         ]
       }
     },
+    "/characters/{characterId}/quests": {
+      "get": {
+        "summary": "Get character quests",
+        "description": "gets list of character quests",
+        "operationId": "Characters_GetCharacterQuests",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetQuestCharactersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "characterId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Characters"
+        ]
+      }
+    },
     "/entities/groups/create": {
       "post": {
         "summary": "Create entity group",
@@ -3406,6 +3439,26 @@
             "format": "int32"
           },
           {
+            "name": "canJoin",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNKNOWN",
+              "NOT_STARTED",
+              "IN_PROGRESS",
+              "FINISHED_COMPLETED",
+              "FINISHED_NOT_COMPLETED"
+            ],
+            "default": "UNKNOWN"
+          },
+          {
             "name": "orderBy",
             "in": "query",
             "required": false,
@@ -3544,6 +3597,192 @@
                 "systemId": {
                   "type": "integer",
                   "format": "int32"
+                },
+                "status": {
+                  "$ref": "#/definitions/pbQuestStatus"
+                },
+                "canJoin": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Quests"
+        ]
+      }
+    },
+    "/quests/{questId}/characters": {
+      "get": {
+        "summary": "Get quest characters",
+        "description": "gets list of quest characters",
+        "operationId": "Quests_GetQuestCharacters",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetQuestCharactersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "questId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Quests"
+        ]
+      }
+    },
+    "/quests/{questId}/characters/{characterId}": {
+      "delete": {
+        "summary": "Delete quest character",
+        "description": "deletes quest character",
+        "operationId": "Quests_DeleteQuestCharacter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "questId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "characterId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Quests"
+        ]
+      },
+      "post": {
+        "summary": "Create quest character",
+        "description": "creates quest character",
+        "operationId": "Quests_CreateQuestCharacter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbQuestCharacter"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "questId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "characterId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "motivationalLetter": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Quests"
+        ]
+      },
+      "patch": {
+        "summary": "Update quest character",
+        "description": "updates quest character properties",
+        "operationId": "Quests_UpdateQuestCharacter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbQuestCharacter"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "questId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "characterId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "approved": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "motivationalLetter": {
+                  "type": "string"
                 }
               }
             }
@@ -6024,6 +6263,18 @@
         }
       }
     },
+    "pbGetQuestCharactersResponse": {
+      "type": "object",
+      "properties": {
+        "questCharacters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbQuestCharacter"
+          }
+        }
+      }
+    },
     "pbGetQuestsResponse": {
       "type": "object",
       "properties": {
@@ -6543,8 +6794,49 @@
         "systemId": {
           "type": "integer",
           "format": "int32"
+        },
+        "canJoin": {
+          "type": "boolean"
+        },
+        "status": {
+          "$ref": "#/definitions/pbQuestStatus"
         }
       }
+    },
+    "pbQuestCharacter": {
+      "type": "object",
+      "properties": {
+        "questId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "characterId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "approved": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "motivationalLetter": {
+          "type": "string"
+        }
+      }
+    },
+    "pbQuestStatus": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "NOT_STARTED",
+        "IN_PROGRESS",
+        "FINISHED_COMPLETED",
+        "FINISHED_NOT_COMPLETED"
+      ],
+      "default": "UNKNOWN"
     },
     "pbRemoveRoleFromUserResponse": {
       "type": "object",

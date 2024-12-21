@@ -20,7 +20,7 @@ INSERT INTO quests (
     system_id
 ) VALUES (
     $1, $2, $3, $4
-) RETURNING id, name, public, created_at, short_description, world_id, system_id
+) RETURNING id, name, public, created_at, short_description, world_id, system_id, status, can_join
 `
 
 type CreateQuestParams struct {
@@ -46,6 +46,38 @@ func (q *Queries) CreateQuest(ctx context.Context, arg CreateQuestParams) (Quest
 		&i.ShortDescription,
 		&i.WorldID,
 		&i.SystemID,
+		&i.Status,
+		&i.CanJoin,
+	)
+	return i, err
+}
+
+const createQuestCharacter = `-- name: CreateQuestCharacter :one
+INSERT INTO quest_characters (quest_id, character_id, created_at, approved, motivational_letter)
+VALUES ($1, $2, NOW(), $3, $4) RETURNING quest_id, character_id, created_at, approved, motivational_letter
+`
+
+type CreateQuestCharacterParams struct {
+	QuestID            int32  `json:"quest_id"`
+	CharacterID        int32  `json:"character_id"`
+	Approved           int32  `json:"approved"`
+	MotivationalLetter string `json:"motivational_letter"`
+}
+
+func (q *Queries) CreateQuestCharacter(ctx context.Context, arg CreateQuestCharacterParams) (QuestCharacter, error) {
+	row := q.db.QueryRowContext(ctx, createQuestCharacter,
+		arg.QuestID,
+		arg.CharacterID,
+		arg.Approved,
+		arg.MotivationalLetter,
+	)
+	var i QuestCharacter
+	err := row.Scan(
+		&i.QuestID,
+		&i.CharacterID,
+		&i.CreatedAt,
+		&i.Approved,
+		&i.MotivationalLetter,
 	)
 	return i, err
 }
@@ -59,8 +91,23 @@ func (q *Queries) DeleteQuest(ctx context.Context, questID int32) error {
 	return err
 }
 
+const deleteQuestCharacter = `-- name: DeleteQuestCharacter :exec
+DELETE FROM quest_characters
+WHERE quest_id = $1 AND character_id = $2
+`
+
+type DeleteQuestCharacterParams struct {
+	QuestID     int32 `json:"quest_id"`
+	CharacterID int32 `json:"character_id"`
+}
+
+func (q *Queries) DeleteQuestCharacter(ctx context.Context, arg DeleteQuestCharacterParams) error {
+	_, err := q.db.ExecContext(ctx, deleteQuestCharacter, arg.QuestID, arg.CharacterID)
+	return err
+}
+
 const getQuestByID = `-- name: GetQuestByID :one
-SELECT id, name, public, created_at, short_description, world_id, system_id FROM quests WHERE id = $1 LIMIT 1
+SELECT id, name, public, created_at, short_description, world_id, system_id, status, can_join FROM quests WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetQuestByID(ctx context.Context, questID int32) (Quest, error) {
@@ -74,22 +121,118 @@ func (q *Queries) GetQuestByID(ctx context.Context, questID int32) (Quest, error
 		&i.ShortDescription,
 		&i.WorldID,
 		&i.SystemID,
+		&i.Status,
+		&i.CanJoin,
 	)
 	return i, err
 }
 
+const getQuestCharacterByQuestAndCharacterID = `-- name: GetQuestCharacterByQuestAndCharacterID :one
+SELECT quest_id, character_id, created_at, approved, motivational_letter FROM quest_characters
+WHERE quest_id = $1 AND character_id = $2
+LIMIT 1
+`
+
+type GetQuestCharacterByQuestAndCharacterIDParams struct {
+	QuestID     int32 `json:"quest_id"`
+	CharacterID int32 `json:"character_id"`
+}
+
+func (q *Queries) GetQuestCharacterByQuestAndCharacterID(ctx context.Context, arg GetQuestCharacterByQuestAndCharacterIDParams) (QuestCharacter, error) {
+	row := q.db.QueryRowContext(ctx, getQuestCharacterByQuestAndCharacterID, arg.QuestID, arg.CharacterID)
+	var i QuestCharacter
+	err := row.Scan(
+		&i.QuestID,
+		&i.CharacterID,
+		&i.CreatedAt,
+		&i.Approved,
+		&i.MotivationalLetter,
+	)
+	return i, err
+}
+
+const getQuestCharactersByCharacterID = `-- name: GetQuestCharactersByCharacterID :many
+SELECT quest_id, character_id, created_at, approved, motivational_letter FROM quest_characters
+WHERE character_id = $1
+`
+
+func (q *Queries) GetQuestCharactersByCharacterID(ctx context.Context, characterID int32) ([]QuestCharacter, error) {
+	rows, err := q.db.QueryContext(ctx, getQuestCharactersByCharacterID, characterID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []QuestCharacter{}
+	for rows.Next() {
+		var i QuestCharacter
+		if err := rows.Scan(
+			&i.QuestID,
+			&i.CharacterID,
+			&i.CreatedAt,
+			&i.Approved,
+			&i.MotivationalLetter,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getQuestCharactersByQuestID = `-- name: GetQuestCharactersByQuestID :many
+SELECT quest_id, character_id, created_at, approved, motivational_letter FROM quest_characters
+WHERE quest_id = $1
+`
+
+func (q *Queries) GetQuestCharactersByQuestID(ctx context.Context, questID int32) ([]QuestCharacter, error) {
+	rows, err := q.db.QueryContext(ctx, getQuestCharactersByQuestID, questID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []QuestCharacter{}
+	for rows.Next() {
+		var i QuestCharacter
+		if err := rows.Scan(
+			&i.QuestID,
+			&i.CharacterID,
+			&i.CreatedAt,
+			&i.Approved,
+			&i.MotivationalLetter,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getQuests = `-- name: GetQuests :many
-SELECT id, name, public, created_at, short_description, world_id, system_id, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM get_quests($1::boolean, $2::integer[], $3::integer, $4::integer, $5::VARCHAR, 'DESC', $6, $7)
+SELECT id, name, public, created_at, short_description, world_id, system_id, status, can_join, module_id, menu_id, header_img_id, thumbnail_img_id, avatar_img_id, tags FROM get_quests($1::boolean, $2::integer[], $3::integer, $4::integer, $5::boolean, $6::quest_status, $7::VARCHAR, 'DESC', $8, $9)
 `
 
 type GetQuestsParams struct {
-	IsPublic   bool    `json:"is_public"`
-	Tags       []int32 `json:"tags"`
-	WorldID    int32   `json:"world_id"`
-	SystemID   int32   `json:"system_id"`
-	OrderBy    string  `json:"order_by"`
-	PageLimit  int32   `json:"page_limit"`
-	PageOffset int32   `json:"page_offset"`
+	IsPublic   sql.NullBool    `json:"is_public"`
+	Tags       []int32         `json:"tags"`
+	WorldID    sql.NullInt32   `json:"world_id"`
+	SystemID   sql.NullInt32   `json:"system_id"`
+	CanJoin    sql.NullBool    `json:"can_join"`
+	Status     NullQuestStatus `json:"status"`
+	OrderBy    sql.NullString  `json:"order_by"`
+	PageLimit  sql.NullInt32   `json:"page_limit"`
+	PageOffset sql.NullInt32   `json:"page_offset"`
 }
 
 func (q *Queries) GetQuests(ctx context.Context, arg GetQuestsParams) ([]ViewQuest, error) {
@@ -98,6 +241,8 @@ func (q *Queries) GetQuests(ctx context.Context, arg GetQuestsParams) ([]ViewQue
 		pq.Array(arg.Tags),
 		arg.WorldID,
 		arg.SystemID,
+		arg.CanJoin,
+		arg.Status,
 		arg.OrderBy,
 		arg.PageLimit,
 		arg.PageOffset,
@@ -117,6 +262,8 @@ func (q *Queries) GetQuests(ctx context.Context, arg GetQuestsParams) ([]ViewQue
 			&i.ShortDescription,
 			&i.WorldID,
 			&i.SystemID,
+			&i.Status,
+			&i.CanJoin,
 			&i.ModuleID,
 			&i.MenuID,
 			&i.HeaderImgID,
@@ -138,7 +285,7 @@ func (q *Queries) GetQuests(ctx context.Context, arg GetQuestsParams) ([]ViewQue
 }
 
 const getQuestsByIDs = `-- name: GetQuestsByIDs :many
-SELECT id, name, public, created_at, short_description, world_id, system_id FROM quests WHERE id = ANY($1::int[])
+SELECT id, name, public, created_at, short_description, world_id, system_id, status, can_join FROM quests WHERE id = ANY($1::int[])
 `
 
 func (q *Queries) GetQuestsByIDs(ctx context.Context, questIds []int32) ([]Quest, error) {
@@ -158,6 +305,8 @@ func (q *Queries) GetQuestsByIDs(ctx context.Context, questIds []int32) ([]Quest
 			&i.ShortDescription,
 			&i.WorldID,
 			&i.SystemID,
+			&i.Status,
+			&i.CanJoin,
 		); err != nil {
 			return nil, err
 		}
@@ -175,16 +324,31 @@ func (q *Queries) GetQuestsByIDs(ctx context.Context, questIds []int32) ([]Quest
 const getQuestsCount = `-- name: GetQuestsCount :one
 SELECT COUNT(*) FROM view_quests
 WHERE ($1::boolean IS NULL OR public = $1) AND
-    (array_length($2::integer[], 1) IS NULL OR tags @> $2::integer[])
+      ($2::int IS NULL OR world_id = $2) AND
+      ($3::int IS NULL OR system_id = $3) AND
+      ($4::boolean IS NULL OR can_join = $4) AND
+      ($5::quest_status IS NULL OR status = $5) AND
+    (array_length($6::integer[], 1) IS NULL OR tags @> $6::integer[])
 `
 
 type GetQuestsCountParams struct {
-	IsPublic bool    `json:"is_public"`
-	Tags     []int32 `json:"tags"`
+	IsPublic sql.NullBool    `json:"is_public"`
+	WorldID  sql.NullInt32   `json:"world_id"`
+	SystemID sql.NullInt32   `json:"system_id"`
+	CanJoin  sql.NullBool    `json:"can_join"`
+	Status   NullQuestStatus `json:"status"`
+	Tags     []int32         `json:"tags"`
 }
 
 func (q *Queries) GetQuestsCount(ctx context.Context, arg GetQuestsCountParams) (int64, error) {
-	row := q.db.QueryRowContext(ctx, getQuestsCount, arg.IsPublic, pq.Array(arg.Tags))
+	row := q.db.QueryRowContext(ctx, getQuestsCount,
+		arg.IsPublic,
+		arg.WorldID,
+		arg.SystemID,
+		arg.CanJoin,
+		arg.Status,
+		pq.Array(arg.Tags),
+	)
 	var count int64
 	err := row.Scan(&count)
 	return count, err
@@ -197,19 +361,23 @@ SET
     short_description = COALESCE($2, short_description),
     public = COALESCE($3, public),
     world_id = COALESCE($4, world_id),
-    system_id = COALESCE($5, system_id)
+    system_id = COALESCE($5, system_id),
+    status = COALESCE($6, status),
+    can_join = COALESCE($7, can_join)
 WHERE
-    id = $6
-    RETURNING id, name, public, created_at, short_description, world_id, system_id
+    id = $8
+    RETURNING id, name, public, created_at, short_description, world_id, system_id, status, can_join
 `
 
 type UpdateQuestParams struct {
-	Name             sql.NullString `json:"name"`
-	ShortDescription sql.NullString `json:"short_description"`
-	Public           sql.NullBool   `json:"public"`
-	WorldID          sql.NullInt32  `json:"world_id"`
-	SystemID         sql.NullInt32  `json:"system_id"`
-	QuestID          int32          `json:"quest_id"`
+	Name             sql.NullString  `json:"name"`
+	ShortDescription sql.NullString  `json:"short_description"`
+	Public           sql.NullBool    `json:"public"`
+	WorldID          sql.NullInt32   `json:"world_id"`
+	SystemID         sql.NullInt32   `json:"system_id"`
+	Status           NullQuestStatus `json:"status"`
+	CanJoin          sql.NullBool    `json:"can_join"`
+	QuestID          int32           `json:"quest_id"`
 }
 
 func (q *Queries) UpdateQuest(ctx context.Context, arg UpdateQuestParams) (Quest, error) {
@@ -219,6 +387,8 @@ func (q *Queries) UpdateQuest(ctx context.Context, arg UpdateQuestParams) (Quest
 		arg.Public,
 		arg.WorldID,
 		arg.SystemID,
+		arg.Status,
+		arg.CanJoin,
 		arg.QuestID,
 	)
 	var i Quest
@@ -230,6 +400,43 @@ func (q *Queries) UpdateQuest(ctx context.Context, arg UpdateQuestParams) (Quest
 		&i.ShortDescription,
 		&i.WorldID,
 		&i.SystemID,
+		&i.Status,
+		&i.CanJoin,
+	)
+	return i, err
+}
+
+const updateQuestCharacter = `-- name: UpdateQuestCharacter :one
+UPDATE quest_characters
+SET
+    approved = COALESCE($1, approved),
+    motivational_letter = COALESCE($2, motivational_letter)
+WHERE
+    quest_id = $3 AND character_id = $4
+RETURNING quest_id, character_id, created_at, approved, motivational_letter
+`
+
+type UpdateQuestCharacterParams struct {
+	Approved           sql.NullInt32  `json:"approved"`
+	MotivationalLetter sql.NullString `json:"motivational_letter"`
+	QuestID            int32          `json:"quest_id"`
+	CharacterID        int32          `json:"character_id"`
+}
+
+func (q *Queries) UpdateQuestCharacter(ctx context.Context, arg UpdateQuestCharacterParams) (QuestCharacter, error) {
+	row := q.db.QueryRowContext(ctx, updateQuestCharacter,
+		arg.Approved,
+		arg.MotivationalLetter,
+		arg.QuestID,
+		arg.CharacterID,
+	)
+	var i QuestCharacter
+	err := row.Scan(
+		&i.QuestID,
+		&i.CharacterID,
+		&i.CreatedAt,
+		&i.Approved,
+		&i.MotivationalLetter,
 	)
 	return i, err
 }

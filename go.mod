@@ -20,7 +20,7 @@ require (
 	github.com/rs/zerolog v1.31.0
 	github.com/spf13/viper v1.17.0
 	github.com/stretchr/testify v1.9.0
-	github.com/the-medo/golang-migrate-objects v0.0.0-20231219175026-eb25c18e8168
+	github.com/the-medo/golang-migrate-objects v1.1.0
 	golang.org/x/crypto v0.14.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20231016165738-49dd2c1f3d0b
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231016165738-49dd2c1f3d0b

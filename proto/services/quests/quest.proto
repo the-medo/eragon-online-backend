@@ -6,6 +6,14 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
 
+enum QuestStatus {
+  UNKNOWN = 0;
+  NOT_STARTED = 1;
+  IN_PROGRESS = 2;
+  FINISHED_COMPLETED = 3;
+  FINISHED_NOT_COMPLETED = 4;
+}
+
 message Quest {
   int32 id = 1;
   string name = 2;
@@ -14,6 +22,16 @@ message Quest {
   string shortDescription = 5;
   int32 worldId = 6;
   int32 systemId = 7;
+  bool canJoin = 8;
+  QuestStatus status = 9;
+}
+
+message QuestCharacter {
+  int32 questId = 1;
+  int32 characterId = 2;
+  google.protobuf.Timestamp createdAt = 3;
+  int32 approved = 4;
+  string motivationalLetter = 5;
 }
 
 message ViewQuest {
@@ -33,4 +51,6 @@ message ViewQuest {
   int32 avatarImgId = 14;
   string avatarImgUrl = 15;
   repeated int32 tags = 16;
+  bool canJoin = 17;
+  QuestStatus status = 18;
 }

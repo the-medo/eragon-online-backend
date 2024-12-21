@@ -56,6 +56,28 @@ func (server *ServiceModules) UpdateModuleAdmin(ctx context.Context, req *pb.Upd
 		}
 	}
 
+	if req.GetApproved() == 1 {
+		_, err := server.Store.UpsertUserModule(ctx, db.UpsertUserModuleParams{
+			ModuleID: req.GetModuleId(),
+			UserID:   req.GetUserId(),
+			Admin: sql.NullBool{
+				Bool:  true,
+				Valid: true,
+			},
+			Favorite: sql.NullBool{
+				Bool:  true,
+				Valid: true,
+			},
+			Following: sql.NullBool{
+				Bool:  true,
+				Valid: true,
+			},
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	moduleAdmin, err := server.Store.UpdateModuleAdmin(ctx, arg)
 	if err != nil {
 		return nil, err

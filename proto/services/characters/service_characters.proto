@@ -8,6 +8,7 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "services/characters/rpc_character.proto";
 import "services/characters/character.proto";
 import "services/images/image.proto";
+import "services/quests/rpc_quest.proto";
 
 
 option go_package = "github.com/the-medo/talebound-backend/pb";
@@ -64,6 +65,16 @@ service Characters {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "gets character by ID";
       summary: "Get character by ID ";
+    };
+  };
+
+  rpc GetCharacterQuests(GetCharacterQuestsRequest) returns (GetQuestCharactersResponse) {
+    option (google.api.http) = {
+      get: "/characters/{characterId}/quests"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "gets list of character quests";
+      summary: "Get character quests";
     };
   };
 }

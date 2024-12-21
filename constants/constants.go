@@ -18,5 +18,8 @@ const (
 	ImageTypeIdMenuHeader        ImageTypeIds = 1300
 )
 
+const UniversalWorldName = "Universal World"
+const UniversalSystemName = "Universal System"
+
 const GrpcCookieHeader = "grpc-gateway-cookie"
 const CookieName = "access_token"

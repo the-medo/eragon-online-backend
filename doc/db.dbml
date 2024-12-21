@@ -319,6 +319,8 @@ Table quests {
   short_description varchar [not null, default: '']
   world_id int [ref: > worlds.id]
   system_id int [ref: > systems.id]
+  status quest_status [not null, default: 'not_started']
+  can_join boolean [not null, default: false]
 }
 
 Table systems {
@@ -437,6 +439,26 @@ Table entity_group_content {
   position int [not null]
   content_entity_id int [ref: > entities.id]
   content_entity_group_id int [ref: > entity_groups.id]
+}
+
+Table quest_characters {
+  quest_id int [not null, ref: > quests.id]
+  character_id int [not null, ref: > characters.id]
+  created_at timestamptz [not null, default: `now()`]
+  approved int [not null, note: '0 = NO, 1 = YES, 2 = PENDING']
+  motivational_letter varchar [not null]
+
+  indexes {
+    (quest_id, character_id) [unique]
+  }
+}
+
+enum quest_status {
+  unknown
+  not_started
+  in_progress
+  finished_completed
+  finished_not_completed
 }
 
 //Ref: users.id < follows.following_user_id

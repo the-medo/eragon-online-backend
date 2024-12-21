@@ -2,9 +2,11 @@ package quests
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"github.com/the-medo/talebound-backend/api/apihelpers"
+	"github.com/the-medo/talebound-backend/converters"
 	db "github.com/the-medo/talebound-backend/db/sqlc"
 	"github.com/the-medo/talebound-backend/e"
 	"github.com/the-medo/talebound-backend/pb"
@@ -24,30 +26,52 @@ func (server *ServiceQuests) GetQuests(ctx context.Context, req *pb.GetQuestsReq
 	limit, offset := apihelpers.GetDefaultQueryBoundaries(req.GetLimit(), req.GetOffset())
 
 	arg := db.GetQuestsParams{
-		PageLimit:  limit,
-		PageOffset: offset,
+		PageLimit:  sql.NullInt32{Int32: limit, Valid: true},
+		PageOffset: sql.NullInt32{Int32: offset, Valid: true},
 		Tags:       req.GetTags(),
-		OrderBy:    "created_at",
+		OrderBy:    sql.NullString{String: "created_at", Valid: true},
+		WorldID: sql.NullInt32{
+			Int32: req.GetWorldId(),
+			Valid: req.WorldId != nil,
+		},
+		SystemID: sql.NullInt32{
+			Int32: req.GetSystemId(),
+			Valid: req.SystemId != nil,
+		},
+		CanJoin: sql.NullBool{
+			Bool:  req.GetCanJoin(),
+			Valid: req.CanJoin != nil,
+		},
+		Status: db.NullQuestStatus{
+			QuestStatus: converters.ConvertQuestStatusToDB(req.GetStatus()),
+			Valid:       req.Status != nil,
+		},
+	}
+
+	countArg := db.GetQuestsCountParams{
+		IsPublic: sql.NullBool{},
+		Tags:     req.GetTags(),
+		WorldID:  arg.WorldID,
+		SystemID: arg.SystemID,
+		CanJoin:  arg.CanJoin,
+		Status:   arg.Status,
 	}
 
 	if req.Public != nil {
-		arg.IsPublic = req.GetPublic()
-	} else {
-		arg.IsPublic = true
+		arg.IsPublic = sql.NullBool{Bool: req.GetPublic(), Valid: true}
+		countArg.IsPublic = sql.NullBool{
+			Bool:  req.GetPublic(),
+			Valid: true,
+		}
 	}
 
 	if req.OrderBy != nil {
-		arg.OrderBy = req.GetOrderBy()
+		arg.OrderBy.String = req.GetOrderBy()
 	}
 
 	quests, err := server.Store.GetQuests(ctx, arg)
 	if err != nil {
 		return nil, err
-	}
-
-	countArg := db.GetQuestsCountParams{
-		IsPublic: arg.IsPublic,
-		Tags:     req.GetTags(),
 	}
 
 	totalCount, err := server.Store.GetQuestsCount(ctx, countArg)

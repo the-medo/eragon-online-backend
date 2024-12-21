@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	Menus_UpdateMenu_FullMethodName                = "/pb.Menus/UpdateMenu"
 	Menus_GetMenu_FullMethodName                   = "/pb.Menus/GetMenu"
-	Menus_CreateMenuItem_FullMethodName            = "/pb.Menus/SharedCreateMenuItem"
+	Menus_CreateMenuItem_FullMethodName            = "/pb.Menus/CreateMenuItem"
 	Menus_UpdateMenuItem_FullMethodName            = "/pb.Menus/UpdateMenuItem"
 	Menus_UpdateMenuItemMoveGroupUp_FullMethodName = "/pb.Menus/UpdateMenuItemMoveGroupUp"
 	Menus_DeleteMenuItem_FullMethodName            = "/pb.Menus/DeleteMenuItem"
@@ -150,7 +150,7 @@ func (UnimplementedMenusServer) GetMenu(context.Context, *GetMenuRequest) (*View
 	return nil, status.Errorf(codes.Unimplemented, "method GetMenu not implemented")
 }
 func (UnimplementedMenusServer) CreateMenuItem(context.Context, *CreateMenuItemRequest) (*MenuItem, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SharedCreateMenuItem not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMenuItem not implemented")
 }
 func (UnimplementedMenusServer) UpdateMenuItem(context.Context, *UpdateMenuItemRequest) (*MenuItem, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenuItem not implemented")
@@ -340,7 +340,7 @@ var Menus_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Menus_GetMenu_Handler,
 		},
 		{
-			MethodName: "SharedCreateMenuItem",
+			MethodName: "CreateMenuItem",
 			Handler:    _Menus_CreateMenuItem_Handler,
 		},
 		{

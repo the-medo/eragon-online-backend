@@ -39,6 +39,7 @@ type Querier interface {
 	CreateModuleTypeTagAvailable(ctx context.Context, arg CreateModuleTypeTagAvailableParams) (ModuleTypeTagsAvailable, error)
 	CreatePost(ctx context.Context, arg CreatePostParams) (Post, error)
 	CreateQuest(ctx context.Context, arg CreateQuestParams) (Quest, error)
+	CreateQuestCharacter(ctx context.Context, arg CreateQuestCharacterParams) (QuestCharacter, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateSystem(ctx context.Context, arg CreateSystemParams) (System, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
@@ -71,6 +72,7 @@ type Querier interface {
 	DeleteModuleTypeTagAvailable(ctx context.Context, id int32) error
 	DeletePost(ctx context.Context, postID int32) error
 	DeleteQuest(ctx context.Context, questID int32) error
+	DeleteQuestCharacter(ctx context.Context, arg DeleteQuestCharacterParams) error
 	DeleteSystem(ctx context.Context, systemID int32) error
 	DeleteUserModule(ctx context.Context, arg DeleteUserModuleParams) error
 	DeleteUserPasswordReset(ctx context.Context, arg DeleteUserPasswordResetParams) error
@@ -147,6 +149,9 @@ type Querier interface {
 	GetPostsByIDs(ctx context.Context, postIds []int32) ([]Post, error)
 	GetPostsByUserId(ctx context.Context, arg GetPostsByUserIdParams) ([]ViewPost, error)
 	GetQuestByID(ctx context.Context, questID int32) (Quest, error)
+	GetQuestCharacterByQuestAndCharacterID(ctx context.Context, arg GetQuestCharacterByQuestAndCharacterIDParams) (QuestCharacter, error)
+	GetQuestCharactersByCharacterID(ctx context.Context, characterID int32) ([]QuestCharacter, error)
+	GetQuestCharactersByQuestID(ctx context.Context, questID int32) ([]QuestCharacter, error)
 	GetQuests(ctx context.Context, arg GetQuestsParams) ([]ViewQuest, error)
 	GetQuestsByIDs(ctx context.Context, questIds []int32) ([]Quest, error)
 	GetQuestsCount(ctx context.Context, arg GetQuestsCountParams) (int64, error)
@@ -196,6 +201,7 @@ type Querier interface {
 	UpdateModuleTypeTagAvailable(ctx context.Context, arg UpdateModuleTypeTagAvailableParams) (ModuleTypeTagsAvailable, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
 	UpdateQuest(ctx context.Context, arg UpdateQuestParams) (Quest, error)
+	UpdateQuestCharacter(ctx context.Context, arg UpdateQuestCharacterParams) (QuestCharacter, error)
 	UpdateSystem(ctx context.Context, arg UpdateSystemParams) (System, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)

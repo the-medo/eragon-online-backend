@@ -24,6 +24,7 @@ const (
 	Characters_UploadCharacterImage_FullMethodName = "/pb.Characters/UploadCharacterImage"
 	Characters_GetCharacters_FullMethodName        = "/pb.Characters/GetCharacters"
 	Characters_GetCharacterById_FullMethodName     = "/pb.Characters/GetCharacterById"
+	Characters_GetCharacterQuests_FullMethodName   = "/pb.Characters/GetCharacterQuests"
 )
 
 // CharactersClient is the client API for Characters service.
@@ -35,6 +36,7 @@ type CharactersClient interface {
 	UploadCharacterImage(ctx context.Context, in *UploadCharacterImageRequest, opts ...grpc.CallOption) (*Image, error)
 	GetCharacters(ctx context.Context, in *GetCharactersRequest, opts ...grpc.CallOption) (*GetCharactersResponse, error)
 	GetCharacterById(ctx context.Context, in *GetCharacterByIdRequest, opts ...grpc.CallOption) (*Character, error)
+	GetCharacterQuests(ctx context.Context, in *GetCharacterQuestsRequest, opts ...grpc.CallOption) (*GetQuestCharactersResponse, error)
 }
 
 type charactersClient struct {
@@ -90,6 +92,15 @@ func (c *charactersClient) GetCharacterById(ctx context.Context, in *GetCharacte
 	return out, nil
 }
 
+func (c *charactersClient) GetCharacterQuests(ctx context.Context, in *GetCharacterQuestsRequest, opts ...grpc.CallOption) (*GetQuestCharactersResponse, error) {
+	out := new(GetQuestCharactersResponse)
+	err := c.cc.Invoke(ctx, Characters_GetCharacterQuests_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CharactersServer is the server API for Characters service.
 // All implementations must embed UnimplementedCharactersServer
 // for forward compatibility
@@ -99,6 +110,7 @@ type CharactersServer interface {
 	UploadCharacterImage(context.Context, *UploadCharacterImageRequest) (*Image, error)
 	GetCharacters(context.Context, *GetCharactersRequest) (*GetCharactersResponse, error)
 	GetCharacterById(context.Context, *GetCharacterByIdRequest) (*Character, error)
+	GetCharacterQuests(context.Context, *GetCharacterQuestsRequest) (*GetQuestCharactersResponse, error)
 	mustEmbedUnimplementedCharactersServer()
 }
 
@@ -120,6 +132,9 @@ func (UnimplementedCharactersServer) GetCharacters(context.Context, *GetCharacte
 }
 func (UnimplementedCharactersServer) GetCharacterById(context.Context, *GetCharacterByIdRequest) (*Character, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCharacterById not implemented")
+}
+func (UnimplementedCharactersServer) GetCharacterQuests(context.Context, *GetCharacterQuestsRequest) (*GetQuestCharactersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCharacterQuests not implemented")
 }
 func (UnimplementedCharactersServer) mustEmbedUnimplementedCharactersServer() {}
 
@@ -224,6 +239,24 @@ func _Characters_GetCharacterById_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Characters_GetCharacterQuests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCharacterQuestsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharactersServer).GetCharacterQuests(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Characters_GetCharacterQuests_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharactersServer).GetCharacterQuests(ctx, req.(*GetCharacterQuestsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Characters_ServiceDesc is the grpc.ServiceDesc for Characters service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,6 +283,10 @@ var Characters_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCharacterById",
 			Handler:    _Characters_GetCharacterById_Handler,
+		},
+		{
+			MethodName: "GetCharacterQuests",
+			Handler:    _Characters_GetCharacterQuests_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
